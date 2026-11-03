@@ -53,5 +53,5 @@
 
 - [x] Freeze the 30-trial matrix and evaluate every trial without discarding failures.
 - [x] Run repeated live trials and inspect a rendered sequence for each passing style.
-- [ ] Run appropriate CPU regression checks, review the whole branch, resolve material findings, and push the version branch with recorded evidence.
-- [ ] Report only the verified success range, remaining limitations, and local artifacts.
+- [x] Run appropriate CPU regression checks, review the whole branch, resolve material findings, and push the version branch with recorded evidence.
+- [x] Report only the verified success range, remaining limitations, and local artifacts.
