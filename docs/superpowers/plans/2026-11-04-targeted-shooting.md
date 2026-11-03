@@ -44,11 +44,11 @@
 
 **Interfaces:** `resolve_targeted_shot(config, style, target_x, speed_mps)` validates the supported envelope and returns an ordinary trial descriptor with pinned physical goal, virtual aim and actuator settings. Low/medium/high presets resolve to physical speed requests per style. Exact coefficients and supported nodes are frozen from Task 1 evidence.
 
-- [ ] Add failing tests for finite inputs, unsupported aim/speed, exact/intermediate command mapping, fixed geometry and incompatible calibration metadata.
-- [ ] Implement the smallest controller justified by probes and a CLI for target/power inputs.
-- [ ] Calibrate actuator controls in bounded batches, test intermediate commands if interpolation is exposed, and freeze feasible command ranges before held-out evaluation.
-- [ ] Pass tests and verify that each axis changes the corresponding physical outcome without invalidating contact/recovery.
-- [ ] Commit the frozen control configuration and interface.
+- [x] Add failing tests for finite inputs, unsupported aim/speed, exact/intermediate command mapping, fixed geometry and incompatible calibration metadata.
+- [x] Implement the smallest controller justified by probes and a CLI for target/power inputs.
+- [x] Calibrate actuator controls in bounded batches, test intermediate commands if interpolation is exposed, and freeze feasible command ranges before held-out evaluation.
+- [x] Pass tests and verify that each axis changes the corresponding physical outcome without invalidating contact/recovery.
+- [x] Commit the frozen control configuration and interface.
 
 ### Task 3: Held-out acceptance and usable demonstration
 

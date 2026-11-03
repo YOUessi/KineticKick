@@ -1,0 +1,880 @@
+{
+  "schema_version": 1,
+  "version": "0.1.2",
+  "policy_sha256": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+  "asset_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "ball": [
+    0.14,
+    -0.93
+  ],
+  "goal": [
+    0,
+    -3.7
+  ],
+  "goal_forward": [
+    0,
+    -1
+  ],
+  "trial_steps": 410,
+  "target_x_m": [
+    -0.3,
+    0,
+    0.3
+  ],
+  "acceptance_seeds": [
+    811,
+    812
+  ],
+  "interpolation": false,
+  "styles": {
+    "inside": {
+      "speeds_mps": {
+        "low": 3.8,
+        "medium": 4.3,
+        "high": 4.9
+      },
+      "nodes": [
+        {
+          "power": "low",
+          "target_x_m": -0.3,
+          "control": {
+            "policy_goal": [
+              -1.0,
+              -2.3
+            ],
+            "strike": {}
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_response_2.json",
+            "sha256": "4e7137ad346a7efdc7279785d73126f1fe0ef835fefed7f11d1b47e8a8721736",
+            "environment_index": 0,
+            "crossing_x_m": -0.23527366965907542,
+            "outgoing_speed_mps": 3.877532167701715
+          }
+        },
+        {
+          "power": "low",
+          "target_x_m": 0,
+          "control": {
+            "policy_goal": [
+              -1.0,
+              -2.0
+            ],
+            "strike": {}
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_aim_a.json",
+            "sha256": "57fb4024b44504520dbe5c8640160bbb4bb2dbfb700959ad1f2c9ec70cd05b10",
+            "environment_index": 0,
+            "crossing_x_m": -0.0975686629413235,
+            "outgoing_speed_mps": 3.4837999591806175
+          }
+        },
+        {
+          "power": "low",
+          "target_x_m": 0.3,
+          "control": {
+            "policy_goal": [
+              -0.3,
+              -2.3
+            ],
+            "strike": {}
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_response_2.json",
+            "sha256": "4e7137ad346a7efdc7279785d73126f1fe0ef835fefed7f11d1b47e8a8721736",
+            "environment_index": 1,
+            "crossing_x_m": 0.3882153088081931,
+            "outgoing_speed_mps": 3.9701124811093456
+          }
+        },
+        {
+          "power": "medium",
+          "target_x_m": -0.3,
+          "control": {
+            "policy_goal": [
+              -0.7359550561797753,
+              -2.3
+            ],
+            "strike": {}
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_control_a.json",
+            "sha256": "5bda9ea6a2e285f6a72ffbd7ebe505e32b6cdcdd6fabb3a76cb32b0c2bfdb0df",
+            "environment_index": 1,
+            "crossing_x_m": -0.3405604509737675,
+            "outgoing_speed_mps": 4.513506336013682
+          }
+        },
+        {
+          "power": "medium",
+          "target_x_m": 0,
+          "control": {
+            "policy_goal": [
+              -0.20350877192982458,
+              -2.8
+            ],
+            "strike": {}
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_control_a.json",
+            "sha256": "5bda9ea6a2e285f6a72ffbd7ebe505e32b6cdcdd6fabb3a76cb32b0c2bfdb0df",
+            "environment_index": 4,
+            "crossing_x_m": 0.0020716284522277616,
+            "outgoing_speed_mps": 4.563152557418533
+          }
+        },
+        {
+          "power": "medium",
+          "target_x_m": 0.3,
+          "control": {
+            "policy_goal": [
+              0,
+              -3.7
+            ],
+            "strike": {},
+            "cartesian": {
+              "normal_local": [
+                0.0,
+                0.9500741086708272,
+                0.3120243388476822
+              ],
+              "elevation_rad": 0.32,
+              "orientation_xyzw": [
+                0.05137475207448006,
+                -0.019561128690838814,
+                -0.9981175661087036,
+                0.027189211919903755
+              ],
+              "point_local": [
+                0.075,
+                0.03550074108670827,
+                -0.02187975661152318
+              ],
+              "seed": [
+                -0.24705536663532257,
+                -0.1867474913597107,
+                -0.69476717710495,
+                0.7889180183410645,
+                -0.18089359998703003,
+                0.08101353049278259
+              ],
+              "foot_speed_mps": 1.5,
+              "window": [
+                111,
+                116,
+                121,
+                128
+              ],
+              "contact_frame": 112,
+              "max_joint_correction_rad": 0.3,
+              "aim_x": 0
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_cartesian_2.json",
+            "sha256": "a17e74a832b26e755da4e0864b61f4f0e9475eb0031c1df04ba7fd4505ab3964",
+            "environment_index": 1,
+            "crossing_x_m": 0.21072711928769725,
+            "outgoing_speed_mps": 4.13416861135819
+          }
+        },
+        {
+          "power": "high",
+          "target_x_m": -0.3,
+          "control": {
+            "policy_goal": [
+              -0.6037946428571428,
+              -3.3
+            ],
+            "strike": {}
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_control_a.json",
+            "sha256": "5bda9ea6a2e285f6a72ffbd7ebe505e32b6cdcdd6fabb3a76cb32b0c2bfdb0df",
+            "environment_index": 6,
+            "crossing_x_m": -0.26958212820915767,
+            "outgoing_speed_mps": 4.6809088847438245
+          }
+        },
+        {
+          "power": "high",
+          "target_x_m": 0,
+          "control": {
+            "policy_goal": [
+              0,
+              -3.7
+            ],
+            "strike": {},
+            "cartesian": {
+              "normal_local": [
+                0.0,
+                0.9500741086708272,
+                0.3120243388476822
+              ],
+              "elevation_rad": 0.32,
+              "orientation_xyzw": [
+                0.05137475207448006,
+                -0.019561128690838814,
+                -0.9981175661087036,
+                0.027189211919903755
+              ],
+              "point_local": [
+                0.075,
+                0.03550074108670827,
+                -0.02187975661152318
+              ],
+              "seed": [
+                -0.24705536663532257,
+                -0.1867474913597107,
+                -0.69476717710495,
+                0.7889180183410645,
+                -0.18089359998703003,
+                0.08101353049278259
+              ],
+              "foot_speed_mps": 3.0,
+              "window": [
+                111,
+                116,
+                121,
+                128
+              ],
+              "contact_frame": 112,
+              "max_joint_correction_rad": 0.3,
+              "aim_x": 0
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_cartesian_2.json",
+            "sha256": "a17e74a832b26e755da4e0864b61f4f0e9475eb0031c1df04ba7fd4505ab3964",
+            "environment_index": 3,
+            "crossing_x_m": -0.02397564563715995,
+            "outgoing_speed_mps": 4.955596698099549
+          }
+        },
+        {
+          "power": "high",
+          "target_x_m": 0.3,
+          "control": {
+            "policy_goal": [
+              0.05964912280701753,
+              -2.8
+            ],
+            "strike": {}
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_control_a.json",
+            "sha256": "5bda9ea6a2e285f6a72ffbd7ebe505e32b6cdcdd6fabb3a76cb32b0c2bfdb0df",
+            "environment_index": 5,
+            "crossing_x_m": 0.3353118839545811,
+            "outgoing_speed_mps": 4.7488870478090845
+          }
+        }
+      ]
+    },
+    "instep": {
+      "speeds_mps": {
+        "low": 1.6,
+        "medium": 2.0,
+        "high": 2.5
+      },
+      "nodes": [
+        {
+          "power": "low",
+          "target_x_m": -0.3,
+          "control": {
+            "policy_goal": [
+              0,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                88,
+                114,
+                152
+              ],
+              "offsets": {
+                "right_hip_yaw_joint": 0.4,
+                "right_ankle_pitch_joint": 0.7
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_control_a.json",
+            "sha256": "5bda9ea6a2e285f6a72ffbd7ebe505e32b6cdcdd6fabb3a76cb32b0c2bfdb0df",
+            "environment_index": 9,
+            "crossing_x_m": -0.21807868393047974,
+            "outgoing_speed_mps": 1.6016604753463077
+          }
+        },
+        {
+          "power": "low",
+          "target_x_m": 0,
+          "control": {
+            "policy_goal": [
+              0.5,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                88,
+                114,
+                152
+              ],
+              "offsets": {
+                "right_hip_yaw_joint": 0.4,
+                "right_ankle_pitch_joint": 0.7
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_fill_nodes.json",
+            "sha256": "e8618cadf536bcd33ca0cfa2b5d78bebcb2e33f0e9977260f04808d9ad60e816",
+            "environment_index": 1,
+            "crossing_x_m": -0.10205593058435605,
+            "outgoing_speed_mps": 1.7378007243459184
+          }
+        },
+        {
+          "power": "low",
+          "target_x_m": 0.3,
+          "control": {
+            "policy_goal": [
+              0.35,
+              -4.7
+            ],
+            "strike": {
+              "window": [
+                88,
+                114,
+                152
+              ],
+              "offsets": {
+                "right_hip_yaw_joint": 0.6,
+                "right_ankle_pitch_joint": 0.9
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_fill_nodes.json",
+            "sha256": "e8618cadf536bcd33ca0cfa2b5d78bebcb2e33f0e9977260f04808d9ad60e816",
+            "environment_index": 4,
+            "crossing_x_m": 0.3859512548471412,
+            "outgoing_speed_mps": 1.494860974934485
+          }
+        },
+        {
+          "power": "medium",
+          "target_x_m": -0.3,
+          "control": {
+            "policy_goal": [
+              0.0,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                88,
+                114,
+                152
+              ],
+              "offsets": {
+                "right_hip_yaw_joint": 0.6,
+                "right_ankle_pitch_joint": 0.9
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_aim_a.json",
+            "sha256": "57fb4024b44504520dbe5c8640160bbb4bb2dbfb700959ad1f2c9ec70cd05b10",
+            "environment_index": 13,
+            "crossing_x_m": -0.3567812117674457,
+            "outgoing_speed_mps": 2.0174584831395226
+          }
+        },
+        {
+          "power": "medium",
+          "target_x_m": 0,
+          "control": {
+            "policy_goal": [
+              0.35,
+              -5.2
+            ],
+            "strike": {
+              "window": [
+                88,
+                114,
+                152
+              ],
+              "offsets": {
+                "right_hip_yaw_joint": 0.6,
+                "right_ankle_pitch_joint": 0.9
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_fill_nodes.json",
+            "sha256": "e8618cadf536bcd33ca0cfa2b5d78bebcb2e33f0e9977260f04808d9ad60e816",
+            "environment_index": 6,
+            "crossing_x_m": 0.09933102004513078,
+            "outgoing_speed_mps": 1.8151950518234805
+          }
+        },
+        {
+          "power": "medium",
+          "target_x_m": 0.3,
+          "control": {
+            "policy_goal": [
+              1.1,
+              -5.0
+            ],
+            "strike": {
+              "window": [
+                88,
+                114,
+                152
+              ],
+              "offsets": {
+                "right_hip_yaw_joint": 0.6,
+                "right_ankle_pitch_joint": 0.9
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_response_2.json",
+            "sha256": "4e7137ad346a7efdc7279785d73126f1fe0ef835fefed7f11d1b47e8a8721736",
+            "environment_index": 14,
+            "crossing_x_m": 0.29114160900267444,
+            "outgoing_speed_mps": 2.1005401062720863
+          }
+        },
+        {
+          "power": "high",
+          "target_x_m": -0.3,
+          "control": {
+            "policy_goal": [
+              0.2,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                88,
+                114,
+                152
+              ],
+              "offsets": {
+                "right_hip_yaw_joint": 0.4,
+                "right_ankle_pitch_joint": 0.7
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_fill_nodes.json",
+            "sha256": "e8618cadf536bcd33ca0cfa2b5d78bebcb2e33f0e9977260f04808d9ad60e816",
+            "environment_index": 0,
+            "crossing_x_m": -0.29167064429995804,
+            "outgoing_speed_mps": 2.4929443105591953
+          }
+        },
+        {
+          "power": "high",
+          "target_x_m": 0,
+          "control": {
+            "policy_goal": [
+              0.3,
+              -4.0
+            ],
+            "strike": {
+              "window": [
+                88,
+                114,
+                152
+              ],
+              "offsets": {
+                "right_hip_yaw_joint": 0.6,
+                "right_ankle_pitch_joint": 0.9
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_response_2.json",
+            "sha256": "4e7137ad346a7efdc7279785d73126f1fe0ef835fefed7f11d1b47e8a8721736",
+            "environment_index": 7,
+            "crossing_x_m": 0.020871259137403557,
+            "outgoing_speed_mps": 2.4296887698467033
+          }
+        },
+        {
+          "power": "high",
+          "target_x_m": 0.3,
+          "control": {
+            "policy_goal": [
+              1.1,
+              -4.0
+            ],
+            "strike": {
+              "window": [
+                88,
+                114,
+                152
+              ],
+              "offsets": {
+                "right_hip_yaw_joint": 0.6,
+                "right_ankle_pitch_joint": 0.9
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_response_2.json",
+            "sha256": "4e7137ad346a7efdc7279785d73126f1fe0ef835fefed7f11d1b47e8a8721736",
+            "environment_index": 8,
+            "crossing_x_m": 0.17047348761682873,
+            "outgoing_speed_mps": 2.443326204384839
+          }
+        }
+      ]
+    },
+    "outside": {
+      "speeds_mps": {
+        "low": 1.4,
+        "medium": 1.8,
+        "high": 2.2
+      },
+      "nodes": [
+        {
+          "power": "low",
+          "target_x_m": -0.3,
+          "control": {
+            "policy_goal": [
+              -0.8,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                102,
+                116,
+                120,
+                128
+              ],
+              "targets": {
+                "right_hip_pitch_joint": 0.5204782612589431,
+                "right_hip_roll_joint": 0.27496219466596683,
+                "right_hip_yaw_joint": 2.6167392183428237,
+                "right_knee_joint": 0.7853646954181479,
+                "right_ankle_pitch_joint": -0.7883525563386309,
+                "right_ankle_roll_joint": -0.1609173878891123
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_control_b.json",
+            "sha256": "2ddceea27bc5b8ff6bef0c4496c9bae96ea9d409014aedcb1689ef4ce266fe05",
+            "environment_index": 10,
+            "crossing_x_m": -0.28992070025661776,
+            "outgoing_speed_mps": 1.420608826402146
+          }
+        },
+        {
+          "power": "low",
+          "target_x_m": 0,
+          "control": {
+            "policy_goal": [
+              -1.0,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                102,
+                116,
+                120,
+                128
+              ],
+              "targets": {
+                "right_hip_pitch_joint": 0.5204782612589431,
+                "right_hip_roll_joint": 0.27496219466596683,
+                "right_hip_yaw_joint": 2.6167392183428237,
+                "right_knee_joint": 0.7853646954181479,
+                "right_ankle_pitch_joint": -0.7883525563386309,
+                "right_ankle_roll_joint": -0.1609173878891123
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_aim_b.json",
+            "sha256": "70d7bc105cafe82a661eed6fcadaaa8fff49183871fbf4273e7b1bde55b18a73",
+            "environment_index": 3,
+            "crossing_x_m": -0.10696393214986076,
+            "outgoing_speed_mps": 1.501539377032895
+          }
+        },
+        {
+          "power": "low",
+          "target_x_m": 0.3,
+          "control": {
+            "policy_goal": [
+              0,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                102,
+                116,
+                120,
+                128
+              ],
+              "targets": {
+                "right_hip_pitch_joint": 0.5204782612589431,
+                "right_hip_roll_joint": 0.27496219466596683,
+                "right_hip_yaw_joint": 2.6167392183428237,
+                "right_knee_joint": 0.7853646954181479,
+                "right_ankle_pitch_joint": -0.7883525563386309,
+                "right_ankle_roll_joint": -0.1609173878891123
+              }
+            },
+            "cartesian": {
+              "normal_local": [
+                0.0,
+                -0.9500741086708272,
+                0.3120243388476822
+              ],
+              "elevation_rad": 0.38,
+              "orientation_xyzw": [
+                -0.13241009414196014,
+                0.03892084211111069,
+                -0.17819379270076752,
+                0.9742687940597534
+              ],
+              "point_local": [
+                0.075,
+                -0.03550074108670827,
+                -0.02187975661152318
+              ],
+              "seed": [
+                0.6798429489135742,
+                0.23889979720115662,
+                2.3452670574188232,
+                0.7730736136436462,
+                -0.7365904450416565,
+                -0.14197979867458344
+              ],
+              "foot_speed_mps": 1.5,
+              "window": [
+                112,
+                117,
+                120,
+                128
+              ],
+              "contact_frame": 115,
+              "max_joint_correction_rad": 0.15,
+              "aim_x": 0
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_cartesian_2.json",
+            "sha256": "a17e74a832b26e755da4e0864b61f4f0e9475eb0031c1df04ba7fd4505ab3964",
+            "environment_index": 8,
+            "crossing_x_m": 0.18343435240928485,
+            "outgoing_speed_mps": 1.255722011280557
+          }
+        },
+        {
+          "power": "medium",
+          "target_x_m": -0.3,
+          "control": {
+            "policy_goal": [
+              -0.8,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                102,
+                116,
+                118,
+                126
+              ],
+              "targets": {
+                "right_hip_pitch_joint": 0.5204782612589431,
+                "right_hip_roll_joint": 0.27496219466596683,
+                "right_hip_yaw_joint": 2.6167392183428237,
+                "right_knee_joint": 0.7853646954181479,
+                "right_ankle_pitch_joint": -0.7883525563386309,
+                "right_ankle_roll_joint": -0.1609173878891123
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_response_2.json",
+            "sha256": "4e7137ad346a7efdc7279785d73126f1fe0ef835fefed7f11d1b47e8a8721736",
+            "environment_index": 22,
+            "crossing_x_m": -0.28175600221073954,
+            "outgoing_speed_mps": 1.7551398157614628
+          }
+        },
+        {
+          "power": "medium",
+          "target_x_m": 0,
+          "control": {
+            "policy_goal": [
+              -0.8,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                102,
+                118,
+                120,
+                128
+              ],
+              "targets": {
+                "right_hip_pitch_joint": 0.5204782612589431,
+                "right_hip_roll_joint": 0.27496219466596683,
+                "right_hip_yaw_joint": 2.6167392183428237,
+                "right_knee_joint": 0.7853646954181479,
+                "right_ankle_pitch_joint": -0.7883525563386309,
+                "right_ankle_roll_joint": -0.1609173878891123
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_response_2.json",
+            "sha256": "4e7137ad346a7efdc7279785d73126f1fe0ef835fefed7f11d1b47e8a8721736",
+            "environment_index": 19,
+            "crossing_x_m": -0.01623118632548565,
+            "outgoing_speed_mps": 1.7805316808941087
+          }
+        },
+        {
+          "power": "medium",
+          "target_x_m": 0.3,
+          "control": {
+            "policy_goal": [
+              0.0,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                102,
+                116,
+                120,
+                128
+              ],
+              "targets": {
+                "right_hip_pitch_joint": 0.5204782612589431,
+                "right_hip_roll_joint": 0.27496219466596683,
+                "right_hip_yaw_joint": 2.6167392183428237,
+                "right_knee_joint": 0.7853646954181479,
+                "right_ankle_pitch_joint": -0.7883525563386309,
+                "right_ankle_roll_joint": -0.1609173878891123
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_aim_b.json",
+            "sha256": "70d7bc105cafe82a661eed6fcadaaa8fff49183871fbf4273e7b1bde55b18a73",
+            "environment_index": 4,
+            "crossing_x_m": 0.38581351914997764,
+            "outgoing_speed_mps": 1.691386613632504
+          }
+        },
+        {
+          "power": "high",
+          "target_x_m": -0.3,
+          "control": {
+            "policy_goal": [
+              -1.4,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                106,
+                114,
+                120,
+                128
+              ],
+              "targets": {
+                "right_hip_pitch_joint": 0.5204782612589431,
+                "right_hip_roll_joint": 0.27496219466596683,
+                "right_hip_yaw_joint": 2.6167392183428237,
+                "right_knee_joint": 0.7853646954181479,
+                "right_ankle_pitch_joint": -0.7883525563386309,
+                "right_ankle_roll_joint": -0.1609173878891123
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_control_b.json",
+            "sha256": "2ddceea27bc5b8ff6bef0c4496c9bae96ea9d409014aedcb1689ef4ce266fe05",
+            "environment_index": 6,
+            "crossing_x_m": -0.22662557114732354,
+            "outgoing_speed_mps": 2.081795898860172
+          }
+        },
+        {
+          "power": "high",
+          "target_x_m": 0,
+          "control": {
+            "policy_goal": [
+              -0.8,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                106,
+                114,
+                120,
+                128
+              ],
+              "targets": {
+                "right_hip_pitch_joint": 0.5204782612589431,
+                "right_hip_roll_joint": 0.27496219466596683,
+                "right_hip_yaw_joint": 2.6167392183428237,
+                "right_knee_joint": 0.7853646954181479,
+                "right_ankle_pitch_joint": -0.7883525563386309,
+                "right_ankle_roll_joint": -0.1609173878891123
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_response_2.json",
+            "sha256": "4e7137ad346a7efdc7279785d73126f1fe0ef835fefed7f11d1b47e8a8721736",
+            "environment_index": 18,
+            "crossing_x_m": -0.0021387806801050676,
+            "outgoing_speed_mps": 2.1298424794244704
+          }
+        },
+        {
+          "power": "high",
+          "target_x_m": 0.3,
+          "control": {
+            "policy_goal": [
+              -0.6,
+              -3.7
+            ],
+            "strike": {
+              "window": [
+                106,
+                114,
+                120,
+                128
+              ],
+              "targets": {
+                "right_hip_pitch_joint": 0.5204782612589431,
+                "right_hip_roll_joint": 0.27496219466596683,
+                "right_hip_yaw_joint": 2.6167392183428237,
+                "right_knee_joint": 0.7853646954181479,
+                "right_ankle_pitch_joint": -0.7883525563386309,
+                "right_ankle_roll_joint": -0.1609173878891123
+              }
+            }
+          },
+          "calibration_evidence": {
+            "file": "reports/v012_fill_nodes.json",
+            "sha256": "e8618cadf536bcd33ca0cfa2b5d78bebcb2e33f0e9977260f04808d9ad60e816",
+            "environment_index": 12,
+            "crossing_x_m": 0.29331668301141645,
+            "outgoing_speed_mps": 2.1633934225000275
+          }
+        }
+      ]
+    }
+  }
+}

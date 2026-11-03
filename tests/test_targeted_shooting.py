@@ -2,14 +2,64 @@
 from pathlib import Path
 import sys
 import unittest
+import copy
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from targeted_shooting import TargetShotTracker
+from targeted_shooting import TargetShotTracker, resolve_targeted_shot, validate_target_config
 
 
 def sample(t, position, velocity=(0, -2, 0), force=0):
     return dict(time_s=t, ball_xyz=position, ball_velocity=velocity,
                 contact_force_N=force, terminated=False)
+
+
+def config_fixture():
+    return dict(schema_version=1, version='0.1.2', policy_sha256='489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1',
+        asset_sha256='34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761',
+        ball=[.14, -.93], goal=[0, -3.7], goal_forward=[0, -1], trial_steps=410,
+        target_x_m=[-.3, 0., .3], acceptance_seeds=[811, 812], interpolation=False,
+        styles={style: dict(speeds_mps=dict(low=1., medium=1.4, high=1.8), nodes=[
+            dict(power=power, target_x_m=x, control=dict(policy_goal=[x+i, -3.7], strike={}))
+            for i, power in enumerate(['low', 'medium', 'high']) for x in [-.3, 0., .3]])
+            for style in ['inside', 'instep', 'outside']})
+
+
+class TargetCommandTests(unittest.TestCase):
+    def test_target_and_power_resolve_without_moving_the_physical_goal(self):
+        config = config_fixture()
+        a = resolve_targeted_shot(config, 'inside', -.3, power='high')
+        b = resolve_targeted_shot(config, 'inside', .3, speed_mps=1.)
+        self.assertEqual(a['goal'], b['goal'])
+        self.assertEqual(a['goal_forward'], [0, -1])
+        self.assertEqual(a['target'], dict(target_x=-.3, speed_mps=1.8))
+        self.assertEqual(b['target'], dict(target_x=.3, speed_mps=1.))
+        self.assertEqual(a['policy_goal'], [1.7, -3.7])
+        a['strike']['targets'] = {'bad': 3}
+        self.assertEqual(config['styles']['inside']['nodes'][6]['control']['strike'], {})
+
+    def test_unsupported_numeric_commands_are_rejected_without_clamping(self):
+        for x, v in [(.1, 1.4), (.9, 1.4), (0., 1.2), (float('nan'), 1.4), (0., float('inf'))]:
+            with self.assertRaisesRegex(ValueError, 'supported|finite'):
+                resolve_targeted_shot(config_fixture(), 'inside', x, speed_mps=v)
+
+    def test_ambiguous_strength_and_unknown_style_are_rejected(self):
+        for args in [dict(power='low', speed_mps=1.), dict(), dict(power='huge')]:
+            with self.assertRaises(ValueError):
+                resolve_targeted_shot(config_fixture(), 'inside', 0, **args)
+        with self.assertRaises(ValueError):
+            resolve_targeted_shot(config_fixture(), 'toe', 0, power='low')
+
+    def test_changed_model_geometry_duplicate_nodes_and_unsafe_controls_fail_validation(self):
+        for change in ['model', 'goal', 'duplicate', 'nan', 'servo', 'interpolation']:
+            config = copy.deepcopy(config_fixture())
+            if change == 'model': config['policy_sha256'] = '0'*64
+            if change == 'goal': config['goal'][0] = .2
+            if change == 'duplicate': config['styles']['inside']['nodes'][0] = config['styles']['inside']['nodes'][1]
+            if change == 'nan': config['styles']['inside']['nodes'][0]['control']['policy_goal'][0] = float('nan')
+            if change == 'servo': config['styles']['inside']['nodes'][0]['control']['cartesian'] = {'max_joint_correction_rad': 2.}
+            if change == 'interpolation': config['interpolation'] = True
+            with self.assertRaises(ValueError, msg=change):
+                validate_target_config(config)
 
 
 class TargetMetricTests(unittest.TestCase):

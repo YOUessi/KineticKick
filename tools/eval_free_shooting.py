@@ -28,6 +28,12 @@ def main():
     parser.add_argument("--goal-y", type=float, default=-3.7)
     parser.add_argument("--style", choices=("instep", "inside", "outside"), default="inside")
     parser.add_argument("--config", default=str(ROOT / "configs/free_shooting_v1.json"))
+    parser.add_argument('--target-config', default=str(ROOT / 'configs/targeted_shooting_v1.json'))
+    parser.add_argument('--target-x', type=float, help='Calibrated fixed-goal horizontal target in meters')
+    strength = parser.add_mutually_exclusive_group()
+    strength.add_argument('--power', choices=('low', 'medium', 'high'))
+    strength.add_argument('--speed-mps', type=float, help='A calibrated outgoing speed for the selected style')
+    parser.add_argument('--targeted-acceptance', action='store_true', help='Run all nine aim/power commands for --style with seeded perturbations')
     parser.add_argument("--baseline", action="store_true", help="Evaluate the original policy without style control")
     parser.add_argument("--acceptance", action="store_true", help="Run the frozen 15-trial matrix with seeded reset perturbations")
     parser.add_argument("--gui", action="store_true")
@@ -51,7 +57,35 @@ def main():
             parser.error("The initial grid contains at most 12 positions")
     args.motion_files = [str(ROOT / "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz")]
     args.trials_data = None
-    if args.acceptance:
+    args.targeted_config_sha256 = None
+    targeted = args.targeted_acceptance or args.target_x is not None or args.power is not None or args.speed_mps is not None
+    if targeted:
+        from targeted_shooting import resolve_targeted_shot, validate_target_config, POWERS
+        if args.trials or args.grid or args.reference_sweep or args.baseline or args.acceptance:
+            parser.error('Targeted commands cannot be combined with other experiment modes')
+        try:
+            target_config = json.loads(Path(args.target_config).read_text())
+            validate_target_config(target_config)
+            if hashlib.sha256(Path(args.model).read_bytes()).hexdigest() != target_config['policy_sha256']:
+                raise ValueError('Targeted shooting requires its pinned policy checkpoint')
+            if args.targeted_acceptance:
+                if args.target_x is not None or args.power is not None or args.speed_mps is not None:
+                    raise ValueError('Targeted acceptance uses the entire frozen grid, without custom commands')
+                if args.steps != target_config['trial_steps'] or args.seed not in target_config['acceptance_seeds']:
+                    raise ValueError('Use the frozen duration and one of the acceptance seeds from --target-config')
+                args.trials_data = [resolve_targeted_shot(target_config, args.style, x, power=p)
+                                   for p in POWERS for x in target_config['target_x_m']]
+                args.num_envs = len(args.trials_data)
+                args.perturb_reset = True
+            else:
+                request = dict(speed_mps=args.speed_mps) if args.speed_mps is not None else dict(power=args.power or 'medium')
+                trial = resolve_targeted_shot(target_config, args.style, args.target_x if args.target_x is not None else 0., **request)
+                args.trials_data = [trial for _ in range(args.num_envs)]
+            points = [t['ball'] for t in args.trials_data]
+            args.targeted_config_sha256 = hashlib.sha256(Path(args.target_config).read_bytes()).hexdigest()
+        except (ValueError, OSError) as error:
+            parser.error(str(error))
+    elif args.acceptance:
         if args.trials or args.grid or args.reference_sweep or args.baseline:
             parser.error("Acceptance uses the frozen config without other experiment flags")
         config = json.loads(Path(args.config).read_text())
@@ -204,6 +238,11 @@ def run(args, points):
     reference = StrikeResidual([t.get("reference", {}) for t in trials], robot.joint_names,
                                cpu_array(action_term._scale), cpu_array(action_term._offset),
                                cpu_array(robot.data.soft_joint_pos_limits))
+    cartesian = None
+    if any('cartesian' in t for t in trials):
+        from cartesian_strike import CartesianStrike
+        cartesian = CartesianStrike(trials, robot.joint_names, cpu_array(action_term._scale),
+            cpu_array(action_term._offset), cpu_array(robot.data.soft_joint_pos_limits), urdf)
     if list(raw.observation_manager.active_terms["policy"]) != policy.observation_names:
         raise ValueError("Observation term ordering differs from checkpoint metadata")
     native_command_update = motion._update_command
@@ -252,7 +291,8 @@ def run(args, points):
     panel = None
     if args.gui or args.video_dir:
         from shooting_visuals import create_shooting_visuals
-        create_shooting_visuals(points[0], goals[0])
+        create_shooting_visuals(points[0], goals[0], forward=trials[0].get('goal_forward'),
+                               target_x=trials[0].get('target', {}).get('target_x'))
     if args.video_dir:
         from PIL import Image
         video_dir = Path(args.video_dir)
@@ -272,6 +312,9 @@ def run(args, points):
                 ui.Label(f'Style: {args.style} | Free root | Physical contact')
                 status_label = ui.Label('Approaching the ball')
                 ui.Label('Goal: 1.6 m wide / 1.1 m high')
+                if 'target' in trials[0]:
+                    target = trials[0]['target']
+                    ui.Label(f"Target x: {target['target_x']:+.2f} m | Speed: {target['speed_mps']:.2f} m/s")
     trackers, target_trackers = [], []
     for i, point in enumerate(points):
         goal = np.asarray(goals[i])
@@ -358,12 +401,18 @@ def run(args, points):
             policy_obs = reference.apply_reference(cpu_array(obs), cpu_array(motion.time_steps), raw.step_dt)
             action = policy.step(policy_obs, motion.time_steps.cpu().numpy())
             action = strike.apply(action, motion.time_steps.cpu().numpy())
+            if cartesian is not None:
+                root_poses = cpu_array(robot.data.root_state_w[:, :7]).copy()
+                root_poses[:, :3] -= cpu_array(raw.scene.env_origins)
+                action = cartesian.apply(action, cpu_array(motion.time_steps), root_poses,
+                                         cpu_array(robot.data.joint_pos), raw.step_dt)
             if 75 <= step <= 170:
                 for i in np.flatnonzero(active):
                     kinematics[i].append(dict(time_s=substep * raw.physics_dt,
                         root_pose=cpu_array(robot.data.root_state_w[i, :7]).tolist(),
                         joint_pos=cpu_array(robot.data.joint_pos[i]).tolist(),
                         action=action[i].tolist(),
+                        cartesian_error=cartesian.last_errors[i] if cartesian is not None else None,
                         feet={s: dict(position=cpu_array(robot.data.body_pos_w[i, j] - raw.scene.env_origins[i]).tolist(),
                                       quaternion=cpu_array(robot.data.body_quat_w[i, j]).tolist())
                               for s, j in foot_indices.items()}))
@@ -384,6 +433,9 @@ def run(args, points):
                 status_label.text = (f"t={(step+1)*raw.step_dt:.2f}s | contact={summary['measured_surface']}\n"
                     f"goal={summary['goal']} | standing={summary['standing_seconds']:.2f}s\n"
                     f"complete={summary['success']} | failed={summary['failed']}")
+                if target_trackers[0] is not None:
+                    measure = target_trackers[0].summary()
+                    status_label.text += f"\nAim error: {measure['aim_error_m']} | Speed: {measure['outgoing_speed_mps']}"
                 time.sleep(max(0., raw.step_dt-(time.monotonic()-step_start)))
             if (step + 1) % 50 == 0:
                 summaries = [t.summary() for t in trackers]
@@ -414,6 +466,8 @@ def run(args, points):
         result.update(controller_config=args.config,
                       config_sha256=hashlib.sha256(Path(args.config).read_bytes()).hexdigest(),
                       rendered=bool(args.video_dir or args.gui))
+        result.update(targeted_config=args.target_config if args.targeted_config_sha256 else None,
+                      targeted_config_sha256=args.targeted_config_sha256)
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(result, indent=2))
