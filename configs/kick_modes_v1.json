@@ -1,0 +1,115 @@
+{
+  "version": "v2-20261021-dorsal-instep",
+  "robot": "IsaacLab built-in G1 37DOF",
+  "foot": "original right ankle roll link cube; no shoes and no added foot colliders",
+  "root_fixed": true,
+  "football": {
+    "mass_kg": 0.43,
+    "radius_m": 0.11
+  },
+  "power_duration_seconds": {
+    "soft": 0.43,
+    "medium": 0.27,
+    "strong": 0.16
+  },
+  "modes": {
+    "front": {
+      "label": "FRONT / TOE-LIKE",
+      "ball_start": [
+        0.38,
+        -0.12,
+        0.113
+      ],
+      "yaw": 0,
+      "pitch": -0.48,
+      "roll": 0,
+      "hip_start": 0.35,
+      "hip_end": -0.87,
+      "knee_start": 0.55,
+      "knee_end": 0.43,
+      "hip_delay": 0.32,
+      "knee_delay": 0.37,
+      "expected_face": "toe",
+      "note": "Original foot FRONT edge; not verified as human instep kick"
+    },
+    "medial": {
+      "label": "INSIDE FOOT / MEDIAL",
+      "ball_start": [
+        0.4,
+        0.2,
+        0.113
+      ],
+      "yaw": -1.8,
+      "pitch": -0.2,
+      "roll": -0.23,
+      "hip_start": 0.2,
+      "hip_end": -0.57,
+      "knee_start": 0.36,
+      "knee_end": 0.15,
+      "hip_delay": 0.32,
+      "knee_delay": 0.4,
+      "expected_face": "medial",
+      "note": "Original rectangular foot side, no human curved arch"
+    },
+    "lateral": {
+      "label": "OUTSIDE FOOT / LATERAL",
+      "ball_start": [
+        0.4,
+        -0.4,
+        0.113
+      ],
+      "yaw": 1.5,
+      "pitch": -0.2,
+      "roll": 0.23,
+      "hip_start": 0.2,
+      "hip_end": -0.57,
+      "knee_start": 0.36,
+      "knee_end": 0.15,
+      "hip_delay": 0.32,
+      "knee_delay": 0.4,
+      "expected_face": "lateral",
+      "note": "Original rectangular foot outside, not curved outside instep"
+    },
+    "knee_only": {
+      "label": "KNEE ONLY / EXPERIMENTAL",
+      "ball_start": [
+        0.38,
+        -0.12,
+        0.113
+      ],
+      "yaw": 0,
+      "pitch": -0.48,
+      "roll": 0,
+      "hip_start": -0.48,
+      "hip_end": -0.48,
+      "knee_start": 1.1,
+      "knee_end": 0.13,
+      "hip_delay": 0.32,
+      "knee_delay": 0.32,
+      "expected_face": "toe",
+      "note": "Different motor-chain experiment: hip held fixed, knee extension alone; observed medium-power strike ~1.206m/s. Stronger command did NOT yield faster ball due contact geometry/timing. NOT calibrated monotonic power."
+    },
+    "instep_top": {
+      "label": "INSTEP / TOP FOOT (DORSAL)",
+      "ball_start": [
+        0.15,
+        -0.12,
+        0.113
+      ],
+      "yaw": 0,
+      "pitch": 0.64,
+      "roll": 0,
+      "hip_start": 0.2,
+      "hip_end": -1.05,
+      "knee_start": 1.2,
+      "knee_end": 0.8,
+      "hip_delay": 0.32,
+      "knee_delay": 0.42,
+      "expected_face": "top",
+      "note": "Direct physics check: original G1 top foot plane dominant, top normal forward component ~0.87–0.89. It is a flat rigid foot, not a curved human instep."
+    }
+  },
+  "measured_at_power_calibration": "reports/calibrate_power.json",
+  "knee_only_power_calibration": "reports/calibrate_knee_power.json",
+  "instep_top_power_calibration": "reports/dorsal_kick_power.json"
+}

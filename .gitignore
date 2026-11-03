@@ -1,0 +1,40 @@
+# External assets and training outputs stay on Tang.
+/data/
+/third_party/
+/.pretrained_checkpoints/
+/experiments/
+/media/
+
+# Copies of upstream robot assets and paths resolved for this machine.
+/configs/paid_g1_main.urdf
+/configs/paid_original/
+
+# Keep written research reports, not generated measurements or captures.
+/reports/*
+!/reports/*.md
+
+# Model weights, motion arrays, and runtime logs.
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+*.npz
+*.npy
+*.log
+events.out.tfevents*
+
+# Python environments and caches.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Local credentials and editor/OS state.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store

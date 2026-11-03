@@ -1,0 +1,11 @@
+---
+description: KineticKick uses a separate branch for every version
+alwaysApply: true
+---
+
+# Version branches
+
+Follow the repository's `AGENTS.md` and `VERSION_CONTROL.md`.
+Before starting a new version, create its own `version/v<major>.<minor>.<patch>` branch from the appropriate verified baseline.
+Use the requested version number, or the next unused patch version after inspecting local and remote branches.
+Keep previous version branches and publish with upstream tracking; do not force-push or develop a new version directly on `main`.
