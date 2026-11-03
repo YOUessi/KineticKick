@@ -306,7 +306,7 @@ def run(args, points):
             raw.sim.render()
     if args.gui:
         import omni.ui as ui
-        panel = ui.Window('KineticKick | Free shooting', width=390, height=150)
+        panel = ui.Window('KineticKick | Free shooting', width=430, height=250)
         with panel.frame:
             with ui.VStack(spacing=5):
                 ui.Label(f'Style: {args.style} | Free root | Physical contact')
@@ -314,6 +314,7 @@ def run(args, points):
                 ui.Label('Goal: 1.6 m wide / 1.1 m high')
                 if 'target' in trials[0]:
                     target = trials[0]['target']
+                    ui.Label('Experimental aim / strength commands')
                     ui.Label(f"Target x: {target['target_x']:+.2f} m | Speed: {target['speed_mps']:.2f} m/s")
     trackers, target_trackers = [], []
     for i, point in enumerate(points):
@@ -430,12 +431,15 @@ def run(args, points):
                 Image.fromarray(rgb[:, :, :3]).save(video_dir / f'frame_{step//2:04d}.png')
             if panel is not None:
                 summary = trackers[0].summary()
+                measure = target_trackers[0].summary() if target_trackers[0] is not None else None
+                complete = summary['success'] and (measure is None or measure['target_success'])
                 status_label.text = (f"t={(step+1)*raw.step_dt:.2f}s | contact={summary['measured_surface']}\n"
                     f"goal={summary['goal']} | standing={summary['standing_seconds']:.2f}s\n"
-                    f"complete={summary['success']} | failed={summary['failed']}")
-                if target_trackers[0] is not None:
-                    measure = target_trackers[0].summary()
-                    status_label.text += f"\nAim error: {measure['aim_error_m']} | Speed: {measure['outgoing_speed_mps']}"
+                    f"complete={complete} | failed={summary['failed']}")
+                if measure is not None:
+                    error = '--' if measure['aim_error_m'] is None else f"{measure['aim_error_m']:.3f} m"
+                    speed = '--' if measure['outgoing_speed_mps'] is None else f"{measure['outgoing_speed_mps']:.2f} m/s"
+                    status_label.text += f"\nAim error: {error} | Speed: {speed}"
                 time.sleep(max(0., raw.step_dt-(time.monotonic()-step_start)))
             if (step + 1) % 50 == 0:
                 summaries = [t.summary() for t in trackers]
