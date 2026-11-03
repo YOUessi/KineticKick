@@ -73,3 +73,19 @@ python -m unittest discover -s tests -p 'test_soccer_visual.py' -v
 ```
 
 完整测试中的一部分依赖 Tang 的绝对路径与忽略文件；它们不是跨机器即开即用的验收套件。
+
+## v0.1.1 的球位感知策略依赖
+
+`tools/eval_free_shooting.py` 使用上表 PAiD 提交中的 `ckp/policy_30000.onnx`。
+本地放在 `.pretrained_checkpoints/paid_official/policy_30000.onnx`，不提交模型文件。
+SHA-256：`489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1`。
+模型沿用上游许可与来源信息。
+
+Tang 的 ONNX Runtime 安装在忽略目录中，保持现有 Isaac Lab 环境不变：
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python -m pip install --no-deps \
+  --target experiments/runtime/onnxruntime onnxruntime==1.23.2
+```
+
+仿真器必须在导入 NumPy 等数值库之前启动，否则系统 NumPy 与仿真器插件可能出现二进制不兼容。
