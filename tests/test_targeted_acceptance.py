@@ -17,6 +17,8 @@ def runs_fixture():
                 policy_goals=[t['policy_goal'] for t in trials],
                 initial_robot_state=dict(root_position=[[0, 0, .8] for _ in trials]),
                 targeted_config_sha256='f'*64, policy_sha256=config['policy_sha256'],
+                motion_files=[config['motion_file']], motion_file=config['motion_file'],
+                motion_sha256=config['motion_sha256'], controller_sources_sha256=config['controller_sources_sha256'],
                 asset_sha256=config['asset_sha256'], root_fixed=False, post_initialization_state_writes=False,
                 perturb_reset=True, contact_evidence_version=2, goal_width_m=1.6, goal_height_m=1.1))
     return config, result
@@ -42,7 +44,7 @@ class AcceptanceTests(unittest.TestCase):
     def test_requires_unique_complete_matrix_and_pinned_controller(self):
         config, runs = runs_fixture()
         self.assertEqual(len(validate_manifest(config, runs, 'f'*64)), 54)
-        for change in ('missing', 'duplicate', 'controller', 'hash', 'geometry', 'old_contact'):
+        for change in ('missing', 'duplicate', 'controller', 'hash', 'geometry', 'old_contact', 'reference', 'source'):
             broken = copy.deepcopy(runs)
             if change == 'missing': broken.pop()
             if change == 'duplicate': broken[-1] = broken[0]
@@ -50,6 +52,8 @@ class AcceptanceTests(unittest.TestCase):
             if change == 'hash': broken[0]['targeted_config_sha256'] = '0'*64
             if change == 'geometry': broken[0]['goals'][0][0] += .1
             if change == 'old_contact': broken[0]['contact_evidence_version'] = 1
+            if change == 'reference': broken[0]['motion_files'] = ['different-reference.npz']
+            if change == 'source': broken[0]['controller_sources_sha256'] = {'modified-controller.py': '0'*64}
             with self.assertRaises(ValueError, msg=change):
                 validate_manifest(config, broken, 'f'*64)
 
@@ -76,6 +80,15 @@ class AcceptanceTests(unittest.TestCase):
         self.assertFalse(result['styles']['inside']['strength_separated'])
         for row in rows: row['outgoing_speed_mps'] += POWERS.index(row['power'])*.5
         self.assertTrue(aggregate_results(rows)['passed'])
+
+    def test_measured_spacing_must_meet_point_two_five_m_and_point_three_mps(self):
+        rows = [dict(style=style, power=power, target_x_m=x, targeted_success=True,
+                     crossing=dict(position=[x*.7, -3.7, .11]), outgoing_speed_mps=2.+POWERS.index(power)*.21)
+                for style in STYLES for power in POWERS for x in [-.3, 0, .3] for _ in range(2)]
+        result = aggregate_results(rows)
+        self.assertFalse(result['passed'])
+        self.assertFalse(result['styles']['inside']['strength_separated'])
+        self.assertFalse(result['styles']['inside']['direction_separated'])
 
 
 if __name__ == '__main__':

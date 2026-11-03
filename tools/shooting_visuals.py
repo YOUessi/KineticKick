@@ -36,8 +36,8 @@ def create_shooting_visuals(ball_xy, goal_xy, *, forward=None, target_x=None):
     if target_x is not None:
         # A horizontal ±15 cm target interval; it does not claim height control.
         cube(base+'/Target', (target_x, goal_xy[1], .006), (.30, .16, .008), (1., .64, .05))
-        for side in (-1, 1):
-            cube(f'{base}/TargetEdge{side}', (target_x+side*.15, goal_xy[1], .18),
+        for name, side in (('Left', -1), ('Right', 1)):
+            cube(f'{base}/TargetEdge{name}', (target_x+side*.15, goal_xy[1], .18),
                  (.012, .012, .36), (1., .64, .05))
     # Local -Y is behind the aperture; the net is a visual reference only.
     points, counts = [], []

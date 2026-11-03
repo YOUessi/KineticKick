@@ -58,14 +58,18 @@ def main():
     args.motion_files = [str(ROOT / "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz")]
     args.trials_data = None
     args.targeted_config_sha256 = None
+    args.targeted_provenance = None
     targeted = args.targeted_acceptance or args.target_x is not None or args.power is not None or args.speed_mps is not None
     if targeted:
-        from targeted_shooting import resolve_targeted_shot, validate_target_config, POWERS
+        from targeted_shooting import resolve_targeted_shot, validate_target_config, verify_target_provenance, POWERS
         if args.trials or args.grid or args.reference_sweep or args.baseline or args.acceptance:
             parser.error('Targeted commands cannot be combined with other experiment modes')
         try:
             target_config = json.loads(Path(args.target_config).read_text())
             validate_target_config(target_config)
+            args.targeted_provenance = verify_target_provenance(target_config, ROOT)
+            if [args.ball_x, args.ball_y] != target_config['ball'] or [args.goal_x, args.goal_y] != target_config['goal']:
+                raise ValueError('Targeted shooting pins the ball and physical goal to the calibrated geometry')
             if hashlib.sha256(Path(args.model).read_bytes()).hexdigest() != target_config['policy_sha256']:
                 raise ValueError('Targeted shooting requires its pinned policy checkpoint')
             if args.targeted_acceptance:
@@ -472,6 +476,7 @@ def run(args, points):
                       rendered=bool(args.video_dir or args.gui))
         result.update(targeted_config=args.target_config if args.targeted_config_sha256 else None,
                       targeted_config_sha256=args.targeted_config_sha256)
+        result.update(args.targeted_provenance or {})
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(result, indent=2))

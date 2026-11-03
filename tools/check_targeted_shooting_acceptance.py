@@ -24,6 +24,11 @@ def validate_manifest(config, runs, config_hash):
         if (run.get('targeted_config_sha256') != config_hash
                 or run.get('policy_sha256') != config['policy_sha256']
                 or run.get('asset_sha256') != config['asset_sha256']
+                or run.get('motion_file') != config['motion_file']
+                or run.get('motion_sha256') != config['motion_sha256']
+                or run.get('controller_sources_sha256') != config['controller_sources_sha256']
+                or len(run.get('motion_files', [])) != 1
+                or Path(run['motion_files'][0]).name != Path(config['motion_file']).name
                 or run.get('root_fixed') is not False or run.get('post_initialization_state_writes') is not False
                 or run.get('perturb_reset') is not True or run.get('contact_evidence_version') != 2
                 or run.get('goal_width_m') != 1.6 or run.get('goal_height_m') != 1.1):
@@ -92,8 +97,8 @@ def aggregate_results(rows):
             target_groups.append(dict(target_x_m=point, mean_crossing_x_m=mean(values) if values else None))
         speed_values = [speed_groups[p]['mean_speed_mps'] for p in POWERS]
         aim_values = [g['mean_crossing_x_m'] for g in target_groups]
-        separated_speed = all(v is not None for v in speed_values) and all(b-a >= .20 for a, b in zip(speed_values, speed_values[1:]))
-        separated_aim = len(aim_values) == 3 and all(v is not None for v in aim_values) and all(b-a >= .20 for a, b in zip(aim_values, aim_values[1:]))
+        separated_speed = all(v is not None for v in speed_values) and all(b-a >= .30-1e-10 for a, b in zip(speed_values, speed_values[1:]))
+        separated_aim = len(aim_values) == 3 and all(v is not None for v in aim_values) and all(b-a >= .25-1e-10 for a, b in zip(aim_values, aim_values[1:]))
         passed = sum(r['targeted_success'] for r in subset)
         styles[style] = dict(passed=passed, total=len(subset), powers=speed_groups, targets=target_groups,
                              strength_separated=separated_speed, direction_separated=separated_aim,

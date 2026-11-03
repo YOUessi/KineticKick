@@ -7,11 +7,18 @@ from __future__ import annotations
 
 import math
 import copy
+import hashlib
+from pathlib import Path
 
 POLICY_SHA256 = '489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1'
 ASSET_SHA256 = '34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761'
 STYLES = ('inside', 'instep', 'outside')
 POWERS = ('low', 'medium', 'high')
+MOTION_FILE = 'third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz'
+CONTROLLER_SOURCES = ('tools/eval_free_shooting.py', 'tools/targeted_shooting.py',
+                      'tools/shooting_control.py', 'tools/cartesian_strike.py',
+                      'tools/soccer_onnx_policy.py', 'tools/free_shooting_metrics.py')
+UPSTREAM_SOURCE = 'third_party/HumanoidSoccer/source/whole_body_tracking/soccer'
 LEG_JOINTS = {'right_' + name + '_joint' for name in
               ('hip_pitch', 'hip_roll', 'hip_yaw', 'knee', 'ankle_pitch', 'ankle_roll')}
 
@@ -30,6 +37,29 @@ def _window(value):
     return (_vector(value, 4) and 0 <= value[0] < value[1] <= value[2] < value[3] < 410)
 
 
+def controller_provenance(root):
+    root = Path(root)
+    hashes = {name: hashlib.sha256((root/name).read_bytes()).hexdigest() for name in CONTROLLER_SOURCES}
+    upstream = root / UPSTREAM_SOURCE
+    digest = hashlib.sha256()
+    paths = sorted(upstream.rglob('*.py'))
+    if not paths:
+        raise ValueError('Missing upstream controller sources')
+    for path in paths:
+        digest.update(path.relative_to(upstream).as_posix().encode() + b'\0')
+        digest.update(path.read_bytes() + b'\0')
+    hashes[UPSTREAM_SOURCE] = digest.hexdigest()
+    return dict(motion_file=MOTION_FILE, motion_sha256=hashlib.sha256((root/MOTION_FILE).read_bytes()).hexdigest(),
+                controller_sources_sha256=hashes)
+
+
+def verify_target_provenance(config, root):
+    measured = controller_provenance(root)
+    if any(config.get(key) != value for key, value in measured.items()):
+        raise ValueError('Reference or controller sources differ from the frozen calibration; restore them or recalibrate')
+    return measured
+
+
 def validate_target_config(config):
     """Reject incompatible or untested command envelopes before launching Isaac."""
     try:
@@ -39,6 +69,11 @@ def validate_target_config(config):
                 or config['goal_forward'] != [0, -1] or config['trial_steps'] != 410
                 or config['interpolation'] is not False):
             raise ValueError('Calibration metadata, model or fixed geometry is incompatible')
+        hashes = config['controller_sources_sha256']
+        if (config['motion_file'] != MOTION_FILE or set(hashes) != {*CONTROLLER_SOURCES, UPSTREAM_SOURCE}
+                or any(not isinstance(h, str) or len(h) != 64 or any(c not in '0123456789abcdef' for c in h)
+                       for h in [config['motion_sha256'], *hashes.values()])):
+            raise ValueError('Missing frozen reference/controller content fingerprints')
         points, seeds = config['target_x_m'], config['acceptance_seeds']
         if (not _vector(points, 3) or any(abs(x) > .69 for x in points)
                 or any(b-a < .25 for a, b in zip(points, points[1:]))
@@ -115,6 +150,8 @@ class TargetShotTracker:
         self.last_time = None
         self.contact_time = None
         self.crossing = None
+        self.first_pass_open = False
+        self.first_pass_complete = False
         self.outgoing_speed = None
         self.failed = False
 
@@ -145,15 +182,30 @@ class TargetShotTracker:
                 self.crossing = dict(time_s=before['time_s'] + (now-before['time_s'])*fraction,
                     position=[x + (y-x)*fraction for x, y in zip(a, b)],
                     velocity=[x + (y-x)*fraction for x, y in zip(before['ball_velocity'], velocity)])
+                self.first_pass_open = self._inside_aperture(self.crossing['position'])
+            if self.first_pass_open:
+                trailing_plane = self.goal_y - .11
+                if a[1] > trailing_plane >= b[1]:
+                    fraction = (trailing_plane-a[1])/(b[1]-a[1])
+                    position = [x + (y-x)*fraction for x, y in zip(a, b)]
+                    self.first_pass_complete = self._inside_aperture(position)
+                    self.first_pass_open = False
+                elif b[1] > self.goal_y:
+                    self.first_pass_open = False
         self.previous = sample
+
+    @staticmethod
+    def _inside_aperture(position):
+        return abs(position[0]) <= .8-.11 and .11-1e-4 <= position[2] <= 1.1-.11
 
     def summary(self):
         aim_error = abs(self.crossing['position'][0] - self.target_x) if self.crossing else None
         speed_error = abs(self.outgoing_speed - self.speed_mps) if self.outgoing_speed is not None else None
-        target_hit = aim_error is not None and aim_error <= .15 + 1e-10
+        target_hit = self.first_pass_complete and aim_error is not None and aim_error <= .15 + 1e-10
         speed_match = speed_error is not None and speed_error <= max(.20, .12*self.speed_mps) + 1e-10
         return dict(target_x_m=self.target_x, requested_speed_mps=self.speed_mps,
                     crossing=self.crossing, aim_error_m=aim_error,
+                    first_pass_complete=self.first_pass_complete,
                     outgoing_speed_mps=self.outgoing_speed, speed_error_mps=speed_error,
                     target_hit=target_hit, speed_match=speed_match,
                     target_success=bool(target_hit and speed_match and not self.failed))

@@ -876,5 +876,16 @@
         }
       ]
     }
+  },
+  "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz",
+  "motion_sha256": "183c0a2c3bd3ef2e15ac3e0b5766f76015dec2bcf400bf83a1dc961bb370d19a",
+  "controller_sources_sha256": {
+    "tools/eval_free_shooting.py": "4ce43a97bcf0352d4cfb291427a31930a25f8b6de6b6c3d003277a93f15067a6",
+    "tools/targeted_shooting.py": "b9fb207076a928090f90e2f4ec8d1d2958700317a67a56deb4114d0e772ffd17",
+    "tools/shooting_control.py": "fdb640da5f75aec5d2809c9ad6f0f335b3a5c547058c28b63951cb1ca1a30e51",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "third_party/HumanoidSoccer/source/whole_body_tracking/soccer": "10ea009ed41d89e9df26a224c6601c8e49f177566d336966aab834390fef05d9"
   }
 }

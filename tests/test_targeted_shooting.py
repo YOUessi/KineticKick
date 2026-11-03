@@ -3,9 +3,12 @@ from pathlib import Path
 import sys
 import unittest
 import copy
+import hashlib
+import tempfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from targeted_shooting import TargetShotTracker, resolve_targeted_shot, validate_target_config
+from targeted_shooting import (TargetShotTracker, resolve_targeted_shot, validate_target_config,
+                              MOTION_FILE, CONTROLLER_SOURCES, UPSTREAM_SOURCE)
 
 
 def sample(t, position, velocity=(0, -2, 0), force=0):
@@ -18,6 +21,8 @@ def config_fixture():
         asset_sha256='34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761',
         ball=[.14, -.93], goal=[0, -3.7], goal_forward=[0, -1], trial_steps=410,
         target_x_m=[-.3, 0., .3], acceptance_seeds=[811, 812], interpolation=False,
+        motion_file=MOTION_FILE, motion_sha256='a'*64,
+        controller_sources_sha256={p: 'b'*64 for p in (*CONTROLLER_SOURCES, UPSTREAM_SOURCE)},
         styles={style: dict(speeds_mps=dict(low=1., medium=1.4, high=1.8), nodes=[
             dict(power=power, target_x_m=x, control=dict(policy_goal=[x+i, -3.7], strike={}))
             for i, power in enumerate(['low', 'medium', 'high']) for x in [-.3, 0., .3]])
@@ -63,6 +68,47 @@ class TargetCommandTests(unittest.TestCase):
 
 
 class TargetMetricTests(unittest.TestCase):
+    def test_first_crossing_above_goal_cannot_be_rescued_by_later_goal(self):
+        tracker = TargetShotTracker(target_x=0, speed_mps=2.)
+        for row in [sample(1, (0, -.93, .11), force=10), sample(1.1, (0, -1.13, .11)),
+                    sample(2, (0, -3.6, 2.)), sample(2.2, (0, -3.9, 2.)),
+                    sample(2.4, (0, -3.6, .11)), sample(2.6, (0, -3.9, .11))]:
+            tracker.update(row)
+        self.assertEqual(tracker.summary()['crossing']['position'][2], 2.)
+        self.assertFalse(tracker.summary()['target_success'])
+
+    def test_first_partial_crossing_cannot_borrow_a_later_full_sphere_goal(self):
+        tracker = TargetShotTracker(target_x=0, speed_mps=2.)
+        for row in [sample(1, (0, -.93, .11), force=10), sample(1.1, (0, -1.13, .11)),
+                    sample(2, (0, -3.6, .11)), sample(2.1, (0, -3.71, .11)),
+                    sample(2.2, (.8, -3.72, .11)), sample(2.3, (.8, -3.9, .11)),
+                    sample(2.4, (0, -3.6, .11)), sample(2.6, (0, -3.9, .11))]:
+            tracker.update(row)
+        self.assertFalse(tracker.summary()['target_success'])
+
+    def test_reference_and_source_identity_are_content_fingerprints(self):
+        import targeted_shooting as module
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            motion = root / module.MOTION_FILE
+            motion.parent.mkdir(parents=True)
+            motion.write_bytes(b'reference')
+            for name in module.CONTROLLER_SOURCES:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('source')
+            upstream = root / module.UPSTREAM_SOURCE
+            upstream.mkdir(parents=True)
+            (upstream / 'command.py').write_text('command')
+            original = module.controller_provenance(root)
+            self.assertEqual(original['motion_sha256'], hashlib.sha256(b'reference').hexdigest())
+            module.verify_target_provenance(original, root)
+            (root / module.CONTROLLER_SOURCES[0]).write_text('changed source')
+            with self.assertRaises(ValueError): module.verify_target_provenance(original, root)
+            (root / module.CONTROLLER_SOURCES[0]).write_text('source')
+            motion.write_bytes(b'changed reference')
+            with self.assertRaises(ValueError): module.verify_target_provenance(original, root)
+
     def test_interpolates_fixed_plane_crossing_and_requested_point_error(self):
         tracker = TargetShotTracker(target_x=.3, speed_mps=2.)
         tracker.update(sample(1., (.1, -.93, .11), force=5))
