@@ -117,6 +117,7 @@ def run(args, points):
     from free_shooting_metrics import ShotTracker, contact_point_events
     from soccer_onnx_policy import OnnxSoccerPolicy
     from shooting_control import StrikeResidual
+    from targeted_shooting import TargetShotTracker
 
     upstream = ROOT / "third_party/HumanoidSoccer/source/whole_body_tracking"
     sys.path.insert(0, str(upstream))
@@ -132,11 +133,12 @@ def run(args, points):
 
     def goal_observation(env):
         robot = env.scene["robot"]
-        goal = torch.tensor([[*g, .11] for g in goals], device=robot.device) + env.scene.env_origins
+        goal = torch.tensor([[*g, .11] for g in policy_goals], device=robot.device) + env.scene.env_origins
         return quat_apply_inverse(robot.data.root_quat_w, goal - robot.data.root_pos_w)
 
     trials = args.trials_data or [{} for _ in points]
     goals = [t.get("goal", [args.goal_x, args.goal_y]) for t in trials]
+    policy_goals = [t.get('policy_goal', g) for t, g in zip(trials, goals)]
 
     urdf = ROOT / "configs/paid_original/paid_main_resolved.urdf"
     urdf_hash = hashlib.sha256(urdf.read_bytes()).hexdigest()
@@ -270,14 +272,17 @@ def run(args, points):
                 ui.Label(f'Style: {args.style} | Free root | Physical contact')
                 status_label = ui.Label('Approaching the ball')
                 ui.Label('Goal: 1.6 m wide / 1.1 m high')
-    trackers = []
+    trackers, target_trackers = [], []
     for i, point in enumerate(points):
         goal = np.asarray(goals[i])
         delta = goal - np.asarray(point)
         if np.linalg.norm(delta) < 1.5:
             raise ValueError("Goal must be at least 1.5 m beyond initial ball")
         trackers.append(ShotTracker(initial_root=initial_root[i], initial_ball=(*point, .113),
-                                   goal=goal, forward=delta, style=trials[i].get("style", args.style)))
+                                   goal=goal, forward=trials[i].get('goal_forward', delta),
+                                   style=trials[i].get("style", args.style)))
+        target_trackers.append(TargetShotTracker(**trials[i]['target'], goal_y=goal[1])
+                               if 'target' in trials[i] else None)
     active = np.ones(args.num_envs, bool)
     foot_indices = {side: robot.body_names.index(side + "_ankle_roll_link") for side in ("left", "right")}
     all_contacts = raw.scene["contact_forces"]
@@ -340,6 +345,8 @@ def run(args, points):
                        nonfoot_contact_N=float(nonfoot[i]), terminated=False,
                        contacts=events[i], physics_dt_s=dt)
             trackers[i].update(row)
+            if target_trackers[i] is not None:
+                target_trackers[i].update(row)
             traces[i].append(row)
 
     raw.scene.update = measure_substep
@@ -365,6 +372,8 @@ def run(args, points):
             for i in np.flatnonzero(active & done.detach().cpu().numpy().astype(bool)):
                 terminal = {**traces[i][-1], "terminated": True, "time_s": substep * raw.physics_dt + 1e-6}
                 trackers[i].update(terminal)
+                if target_trackers[i] is not None:
+                    target_trackers[i].update(terminal)
                 traces[i].append(terminal)
                 active[i] = False
             if args.video_dir and step % 2 == 0:
@@ -385,13 +394,20 @@ def run(args, points):
                     "failed": sum(x["failed"] for x in summaries)}), flush=True)
             if not active.any():
                 break
+        records = []
+        for tracker, target_tracker in zip(trackers, target_trackers):
+            record = tracker.summary()
+            if target_tracker is not None:
+                record.update(target_tracker.summary())
+                record['targeted_success'] = record['success'] and record['target_success']
+            records.append(record)
         result = dict(policy=str(args.model), policy_sha256=hashlib.sha256(Path(args.model).read_bytes()).hexdigest(),
                       asset_sha256=urdf_hash, seed=args.seed, requested_style=args.style, points=points,
-                      goals=goals, trials=trials, goal_width_m=1.6, goal_height_m=1.1,
+                      goals=goals, policy_goals=policy_goals, trials=trials, goal_width_m=1.6, goal_height_m=1.1,
                       root_fixed=False, post_initialization_state_writes=False, motion_files=args.motion_files,
                       contact_sampling="every 0.005 s, individual PhysX contact points and normals",
                       contact_evidence_version=2,
-                      records=[t.summary() for t in trackers], contacts=contacts, traces=traces,
+                      records=records, contacts=contacts, traces=traces,
                       kinematics=kinematics, joint_names=robot.joint_names)
         result.update(perturb_reset=args.perturb_reset, initial_robot_state=initial_robot_state)
         result['automatic_resets_suppressed'] = sorted(suppressed_resets)
