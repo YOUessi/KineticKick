@@ -111,6 +111,17 @@ class ShotAcceptanceTests(unittest.TestCase):
         self.assertAlmostEqual(t.summary()["contact_time_s"], .510)
         self.assertEqual(t.summary()["measured_surface"], "instep")
 
+    def test_a_small_correct_touch_cannot_hide_a_different_main_strike(self):
+        t = self.tracker()
+        t.update(sample(.5, contact=3))
+        row = sample(.505, contact=200, normal=(1, 0, 0))
+        row['contact_point_foot'] = (.132, 0, -.025)
+        t.update(row)
+        for now in np.arange(.6, 2., .1):
+            t.update(sample(float(now), ball=(0, -3.3, .11)))
+        self.assertFalse(t.summary()['success'])
+        self.assertEqual(t.summary()['dominant_surface'], 'toe')
+
 
 if __name__ == "__main__":
     unittest.main()

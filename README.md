@@ -1,10 +1,28 @@
-# KineticKick — Research Stage 0
+# KineticKick
 
 GitHub: [YOUessi/KineticKick](https://github.com/YOUessi/KineticKick). Each version uses a separate `version/vX.Y.Z` branch; see [version control and local asset notes](VERSION_CONTROL.md).
 
 **Aim:** learn coordination principles from human soccer movements, then generate novel, natural, physically feasible humanoid movements. Task success is a constraint, not the main scientific objective.
 
-## What exists now
+## v0.1.1：自由根部三种触球射门（2026-11-04）
+
+已实现并完成有扰动的物理验收：走近球 → 正脚背 / 脚内侧 / 脚外侧射门 → 恢复站稳。30 次冻结条件验证中成功 28 次：正脚背 10/10、脚内侧 10/10、脚外侧 8/10。两次失败均为脚外侧射偏，30 次均恢复站稳。适用范围、失败条件和物理证据见 [本版本验证记录](reports/2026-11-04-free-shooting.md)。
+
+在 Tang 上逐个运行（每次只开一个仿真器）：
+
+```bash
+cd /home/you/projects/kinetickick
+/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style inside
+/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style instep
+/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style outside
+```
+
+关闭当前窗口后再运行下一个。`configs/free_shooting_v1.json` 保存三种控制参数与验收条件；使用球和球门状态输入的预训练策略，加上触球阶段的关节控制。模型与素材仍保存在 Tang 本地，环境准备见 [VERSION_CONTROL.md](VERSION_CONTROL.md)。当前验证的是近距离、静止球的仿真射门；不代表任意起点导航或实机能力。
+
+以下保留早期研究记录与原始研究目标。
+
+## 初始研究资源
+
 
 - Verified Tang: NVIDIA 4090 Laptop (16 GB), Isaac Sim 4.5, Isaac Lab local checkout after 2.1.0; limited free disk (~61 GB at audit).
 - PAiD reference motion dataset: 10 standard + 3 stylized G1-retargeted .npz clips (50 FPS); retrieved via sparse checkout at `third_party/HumanoidSoccer/motions`.
@@ -70,7 +88,7 @@ PAiD (2026) https://arxiv.org/abs/2602.05310
 Biomechanics-inspired soccer kicks (2024) https://arxiv.org/abs/2407.14612
 
 
-## Current live Tang demo (2026-10-21): **ORIGINAL G1 FOOT ONLY**
+## Historical Tang demo (2026-10-21): **ORIGINAL G1 FOOT ONLY**
 
 The user rejected extra football shoes; the active live scene now uses **only the built-in G1 foot collider** and shows a right-foot medial-side **forward** pass, not lateral sweeping. The old shoe prototype is historical code, not used by the live scene.
 
@@ -93,7 +111,7 @@ Current physics-verified headless comparison at the same ball position (0.40,0.2
 Evidence: reports/test_bare_forward_inner_foot.log; reports/test_bare_forward_yaw_sweep.log; reports/test_bare_knee_only.log; reports/show_g1_bare_forward_pass.log; reports/2026-10-21-bare-inner-forward.md.
 
 
-## CURRENT GUI (2026-10-21): three strike surfaces + calibrated low/medium/high force
+## Historical GUI (2026-10-21): three strike surfaces + calibrated low/medium/high force
 
 Use tools/show_g1_power_kicks_v2.py on Tang with the same Isaac Lab environment and X display.
 This supersedes the earlier single-style show_g1_bare_forward_pass.py view.

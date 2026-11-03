@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import sys
 import types
+import time
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,10 +26,19 @@ def main():
     parser.add_argument("--ball-y", type=float, default=-.93)
     parser.add_argument("--goal-x", type=float, default=0.)
     parser.add_argument("--goal-y", type=float, default=-3.7)
-    parser.add_argument("--style", choices=("instep", "inside", "outside"), default="instep")
+    parser.add_argument("--style", choices=("instep", "inside", "outside"), default="inside")
+    parser.add_argument("--config", default=str(ROOT / "configs/free_shooting_v1.json"))
+    parser.add_argument("--baseline", action="store_true", help="Evaluate the original policy without style control")
+    parser.add_argument("--acceptance", action="store_true", help="Run the frozen 15-trial matrix with seeded reset perturbations")
+    parser.add_argument("--gui", action="store_true")
+    parser.add_argument("--hold", action="store_true", help="Keep the finished GUI open until it is closed")
+    parser.add_argument("--video-dir", help="Save 25 fps camera frames for one trial")
     parser.add_argument("--grid", action="store_true")
     parser.add_argument("--reference-sweep", action="store_true",
                         help="Evaluate all local soccer references at their upstream nominal ball positions")
+    parser.add_argument("--trials", help="JSON manifest of independent ball, goal, style and strike corrections")
+    parser.add_argument("--perturb-reset", action="store_true",
+                        help="Seeded initial root xy +/-1 cm, yaw +/-0.01 rad and joint positions +/-0.005 rad")
     parser.add_argument("--output", required=True)
     parser.add_argument("--model", default=str(ROOT / ".pretrained_checkpoints/paid_official/policy_30000.onnx"))
     args = parser.parse_args()
@@ -40,9 +50,40 @@ def main():
         if len(points) != args.num_envs:
             parser.error("The initial grid contains at most 12 positions")
     args.motion_files = [str(ROOT / "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz")]
+    args.trials_data = None
+    if args.acceptance:
+        if args.trials or args.grid or args.reference_sweep or args.baseline:
+            parser.error("Acceptance uses the frozen config without other experiment flags")
+        config = json.loads(Path(args.config).read_text())
+        if hashlib.sha256(Path(args.model).read_bytes()).hexdigest() != config['policy_sha256']:
+            parser.error('Acceptance requires the checkpoint pinned in the controller config')
+        if args.steps != config['trial_steps']:
+            parser.error('Acceptance requires the frozen trial duration')
+        args.trials_data = [dict(name=f'{style}_c{i}', style=style, **condition, **control)
+            for style, control in config['styles'].items()
+            for i, condition in enumerate(config['acceptance_conditions'])]
+        args.num_envs = len(args.trials_data)
+        points = [t['ball'] for t in args.trials_data]
+        args.perturb_reset = True
+    elif args.trials:
+        if args.grid or args.reference_sweep:
+            parser.error("Use a trial manifest without grid/reference sweep")
+        args.trials_data = json.loads(Path(args.trials).read_text())
+        args.num_envs = len(args.trials_data)
+        if not 1 <= args.num_envs <= 24:
+            parser.error("Trial manifest requires 1..24 trials")
+        points = [tuple(t.get("ball", [args.ball_x, args.ball_y])) for t in args.trials_data]
+    elif not args.baseline and not args.reference_sweep:
+        controller_config = json.loads(Path(args.config).read_text())
+        if hashlib.sha256(Path(args.model).read_bytes()).hexdigest() != controller_config["policy_sha256"]:
+            parser.error("Style configuration was calibrated with a different policy checkpoint")
+        args.trials_data = [controller_config["styles"][args.style] for _ in points]
 
+    if (args.gui or args.video_dir) and args.num_envs != 1:
+        parser.error("Rendered review requires exactly one environment")
     from isaaclab.app import AppLauncher
-    app = AppLauncher(headless=True, enable_cameras=False).app
+    app = AppLauncher(headless=not args.gui, enable_cameras=bool(args.video_dir)).app
+    held_env = None
     try:
         # Isaac Sim chooses its compatible NumPy before any numerical imports.
         if args.reference_sweep:
@@ -53,8 +94,13 @@ def main():
             for path in args.motion_files:
                 with np.load(path) as clip:
                     points.append(tuple(float(x) for x in clip["body_pos_w"][-1, 9, :2]))
-        run(args, points)
+        held_env = run(args, points)
+        while args.gui and args.hold and app.is_running():
+            app.update()
+            time.sleep(.02)
     finally:
+        if held_env is not None:
+            held_env.close()
         app.close()
 
 
@@ -70,6 +116,7 @@ def run(args, points):
     from isaaclab_rl.rsl_rl import RslRlVecEnvWrapper
     from free_shooting_metrics import ShotTracker
     from soccer_onnx_policy import OnnxSoccerPolicy
+    from shooting_control import StrikeResidual
 
     upstream = ROOT / "third_party/HumanoidSoccer/source/whole_body_tracking"
     sys.path.insert(0, str(upstream))
@@ -85,8 +132,11 @@ def run(args, points):
 
     def goal_observation(env):
         robot = env.scene["robot"]
-        goal = torch.tensor([args.goal_x, args.goal_y, .11], device=robot.device) + env.scene.env_origins
+        goal = torch.tensor([[*g, .11] for g in goals], device=robot.device) + env.scene.env_origins
         return quat_apply_inverse(robot.data.root_quat_w, goal - robot.data.root_pos_w)
+
+    trials = args.trials_data or [{} for _ in points]
+    goals = [t.get("goal", [args.goal_x, args.goal_y]) for t in trials]
 
     urdf = ROOT / "configs/paid_original/paid_main_resolved.urdf"
     urdf_hash = hashlib.sha256(urdf.read_bytes()).hexdigest()
@@ -105,6 +155,13 @@ def run(args, points):
     cfg.scene.robot.spawn.fix_base = False
     cfg.scene.terrain.visual_material = None
     cfg.scene.sky_light.spawn = sim.DomeLightCfg(intensity=1100)
+    cfg.viewer.eye = (4., .9, 2.4)
+    cfg.viewer.lookat = (.15, -1.6, .45)
+    if args.video_dir:
+        from isaaclab.sensors import CameraCfg
+        cfg.scene.review_camera = CameraCfg(prim_path="{ENV_REGEX_NS}/ReviewCamera", update_period=.04,
+            height=720, width=1280, data_types=["rgb"],
+            spawn=sim.PinholeCameraCfg(focal_length=24., horizontal_aperture=36., clipping_range=(.05, 100.)))
     cfg.observations.policy.enable_corruption = False
     cfg.observations.policy.target_point_pos = ObsTerm(func=ball_observation)
     cfg.observations.policy.target_destination_pos_local = ObsTerm(func=goal_observation)
@@ -113,12 +170,16 @@ def run(args, points):
     for key in cfg.commands.motion.velocity_range:
         cfg.commands.motion.velocity_range[key] = (0., 0.)
     cfg.commands.motion.joint_position_range = (0., 0.)
+    if args.perturb_reset:
+        cfg.commands.motion.pose_range.update(x=(-.01, .01), y=(-.01, .01), yaw=(-.01, .01))
+        cfg.commands.motion.joint_position_range = (-.005, .005)
     for key in ("physics_material", "add_joint_default_pos", "base_com", "base_external_force_torque", "push_robot"):
         setattr(cfg.events, key, None)
     cfg.scene.soccer_ball = RigidObjectCfg(
         prim_path="{ENV_REGEX_NS}/SoccerBall",
         spawn=sim.SphereCfg(radius=.11, collision_props=sim.CollisionPropertiesCfg(),
             rigid_props=sim.RigidBodyPropertiesCfg(), mass_props=sim.MassPropertiesCfg(mass=.43),
+            visual_material=sim.PreviewSurfaceCfg(diffuse_color=(.94, .94, .90)),
             physics_material=sim.RigidBodyMaterialCfg(static_friction=.7, dynamic_friction=.55, restitution=.3)),
         init_state=RigidObjectCfg.InitialStateCfg(pos=(2.8, 2.8, .113)))
     for foot in ("right", "left"):
@@ -132,6 +193,15 @@ def run(args, points):
     assert not cfg.scene.robot.spawn.fix_base and len(raw.scene.rigid_objects) == 1
     policy = OnnxSoccerPolicy(args.model, args.num_envs)
     policy.validate_joints(robot.joint_names)
+    action_term = raw.action_manager.get_term("joint_pos")
+    def cpu_array(value):
+        return value.detach().cpu().numpy() if isinstance(value, torch.Tensor) else np.asarray(value)
+    strike = StrikeResidual([t.get("strike", {}) for t in trials], robot.joint_names,
+                            cpu_array(action_term._scale), cpu_array(action_term._offset),
+                            cpu_array(robot.data.soft_joint_pos_limits))
+    reference = StrikeResidual([t.get("reference", {}) for t in trials], robot.joint_names,
+                               cpu_array(action_term._scale), cpu_array(action_term._offset),
+                               cpu_array(robot.data.soft_joint_pos_limits))
     if list(raw.observation_manager.active_terms["policy"]) != policy.observation_names:
         raise ValueError("Observation term ordering differs from checkpoint metadata")
     native_command_update = motion._update_command
@@ -166,15 +236,48 @@ def run(args, points):
     # Reset returns observations before reference and ball initialization; refresh them.
     obs = raw.observation_manager.compute()["policy"]
     policy.reset()
+    # ManagerBasedRLEnv normally resets immediately after a termination.
+    # Evaluation records that termination and never writes another physical state.
+    native_reset_idx = raw._reset_idx
+    suppressed_resets = set()
+    def suppress_automatic_reset(env_ids):
+        suppressed_resets.update(int(i) for i in env_ids.cpu().tolist())
+    raw._reset_idx = suppress_automatic_reset
     initial_root = (robot.data.root_pos_w - raw.scene.env_origins).detach().cpu().numpy()
-    goal = np.array([args.goal_x, args.goal_y])
+    initial_robot_state = dict(root_position=initial_root.tolist(),
+        root_quaternion=cpu_array(robot.data.root_quat_w).tolist(),
+        joint_position=cpu_array(robot.data.joint_pos).tolist())
+    panel = None
+    if args.gui or args.video_dir:
+        from shooting_visuals import create_shooting_visuals
+        create_shooting_visuals(points[0], goals[0])
+    if args.video_dir:
+        from PIL import Image
+        video_dir = Path(args.video_dir)
+        video_dir.mkdir(parents=True, exist_ok=True)
+        if any(video_dir.glob('frame_*.png')):
+            raise FileExistsError('Choose an empty video directory to preserve previous evidence')
+        camera = raw.scene['review_camera']
+        camera.set_world_poses_from_view(eyes=torch.tensor([cfg.viewer.eye], device=robot.device),
+                                        targets=torch.tensor([cfg.viewer.lookat], device=robot.device))
+        for _ in range(5):
+            raw.sim.render()
+    if args.gui:
+        import omni.ui as ui
+        panel = ui.Window('KineticKick | Free shooting', width=390, height=150)
+        with panel.frame:
+            with ui.VStack(spacing=5):
+                ui.Label(f'Style: {args.style} | Free root | Physical contact')
+                status_label = ui.Label('Approaching the ball')
+                ui.Label('Goal: 1.6 m wide / 1.1 m high')
     trackers = []
     for i, point in enumerate(points):
+        goal = np.asarray(goals[i])
         delta = goal - np.asarray(point)
         if np.linalg.norm(delta) < 1.5:
             raise ValueError("Goal must be at least 1.5 m beyond initial ball")
         trackers.append(ShotTracker(initial_root=initial_root[i], initial_ball=(*point, .113),
-                                   goal=goal, forward=delta, style=args.style))
+                                   goal=goal, forward=delta, style=trials[i].get("style", args.style)))
     active = np.ones(args.num_envs, bool)
     foot_indices = {side: robot.body_names.index(side + "_ankle_roll_link") for side in ("left", "right")}
     all_contacts = raw.scene["contact_forces"]
@@ -186,7 +289,7 @@ def run(args, points):
         detail_views[side] = sensor._physics_sim_view.create_rigid_contact_view(
             "/World/envs/env_*/Robot/" + side + "_ankle_roll_link",
             ["/World/envs/env_*/SoccerBall"], max_contact_data_count=64 * args.num_envs)
-    traces, contacts = [[] for _ in points], [[] for _ in points]
+    traces, contacts, kinematics = ([[] for _ in points] for _ in range(3))
     substep = 0
     native_scene_update = raw.scene.update
 
@@ -220,7 +323,8 @@ def run(args, points):
                 normal_local = quat_apply_inverse(quat[None], normal[None])[0].cpu().tolist()
                 point_local = quat_apply_inverse(quat[None], (positions[k] - foot_pos)[None])[0].cpu().tolist()
                 event = dict(foot=side, force_N=float(magnitude.sum()), normal_foot=normal_local,
-                             point_foot=point_local, time_s=substep * raw.physics_dt)
+                             point_foot=point_local, time_s=substep * raw.physics_dt,
+                             foot_quat_w=quat.cpu().tolist(), joint_pos=robot.data.joint_pos[i].cpu().tolist())
                 events[i].append(event)
                 contacts[i].append(event)
         for i in np.flatnonzero(active):
@@ -232,21 +336,43 @@ def run(args, points):
                        contact_normal_foot=event["normal_foot"] if event else [0., 0., 0.],
                        contact_point_foot=event["point_foot"] if event else None,
                        foot=event["foot"] if event else "right", feet_support_N=float(support[i]),
-                       nonfoot_contact_N=float(nonfoot[i]), terminated=False)
+                       nonfoot_contact_N=float(nonfoot[i]), terminated=False,
+                       contacts=events[i], physics_dt_s=dt)
             trackers[i].update(row)
             traces[i].append(row)
 
     raw.scene.update = measure_substep
-    print("FREE_SHOOTING_READY", json.dumps({"policy": str(args.model), "points": points, "goal": goal.tolist(),
+    print("FREE_SHOOTING_READY", json.dumps({"policy": str(args.model), "points": points, "goals": goals,
           "physics_dt": raw.physics_dt, "policy_dt": raw.step_dt, "asset_sha256": urdf_hash}), flush=True)
     try:
         for step in range(args.steps):
-            action = policy.step(obs.detach().cpu().numpy(), motion.time_steps.cpu().numpy())
+            step_start = time.monotonic()
+            policy_obs = reference.apply_reference(cpu_array(obs), cpu_array(motion.time_steps), raw.step_dt)
+            action = policy.step(policy_obs, motion.time_steps.cpu().numpy())
+            action = strike.apply(action, motion.time_steps.cpu().numpy())
+            if 75 <= step <= 170:
+                for i in np.flatnonzero(active):
+                    kinematics[i].append(dict(time_s=substep * raw.physics_dt,
+                        root_pose=cpu_array(robot.data.root_state_w[i, :7]).tolist(),
+                        joint_pos=cpu_array(robot.data.joint_pos[i]).tolist(),
+                        action=action[i].tolist(),
+                        feet={s: dict(position=cpu_array(robot.data.body_pos_w[i, j] - raw.scene.env_origins[i]).tolist(),
+                                      quaternion=cpu_array(robot.data.body_quat_w[i, j]).tolist())
+                              for s, j in foot_indices.items()}))
             with torch.no_grad():
                 obs, _, done, _ = env.step(torch.tensor(action, device=robot.device))
             for i in np.flatnonzero(active & done.detach().cpu().numpy().astype(bool)):
                 trackers[i].update({**traces[i][-1], "terminated": True, "time_s": substep * raw.physics_dt + 1e-6})
                 active[i] = False
+            if args.video_dir and step % 2 == 0:
+                rgb = camera.data.output['rgb'][0].detach().cpu().numpy()
+                Image.fromarray(rgb[:, :, :3]).save(video_dir / f'frame_{step//2:04d}.png')
+            if panel is not None:
+                summary = trackers[0].summary()
+                status_label.text = (f"t={(step+1)*raw.step_dt:.2f}s | contact={summary['measured_surface']}\n"
+                    f"goal={summary['goal']} | standing={summary['standing_seconds']:.2f}s\n"
+                    f"complete={summary['success']} | failed={summary['failed']}")
+                time.sleep(max(0., raw.step_dt-(time.monotonic()-step_start)))
             if (step + 1) % 50 == 0:
                 summaries = [t.summary() for t in trackers]
                 print("FREE_SHOOTING_STEP", step + 1, json.dumps({
@@ -258,17 +384,27 @@ def run(args, points):
                 break
         result = dict(policy=str(args.model), policy_sha256=hashlib.sha256(Path(args.model).read_bytes()).hexdigest(),
                       asset_sha256=urdf_hash, seed=args.seed, requested_style=args.style, points=points,
-                      goal=goal.tolist(), goal_width_m=1.6, goal_height_m=1.1,
+                      goals=goals, trials=trials, goal_width_m=1.6, goal_height_m=1.1,
                       root_fixed=False, post_initialization_state_writes=False, motion_files=args.motion_files,
                       contact_sampling="every 0.005 s, PhysX contact points and normals",
-                      records=[t.summary() for t in trackers], contacts=contacts, traces=traces)
+                      records=[t.summary() for t in trackers], contacts=contacts, traces=traces,
+                      kinematics=kinematics, joint_names=robot.joint_names)
+        result.update(perturb_reset=args.perturb_reset, initial_robot_state=initial_robot_state)
+        result['automatic_resets_suppressed'] = sorted(suppressed_resets)
+        result.update(controller_config=args.config,
+                      config_sha256=hashlib.sha256(Path(args.config).read_bytes()).hexdigest(),
+                      rendered=bool(args.video_dir or args.gui))
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(result, indent=2))
         print("FREE_SHOOTING_RESULT", str(output), json.dumps(result["records"]), flush=True)
+        if args.gui and args.hold:
+            return env
     finally:
         raw.scene.update = native_scene_update
-        env.close()
+        raw._reset_idx = native_reset_idx
+        if not (args.gui and args.hold):
+            env.close()
 
 
 if __name__ == "__main__":

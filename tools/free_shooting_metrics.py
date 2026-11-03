@@ -88,6 +88,7 @@ class ShotTracker:
         self.standing_seconds = 0.0
         self.longest_standing_seconds = 0.0
         self.peak_force = 0.0
+        self.surface_impulses = {}
         self.last_time = None
 
     def update(self, sample):
@@ -107,6 +108,15 @@ class ShotTracker:
             self.standing_seconds = 0.0
             return
         self.peak_force = max(self.peak_force, force)
+        dt = float(sample.get('physics_dt_s', .005))
+        if not np.isfinite(dt) or dt <= 0:
+            raise ValueError('Contact integration interval must be finite and positive')
+        events = sample.get('contacts', [dict(force_N=force, point_foot=sample.get('contact_point_foot'),
+            normal_foot=sample['contact_normal_foot'], foot=sample.get('foot', 'right'))])
+        for event in events:
+            if event['force_N'] > 2:
+                surface = paid_contact_patch(event['point_foot'], event['normal_foot'], foot=event['foot'])
+                self.surface_impulses[surface] = self.surface_impulses.get(surface, 0.) + event['force_N'] * dt
         if force > 2 and self.contact_time is None:
             self.contact_time = now
             self.surface = paid_contact_patch(sample.get("contact_point_foot"), sample["contact_normal_foot"],
@@ -132,10 +142,15 @@ class ShotTracker:
 
     def summary(self):
         recovered = self.standing_seconds >= 1.0 - 1e-8 and not self.failed
-        surface_match = self.surface == self.style
+        total_impulse = sum(self.surface_impulses.values())
+        fraction = self.surface_impulses.get(self.style, 0.) / total_impulse if total_impulse else 0.
+        dominant = max(self.surface_impulses, key=self.surface_impulses.get) if total_impulse else None
+        surface_match = self.surface == self.style and dominant == self.style and fraction >= .5
         return dict(success=bool(self.approached and self.scored and recovered and surface_match and not self.failed),
                     approached=self.approached, contact_time_s=self.contact_time,
                     measured_surface=self.surface, requested_style=self.style,
+                    dominant_surface=dominant, requested_surface_impulse_fraction=fraction,
+                    contact_impulse_by_surface_Ns=dict(self.surface_impulses),
                     surface_match=surface_match, goal=self.scored, recovered=recovered,
                     standing_seconds=self.standing_seconds,
                     longest_standing_seconds=self.longest_standing_seconds,
