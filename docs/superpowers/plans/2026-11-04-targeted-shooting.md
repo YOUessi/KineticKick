@@ -56,8 +56,12 @@
 
 **Interfaces:** Replay all records through `ShotTracker` and `TargetShotTracker`; validate unique complete matrix/seeds, pinned configuration/model/assets and trial duration. Report per-style, per-speed and total success/error rather than trusting saved success flags.
 
-- [ ] Write failing tests for duplicate/missing commands, incomplete traces and changed controller; implement the checker and pass tests.
-- [ ] Run the frozen 27 commands at two new seeds (split deterministic batches ≤24 environments), replay the traces, and inspect every failure against the spec.
-- [ ] Capture representative actual simulation with requested and measured aim/speed; inspect complete frames and physics record.
-- [ ] Run the relevant regression suite, one fresh whole-branch review and one fix pass if necessary; document exact achieved limits and reproducible commands.
-- [ ] Commit, push with upstream and verify the remote head. Delete this plan's scratch workspace only after completed review.
+- [x] Write failing tests for duplicate/missing commands, incomplete traces and changed controller; implement the checker and pass tests.
+- [x] Run the frozen 27 commands at two new seeds (split deterministic batches ≤24 environments), replay the traces, and inspect every failure against the spec.
+- [x] Capture representative actual simulation with requested and measured aim/speed; inspect complete frames and physics record.
+- [x] Run the relevant regression suite, one fresh whole-branch review and one fix pass if necessary; document exact achieved limits and reproducible commands.
+- [x] Commit, push with upstream and verify the remote head. Delete this plan's scratch workspace only after completed review.
+
+## Outcome status
+
+The experimental interface, replay checker, review fixes and demonstration are delivered. The stable targeted-shooting objective is **not achieved**: the fully fingerprinted 54-trial repeat passes27/54. No acceptance threshold or controller node was retuned after held-out data. See the version report for every failure and remaining conditional-training work. Completion of execution steps above does not mean the robotics acceptance gate passed.
