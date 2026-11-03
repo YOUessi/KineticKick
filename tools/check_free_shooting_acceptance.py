@@ -16,6 +16,8 @@ def validate_matrix(config, reports):
                 for style in config['styles'] for c in config['acceptance_conditions']}
     counts = {}
     for report in reports:
+        if report.get('contact_evidence_version') != 2:
+            raise ValueError('Surface certification requires individual contact-point evidence')
         for key in ('policy_sha256', 'asset_sha256'):
             if report[key] != config[key]:
                 raise ValueError(f'Unexpected {key}')

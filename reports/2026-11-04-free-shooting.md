@@ -1,6 +1,6 @@
 # Free-root shooting progress — 2026-11-04
 
-Branch: `version/v0.1.1`. Three physical strike styles now meet the declared bounded acceptance gate. Rendered/live review is being completed before publication.
+Branch: `version/v0.1.1`. Three physical strike styles now meet the declared bounded acceptance gate. Rendered/live review is complete.
 
 ## Verified baseline and integration
 
@@ -41,11 +41,11 @@ Each style was evaluated at the following five conditions for seeds 711 and 712.
 | Instep | 5/5 | 5/5 | 4.555 s | 1.39–3.25 m/s |
 | Outside | 4/5 | 4/5 | 3.945 s | 1.69–1.94 m/s |
 
-**28/30 full-chain successes.** Both failures are outside-foot shots in condition 3 that miss the goal; both robots still recover standing. No trial fell or triggered a reset. All 30 trials have the requested measured first-contact surface and 100% of the measured foot-ball normal impulse on that surface. The checker independently replays every claimed success from the 5 ms traces and rejects duplicated seeds, duplicated conditions, changed controllers and shortened successful traces.
+**28/30 full-chain successes.** Both failures are outside-foot shots in condition 3 that miss the goal; both robots still recover standing. No trial fell or triggered a reset. All 30 trials have the requested measured first-contact surface. Successful trials also require the requested surface to supply the majority of the individually integrated foot-ball normal impulse. The checker independently replays every claimed success from the 5 ms traces and rejects duplicated seeds, duplicated conditions, changed controllers and shortened successful traces.
 
 The gate specified before tuning was at least 4/5 per style per seed; it is met. This does not mean 100% reliability. The tested ball/goal range is narrow, the approach follows one learned motion, and perception uses simulator state. Arbitrary starting positions, moving balls, physical robot deployment, and motion naturalness are not validated. The sphere has the declared sliding friction but no explicitly calibrated rolling resistance.
 
-Local acceptance evidence: `reports/v0_1_1_frozen_seed711.json` and `reports/v0_1_1_frozen_seed712.json`. Earlier exploratory failures remain in the ignored reports directory. Raw assets, weights, traces and videos remain on Tang.
+Local acceptance evidence: `reports/v0_1_1_audited_seed711.json` and `reports/v0_1_1_audited_seed712.json`. Earlier exploratory failures remain in the ignored reports directory. Raw assets, weights, traces and videos remain on Tang.
 
 ## Reproduction on Tang
 
@@ -57,3 +57,34 @@ Local acceptance evidence: `reports/v0_1_1_frozen_seed711.json` and `reports/v0_
 ```
 
 Use `--style inside`, `--style instep`, or `--style outside`. Live and batch call the same runner, initialization, controller and success calculation. `--baseline` explicitly disables the new style controls. Custom `--trials` manifests carry their complete control settings. `--video-dir` writes actual camera frames for a single trial; it does not replay or reposition the robot.
+
+## Review correction
+
+Independent review identified that the initial sampler assigned each foot's summed contact force to its strongest point. This could incorrectly certify mixed toe/side/top manifolds. The sampler now preserves every PhysX point and integrates its own surface impulse, including individually small positive forces. The acceptance checker rejects old aggregate-evidence reports. The 40 N instep + 30 N toe + 30 N toe regression now fails the requested instep gate, as it should. Physical acceptance was refreshed with per-point capture; the old frozen files remain historical evidence and are not final surface certification.
+
+Goalposts and the net are non-colliding visual guides. Scoring uses the declared aperture crossing; net deformation and ball capture are not simulated.
+
+## Engineering decisions and limits
+
+- Early aggregate-force proxies were provisional; final certification uses actual individual points/normals and impulse. A proxy alone could confuse toe/side contact and is not accepted as final evidence.
+- Rendering and batch execution share the same runner. Renderer wiring was done while bounded control trials ran, then verified directly; a separate implementation would risk diverging behavior.
+- The predeclared 4/5-per-style-per-seed gate is retained and misses are disclosed. It does not imply universal reliability or any extension beyond the five conditions.
+- The independent reviewer was read-only and did not run the GPU simulator. The executor performs the physical and rendered verification; omitting this would leave the GUI path unverified.
+- Arbitrary starts, moving balls, hardware and naturalness were explicitly left unvalidated. Those claims require separate experiments.
+- Publication follows the user's existing instruction to use and push a version branch. Earlier branches and main remain preserved. No minor review findings were deferred.
+
+A deliberately unstable long-hold outside controller was evaluated as a negative control after disabling automatic resets. It terminated at 2.66 s, remained a permanent failure, and the attempted automatic reset was suppressed. Its evidence is `reports/v0_1_1_termination_trace_verified.json`; no in-trial state write occurred.
+
+Final per-point acceptance artifact hashes:
+
+- Seed 711: `3b8b0937e6ed04fa54ecf0329344f6182b7c28025df0bf9a2a5b72e1c999685e`
+- Seed 712: `45b2c45acd3de2d661cc45dd47ca50aaf859d1c77ecb098d681ceea6be8f1cb8`
+
+## Rendered and final checks
+
+- Post-review inside, instep and outside nominal runs all complete approach, the requested contact, goal crossing and standing recovery. Each has 205 actual camera frames (8.2 s at 25 fps); impact and recovery frames were inspected.
+- GUI outside run also passed and reported `FREE_SHOOTING_GUI_HELD physics_paused True`; the owned viewer was closed after validation. No evaluation/training process is intentionally left running.
+- Final combined video: `/home/you/projects/kinetickick/media/free_shooting_v0.1.1_verified.mp4` (1280×720, 25 fps, 24.6 s). Each labeled segment is an independent nominal trial; the complete perturbed matrix still includes the two recorded misses.
+- Local rendered evidence: `reports/v0_1_1_video_inside_audited.json`, `reports/v0_1_1_video_instep_verified.json`, `reports/v0_1_1_video_outside_verified.json`. Each uses contact-evidence version 2.
+- One intermediate instep recording received SIGTERM before completion and was excluded. Its cause was not established; an instrumented full rerun exited successfully and supplied the final clip.
+- CPU regression suite: **72 tests passed**. Full-matrix trace replay: **passed, 28/30**, with no dropped trials. Independent review's contact-attribution finding is fixed; no unresolved material findings remain.

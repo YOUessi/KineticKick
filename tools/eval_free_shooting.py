@@ -114,7 +114,7 @@ def run(args, points):
     from isaaclab.sensors import ContactSensorCfg
     from isaaclab.utils.math import quat_apply_inverse
     from isaaclab_rl.rsl_rl import RslRlVecEnvWrapper
-    from free_shooting_metrics import ShotTracker
+    from free_shooting_metrics import ShotTracker, contact_point_events
     from soccer_onnx_policy import OnnxSoccerPolicy
     from shooting_control import StrikeResidual
 
@@ -314,25 +314,26 @@ def run(args, points):
                 if not count:
                     continue
                 magnitude = forces[start:start+count].flatten()
-                k = start + int(torch.argmax(magnitude))
-                normal = normals[k].clone()
+                normal = normals[start:start+count].clone()
                 foot_pos = robot.data.body_pos_w[i, foot_indices[side]]
-                if torch.dot(normal, ball.data.root_pos_w[i] - foot_pos) < 0:
-                    normal = -normal
+                inward = (normal * (ball.data.root_pos_w[i] - foot_pos)).sum(-1) < 0
+                normal[inward] *= -1
                 quat = robot.data.body_quat_w[i, foot_indices[side]]
-                normal_local = quat_apply_inverse(quat[None], normal[None])[0].cpu().tolist()
-                point_local = quat_apply_inverse(quat[None], (positions[k] - foot_pos)[None])[0].cpu().tolist()
-                event = dict(foot=side, force_N=float(magnitude.sum()), normal_foot=normal_local,
-                             point_foot=point_local, time_s=substep * raw.physics_dt,
-                             foot_quat_w=quat.cpu().tolist(), joint_pos=robot.data.joint_pos[i].cpu().tolist())
-                events[i].append(event)
-                contacts[i].append(event)
+                quats = quat[None].expand(count, -1)
+                normal_local = quat_apply_inverse(quats, normal)
+                point_local = quat_apply_inverse(quats, positions[start:start+count] - foot_pos)
+                point_events = contact_point_events(cpu_array(magnitude), cpu_array(point_local),
+                    cpu_array(normal_local), foot=side, time_s=substep * raw.physics_dt)
+                for event in point_events:
+                    event.update(foot_quat_w=quat.cpu().tolist(), joint_pos=robot.data.joint_pos[i].cpu().tolist())
+                events[i].extend(point_events)
+                contacts[i].extend(point_events)
         for i in np.flatnonzero(active):
             event = max(events[i], key=lambda e: e["force_N"]) if events[i] else None
             row = dict(time_s=substep * raw.physics_dt, root_xyz=rpos[i].tolist(),
                        root_speed_xy=float(np.linalg.norm(rvel[i, :2])), root_tilt_deg=float(tilt[i]),
                        ball_xyz=bpos[i].tolist(), ball_velocity=bvel[i].tolist(),
-                       contact_force_N=event["force_N"] if event else 0.,
+                       contact_force_N=sum(e['force_N'] for e in events[i]),
                        contact_normal_foot=event["normal_foot"] if event else [0., 0., 0.],
                        contact_point_foot=event["point_foot"] if event else None,
                        foot=event["foot"] if event else "right", feet_support_N=float(support[i]),
@@ -362,7 +363,9 @@ def run(args, points):
             with torch.no_grad():
                 obs, _, done, _ = env.step(torch.tensor(action, device=robot.device))
             for i in np.flatnonzero(active & done.detach().cpu().numpy().astype(bool)):
-                trackers[i].update({**traces[i][-1], "terminated": True, "time_s": substep * raw.physics_dt + 1e-6})
+                terminal = {**traces[i][-1], "terminated": True, "time_s": substep * raw.physics_dt + 1e-6}
+                trackers[i].update(terminal)
+                traces[i].append(terminal)
                 active[i] = False
             if args.video_dir and step % 2 == 0:
                 rgb = camera.data.output['rgb'][0].detach().cpu().numpy()
@@ -386,7 +389,8 @@ def run(args, points):
                       asset_sha256=urdf_hash, seed=args.seed, requested_style=args.style, points=points,
                       goals=goals, trials=trials, goal_width_m=1.6, goal_height_m=1.1,
                       root_fixed=False, post_initialization_state_writes=False, motion_files=args.motion_files,
-                      contact_sampling="every 0.005 s, PhysX contact points and normals",
+                      contact_sampling="every 0.005 s, individual PhysX contact points and normals",
+                      contact_evidence_version=2,
                       records=[t.summary() for t in trackers], contacts=contacts, traces=traces,
                       kinematics=kinematics, joint_names=robot.joint_names)
         result.update(perturb_reset=args.perturb_reset, initial_robot_state=initial_robot_state)
@@ -399,6 +403,9 @@ def run(args, points):
         output.write_text(json.dumps(result, indent=2))
         print("FREE_SHOOTING_RESULT", str(output), json.dumps(result["records"]), flush=True)
         if args.gui and args.hold:
+            raw.sim.pause()
+            status_label.text += '\nTrial finished (paused)'
+            print('FREE_SHOOTING_GUI_HELD', 'physics_paused', not raw.sim.is_playing(), flush=True)
             return env
     finally:
         raw.scene.update = native_scene_update

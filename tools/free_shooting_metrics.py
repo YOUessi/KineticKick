@@ -4,6 +4,19 @@ from __future__ import annotations
 import numpy as np
 
 
+def contact_point_events(forces, positions, normals, *, foot, time_s):
+    """Keep each PhysX manifold point separate for surface/impulse attribution."""
+    forces = np.asarray(forces, float).reshape(-1)
+    positions, normals = np.asarray(positions, float), np.asarray(normals, float)
+    if positions.shape != (len(forces), 3) or normals.shape != positions.shape:
+        raise ValueError('Contact forces, positions and normals must describe the same points')
+    if not all(np.all(np.isfinite(x)) for x in (forces, positions, normals)) or np.any(forces < 0):
+        raise ValueError('Contact data must be finite with nonnegative normal force')
+    return [dict(foot=foot, force_N=float(force), point_foot=point.tolist(),
+                 normal_foot=normal.tolist(), time_s=float(time_s))
+            for force, point, normal in zip(forces, positions, normals)]
+
+
 def goal_crossing(previous, current, *, goal, forward, width, height, radius):
     """The trailing edge crosses forward, with the full sphere inside the opening."""
     a, b = np.asarray(previous, float), np.asarray(current, float)
@@ -114,7 +127,7 @@ class ShotTracker:
         events = sample.get('contacts', [dict(force_N=force, point_foot=sample.get('contact_point_foot'),
             normal_foot=sample['contact_normal_foot'], foot=sample.get('foot', 'right'))])
         for event in events:
-            if event['force_N'] > 2:
+            if event['force_N'] > 0:
                 surface = paid_contact_patch(event['point_foot'], event['normal_foot'], foot=event['foot'])
                 self.surface_impulses[surface] = self.surface_impulses.get(surface, 0.) + event['force_N'] * dt
         if force > 2 and self.contact_time is None:

@@ -16,6 +16,7 @@ class AcceptanceMatrixTest(unittest.TestCase):
         for seed in (1, 2):
             self.reports.append(dict(seed=seed, policy_sha256='model', asset_sha256='robot',
                 config_sha256='config', root_fixed=False, post_initialization_state_writes=False,
+                contact_evidence_version=2,
                 perturb_reset=True, trials=[dict(style='inside', strike={}, **c) for c in self.config['acceptance_conditions']],
                 records=[dict(success=True) for _ in range(5)]))
 
@@ -36,6 +37,11 @@ class AcceptanceMatrixTest(unittest.TestCase):
 
     def test_a_different_controller_cannot_be_called_frozen(self):
         self.reports[1]['trials'][0]['strike'] = {'offsets': {'hip': .1}}
+        with self.assertRaises(ValueError):
+            validate_matrix(self.config, self.reports)
+
+    def test_aggregate_manifold_reports_do_not_certify_surface_impulse(self):
+        self.reports[0].pop('contact_evidence_version')
         with self.assertRaises(ValueError):
             validate_matrix(self.config, self.reports)
 

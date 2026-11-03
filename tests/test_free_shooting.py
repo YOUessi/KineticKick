@@ -6,7 +6,7 @@ import unittest
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
-from free_shooting_metrics import goal_crossing, contact_surface, ShotTracker, paid_contact_patch
+from free_shooting_metrics import goal_crossing, contact_surface, ShotTracker, paid_contact_patch, contact_point_events
 
 
 class GoalGeometryTests(unittest.TestCase):
@@ -121,6 +121,31 @@ class ShotAcceptanceTests(unittest.TestCase):
             t.update(sample(float(now), ball=(0, -3.3, .11)))
         self.assertFalse(t.summary()['success'])
         self.assertEqual(t.summary()['dominant_surface'], 'toe')
+
+    def test_mixed_manifold_preserves_each_points_surface_and_impulse(self):
+        t = self.tracker()
+        events = contact_point_events([40., 30., 30.],
+            [[.039, 0, -.015], [.132, 0, -.025], [.132, .005, -.025]],
+            [[0, 0, 1], [1, 0, 0], [1, 0, 0]], foot='right', time_s=.5)
+        row = sample(.5, contact=100.)
+        row['contacts'] = events
+        t.update(row)
+        for now in np.arange(.6, 2., .1):
+            t.update(sample(float(now), ball=(0, -3.3, .11)))
+        self.assertFalse(t.summary()['success'])
+        self.assertEqual(t.summary()['dominant_surface'], 'toe')
+        self.assertAlmostEqual(t.summary()['requested_surface_impulse_fraction'], .4)
+
+    def test_individually_small_points_still_contribute_to_total_impulse(self):
+        t = self.tracker()
+        events = contact_point_events([3., 1.9, 1.9],
+            [[.039, 0, -.015], [.132, 0, -.025], [.132, .005, -.025]],
+            [[0, 0, 1], [1, 0, 0], [1, 0, 0]], foot='right', time_s=.5)
+        row = sample(.5, contact=6.8)
+        row['contacts'] = events
+        t.update(row)
+        self.assertEqual(t.summary()['dominant_surface'], 'toe')
+        self.assertAlmostEqual(t.summary()['requested_surface_impulse_fraction'], 3/6.8)
 
 
 if __name__ == "__main__":
