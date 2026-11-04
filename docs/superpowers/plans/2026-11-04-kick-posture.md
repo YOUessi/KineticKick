@@ -42,4 +42,4 @@
 - [x] Diagnose first probe before a second controlled adjustment; avoid repeating previous failed full-pose takeover.
 - [x] Freeze viable corrected poses, run the six perturbation trials per changed style and audit both appearance geometry and complete physical success.
 - [x] Capture matched before/after full-body and foot views; report unresolved criteria instead of relabeling the old motions.
-- [ ] Run relevant tests and one fresh final review; fix material findings once; document and push the version branch with verified status.
+- [x] Run relevant tests and one fresh final review; no findings. Document verified status and publish the version branch.
