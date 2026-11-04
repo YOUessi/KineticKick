@@ -1,5 +1,16 @@
 # KineticKick
 
+## v0.1.12：奔跑后真实触球射门并恢复
+
+已把同一自由G1的「奔跑→减速调整→脚内侧触球进球→恢复站稳」接到一个物理回合。固定场景实测6次交替腾空，6.22秒触球，末段连续站稳7.185秒；全程无摔倒、无非脚部触球。
+
+Tang实际预览：`media/run_to_shot_v0.1.12.mp4`。这版仍从运动初态开始，尚未验证静止起跑、其他踢法或联合方向／力度／高度控制。详见[真实射门衔接记录](reports/2026-11-04-running-to-real-shot.md)。
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/run_to_shot.py \
+  --output reports/new_run_to_shot.json --video-dir media/new_run_to_shot_frames
+```
+
 ## v0.1.11：连续腾空跑步与减速衔接
 
 同一自由29DoF G1已在实际物理回放中完成6次交替腾空，并减速、按实测支撑状态交接控制；6.94秒内没有摔倒或非脚部碰撞。新增速度、真实脚底支撑和接触时序反馈，保留原执行器限制。

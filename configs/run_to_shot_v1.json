@@ -1,0 +1,62 @@
+{
+  "status": "verified_single_fixed_scenario",
+  "reference": "experiments/running_v012/run_to_shot_reference.npz",
+  "reference_sha256": "15b7b06e8cdcfc073f10bb94b16af60a33833375f60cb6931e8993f39a9a67b5",
+  "shot_start_frame": 348,
+  "planned_anchor_xy": [
+    0.3925,
+    -6.2688
+  ],
+  "ball_xy": [
+    -0.17966718047857283,
+    -7.378482589769363
+  ],
+  "goal_xy": [
+    0.26788597732782365,
+    -9.84599276547432
+  ],
+  "style": "inside",
+  "mode": "hip",
+  "running_checkpoint": "experiments/running_v011/run_stop_n1024_i500/last_model.pt",
+  "source_sha256": {
+    "/home/you/projects/kinetickick/experiments/running_v011/run_stop_handoff_reference.npz": "3110a1a3bf8a7c4310c21ed46fdc4406fcd5902e39a2214dae9b6069fc682c9a",
+    "/home/you/projects/kinetickick/third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz": "a031b43fcabd48edb3a1c9cf1f2d346e3928f50133a4d48d4024fa6d919b075b"
+  },
+  "scope": "Moving-start run, measured-support handoff, actual ball contact and recovery; no stationary-start claim",
+  "version": "0.1.12",
+  "seed": 1201,
+  "trial_steps": 700,
+  "running_checkpoint_sha256": "5c4e4f5505f13501614c45a4cc51dd8bc6e81818544de88240c2b05e23c410fa",
+  "video_preview_local": "media/run_to_shot_v0.1.12.mp4",
+  "controller_sha256": {
+    "tools/run_to_shot.py": "2474fe07ebb6e3fe5b1ba5e1187d1ec51d572451412884e9fb8342c49001889c",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/runup_metrics.py": "fb7a13a0d9a56d1f636d8d5c85339b1ca884bfe9d7e4d7dfe5e606d5c515e5d2",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/running_metrics.py": "6018d1cc90b274e7915cbc2ef059b132b06b37e865625dde68ab8cba70050097",
+    "tools/runup_sequence.py": "6ba78e9aa9fff1e6d9d5657ca9094f4c285106e3fc16deafc6ddb74078e4c334",
+    "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/strike_velocity.py": "65636859fa34b84e9699b922573e52e039e27733bb2ef671d0cb298812195698"
+  },
+  "evidence": {
+    "reports/v012_run_to_shot_recovery.json": "e70a29115d8f0abf6d9a4a4172489f9e8e60ef182aa240f041a41c9bfdd431a1",
+    "reports/v012_run_to_shot_preview.json": "de20eaf7dfae1873ab32b2d9c6d1405c9087c94ef666ab21909d0b84800db557"
+  },
+  "observed": {
+    "alternating_flights": 6,
+    "contact_s": 6.22,
+    "goal": true,
+    "final_standing_s": 7.185,
+    "nonfoot_contact_N": 0.0,
+    "illegal_body_ball_contact": false
+  },
+  "limitations": [
+    "Moving initial state; stationary start not validated",
+    "Only fixed ball/goal, right inside-foot hip-dominant shot; no robustness matrix",
+    "No joint direction/power/height calibration or near-vertical instep claim"
+  ],
+  "handoff_blend_seconds": 0.4
+}
