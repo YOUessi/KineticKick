@@ -1,5 +1,17 @@
 # KineticKick
 
+## v0.1.15：正脚背加力射门
+
+新增正脚背加力档：同球位、同球门，水平出球速度由3.77提高到4.63m/s（+22.8%），球进门，14秒回合末段连续站稳8.19秒。沿用原关节限制，不给球添加外部冲量。
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/run_stride_styles.py \
+  --plan configs/stride_instep_strong_v1.json \
+  --output reports/new_strong.json --video-dir media/new_strong_frames
+```
+
+预览：`media/stride_instep_strong_v0.1.15.mp4`，含正常速度与触球慢放。当前为固定球位、运动初态的单一加力档；实测、淘汰方案及范围见[加力射门记录](reports/2026-11-04-stronger-instep-shot.md)。
+
 ## v0.1.14：正脚背与脚外侧移动射门
 
 新增正脚背、脚外侧两种完整流程：移动接近→真实触球进球→随摆与继续迈步→恢复站稳。两个最终14秒物理回合均通过，保留原脚内侧入口。预览为 `media/stride_instep_v0.1.14.mp4` 和 `media/stride_outside_v0.1.14.mp4`，均附触球近景慢放。
