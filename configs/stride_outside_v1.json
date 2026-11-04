@@ -1,0 +1,116 @@
+{
+  "reference": "experiments/running_v013/stride_reference.npz",
+  "reference_sha256": "c4d6ed4c0d307ff53ee947de777b35c076b49679ab33303e5d8bd4bd97efdd2f",
+  "shot_start_frame": 348,
+  "ball_xy": [
+    -0.4,
+    -4.2
+  ],
+  "goal_xy": [
+    -0.8,
+    -6.7
+  ],
+  "style": "outside",
+  "mode": "hip",
+  "running_checkpoint": "experiments/running_v011/run_stop_n1024_i500/last_model.pt",
+  "scope": "Moving initial state; outside hip-dominant shot at one fixed ball and goal, followed by standing recovery",
+  "stride": {
+    "window_s": [
+      1.42,
+      1.52,
+      1.64,
+      1.78
+    ],
+    "entry_frame": 113
+  },
+  "recovery_entry_frame": 210,
+  "version": "0.1.14",
+  "status": "verified_single_fixed_scenario",
+  "seed": 1201,
+  "trial_steps": 700,
+  "recovery_blend_seconds": 0.1,
+  "running_checkpoint_sha256": "5c4e4f5505f13501614c45a4cc51dd8bc6e81818544de88240c2b05e23c410fa",
+  "source_sha256": {
+    "/home/you/projects/kinetickick/experiments/running_v011/run_stop_handoff_reference.npz": "3110a1a3bf8a7c4310c21ed46fdc4406fcd5902e39a2214dae9b6069fc682c9a",
+    "/home/you/projects/kinetickick/third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz": "a031b43fcabd48edb3a1c9cf1f2d346e3928f50133a4d48d4024fa6d919b075b"
+  },
+  "policy_goal_xy": [
+    -0.8,
+    -6.7
+  ],
+  "strike": {
+    "window": [
+      66,
+      77,
+      82,
+      90
+    ],
+    "targets": {
+      "right_hip_pitch_joint": -0.266,
+      "right_hip_roll_joint": -0.008,
+      "right_hip_yaw_joint": 1.253,
+      "right_knee_joint": 0.415,
+      "right_ankle_pitch_joint": -0.546,
+      "right_ankle_roll_joint": 0.107
+    }
+  },
+  "recovery_cues_local": {
+    "ball": [
+      1.15,
+      1.59,
+      -0.7
+    ],
+    "goal": [
+      0.3,
+      1.15,
+      -0.66
+    ]
+  },
+  "video_preview_local": "media/stride_outside_v0.1.14.mp4",
+  "controller_sha256": {
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/runup_metrics.py": "fb7a13a0d9a56d1f636d8d5c85339b1ca884bfe9d7e4d7dfe5e606d5c515e5d2",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/running_metrics.py": "6018d1cc90b274e7915cbc2ef059b132b06b37e865625dde68ab8cba70050097",
+    "tools/runup_sequence.py": "6ba78e9aa9fff1e6d9d5657ca9094f4c285106e3fc16deafc6ddb74078e4c334",
+    "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/strike_velocity.py": "65636859fa34b84e9699b922573e52e039e27733bb2ef671d0cb298812195698",
+    "tools/run_stride_shot.py": "3b6c2da8d4e802a20cc3450782995e68bd19be19d28a0f51851aa6daac3e2663",
+    "tools/stride_shot_metrics.py": "c034e2ebae908d1df95534253061a4c9817a61aa97cf0f08c0f0dc083765b518",
+    "tools/run_stride_styles.py": "b66d831d05d2ee654723b5c54854164dc8d623b7eb8716fc9e9de97ecba1e934",
+    "tools/contact_frame_sampler.py": "813dec44d2308889cc3ec9e632f08b84d2317e23ffff204b5cd3790f2f6c4623"
+  },
+  "limitations": [
+    "Moving initial state; stationary start not validated",
+    "One fixed ball and goal for this right-foot hip-dominant style",
+    "No direction/power/height calibration or ball/runup-distance robustness claim"
+  ],
+  "evidence": {
+    "reports/v014_stride_outside_preview_final.json": "d1e44f6ed46b72295ea3e36ddde0f2451624c6c9cc4a2ac86b54c0b78a875a5f"
+  },
+  "contact_geometry": "Sphere-side raw point projected to capsule surface using signed separation and collision-time foot pose; original surface classifier unchanged",
+  "recovery_cue_interpretation": "Local horizontal seeds converted once into stationary world points at recovery entry, both at ground-ball center height 0.11m; policy conditioning only",
+  "recorded_preview_plan": {
+    "path": "experiments/running_v014/outside_ground_preview_plan_recorded.json",
+    "sha256": "eb6184bce1aa5629b4cc47e6ea779cbce69806ba42925d2052495040544e1787"
+  },
+  "observed": {
+    "contact_s": 1.59,
+    "surface": "outside",
+    "requested_surface_impulse_fraction": 1.0,
+    "forward_contact_speed_m_s": 2.541160583496035,
+    "pre_contact_alternating_flights": 3,
+    "longest_pre_contact_stop_s": 0.0,
+    "goal": true,
+    "final_standing_s": 10.094999999999999,
+    "final_root_speed_m_s": 0.0017337631434202194,
+    "final_root_tilt_deg": 3.7615580558776855,
+    "nonfoot_contact_N": 0.0,
+    "illegal_body_ball_contact": false,
+    "maximum_capsule_surface_residual_m": 5.703315276509024e-07,
+    "toe_down_pitch_at_peak_contact_deg": -7.864293514385808
+  }
+}

@@ -1,5 +1,17 @@
 # KineticKick
 
+## v0.1.14：正脚背与脚外侧移动射门
+
+新增正脚背、脚外侧两种完整流程：移动接近→真实触球进球→随摆与继续迈步→恢复站稳。两个最终14秒物理回合均通过，保留原脚内侧入口。预览为 `media/stride_instep_v0.1.14.mp4` 和 `media/stride_outside_v0.1.14.mp4`，均附触球近景慢放。
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/run_stride_styles.py --style instep \
+  --output reports/new_instep.json --video-dir media/new_instep_frames
+# 脚外侧：--style outside，并使用新的输出路径
+```
+
+当前验证范围为运动初态、固定球位的髋主导动作；方向/力度/高度联合标定及任意助跑距离尚未验证。恢复控制、碰撞坐标修正和完整实测见[新增踢法记录](reports/2026-11-04-more-foot-surfaces.md)。
+
 ## v0.1.13：跑着踢球
 
 已完成固定场景的「连续奔跑→脚内侧射门→继续迈步→恢复站稳」。触球前3次交替腾空，1.575秒触球时仍以2.299m/s向前跑动，中间没有停步；球进门，末段连续站稳9.575秒。全程无摔倒或非脚部碰球。
