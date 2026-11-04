@@ -17,6 +17,23 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def motion_provenance(source_provenance, motion_files):
+    """Describe the resolved inputs, including multi-reference diagnostics."""
+    paths = [Path(path).resolve() for path in motion_files]
+    if not paths:
+        raise ValueError('At least one motion reference is required')
+    result = dict(source_provenance)
+    hashes = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
+    result['motion_sources_sha256'] = hashes
+    expected = (ROOT / result['motion_file']).resolve()
+    if paths != [expected]:
+        result.pop('motion_file')
+        result.pop('motion_sha256')
+    elif hashes[str(expected)] != result['motion_sha256']:
+        raise ValueError('Motion reference changed after provenance preflight')
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--num-envs", type=int, default=1)
@@ -140,6 +157,7 @@ def main():
             for path in args.motion_files:
                 with np.load(path) as clip:
                     points.append(tuple(float(x) for x in clip["body_pos_w"][-1, 9, :2]))
+        args.source_provenance = motion_provenance(args.source_provenance, args.motion_files)
         held_env = run(args, points)
         while args.gui and args.hold and app.is_running():
             app.update()

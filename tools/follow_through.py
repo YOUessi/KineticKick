@@ -111,6 +111,12 @@ def check_follow_through_acceptance(config,reports,config_sha256):
     for key in ('controller_sources_sha256', 'motion_file', 'motion_sha256'):
         if not config.get(key) or any(run.get(key) != config[key] for run in reports):
             raise ValueError(f'Missing or changed frozen {key}')
+    expected_reference = (Path(__file__).resolve().parents[1] / config['motion_file']).resolve()
+    for run in reports:
+        references = run.get('motion_files')
+        if (not isinstance(references, list) or len(references) != 1 or
+                not isinstance(references[0], str) or Path(references[0]).resolve() != expected_reference):
+            raise ValueError('Actual motion references differ from the frozen single reference')
     result=check_posture_acceptance(config,reports,config_sha256)
     rows=[];counts={style:0 for style in required}
     for run in reports:

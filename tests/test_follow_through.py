@@ -45,6 +45,7 @@ def follow_matrix_fixture():
     config.update(provenance)
     for run in runs:
         run.update(copy.deepcopy(provenance))
+        run['motion_files'] = ['motion']
         run['kinematics']=[copy.deepcopy(follow_fixture()['kinematics'][0]) for _ in range(3)]
     return config, runs
 
@@ -108,9 +109,9 @@ class FollowThroughTests(unittest.TestCase):
             self.assertEqual(result['passed'],i==0)
         self.assertEqual(result['styles']['instep']['posture_and_full_chain'],6)
         self.assertEqual(result['follow_through_successes']['instep'],4)
-        for field in ['controller_sources_sha256','motion_sha256']:
+        for field in ['controller_sources_sha256','motion_sha256','motion_files']:
             config,runs=follow_matrix_fixture()
-            runs[0][field]='changed'
+            runs[0][field]=['different/reference.npz'] if field=='motion_files' else 'changed'
             with self.assertRaises(ValueError):check_follow_through_acceptance(config,runs,'frozen')
 
     def test_continuation_and_reference_are_part_of_the_frozen_manifest(self):
