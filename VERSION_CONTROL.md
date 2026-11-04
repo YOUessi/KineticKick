@@ -89,3 +89,9 @@ Tang 的 ONNX Runtime 安装在忽略目录中，保持现有 Isaac Lab 环境�
 ```
 
 仿真器必须在导入 NumPy 等数值库之前启动，否则系统 NumPy 与仿真器插件可能出现二进制不兼容。
+
+## v0.1.7 连续短程助跑
+
+本版本基于`version/v0.1.6`创建独立`version/v0.1.7`，不更新main或旧版本历史。继续使用相同PAiD官方ONNX、原始29DoF资产及已记录的上游提交；没有重新训练或更换模型。增加使用上游`soccer-standard-009_right.npz`和`soccer-standard-010_right.npz`，仍保留在被忽略的third_party目录。
+
+`configs/runup_shooting_v1.json`记录该版本控制源码、物理资产、权重、参考内容指纹；预览入口校验它们。生成的完整物理遥测、帧与视频保存在reports/media，不进入Git。CPU测试仍有Tang-local依赖。新流程验收范围、未通过的组合与未重标定的定点／力度能力见`reports/2026-11-04-runup-sequence.md`。

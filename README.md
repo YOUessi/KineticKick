@@ -1,5 +1,18 @@
 # KineticKick
 
+## v0.1.7：连续短程助跑与两种挥腿方式
+
+新增同一自由G1上的「短程助跑 → 触球射门 → 随摆 → 恢复站稳」。髋主导正脚背、髋主导脚内侧、膝主导正脚背在冻结的球位／初态扰动矩阵中 **18/18通过**，每回合完整验证10秒；158项CPU回归通过。详见 [实现与验收报告](reports/2026-11-04-runup-sequence.md)。
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/show_runup_shooting.py --mode hip --style instep
+/home/you/conda_env/env_isaaclab/bin/python tools/show_runup_shooting.py --mode knee --style instep
+/home/you/conda_env/env_isaaclab/bin/python tools/show_runup_shooting.py --mode hip --style inside
+```
+
+冻结配置：[runup_shooting_v1.json](configs/runup_shooting_v1.json)。这是约1米的快步助跑，尚未验证持续腾空跑步、任意距离助跑、脚外侧新流程或新动作的定点／力度标定。髋／膝主导指接触前足端运动贡献，不是能量份额。历史默认预览继续保留。
+
+
 GitHub: [YOUessi/KineticKick](https://github.com/YOUessi/KineticKick). Each version uses a separate `version/vX.Y.Z` branch; see [version control and local asset notes](VERSION_CONTROL.md).
 
 **Aim:** learn coordination principles from human soccer movements, then generate novel, natural, physically feasible humanoid movements. Task success is a constraint, not the main scientific objective.

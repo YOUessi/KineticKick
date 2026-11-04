@@ -1,0 +1,164 @@
+{
+  "version": "0.1.7",
+  "trial_steps": 500,
+  "policy_dt_s": 0.02,
+  "modes": {
+    "hip": {
+      "inside": {
+        "status": "validated_in_listed_conditions",
+        "scope": "Short physical approach, shot and recovery. Fixed goal, nominal ball +/- 2 cm x. Not arbitrary-distance running or calibrated aim/power.",
+        "trial": {
+          "name": "hip_inside_runup",
+          "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+          "ball": [
+            -0.4475531578063965,
+            -1.232489824295044
+          ],
+          "goal": [
+            0,
+            -3.7
+          ],
+          "style": "inside",
+          "strike": {},
+          "mode": "hip"
+        }
+      },
+      "instep": {
+        "status": "validated_in_listed_conditions",
+        "scope": "Short physical approach, shot and recovery. Fixed goal, nominal ball +/- 2 cm x. Not arbitrary-distance running or calibrated aim/power.",
+        "trial": {
+          "name": "hip_instep_runup",
+          "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+          "ball": [
+            -0.2718808352947235,
+            -1.2524207830429077
+          ],
+          "goal": [
+            0,
+            -3.7
+          ],
+          "style": "instep",
+          "strike": {
+            "window": [
+              104,
+              118,
+              124,
+              140
+            ],
+            "targets": {
+              "right_hip_pitch_joint": -0.8913877045333408,
+              "right_hip_roll_joint": 0.16649251005879276,
+              "right_hip_yaw_joint": -0.04720832564426347,
+              "right_knee_joint": 1.4999758777065266,
+              "right_ankle_pitch_joint": 0.4537864999999999,
+              "right_ankle_roll_joint": -0.21286945375295882
+            }
+          },
+          "policy_goal": [
+            0.5881191647052765,
+            -6.322420783042908
+          ],
+          "mode": "hip"
+        }
+      }
+    },
+    "knee": {
+      "instep": {
+        "status": "validated_in_listed_conditions",
+        "scope": "Short physical approach, shot and recovery. Fixed goal, nominal ball +/- 2 cm x. Not arbitrary-distance running or calibrated aim/power.",
+        "trial": {
+          "name": "knee_instep_runup",
+          "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+          "ball": [
+            -0.432274,
+            -1.214572
+          ],
+          "goal": [
+            0,
+            -3.7
+          ],
+          "style": "instep",
+          "strike": {},
+          "mode": "knee",
+          "coordination": {
+            "start_frame": 100,
+            "times_s": [
+              0.12,
+              0.27,
+              0.7
+            ],
+            "prepare": {
+              "right_hip_pitch_joint": -0.2125,
+              "right_hip_roll_joint": 0.2,
+              "right_hip_yaw_joint": 0.8187,
+              "right_knee_joint": 1.1,
+              "right_ankle_pitch_joint": 0.1,
+              "right_ankle_roll_joint": 0.0
+            },
+            "strike": {
+              "right_hip_pitch_joint": -0.2125,
+              "right_hip_roll_joint": 0.2,
+              "right_hip_yaw_joint": 0.8187,
+              "right_knee_joint": 0.2,
+              "right_ankle_pitch_joint": 0.1,
+              "right_ankle_roll_joint": 0.0
+            },
+            "velocity_feedforward": true
+          },
+          "approach_offset_xy": [
+            0.160394,
+            -0.037849
+          ],
+          "approach_offset_fade_s": [
+            3.0,
+            3.6
+          ]
+        }
+      }
+    }
+  },
+  "source_sha256": {
+    "tools/eval_free_shooting.py": "2ad35fa811d8a6ae7fb4fbbe800afa97ae34925c2de05b148276574152ba7351",
+    "tools/runup_sequence.py": "0dfb9c043826ba7f154838d11da26311734f12d37ad9dbd26c6c4e47481a090f",
+    "tools/runup_metrics.py": "cc7bd42b527490afd4af9887a3a096d1581ac198d4c1d635415f6fc50b378229",
+    "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/targeted_shooting.py": "b9fb207076a928090f90e2f4ec8d1d2958700317a67a56deb4114d0e772ffd17",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz": "f7f4af14f11a7aa02c9cf92c2e4acfe6271dba14f31ee1335036e0344817d222",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz": "a031b43fcabd48edb3a1c9cf1f2d346e3928f50133a4d48d4024fa6d919b075b",
+    "tools/show_runup_shooting.py": "e29fb7c2c1eb82cad276e37ba9d03a5a34e850b7341acbc2104991502ad1a9f2"
+  },
+  "acceptance": {
+    "ball_x_offsets_m": [
+      -0.02,
+      0,
+      0.02
+    ],
+    "robot_reset_perturbations": "xy +/-1cm, yaw +/-0.01rad, joint positions +/-0.005rad",
+    "sources": [
+      "reports/v017_release_seed1711.json",
+      "reports/v017_release_seed1712.json"
+    ],
+    "passed": 18,
+    "total": 18,
+    "seeds": [
+      1711,
+      1712
+    ]
+  },
+  "unavailable_combinations": [
+    "hip/outside",
+    "knee/inside",
+    "knee/outside"
+  ],
+  "limitations": [
+    "Short fast stepping approach; no sustained flight-phase running established",
+    "Mode shares describe hip/knee kinematic contributions, not motor work",
+    "Target-point and low/medium/high strength require new calibration"
+  ],
+  "upstream_sources_sha256": "10ea009ed41d89e9df26a224c6601c8e49f177566d336966aab834390fef05d9"
+}

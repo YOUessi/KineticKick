@@ -60,6 +60,8 @@ def main():
     parser.add_argument("--reference-sweep", action="store_true",
                         help="Evaluate all local soccer references at their upstream nominal ball positions")
     parser.add_argument("--trials", help="JSON manifest of independent ball, goal, style and strike corrections")
+    parser.add_argument('--sequence-evidence', action='store_true',
+                        help='Record whole-body and hip/knee evidence throughout the physical sequence')
     parser.add_argument("--perturb-reset", action="store_true",
                         help="Seeded initial root xy +/-1 cm, yaw +/-0.01 rad and joint positions +/-0.005 rad")
     parser.add_argument("--output", required=True)
@@ -142,6 +144,16 @@ def main():
             parser.error("Style configuration was calibrated with a different policy checkpoint")
         args.trials_data = [controller_config["styles"][args.style] for _ in points]
 
+    if not args.reference_sweep:
+        from runup_sequence import resolve_motion_files
+        args.motion_files = resolve_motion_files(args.trials_data, ROOT, args.motion_files[0])
+    if any(t.get('coordination') for t in (args.trials_data or [])) and not args.sequence_evidence:
+        parser.error('Coordination requires --sequence-evidence for physical support feedback')
+    from runup_sequence import approach_offset
+    for trial in args.trials_data or []:
+        approach_offset(trial, 0.)
+        if args.sequence_evidence and trial.get('mode', 'hip') not in ('hip', 'knee'):
+            parser.error('Sequence mode must be hip or knee')
     if (args.gui or args.video_dir) and args.num_envs != 1:
         parser.error("Rendered review requires exactly one environment")
     from isaaclab.app import AppLauncher
@@ -192,8 +204,11 @@ def run(args, points):
     from soccer.tasks.tracking.config.g1.flat_env_cfg import G1FlatEnvCfg
 
     def ball_observation(env):
+        from runup_sequence import approach_offset
         robot, ball = env.scene["robot"], env.scene["soccer_ball"]
-        return quat_apply_inverse(robot.data.root_quat_w, ball.data.root_pos_w - robot.data.root_pos_w)
+        times = env.episode_length_buf.detach().cpu().numpy() * env.step_dt
+        offset = torch.tensor([approach_offset(t, float(now)) for t, now in zip(trials, times)], device=robot.device)
+        return quat_apply_inverse(robot.data.root_quat_w, ball.data.root_pos_w + offset - robot.data.root_pos_w)
 
     def goal_observation(env):
         robot = env.scene["robot"]
@@ -243,7 +258,8 @@ def run(args, points):
         setattr(cfg.events, key, None)
     cfg.scene.soccer_ball = RigidObjectCfg(
         prim_path="{ENV_REGEX_NS}/SoccerBall",
-        spawn=sim.SphereCfg(radius=.11, collision_props=sim.CollisionPropertiesCfg(),
+        spawn=sim.SphereCfg(radius=.11, activate_contact_sensors=args.sequence_evidence,
+            collision_props=sim.CollisionPropertiesCfg(),
             rigid_props=sim.RigidBodyPropertiesCfg(), mass_props=sim.MassPropertiesCfg(mass=.43),
             visual_material=sim.PreviewSurfaceCfg(diffuse_color=(.94, .94, .90)),
             physics_material=sim.RigidBodyMaterialCfg(static_friction=.7, dynamic_friction=.55, restitution=.3)),
@@ -268,6 +284,9 @@ def run(args, points):
     reference = StrikeResidual([t.get("reference", {}) for t in trials], robot.joint_names,
                                cpu_array(action_term._scale), cpu_array(action_term._offset),
                                cpu_array(robot.data.soft_joint_pos_limits))
+    from runup_sequence import CoordinationTargets
+    coordination = CoordinationTargets([t.get('coordination') for t in trials], robot.joint_names,
+        cpu_array(action_term._scale), cpu_array(action_term._offset), cpu_array(robot.data.soft_joint_pos_limits))
     cartesian = None
     if any('cartesian' in t for t in trials):
         from cartesian_strike import CartesianStrike
@@ -339,7 +358,9 @@ def run(args, points):
         panel = ui.Window('KineticKick | Free shooting', width=430, height=250)
         with panel.frame:
             with ui.VStack(spacing=5):
-                ui.Label(f'Style: {args.style} | Free root | Physical contact')
+                ui.Label(f"Style: {trials[0].get('style', args.style)} | Free root | Physical contact")
+                if args.sequence_evidence:
+                    ui.Label(f"Coordination: {trials[0].get('mode', 'hip')} | Full-sequence evidence")
                 status_label = ui.Label('Approaching the ball')
                 ui.Label('Goal: 1.6 m wide / 1.1 m high')
                 if 'target' in trials[0]:
@@ -369,6 +390,28 @@ def run(args, points):
             "/World/envs/env_*/Robot/" + side + "_ankle_roll_link",
             ["/World/envs/env_*/SoccerBall"], max_contact_data_count=64 * args.num_envs)
     traces, contacts, kinematics = ([[] for _ in points] for _ in range(3))
+    if args.sequence_evidence:
+        from cartesian_strike import LegKinematics
+        from scipy.spatial.transform import Rotation
+        leg = LegKinematics(urdf)
+        leg_indices = [robot.joint_names.index(n) for n in leg.names]
+        masses = robot.root_physx_view.get_masses().to(robot.device)
+        mass_weights = masses / masses.sum(dim=1, keepdim=True)
+        termination_reasons = [[] for _ in points]
+        import omni.usd
+        from pxr import UsdPhysics
+        ground_paths = [str(prim.GetPath()) for prim in omni.usd.get_context().get_stage().Traverse()
+                        if str(prim.GetPath()).startswith(cfg.scene.terrain.prim_path + '/')
+                        and prim.HasAPI(UsdPhysics.CollisionAPI)]
+        if not ground_paths:
+            raise RuntimeError('No ground colliders found for sequence support evidence')
+        ground_views = {s: all_contacts._physics_sim_view.create_rigid_contact_view(
+                            '/World/envs/env_*/Robot/' + s + '_ankle_roll_link', ground_paths,
+                            max_contact_data_count=128 * args.num_envs) for s in ('left', 'right')}
+        ball_robot_view = all_contacts._physics_sim_view.create_rigid_contact_view(
+            '/World/envs/env_*/SoccerBall', ['/World/envs/env_*/Robot/' + name for name in robot.body_names],
+            max_contact_data_count=256 * args.num_envs)
+        print('SEQUENCE_GROUND_COLLIDERS', ground_paths, flush=True)
     substep = 0
     native_scene_update = raw.scene.update
 
@@ -384,6 +427,15 @@ def run(args, points):
         net = all_contacts.data.net_forces_w.detach().cpu().numpy()
         support = np.maximum(net[:, support_indices, 2], 0).sum(axis=1)
         nonfoot = np.linalg.norm(net[:, nonfoot_indices], axis=-1).max(axis=1)
+        if args.sequence_evidence:
+            q, dq = cpu_array(robot.data.joint_pos), cpu_array(robot.data.joint_vel)
+            root_pose = cpu_array(robot.data.root_state_w[:, :7])
+            com = cpu_array((robot.data.body_com_pos_w * mass_weights[:, :, None]).sum(dim=1) - raw.scene.env_origins)
+            com_velocity = cpu_array((robot.data.body_com_lin_vel_w * mass_weights[:, :, None]).sum(dim=1))
+            ground = {s: cpu_array(view.get_contact_force_matrix(dt)).reshape(args.num_envs, -1, 3)[:, :, 2].sum(axis=1)
+                      for s, view in ground_views.items()}
+            body_ball_forces = np.linalg.norm(cpu_array(ball_robot_view.get_contact_force_matrix(dt)), axis=-1)
+            torque = cpu_array(robot.data.applied_torque)
         events = [[] for _ in points]
         for side, view in detail_views.items():
             forces, positions, normals, separations, counts, starts = view.get_contact_data(dt)
@@ -418,6 +470,31 @@ def run(args, points):
                        foot=event["foot"] if event else "right", feet_support_N=float(support[i]),
                        nonfoot_contact_N=float(nonfoot[i]), terminated=False,
                        contacts=events[i], physics_dt_s=dt)
+            if args.sequence_evidence:
+                root = np.eye(4)
+                root[:3, :3] = Rotation.from_quat([*root_pose[i, 4:7], root_pose[i, 3]]).as_matrix()
+                root[:3, 3] = root_pose[i, :3]
+                foot_pose, jacobian = leg.forward(q[i, leg_indices], root)
+                offset = foot_pose[:3, :3] @ np.array([.06, 0., -.025])
+                point_jacobian = jacobian[:3] + np.cross(jacobian[3:].T, offset).T
+                parts = point_jacobian * dq[i, leg_indices][None, :]
+                foot_index = foot_indices['right']
+                point_velocity = cpu_array(robot.data.body_link_lin_vel_w[i, foot_index]) + np.cross(
+                    cpu_array(robot.data.body_ang_vel_w[i, foot_index]), offset)
+                row.update(joint_pos=q[i].tolist(), joint_vel=dq[i].tolist(),
+                    joint_torque_estimate=torque[i].tolist(),
+                    joint_target=cpu_array(robot.data.joint_pos_target[i]).tolist(),
+                    joint_velocity_target=cpu_array(robot.data.joint_vel_target[i]).tolist(),
+                    whole_body_com_xyz=com[i].tolist(), whole_body_com_velocity=com_velocity[i].tolist(),
+                    support_foot_force_N={s: float(max(0., ground[s][i])) for s in ground},
+                    robot_ball_contact_force_N={name: float(body_ball_forces[i, j])
+                        for j, name in enumerate(robot.body_names) if body_ball_forces[i, j] > 0.},
+                    foot_velocity_contributions=dict(hip=parts[:, :3].sum(axis=1).tolist(),
+                        knee=parts[:, 3].tolist(), ankle=parts[:, 4:].sum(axis=1).tolist(),
+                        base=(point_velocity-parts.sum(axis=1)).tolist()),
+                    right_foot_point_velocity=point_velocity.tolist(),
+                    ball_angular_velocity=cpu_array(ball.data.root_ang_vel_w[i]).tolist())
+                row['coordination_phase'] = coordination.phases[i]
             trackers[i].update(row)
             if target_trackers[i] is not None:
                 target_trackers[i].update(row)
@@ -432,17 +509,26 @@ def run(args, points):
             policy_obs = reference.apply_reference(cpu_array(obs), cpu_array(motion.time_steps), raw.step_dt)
             action = policy.step(policy_obs, motion.time_steps.cpu().numpy())
             action = strike.apply(action, motion.time_steps.cpu().numpy())
+            if args.sequence_evidence:
+                support = cpu_array(ground_views['left'].get_contact_force_matrix(raw.physics_dt)).reshape(args.num_envs, -1, 3)[:, :, 2].sum(axis=1)
+                distance = cpu_array(torch.linalg.vector_norm(robot.data.body_pos_w[:, foot_indices['right']] - ball.data.root_pos_w, dim=-1))
+                action = coordination.apply(action, substep * raw.physics_dt, cpu_array(motion.time_steps), support, distance)
+                velocity_targets = torch.tensor(coordination.velocity_targets, device=robot.device, dtype=torch.float32)
+                velocity_targets = torch.clamp(velocity_targets, -robot.data.joint_vel_limits, robot.data.joint_vel_limits)
+                robot.set_joint_velocity_target(velocity_targets)
             if cartesian is not None:
                 root_poses = cpu_array(robot.data.root_state_w[:, :7]).copy()
                 root_poses[:, :3] -= cpu_array(raw.scene.env_origins)
                 action = cartesian.apply(action, cpu_array(motion.time_steps), root_poses,
                                          cpu_array(robot.data.joint_pos), raw.step_dt)
-            if 75 <= step <= 170:
+            if args.sequence_evidence or 75 <= step <= 170:
                 for i in np.flatnonzero(active):
                     kinematics[i].append(dict(time_s=substep * raw.physics_dt,
                         root_pose=cpu_array(robot.data.root_state_w[i, :7]).tolist(),
                         joint_pos=cpu_array(robot.data.joint_pos[i]).tolist(),
                         action=action[i].tolist(),
+                        policy_ball_input_local=policy_obs[i, -6:-3].tolist(),
+                        policy_goal_input_local=policy_obs[i, -3:].tolist(),
                         cartesian_error=cartesian.last_errors[i] if cartesian is not None else None,
                         feet={s: dict(position=cpu_array(robot.data.body_pos_w[i, j] - raw.scene.env_origins[i]).tolist(),
                                       quaternion=cpu_array(robot.data.body_quat_w[i, j]).tolist())
@@ -450,6 +536,9 @@ def run(args, points):
             with torch.no_grad():
                 obs, _, done, _ = env.step(torch.tensor(action, device=robot.device))
             for i in np.flatnonzero(active & done.detach().cpu().numpy().astype(bool)):
+                if args.sequence_evidence:
+                    termination_reasons[i] = [name for name in raw.termination_manager.active_terms
+                                             if bool(raw.termination_manager.get_term(name)[i])]
                 terminal = {**traces[i][-1], "terminated": True, "time_s": substep * raw.physics_dt + 1e-6}
                 trackers[i].update(terminal)
                 if target_trackers[i] is not None:
@@ -465,7 +554,13 @@ def run(args, points):
                 complete = summary['success'] and (measure is None or measure['target_success'])
                 status_label.text = (f"t={(step+1)*raw.step_dt:.2f}s | contact={summary['measured_surface']}\n"
                     f"goal={summary['goal']} | standing={summary['standing_seconds']:.2f}s\n"
-                    f"complete={complete} | failed={summary['failed']}")
+                    f"shot_check={complete} | failed={summary['failed']}")
+                if args.sequence_evidence:
+                    from runup_sequence import phase_label
+                    phase = coordination.phases[0]
+                    if phase in ('idle', 'released'):
+                        phase = phase_label((step+1)*raw.step_dt, summary['contact_time_s'], summary['recovered'], summary['failed'])
+                    status_label.text += f'\nPhase: {phase} | full sequence checked at trial end'
                 if measure is not None:
                     error = '--' if measure['aim_error_m'] is None else f"{measure['aim_error_m']:.3f} m"
                     speed = '--' if measure['outgoing_speed_mps'] is None else f"{measure['outgoing_speed_mps']:.2f} m/s"
@@ -503,11 +598,26 @@ def run(args, points):
         result.update(targeted_config=args.target_config if args.targeted_config_sha256 else None,
                       targeted_config_sha256=args.targeted_config_sha256)
         result.update(args.source_provenance)
+        if args.sequence_evidence:
+            result.update(sequence_evidence_version=1, termination_reasons=termination_reasons,
+                torque_evidence='Implicit actuator estimated clipped PD torque; not a hardware measurement',
+                ground_collision_paths=ground_paths,
+                foot_velocity_point_local=[.06, 0., -.025], contribution_foot='right',
+                joint_effort_limits=cpu_array(robot.data.joint_effort_limits).tolist(),
+                joint_velocity_limits=cpu_array(robot.data.joint_vel_limits).tolist(),
+                sequence_sources_sha256={name: hashlib.sha256((ROOT/'tools'/name).read_bytes()).hexdigest()
+                                        for name in ('runup_sequence.py', 'runup_metrics.py', 'cartesian_strike.py')})
+            from runup_metrics import summarize_trial
+            result['sequence_records'] = [summarize_trial(result, i) for i in range(args.num_envs)]
         result.update(args.targeted_provenance or {})
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(result, indent=2))
         print("FREE_SHOOTING_RESULT", str(output), json.dumps(result["records"]), flush=True)
+        if args.sequence_evidence:
+            print('RUNUP_SEQUENCE_RESULT', json.dumps(result['sequence_records']), flush=True)
+            if panel is not None:
+                status_label.text += f"\nFull sequence passed: {result['sequence_records'][0]['sequence_success']}"
         if args.gui and args.hold:
             raw.sim.pause()
             status_label.text += '\nTrial finished (paused)'
