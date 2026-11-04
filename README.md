@@ -4,6 +4,20 @@ GitHub: [YOUessi/KineticKick](https://github.com/YOUessi/KineticKick). Each vers
 
 **Aim:** learn coordination principles from human soccer movements, then generate novel, natural, physically feasible humanoid movements. Task success is a constraint, not the main scientific objective.
 
+## v0.1.6：以出球效果和全过程平衡评价随摆
+
+用户明确：随摆应服务于有效触球、力度／轨迹控制以及整个动作的平衡，摆得更远本身不是目标。新诊断 `tools/kick_contact_metrics.py` 按连续受力段记录接触时间、法向冲量和观察到的球速，同时报告过程中根部与接触力的变化。连续受力超过80ms不会自动被当作二次碰球；零力采样后的受力恢复单独记录，但仍不能仅凭力信号证明几何分离。
+
+旧正脚背演示中，脚前摆由约15cm增至25cm，记录到的受力时长、法向冲量和首次零力采样处的球速却完全相同；脚外侧实验还暴露了恢复恶化。详细数据和测量边界见 [目标校正记录](reports/2026-11-04-contact-and-balance.md)。这是诊断与目标修正，**没有新增已验证的踢球控制器**；原默认动作不变。
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/kick_contact_metrics.py \
+  reports/v013_posture_demo_instep.json reports/v015_follow_final_demo_instep.json \
+  --output reports/contact_effect_comparison.json
+```
+
+v0.1.5的旧阈值与结果保留供历史重放，不再代表当前优化目标。目标仍是有效且可控的出球、合法触球和全过程平衡，不能通过更换指标宣称旧失败动作已成功。
+
 ## v0.1.5：随摆试验（稳定性未通过）
 
 本轮已做出球离开后继续摆腿的动作，但**尚未稳定实现随摆、指定触球、进球和站稳的完整组合**，普通预览仍默认使用 v0.1.3。最后一轮正脚背为3/6同时通过；脚外侧的膝关节过渡会把急收腿延迟到后面，单环境录像还出现原生终止，因此未采用这些参数。
