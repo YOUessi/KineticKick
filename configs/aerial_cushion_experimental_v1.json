@@ -1,0 +1,194 @@
+{
+  "version": "0.1.18",
+  "status": "experimental_anticipatory_lowering_full_trap_failed",
+  "reference": "experiments/aerial_v017/front_receive/ready_reference.npz",
+  "root_pose": [
+    0.0,
+    0.0,
+    0.76,
+    0.7071067811865477,
+    0.0,
+    0.0,
+    -0.7071067811865475
+  ],
+  "joint_names": [
+    "left_hip_pitch_joint",
+    "right_hip_pitch_joint",
+    "waist_yaw_joint",
+    "left_hip_roll_joint",
+    "right_hip_roll_joint",
+    "waist_roll_joint",
+    "left_hip_yaw_joint",
+    "right_hip_yaw_joint",
+    "waist_pitch_joint",
+    "left_knee_joint",
+    "right_knee_joint",
+    "left_shoulder_pitch_joint",
+    "right_shoulder_pitch_joint",
+    "left_ankle_pitch_joint",
+    "right_ankle_pitch_joint",
+    "left_shoulder_roll_joint",
+    "right_shoulder_roll_joint",
+    "left_ankle_roll_joint",
+    "right_ankle_roll_joint",
+    "left_shoulder_yaw_joint",
+    "right_shoulder_yaw_joint",
+    "left_elbow_joint",
+    "right_elbow_joint",
+    "left_wrist_roll_joint",
+    "right_wrist_roll_joint",
+    "left_wrist_pitch_joint",
+    "right_wrist_pitch_joint",
+    "left_wrist_yaw_joint",
+    "right_wrist_yaw_joint"
+  ],
+  "ready_joint_pos": [
+    -0.28130323568459337,
+    -0.8710567525437156,
+    -0.0065086823888123035,
+    -0.1906763718388979,
+    -0.0027720131292028245,
+    0.003332017920911312,
+    0.09274077319631555,
+    0.0047840922727860995,
+    -0.08434028923511505,
+    0.46966411966956256,
+    0.44333078317467073,
+    -0.060354966670274734,
+    -0.07161245495080948,
+    -0.19723611579166694,
+    0.42772061461810046,
+    0.55,
+    -0.55,
+    0.21178609919581767,
+    0.005528240696303224,
+    0.16122709214687347,
+    -0.01604282855987549,
+    1.5613445043563843,
+    1.5660767555236816,
+    -0.09264753758907318,
+    0.09747415035963058,
+    0.001688656397163868,
+    -0.08754078298807144,
+    -0.08189409971237183,
+    0.11674782633781433
+  ],
+  "feet": {
+    "left": [
+      [
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        -0.011762148503117131
+      ],
+      [
+        -1.0,
+        2.220446049250313e-16,
+        -0.0,
+        -0.031852785062808676
+      ],
+      [
+        -0.0,
+        0.0,
+        1.0,
+        0.035
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "right": [
+      [
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        -0.12176214850311713
+      ],
+      [
+        -1.0,
+        2.220446049250313e-16,
+        -0.0,
+        -0.3818527850628087
+      ],
+      [
+        -0.0,
+        0.0,
+        1.0,
+        0.15
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "ball_position": [
+    -0.12176214850311712,
+    -0.85,
+    1.05
+  ],
+  "ball_velocity": [
+    0,
+    0.75,
+    0
+  ],
+  "receive_height_m": 0.15,
+  "lower_to_height_m": 0.038,
+  "descent_speed_mps": 1.5,
+  "trigger_ball_height_m": 0.42,
+  "balance_kp_com": 1.5,
+  "balance_kd_com": 0.3,
+  "balance_kp_tilt": 0.5,
+  "balance_kd_tilt": 0.05,
+  "steps": 220,
+  "seed": 1701,
+  "recovery": {
+    "earliest_s": 0.0,
+    "blend_seconds": 0.14,
+    "contact_delay_s": 0.04
+  },
+  "reference_sha256": "02be15848c177145b74bdd2563c7816947a5f70b03f1b9dd45a1cab90a5603fd",
+  "cushion": {
+    "contact_ball_height_m": 0.3,
+    "velocity_fraction": 0.18,
+    "trajectory_lead_s": 0.24,
+    "freeze_prediction_lead_s": 0.1,
+    "crouch_depth_m": 0.04,
+    "follow_seconds": 0.1,
+    "velocity_limit_rad_s": 8.0,
+    "position_feedback_gain": 12.0,
+    "velocity_effort_gains": [
+      8.0,
+      3.0,
+      3.0,
+      6.0,
+      1.5,
+      1.5
+    ],
+    "receive_pitch_rad": -0.4,
+    "actuator_lead_s": 0.04
+  },
+  "keep_receive_arms": true,
+  "scope": "One prepared free-root receiver and fixed incoming ball. Pre-contact lowering measured; later shin contact terminates the trial. Full trapping and juggling are NOT achieved.",
+  "recorded_trial": "reports/v018_lag_recovery_preview.json",
+  "recorded_trial_sha256": "b1a37b58c0e558fd3640ec910e4fadc6a6a424987640bbaf9a52b23d827389ed",
+  "recorded_trial_plan": "experiments/aerial_v018/lag_and_recovery.json",
+  "recorded_trial_plan_sha256": "3cc5d09cabcaccec2bcdd85224149c9879c1f3eb7fb03ef8195a11ad04b26324",
+  "physics_sources_sha256": {
+    "tools/run_aerial_cushion.py": "11e48b062548c35b61baef774e177f996dacca1b2a5d68cdadee9198d0f9f296",
+    "tools/cushion_motion.py": "723b322fc00a6e90aa50f9e223e0cc81f41fcd391881acc92142ead4b5890f6b",
+    "tools/aerial_control_metrics.py": "82ba74d7f4753b9fffd616e78578a6ce13a539d369a9f6e003bd7d283502c392",
+    "tools/aerial_gravity.py": "67ea3c5d218b6e2c83ba2ad4ae3ca3df0172a4dd6a0a76bbad53360ebc7e513e",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/contact_frame_sampler.py": "813dec44d2308889cc3ec9e632f08b84d2317e23ffff204b5cd3790f2f6c4623",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761"
+  }
+}
