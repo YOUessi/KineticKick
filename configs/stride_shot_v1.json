@@ -1,0 +1,76 @@
+{
+  "reference": "experiments/running_v013/stride_reference.npz",
+  "reference_sha256": "c4d6ed4c0d307ff53ee947de777b35c076b49679ab33303e5d8bd4bd97efdd2f",
+  "shot_start_frame": 348,
+  "ball_xy": [
+    -0.07,
+    -4.1
+  ],
+  "goal_xy": [
+    1.1,
+    -6.6
+  ],
+  "style": "inside",
+  "mode": "hip",
+  "running_checkpoint": "experiments/running_v011/run_stop_n1024_i500/last_model.pt",
+  "scope": "Moving initial state; continuous running inside-foot hip-dominant shot at one fixed ball/goal, followed by standing recovery",
+  "stride": {
+    "window_s": [
+      1.42,
+      1.52,
+      1.64,
+      1.78
+    ],
+    "entry_frame": 113
+  },
+  "recovery_entry_frame": 210,
+  "version": "0.1.13",
+  "status": "verified_single_fixed_scenario",
+  "seed": 1201,
+  "trial_steps": 700,
+  "recovery_blend_seconds": 0.1,
+  "running_checkpoint_sha256": "5c4e4f5505f13501614c45a4cc51dd8bc6e81818544de88240c2b05e23c410fa",
+  "video_preview_local": "media/stride_shot_v0.1.13.mp4",
+  "controller_sha256": {
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/runup_metrics.py": "fb7a13a0d9a56d1f636d8d5c85339b1ca884bfe9d7e4d7dfe5e606d5c515e5d2",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/running_metrics.py": "6018d1cc90b274e7915cbc2ef059b132b06b37e865625dde68ab8cba70050097",
+    "tools/runup_sequence.py": "6ba78e9aa9fff1e6d9d5657ca9094f4c285106e3fc16deafc6ddb74078e4c334",
+    "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/strike_velocity.py": "65636859fa34b84e9699b922573e52e039e27733bb2ef671d0cb298812195698",
+    "tools/run_stride_shot.py": "3b6c2da8d4e802a20cc3450782995e68bd19be19d28a0f51851aa6daac3e2663",
+    "tools/stride_shot_metrics.py": "c034e2ebae908d1df95534253061a4c9817a61aa97cf0f08c0f0dc083765b518"
+  },
+  "recorded_preview_plan": {
+    "path": "experiments/running_v013/preview_plan_recorded.json",
+    "sha256": "a66ff6a089c439ebdccc399290fbd9964fca9827a5f806d72c7b58bd0fa8325e"
+  },
+  "evidence": {
+    "reports/v013_stride_swing_inside.json": "332cb1715e515bc5c57df8c103d09d68cdcbd1cda5d6a356afeac47f1688e87e",
+    "reports/v013_stride_preview.json": "784453029b109794262c104e602445a2af6cc579cf77620249d58e351263256b"
+  },
+  "observed": {
+    "contact_s": 1.575,
+    "forward_contact_speed_m_s": 2.2992610931396973,
+    "pre_contact_alternating_flights": 3,
+    "last_flight_to_contact_s": 0.175,
+    "longest_pre_contact_stop_s": 0.0,
+    "goal": true,
+    "final_standing_s": 9.575,
+    "nonfoot_contact_N": 0.0,
+    "illegal_body_ball_contact": false
+  },
+  "limitations": [
+    "Moving initial state; stationary start not validated",
+    "Fixed ball and goal, right inside-foot hip-dominant running shot only",
+    "No multi-style running, joint direction/power/height calibration, near-vertical instep or ball/runup-distance robustness claim"
+  ],
+  "source_sha256": {
+    "/home/you/projects/kinetickick/experiments/running_v011/run_stop_handoff_reference.npz": "3110a1a3bf8a7c4310c21ed46fdc4406fcd5902e39a2214dae9b6069fc682c9a",
+    "/home/you/projects/kinetickick/third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz": "a031b43fcabd48edb3a1c9cf1f2d346e3928f50133a4d48d4024fa6d919b075b"
+  }
+}

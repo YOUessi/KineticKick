@@ -1,5 +1,16 @@
 # KineticKick
 
+## v0.1.13：跑着踢球
+
+已完成固定场景的「连续奔跑→脚内侧射门→继续迈步→恢复站稳」。触球前3次交替腾空，1.575秒触球时仍以2.299m/s向前跑动，中间没有停步；球进门，末段连续站稳9.575秒。全程无摔倒或非脚部碰球。
+
+Tang实际预览：`media/stride_shot_v0.1.13.mp4`，含正常速度和触球／落脚0.25倍慢放。这是运动初态、固定球位的髋主导脚内侧踢法；静止起跑、更多跑动踢法及方向／力度／高度联合控制仍待完成。详见[跑动射门记录](reports/2026-11-04-stride-shot.md)。
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/run_stride_shot.py \
+  --output reports/new_stride_shot.json --video-dir media/new_stride_frames
+```
+
 ## v0.1.12：奔跑后真实触球射门并恢复
 
 已把同一自由G1的「奔跑→减速调整→脚内侧触球进球→恢复站稳」接到一个物理回合。固定场景实测6次交替腾空，6.22秒触球，末段连续站稳7.185秒；全程无摔倒、无非脚部触球。
