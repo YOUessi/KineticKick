@@ -1,0 +1,35 @@
+[
+  {
+    "name": "vertical_pose_feasibility_not_accepted",
+    "style": "instep",
+    "ball": [
+      0.14,
+      -0.93
+    ],
+    "goal": [
+      0.0,
+      -3.7
+    ],
+    "strike": {
+      "window": [
+        104,
+        118,
+        130,
+        146
+      ],
+      "targets": {
+        "right_hip_pitch_joint": -0.9,
+        "right_hip_roll_joint": 0.16649251005879276,
+        "right_hip_yaw_joint": -0.04720832564426347,
+        "right_knee_joint": 2.15,
+        "right_ankle_pitch_joint": 0.4537864999999999,
+        "right_ankle_roll_joint": -0.21286945375295882
+      }
+    },
+    "policy_goal": [
+      1.0,
+      -6.0
+    ],
+    "status": "experimental: near-vertical swing, no accepted shot"
+  }
+]
