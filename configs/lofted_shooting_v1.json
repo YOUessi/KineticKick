@@ -1,0 +1,209 @@
+{
+  "version": "0.1.9",
+  "status": "quick_physical_demonstration",
+  "trial_steps": 350,
+  "profiles": {
+    "low_arc": {
+      "label": "\u8f7b\u6311 \u00b7 \u539f\u59cb\u811a\u5185\u4fa7",
+      "trial": {
+        "name": "v019_native",
+        "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+        "ball": [
+          -0.4475531578063965,
+          -1.232489824295044
+        ],
+        "goal": [
+          0,
+          -3.7
+        ],
+        "style": "inside",
+        "strike": {},
+        "mode": "hip",
+        "goal_forward": [
+          0,
+          -1
+        ],
+        "policy_goal": [
+          0,
+          -3.7
+        ]
+      },
+      "observed": {
+        "contact_time_s": 2.4050000000000002,
+        "first_flight_apex_m": 0.3072611689567566,
+        "ball_bottom_clearance_m": 0.1972611689567566,
+        "first_flight_duration_s": 0.3999999999999999,
+        "first_landing_s": 2.84,
+        "release_speed_mps": 5.243082797027224,
+        "release_vertical_speed_mps": 1.590681552886963,
+        "estimated_contact_below_center_m": 0.0454109422011731,
+        "direct_foot_lift": true,
+        "illegal_body_ball_contact": false,
+        "fell": false,
+        "final_standing_seconds": 3.92,
+        "loft_success": true,
+        "scope": "Quick demonstration only; no robustness, three-level calibration or 3-D target accuracy claim"
+      },
+      "source": "reports/v019_loft_probe.json",
+      "source_trial_index": 0,
+      "source_sha256": "09dc0d4a203a1d52b83dbfd810eec9d1a9ef7ead5ad80dd2cb0f6faf6e3d06d9"
+    },
+    "medium_arc": {
+      "label": "\u4e2d\u6311 \u00b7 \u589e\u52a0\u5411\u4e0a\u968f\u6446",
+      "trial": {
+        "name": "v019_lift_strong",
+        "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+        "ball": [
+          -0.4475531578063965,
+          -1.232489824295044
+        ],
+        "goal": [
+          0,
+          -3.7
+        ],
+        "style": "inside",
+        "strike": {
+          "window": [
+            112,
+            118,
+            125,
+            138
+          ],
+          "offsets": {
+            "right_ankle_roll_joint": 0.2
+          }
+        },
+        "mode": "hip",
+        "goal_forward": [
+          0,
+          -1
+        ],
+        "policy_goal": [
+          0,
+          -3.7
+        ],
+        "strike_velocity": {
+          "window": [
+            118,
+            121,
+            126,
+            136
+          ],
+          "velocities": {
+            "right_hip_pitch_joint": -8
+          },
+          "minimum_support_N": 80
+        }
+      },
+      "observed": {
+        "contact_time_s": 2.4050000000000002,
+        "first_flight_apex_m": 0.3548336625099182,
+        "ball_bottom_clearance_m": 0.24483366250991823,
+        "first_flight_duration_s": 0.44499999999999984,
+        "first_landing_s": 2.88,
+        "release_speed_mps": 5.557881961261821,
+        "release_vertical_speed_mps": 1.8216948509216309,
+        "estimated_contact_below_center_m": 0.04603643680523097,
+        "direct_foot_lift": true,
+        "illegal_body_ball_contact": false,
+        "fell": false,
+        "final_standing_seconds": 3.83,
+        "loft_success": true,
+        "scope": "Quick demonstration only; no robustness, three-level calibration or 3-D target accuracy claim"
+      },
+      "source": "reports/v019_loft_probe.json",
+      "source_trial_index": 4,
+      "source_sha256": "09dc0d4a203a1d52b83dbfd810eec9d1a9ef7ead5ad80dd2cb0f6faf6e3d06d9"
+    },
+    "loft": {
+      "label": "\u52a0\u5f3a\u6311\u7403 \u00b7 \u63a5\u89e6\u540e\u62ac\u811a\u968f\u6446",
+      "trial": {
+        "name": "v019_late_lift",
+        "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+        "ball": [
+          -0.4475531578063965,
+          -1.232489824295044
+        ],
+        "goal": [
+          0,
+          -3.7
+        ],
+        "style": "inside",
+        "strike": {
+          "window": [
+            120,
+            122,
+            126,
+            138
+          ],
+          "offsets": {
+            "right_ankle_roll_joint": 0.12
+          }
+        },
+        "mode": "hip",
+        "goal_forward": [
+          0,
+          -1
+        ],
+        "policy_goal": [
+          0,
+          -3.7
+        ],
+        "strike_velocity": {
+          "window": [
+            120,
+            122,
+            125,
+            133
+          ],
+          "velocities": {
+            "right_hip_pitch_joint": -12,
+            "right_ankle_pitch_joint": -8
+          },
+          "minimum_support_N": 80
+        }
+      },
+      "observed": {
+        "contact_time_s": 2.4050000000000002,
+        "first_flight_apex_m": 0.44015955924987793,
+        "ball_bottom_clearance_m": 0.33015955924987794,
+        "first_flight_duration_s": 0.52,
+        "first_landing_s": 2.955,
+        "release_speed_mps": 5.835332148326841,
+        "release_vertical_speed_mps": 2.199251651763916,
+        "estimated_contact_below_center_m": 0.048003175716185106,
+        "direct_foot_lift": true,
+        "illegal_body_ball_contact": false,
+        "fell": false,
+        "final_standing_seconds": 3.89,
+        "loft_success": true,
+        "scope": "Quick demonstration only; no robustness, three-level calibration or 3-D target accuracy claim"
+      },
+      "source": "reports/v019_follow_lift_probe.json",
+      "source_trial_index": 0,
+      "source_sha256": "83e4f11d762e473cebbed9c009a6c4e4b7a5acad8dccfa685af2ad28c9f252c4"
+    }
+  },
+  "source_sha256": {
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/runup_sequence.py": "6ba78e9aa9fff1e6d9d5657ca9094f4c285106e3fc16deafc6ddb74078e4c334",
+    "tools/runup_metrics.py": "fb7a13a0d9a56d1f636d8d5c85339b1ca884bfe9d7e4d7dfe5e606d5c515e5d2",
+    "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/targeted_shooting.py": "b9fb207076a928090f90e2f4ec8d1d2958700317a67a56deb4114d0e772ffd17",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz": "f7f4af14f11a7aa02c9cf92c2e4acfe6271dba14f31ee1335036e0344817d222",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz": "a031b43fcabd48edb3a1c9cf1f2d346e3928f50133a4d48d4024fa6d919b075b",
+    "tools/show_runup_shooting.py": "d5e54f86dcf6dc2f137036f7f166a9344487dbfc1d2f3175931aefe62164b01d",
+    "tools/strike_velocity.py": "65636859fa34b84e9699b922573e52e039e27733bb2ef671d0cb298812195698",
+    "tools/running_metrics.py": "6018d1cc90b274e7915cbc2ef059b132b06b37e865625dde68ab8cba70050097",
+    "tools/runup_targeting.py": "dfef6100041b7b2b2999f6c161222b6e78f871743ec22b275265af3a5342fb86",
+    "tools/show_targeted_runup.py": "d3ed46ce032d452d9462aa34e85c41c5c21d376027d5ead66dcad1e00b7a0b28",
+    "tools/lofted_shooting.py": "d6a157b7e2c4ed0c755e302086ed48eb9cf553540c813b99d40d83f31d35a4e9"
+  },
+  "upstream_sources_sha256": "10ea009ed41d89e9df26a224c6601c8e49f177566d336966aab834390fef05d9",
+  "scope": "Three inside-foot loft examples with physical contact and unchanged actuator limits; no calibrated strength, arbitrary 3-D aim or robustness claim."
+}

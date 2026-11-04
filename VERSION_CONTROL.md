@@ -101,3 +101,7 @@ Tang 的 ONNX Runtime 安装在忽略目录中，保持现有 Isaac Lab 环境�
 本版本从已推送的v0.1.7创建`version/v0.1.8`，保留main和所有旧版本历史。继续使用原29DoF资产、官方ONNX和原始力矩/速度上限；未重新训练或替换权重。新增LAFAN RUN参考转换仅供有界物理诊断，保留原始数据，生成参考置于ignored experiments/running_v018。
 
 默认预览使用`configs/runup_shooting_v2.json`：脚外侧完整流程6/6、三种动作原生力度定点18/18。持续奔跑和三档联合定点尚未通过，不发布虚假校准表。旧控制新种子回归5/6及失败细节均记录在`reports/2026-11-04-running-aim.md`。新源码使v0.1.7配置指纹不再匹配；旧配置及视频仍可在原版本分支重现。新生成的物理遥测/媒体继续由.gitignore排除。
+
+## v0.1.9 高球快速试跑
+
+从v0.1.8创建独立`version/v0.1.9`。仅新增挑球参数、试跑入口和首次飞行统计，不改原控制器、物理资产或上游版本。按用户要求快速跑通，不重复完整回归和扰动矩阵。三组inside-foot示例及实测范围见`reports/2026-11-04-lofted-shooting.md`；它们不是精确轻/中/重或三维定点校准。原始报告和媒体继续留在ignored reports/media。
