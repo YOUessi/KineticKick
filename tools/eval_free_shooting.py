@@ -48,6 +48,14 @@ def main():
     parser.add_argument("--output", required=True)
     parser.add_argument("--model", default=str(ROOT / ".pretrained_checkpoints/paid_official/policy_30000.onnx"))
     args = parser.parse_args()
+    from targeted_shooting import controller_provenance, verify_target_provenance
+    args.source_provenance = controller_provenance(ROOT)
+    base_config = json.loads(Path(args.config).read_text())
+    if 'controller_sources_sha256' in base_config:
+        try:
+            verify_target_provenance(base_config, ROOT)
+        except ValueError as error:
+            parser.error(str(error))
     if not 1 <= args.num_envs <= 24 or not 1 <= args.steps <= 1000:
         parser.error("Use 1..24 environments and 1..1000 policy steps")
     points = [(args.ball_x, args.ball_y)] * args.num_envs
@@ -476,6 +484,7 @@ def run(args, points):
                       rendered=bool(args.video_dir or args.gui))
         result.update(targeted_config=args.target_config if args.targeted_config_sha256 else None,
                       targeted_config_sha256=args.targeted_config_sha256)
+        result.update(args.source_provenance)
         result.update(args.targeted_provenance or {})
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)

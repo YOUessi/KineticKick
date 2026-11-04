@@ -34,6 +34,12 @@ class StrikeResidual:
                 self.targets[i, joint_names.index(name)] = float(value)
         if np.any(self.scale <= 0):
             raise ValueError('Action scales must be positive')
+        self.continuation = None
+        if any('continuation' in entry for entry in entries):
+            following = [entry.get('continuation', {}) for entry in entries]
+            if any(not isinstance(entry, dict) or 'continuation' in entry for entry in following):
+                raise ValueError('Continuation requires one unnested joint correction')
+            self.continuation = StrikeResidual(following, joint_names, scale, offset, limits)
 
     def envelope(self, frames, dt=1.):
         frames = np.broadcast_to(np.asarray(frames), (len(self.windows),))
@@ -52,6 +58,8 @@ class StrikeResidual:
         return correction, velocity
 
     def apply_reference(self, observations, frames, dt):
+        if self.continuation is not None:
+            raise ValueError('Continuation is an action phase, not a reference offset')
         result = np.array(observations, dtype=np.float32, copy=True)
         n = self.delta.shape[1]
         delta, velocity = self.trajectory(frames, dt)
@@ -72,4 +80,5 @@ class StrikeResidual:
         targets = np.where(absolute, original * (1-weight) + self.targets * weight, targets)
         targets = np.clip(targets, self.limits[:, :, 0], self.limits[:, :, 1])
         modified = (targets-self.offset) / self.scale
-        return np.where((correction != 0.) | absolute, modified, actions).astype(np.float32)
+        result = np.where((correction != 0.) | absolute, modified, actions).astype(np.float32)
+        return self.continuation.apply(result, frames) if self.continuation is not None else result

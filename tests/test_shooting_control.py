@@ -54,6 +54,25 @@ class StrikeResidualTest(unittest.TestCase):
         np.testing.assert_allclose(control.apply(action, [90]), [[0., .4]], atol=1e-7)
         np.testing.assert_array_equal(control.apply(action, [150]), action)
 
+    def test_continuation_is_independent_and_returns_to_policy(self):
+        entry=dict(window=[80,100,120,130], targets={'hip':.6},
+                   continuation=dict(window=[124,134,144,160], targets={'ankle':.3}))
+        phased=self.make([entry, {}])
+        base=self.make([{k:v for k,v in entry.items() if k!='continuation'}, {}])
+        action=np.array([[-1.,.4],[.2,.3]],np.float32)
+        for frame in [79,90,110,124,160,180]:
+            np.testing.assert_array_equal(phased.apply(action,[frame,frame]),base.apply(action,[frame,frame]))
+        np.testing.assert_allclose(phased.apply(action,[134,134]),[[-1.,2.],[.2,.3]])
+        # Smooth boundary, normal joint limits and independently timed release.
+        self.assertLess(abs(phased.apply(action,[124.001,0])[0,1]-base.apply(action,[124.001,0])[0,1]),1e-6)
+        clipped=self.make([dict(continuation=dict(window=[120,130,140],targets={'ankle':9.}))])
+        np.testing.assert_allclose(clipped.apply(action[:1],[130]),[[-1.,3.2]])
+
+    def test_continuation_rejects_nested_entries_and_reference_application(self):
+        with self.assertRaises(ValueError):self.make([dict(continuation=dict(continuation={}))])
+        control=self.make([dict(continuation=dict(offsets={'hip':.2}))])
+        with self.assertRaises(ValueError):control.apply_reference(np.zeros((1,160)),[110],.02)
+
 
 if __name__ == '__main__':
     unittest.main()
