@@ -1,0 +1,122 @@
+{
+  "version": "0.1.3",
+  "policy_sha256": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+  "asset_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "policy_dt_s": 0.02,
+  "reference": "soccer-standard-001_right.npz",
+  "trial_steps": 410,
+  "nominal_ball": [
+    0.14,
+    -0.93
+  ],
+  "nominal_goal": [
+    0.0,
+    -3.7
+  ],
+  "styles": {
+    "inside": {
+      "strike": {}
+    },
+    "instep": {
+      "strike": {
+        "window": [
+          104,
+          118,
+          124,
+          140
+        ],
+        "targets": {
+          "right_hip_pitch_joint": -0.8913877045333408,
+          "right_hip_roll_joint": 0.16649251005879276,
+          "right_hip_yaw_joint": -0.04720832564426347,
+          "right_knee_joint": 1.4999758777065266,
+          "right_ankle_pitch_joint": 0.4537864999999999,
+          "right_ankle_roll_joint": -0.21286945375295882
+        }
+      },
+      "policy_goal": [
+        1.0,
+        -6.0
+      ]
+    },
+    "outside": {
+      "strike": {
+        "window": [
+          102,
+          116,
+          124,
+          132
+        ],
+        "targets": {
+          "right_hip_pitch_joint": 0.75,
+          "right_hip_roll_joint": 0.27496219466596683,
+          "right_hip_yaw_joint": 1.8,
+          "right_knee_joint": 0.6,
+          "right_ankle_pitch_joint": -0.8,
+          "right_ankle_roll_joint": -0.1609173878891123
+        }
+      },
+      "policy_goal": [
+        0.0,
+        -6.0
+      ]
+    }
+  },
+  "acceptance_conditions": [
+    {
+      "ball": [
+        0.14,
+        -0.93
+      ],
+      "goal": [
+        0.0,
+        -3.7
+      ]
+    },
+    {
+      "ball": [
+        0.12,
+        -0.93
+      ],
+      "goal": [
+        0.0,
+        -3.7
+      ]
+    },
+    {
+      "ball": [
+        0.16,
+        -0.93
+      ],
+      "goal": [
+        0.0,
+        -3.7
+      ]
+    }
+  ],
+  "acceptance_seeds": [
+    903,
+    904
+  ],
+  "reset_perturbations": {
+    "root_xy_m": 0.01,
+    "root_yaw_rad": 0.01,
+    "joint_position_rad": 0.005
+  },
+  "purpose": "Free-root posture correction; targeted power table is not calibrated for this profile.",
+  "posture_criteria": {
+    "instep_top_forward_min": 0.75,
+    "instep_toe_world_z_max": -0.6,
+    "outside_abs_hip_yaw_max_rad": 1.9,
+    "outside_heading_error_max_deg": 45.0,
+    "outside_axis_forward_min": 0.75,
+    "required_complete_trials_per_style": 5,
+    "trials_per_style": 6,
+    "allowed_falls": 0
+  },
+  "calibration_evidence": {
+    "probe": "reports/v013_posture_probe2.json",
+    "instep_trial_index": 5,
+    "outside_trial_index": 7
+  }
+}

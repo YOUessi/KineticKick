@@ -4,6 +4,19 @@ GitHub: [YOUessi/KineticKick](https://github.com/YOUessi/KineticKick). Each vers
 
 **Aim:** learn coordination principles from human soccer movements, then generate novel, natural, physically feasible humanoid movements. Task success is a constraint, not the main scientific objective.
 
+## v0.1.3：正脚背与脚外侧姿势修正
+
+正脚背改为脚尖下压、脚背朝向球门；脚外侧减少身体侧转和右髋过度扭转。冻结参数后，在球位左右各偏移 2 cm、两组初始扰动的检查中，正脚背、脚外侧和保留的脚内侧均为 **6/6 完成接近、指定触球、进球和站稳，共 18/18，无摔倒**。姿势与触球由实际物理接触和关节数据复核。
+
+普通预览现默认使用新姿势：
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style instep
+/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style outside
+```
+
+每次只启动一个仿真器，关闭窗口后再切换踢法。Tang 上的同视角前后对比含触球慢放：`media/kick_posture_v0.1.3_comparison.mp4`。参数保存在 `configs/free_shooting_posture_v1.json`，验收命令与限制见 [姿势修正报告](reports/2026-11-04-kick-posture.md)。接触仍偏脚前部；本次是近距离静止球姿势检查，**新姿势的定点和力度尚未重新标定**。带 `--target-x` / `--power` 的命令继续使用下方 v0.1.2 实验参数。
+
 ## v0.1.2：方向与力度控制实验（精度未达标）
 
 新增固定球门内左／中／右目标和轻／中／重力度接口，支持三种触球方式。**目前仍不能稳定定点射门**：54 次独立扰动回合中，27 次同时满足落点误差 ≤15 cm、球速误差、指定触球面及站稳要求。脚内侧 11/18、正脚背 4/18、脚外侧 12/18；正脚背的力度档位尤其不稳定。完整失败记录、实测球速及复现命令见 [本版本报告](reports/2026-11-04-targeted-shooting.md)。
@@ -14,7 +27,7 @@ cd /home/you/projects/kinetickick
   --style inside --target-x -0.3 --power high --output reports/targeted_demo.json
 ```
 
-`--target-x` 可选 `-0.3 / 0 / 0.3` 米；`--power` 可选 `low / medium / high`。三种踢法的请求速度不同，数值见报告。这些是实验控制，不保证实际命中；窗口显示实际误差。连续任意方向、任意力度和高球目标尚未验证。不加这些参数时继续运行下方的 v0.1.1 流程。
+`--target-x` 可选 `-0.3 / 0 / 0.3` 米；`--power` 可选 `low / medium / high`。三种踢法的请求速度不同，数值见报告。这些是实验控制，不保证实际命中；窗口显示实际误差。连续任意方向、任意力度和高球目标尚未验证。不加这些参数时运行上方 v0.1.3 姿势流程。
 
 ## v0.1.1：自由根部三种触球射门（2026-11-04）
 
@@ -24,9 +37,9 @@ cd /home/you/projects/kinetickick
 
 ```bash
 cd /home/you/projects/kinetickick
-/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style inside
-/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style instep
-/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style outside
+/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style inside --config configs/free_shooting_v1.json
+/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style instep --config configs/free_shooting_v1.json
+/home/you/conda_env/env_isaaclab/bin/python tools/show_free_shooting_live.py --style outside --config configs/free_shooting_v1.json
 ```
 
 关闭当前窗口后再运行下一个。`configs/free_shooting_v1.json` 保存三种控制参数与验收条件；使用球和球门状态输入的预训练策略，加上触球阶段的关节控制。模型与素材仍保存在 Tang 本地，环境准备见 [VERSION_CONTROL.md](VERSION_CONTROL.md)。当前验证的是近距离、静止球的仿真射门；不代表任意起点导航或实机能力。
