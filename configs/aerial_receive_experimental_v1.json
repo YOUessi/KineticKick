@@ -1,0 +1,168 @@
+{
+  "version": "0.1.17",
+  "status": "experimental_air_contact_recovery_only",
+  "reference": "experiments/aerial_v017/front_receive/ready_reference.npz",
+  "root_pose": [
+    0.0,
+    0.0,
+    0.76,
+    0.7071067811865477,
+    0.0,
+    0.0,
+    -0.7071067811865475
+  ],
+  "joint_names": [
+    "left_hip_pitch_joint",
+    "right_hip_pitch_joint",
+    "waist_yaw_joint",
+    "left_hip_roll_joint",
+    "right_hip_roll_joint",
+    "waist_roll_joint",
+    "left_hip_yaw_joint",
+    "right_hip_yaw_joint",
+    "waist_pitch_joint",
+    "left_knee_joint",
+    "right_knee_joint",
+    "left_shoulder_pitch_joint",
+    "right_shoulder_pitch_joint",
+    "left_ankle_pitch_joint",
+    "right_ankle_pitch_joint",
+    "left_shoulder_roll_joint",
+    "right_shoulder_roll_joint",
+    "left_ankle_roll_joint",
+    "right_ankle_roll_joint",
+    "left_shoulder_yaw_joint",
+    "right_shoulder_yaw_joint",
+    "left_elbow_joint",
+    "right_elbow_joint",
+    "left_wrist_roll_joint",
+    "right_wrist_roll_joint",
+    "left_wrist_pitch_joint",
+    "right_wrist_pitch_joint",
+    "left_wrist_yaw_joint",
+    "right_wrist_yaw_joint"
+  ],
+  "ready_joint_pos": [
+    -0.28130323568459337,
+    -0.8710567525437156,
+    -0.0065086823888123035,
+    -0.1906763718388979,
+    -0.0027720131292028245,
+    0.003332017920911312,
+    0.09274077319631555,
+    0.0047840922727860995,
+    -0.08434028923511505,
+    0.46966411966956256,
+    0.44333078317467073,
+    -0.060354966670274734,
+    -0.07161245495080948,
+    -0.19723611579166694,
+    0.42772061461810046,
+    0.55,
+    -0.55,
+    0.21178609919581767,
+    0.005528240696303224,
+    0.16122709214687347,
+    -0.01604282855987549,
+    1.5613445043563843,
+    1.5660767555236816,
+    -0.09264753758907318,
+    0.09747415035963058,
+    0.001688656397163868,
+    -0.08754078298807144,
+    -0.08189409971237183,
+    0.11674782633781433
+  ],
+  "feet": {
+    "left": [
+      [
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        -0.011762148503117131
+      ],
+      [
+        -1.0,
+        2.220446049250313e-16,
+        -0.0,
+        -0.031852785062808676
+      ],
+      [
+        -0.0,
+        0.0,
+        1.0,
+        0.035
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "right": [
+      [
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        -0.12176214850311713
+      ],
+      [
+        -1.0,
+        2.220446049250313e-16,
+        -0.0,
+        -0.3818527850628087
+      ],
+      [
+        -0.0,
+        0.0,
+        1.0,
+        0.15
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "ball_position": [
+    -0.12176214850311712,
+    -0.85,
+    1.05
+  ],
+  "ball_velocity": [
+    0,
+    0.75,
+    0
+  ],
+  "receive_height_m": 0.15,
+  "lower_to_height_m": 0.038,
+  "descent_speed_mps": 1.5,
+  "trigger_ball_height_m": 0.42,
+  "balance_kp_com": 1.5,
+  "balance_kd_com": 0.3,
+  "balance_kp_tilt": 0.5,
+  "balance_kd_tilt": 0.05,
+  "steps": 220,
+  "seed": 1701,
+  "recovery": {
+    "earliest_s": 0.46,
+    "blend_seconds": 0.14
+  },
+  "scope": "Prepared single-leg receive pose, one fixed incoming ball, free robot root. Airborne instep contact and recovery observed; active cushioning and ball retention NOT passed; no juggling or approach certification.",
+  "reference_sha256": "02be15848c177145b74bdd2563c7816947a5f70b03f1b9dd45a1cab90a5603fd",
+  "recorded_preview_config": "experiments/aerial_v017/front_receive/recovery.json",
+  "recorded_preview_config_sha256": "33adcfb6866c02eeb73cd676e4fd39d4732619cccf3bce83869f457133dc7cbc",
+  "recorded_preview_report": "reports/v017_aerial_recovery_preview.json",
+  "recorded_preview_report_sha256": "bd8ca8b4f43df455b87c63b8a5e92e03c6649b4615124f26dc7bdc81eb7380bc",
+  "physics_sources_sha256": {
+    "tools/run_aerial_control.py": "5a4ec857159a6c41871f172bd1f6ee9a892c1e8962a3652937e7a2beb3c67170",
+    "tools/aerial_gravity.py": "67ea3c5d218b6e2c83ba2ad4ae3ca3df0172a4dd6a0a76bbad53360ebc7e513e",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/contact_frame_sampler.py": "813dec44d2308889cc3ec9e632f08b84d2317e23ffff204b5cd3790f2f6c4623",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761"
+  }
+}

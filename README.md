@@ -1,5 +1,17 @@
 # KineticKick
 
+## v0.1.17：接高空球实验原型
+
+已记录从1.05m高处来球、脚背实际触球并恢复站稳的完整回合：落地前球速由4.09降至0.53m/s，末段连续站稳3.335s。**完整停球仍未完成**：主动下撤偏晚，球最终以0.39m/s滚走；连续颠球尚未实现。
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/run_aerial_control.py \
+  --plan configs/aerial_receive_experimental_v1.json \
+  --output reports/new_aerial_receive.json --video-dir media/new_aerial_receive_frames
+```
+
+这是准备姿态、固定来球的原型。预览：`media/aerial_receive_experimental_v0.1.17.mp4`；参考重建、未通过项和实测依据见[接高空球记录](reports/2026-11-05-aerial-receive-prototype.md)。旧射门和挑球版本保持不变。
+
 ## v0.1.16：短助跑挑球模式
 
 已重新录制脚内侧短助跑挑球：球心最高42cm，球底离地31cm，持续腾空0.50s，进球后末段连续站稳3.92s。复用已有可用控制，原普通射门和加力档保留。
