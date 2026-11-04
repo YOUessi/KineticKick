@@ -19,6 +19,17 @@ def vertical_fixture(pitch=80, height=.22):
     return run
 
 
+def vertical_matrix_fixture():
+    config, runs = matrix_fixture()
+    config['vertical_instep_criteria'] = VERTICAL_CRITERIA.copy()
+    vertical = vertical_fixture()
+    for run in runs:
+        run['kinematics'] = [copy.deepcopy(vertical['kinematics'][0]) for _ in range(3)]
+        for trace in run['traces']:
+            trace[399]['contacts'][0]['foot_quat_w'] = vertical['traces'][0][1]['contacts'][0]['foot_quat_w']
+    return config, runs
+
+
 class VerticalInstepTests(unittest.TestCase):
     def test_old_pose_is_not_near_vertical_but_toes_down_eighty_degrees_is(self):
         old = audit_vertical_instep(vertical_fixture(pitch=55), 0)
@@ -58,13 +69,7 @@ class VerticalInstepTests(unittest.TestCase):
                                audit_vertical_instep(b,0)['near_contact_clearance_m'])
 
     def test_strict_matrix_rejects_two_flat_trials_even_if_original_gate_passes(self):
-        config, runs = matrix_fixture()
-        config['vertical_instep_criteria'] = VERTICAL_CRITERIA.copy()
-        vertical = vertical_fixture()
-        for run in runs:
-            run['kinematics'] = [copy.deepcopy(vertical['kinematics'][0]) for _ in range(3)]
-            for trace in run['traces']:
-                trace[399]['contacts'][0]['foot_quat_w'] = vertical['traces'][0][1]['contacts'][0]['foot_quat_w']
+        config, runs = vertical_matrix_fixture()
         self.assertTrue(check_vertical_acceptance(config, runs, 'frozen')['passed'])
         for index in [0, 1]:
             runs[0]['traces'][index][399]['contacts'][0]['foot_quat_w'] = vertical_fixture(pitch=55)['traces'][0][1]['contacts'][0]['foot_quat_w']
@@ -77,6 +82,21 @@ class VerticalInstepTests(unittest.TestCase):
         runs[0].pop('diagnostic_only')
         config['vertical_instep_criteria']['max_angle_from_down_deg'] = 45
         with self.assertRaises(ValueError): check_vertical_acceptance(config, runs, 'frozen')
+
+    def test_pose_timestamps_must_be_finite_in_trials_and_frozen_matrices(self):
+        for invalid in [float('nan'), float('inf'), float('-inf')]:
+            run = vertical_fixture()
+            run['kinematics'][0][2]['time_s'] = invalid
+            result = audit_vertical_instep(run, 0)
+            self.assertFalse(result['vertical_and_full_chain'])
+            self.assertEqual(result['vertical_failure'], 'missing_foot_pose_coverage')
+        config, runs = vertical_matrix_fixture()
+        for run in runs:
+            for samples in run['kinematics']:
+                samples[2]['time_s'] = float('nan')
+        result = check_vertical_acceptance(config, runs, 'frozen')
+        self.assertFalse(result['passed'])
+        self.assertEqual(result['vertical_instep_successes'], 0)
 
 
 if __name__ == '__main__': unittest.main()

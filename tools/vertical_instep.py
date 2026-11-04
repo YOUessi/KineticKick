@@ -23,10 +23,11 @@ FOOT_CORNERS = tuple(itertools.product((-.069, .147), (-.051, .051), (-.050, .0)
 
 def _clearance(run, index, contact_time, contact_quaternion):
     samples = run['kinematics'][index]
-    times = np.array([row['time_s'] for row in samples])
+    times = np.array([row['time_s'] for row in samples], dtype=float)
     lo = contact_time - VERTICAL_CRITERIA['clearance_before_s']
     hi = contact_time + VERTICAL_CRITERIA['clearance_after_s']
-    if (not len(times) or times[0] > lo+1e-8 or times[-1] < hi-1e-8 or
+    if (not len(times) or not np.all(np.isfinite(times)) or
+            times[0] > lo+1e-8 or times[-1] < hi-1e-8 or
             np.any(np.diff(times) <= 0)):
         raise ValueError('Missing bracketing foot poses')
     first = max(int(np.searchsorted(times, lo+1e-8, side='right'))-1, 0)

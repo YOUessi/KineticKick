@@ -40,4 +40,4 @@
 
 - [ ] Not achieved: no supported candidate to freeze; no independent acceptance or stable profile claimed.
 - [x] Render a complete failed feasibility replay alongside the stable v0.1.3 sequence, with explicit failure labeling. Near-vertical pose occurs in air, not at accepted contact.
-- [ ] Run appropriate tests, one fresh final review, document and push the independent version branch.
+- [x] Run112 tests and one fresh final review; fix finite-timestamp validation with RED→GREEN coverage. Document and publish the diagnostic branch; physical outcome remains not achieved.
