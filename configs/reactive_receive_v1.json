@@ -1,0 +1,368 @@
+{
+  "version": "0.1.21",
+  "scope": "Shared grounded initial stance and shared controller; six bounded incoming-ball scenarios. Simulator state observations, not camera perception.",
+  "controller": {
+    "reference": "experiments/inside_v021/common_stance.npz",
+    "root_pose": [
+      0.0,
+      0.0,
+      0.74,
+      -0.3826834323650899,
+      0.0,
+      0.0,
+      0.9238795325112867
+    ],
+    "joint_names": [
+      "left_hip_pitch_joint",
+      "right_hip_pitch_joint",
+      "waist_yaw_joint",
+      "left_hip_roll_joint",
+      "right_hip_roll_joint",
+      "waist_roll_joint",
+      "left_hip_yaw_joint",
+      "right_hip_yaw_joint",
+      "waist_pitch_joint",
+      "left_knee_joint",
+      "right_knee_joint",
+      "left_shoulder_pitch_joint",
+      "right_shoulder_pitch_joint",
+      "left_ankle_pitch_joint",
+      "right_ankle_pitch_joint",
+      "left_shoulder_roll_joint",
+      "right_shoulder_roll_joint",
+      "left_ankle_roll_joint",
+      "right_ankle_roll_joint",
+      "left_shoulder_yaw_joint",
+      "right_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_elbow_joint",
+      "left_wrist_roll_joint",
+      "right_wrist_roll_joint",
+      "left_wrist_pitch_joint",
+      "right_wrist_pitch_joint",
+      "left_wrist_yaw_joint",
+      "right_wrist_yaw_joint"
+    ],
+    "ready_joint_pos": [
+      -0.3905728481379542,
+      -0.42567681214277897,
+      -0.0065086823888123035,
+      -0.19153570960193156,
+      -0.10886167369603199,
+      0.003332017920911312,
+      0.1202232197850492,
+      0.07427209119563503,
+      -0.08434028923511505,
+      0.6719160635714719,
+      0.7590022158348262,
+      -0.060354966670274734,
+      -0.07161245495080948,
+      -0.29290705253331434,
+      -0.3373798330062657,
+      0.55,
+      -0.55,
+      0.22574767266027432,
+      0.13169799159244702,
+      0.16122709214687347,
+      -0.01604282855987549,
+      1.5613445043563843,
+      1.5660767555236816,
+      -0.09264753758907318,
+      0.09747415035963058,
+      0.001688656397163868,
+      -0.08754078298807144,
+      -0.08189409971237183,
+      0.11674782633781433
+    ],
+    "feet": {
+      "left": [
+        [
+          -0.7071067811865475,
+          0.7071067811865477,
+          0.0,
+          -0.03890173626767188
+        ],
+        [
+          -0.7071067811865477,
+          -0.7071067811865475,
+          -0.0,
+          -0.01556077549422144
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.035
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "right": [
+        [
+          -0.7071067811865475,
+          0.7071067811865477,
+          0.0,
+          -0.16618095688125045
+        ],
+        [
+          -0.7071067811865477,
+          -0.7071067811865475,
+          -0.0,
+          0.11171844511935711
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.035
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "contact_point_local": [
+      0.075,
+      0.036,
+      -0.025
+    ],
+    "contact_center_local": [
+      0.075,
+      0.026,
+      -0.025
+    ],
+    "contact_normal_local": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "balance_kp_com": 0.0,
+    "balance_kd_com": 0.0,
+    "balance_kp_tilt": 0.5,
+    "balance_kd_tilt": 0.05,
+    "steps": 300,
+    "seed": 1901,
+    "keep_receive_arms": true,
+    "recovery": {
+      "earliest_s": 0.0,
+      "contact_delay_s": 0.35,
+      "blend_seconds": 0.2,
+      "maximum_ball_speed": 0.015,
+      "maximum_ball_spin": 0.25,
+      "ready_steps": 3,
+      "maximum_wait_s": 1.5,
+      "clearance_seconds": 0.18,
+      "clearance_horizontal_m": 0.08,
+      "clearance_up_m": 0.025,
+      "mode": "motor_stand",
+      "place_seconds": 0.5
+    },
+    "cushion": {
+      "velocity_limit_rad_s": 8.0,
+      "position_feedback_gain": 8.0,
+      "velocity_effort_gains": [
+        8.0,
+        3.0,
+        3.0,
+        6.0,
+        1.5,
+        1.5
+      ],
+      "actuator_lead_s": 0.04,
+      "absorption_limit_m": 0.12,
+      "rotation_feedback_gain": 10.0,
+      "transverse_damping_Ns_m": 80.0
+    },
+    "support_balance": {
+      "position_gain": 12.0,
+      "velocity_gain": 6.0,
+      "foot_x_min": -0.045,
+      "foot_x_max": 0.123,
+      "foot_y_limit": 0.026,
+      "root_rotation_gain": 30.0,
+      "root_angular_damping": 8.0
+    },
+    "viewer": {
+      "eye": [
+        -4.0,
+        -0.9,
+        1.7
+      ],
+      "lookat": [
+        -0.15,
+        -0.8,
+        0.65
+      ]
+    },
+    "reaction": {
+      "anchor": [
+        -0.3539017362676719,
+        -0.39942831935038264
+      ],
+      "lead_s": 0.55,
+      "freeze_s": 0.08,
+      "ground_fraction": 0.3,
+      "aerial_fraction": 0.1014,
+      "follow_s": 0.25,
+      "anchor_ground": [
+        -0.3539017363,
+        -0.2194283194
+      ],
+      "anchor_aerial": [
+        -0.3539017362676719,
+        -0.39942831935038264
+      ],
+      "aerial_follow_s": 0.2,
+      "ground_brake": true,
+      "brake_seconds": 0.16,
+      "aerial_lead_s": 0.72,
+      "soft_aerial_brake": true,
+      "aerial_reference_speed_mps": 3.9745660479013023,
+      "aerial_speed_gain": -0.11,
+      "aerial_yaw_trim_rad": -0.008,
+      "aerial_yaw_trim_full_angle_rad": 0.13,
+      "aerial_yaw_trim_start_angle_rad": -0.13
+    }
+  },
+  "scenarios": {
+    "ground_center": {
+      "receive_mode": "ground",
+      "ball_position": [
+        -0.3539017363,
+        -1.5994283193999999,
+        0.11
+      ],
+      "ball_velocity": [
+        0.0,
+        1.2,
+        0.0
+      ],
+      "ball_angular_velocity": [
+        -10.909090909090908,
+        0.0,
+        0.0
+      ],
+      "description": "Ground pass 1.2 m/s, direction +0 degrees"
+    },
+    "ground_left_slow": {
+      "receive_mode": "ground",
+      "ball_position": [
+        -0.5459606156248903,
+        -1.5859982542633668,
+        0.11
+      ],
+      "ball_velocity": [
+        0.12525579086405889,
+        0.8912412618674133,
+        0.0
+      ],
+      "ball_angular_velocity": [
+        -8.102193289703758,
+        1.1386890078550809,
+        0.0
+      ],
+      "description": "Ground pass 0.9 m/s, direction -8 degrees"
+    },
+    "ground_right_fast": {
+      "receive_mode": "ground",
+      "ball_position": [
+        -0.1618428569751097,
+        -1.5859982542633668,
+        0.11
+      ],
+      "ball_velocity": [
+        -0.20875965144009817,
+        1.4854021031123554,
+        0.0
+      ],
+      "ball_angular_velocity": [
+        -13.503655482839594,
+        -1.8978150130918015,
+        0.0
+      ],
+      "description": "Ground pass 1.5 m/s, direction +8 degrees"
+    },
+    "aerial_center": {
+      "receive_mode": "aerial",
+      "ball_position": [
+        -0.3539017362676719,
+        -3.091960473969229,
+        0.60855
+      ],
+      "ball_velocity": [
+        0.0,
+        3.9745660479013023,
+        2.943
+      ],
+      "ball_angular_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "Aerial ball, horizontal 3.975 m/s, direction +0 degrees, apex 1.05 m"
+    },
+    "aerial_left_slow": {
+      "receive_mode": "aerial",
+      "ball_position": [
+        -0.6933151367638328,
+        -2.814480152612232,
+        0.60855
+      ],
+      "ball_velocity": [
+        0.5010231634562355,
+        3.564965047469653,
+        2.943
+      ],
+      "ball_angular_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "Aerial ball, horizontal 3.600 m/s, direction -8 degrees, apex 1.05 m"
+    },
+    "aerial_right_fast": {
+      "receive_mode": "aerial",
+      "ball_position": [
+        0.051508714324964844,
+        -3.2840735646353694,
+        0.60855
+      ],
+      "ball_velocity": [
+        -0.5984443341282814,
+        4.258152695588752,
+        2.943
+      ],
+      "ball_angular_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "Aerial ball, horizontal 4.300 m/s, direction +8 degrees, apex 1.05 m"
+    }
+  },
+  "source_sha256": {
+    "tools/run_reactive_receive.py": "769d359c761003059d6d810098d1901425a6f86a4dd8881d4eedd95b45645c7c",
+    "tools/reactive_receive_motion.py": "e8fbcb9bf4f61a26b8e48e4b75447b531040126e0fd8805f2520f28cf9cedd06",
+    "tools/reactive_receive_metrics.py": "da65304518a7010560805a9c86203fbccade588d50d49213195a4b37f97e2bd8",
+    "tools/receiving_stance.py": "2b4d434d049d7d4ece5799ae64857dccf3596a37cfae42999c49f681a9437170",
+    "tools/support_balance.py": "eb57ba0442a62888b0c189e62b971593093ca03ceb16d8e1bac5fe42394a1ebc",
+    "tools/balanced_receive_metrics.py": "2f4a170664df80250600c916911ace0f992619ccfea89a7015027d2140801a7f",
+    "tools/inside_receive_metrics.py": "1828d9d46e2f1e3382f55a0aad3de2422e378c0b58fc3ced6c41d66a6dc0b471",
+    "tools/cushion_motion.py": "723b322fc00a6e90aa50f9e223e0cc81f41fcd391881acc92142ead4b5890f6b",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/aerial_gravity.py": "67ea3c5d218b6e2c83ba2ad4ae3ca3df0172a4dd6a0a76bbad53360ebc7e513e",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/contact_frame_sampler.py": "813dec44d2308889cc3ec9e632f08b84d2317e23ffff204b5cd3790f2f6c4623",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    "configs/paid_original/main.urdf": "dbc8471004e9b0b85c27a4ebc1f0d90a727c1cf7ca9ef507b805596f2004d64b",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "experiments/inside_v021/common_stance.npz": "d7b5b7be730ba841eab037c348a962abe0c4729d85140a28d7e502df43c8ee61"
+  }
+}
