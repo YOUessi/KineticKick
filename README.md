@@ -1,5 +1,17 @@
 # KineticKick
 
+## v0.1.16：短助跑挑球模式
+
+已重新录制脚内侧短助跑挑球：球心最高42cm，球底离地31cm，持续腾空0.50s，进球后末段连续站稳3.92s。复用已有可用控制，原普通射门和加力档保留。
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/lofted_shooting.py \
+  --config configs/chip_shot_v1.json \
+  --output reports/new_chip.json --video-dir media/new_chip_frames
+```
+
+预览：`media/chip_short_run_v0.1.16.mp4`。**连续跑动中不停步挑球仍未稳定**；本模式为固定场景的短助跑小挑球。实测与本轮尝试见[挑球记录](reports/2026-11-04-chip-mode-preview.md)。
+
 ## v0.1.15：正脚背加力射门
 
 新增正脚背加力档：同球位、同球门，水平出球速度由3.77提高到4.63m/s（+22.8%），球进门，14秒回合末段连续站稳8.19秒。沿用原关节限制，不给球添加外部冲量。

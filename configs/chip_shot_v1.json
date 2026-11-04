@@ -1,0 +1,108 @@
+{
+  "version": "0.1.16",
+  "status": "verified_short_approach_chip",
+  "trial_steps": 350,
+  "profiles": {
+    "loft": {
+      "label": "短助跑脚内侧挑球",
+      "trial": {
+        "name": "v019_late_lift",
+        "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+        "ball": [
+          -0.4475531578063965,
+          -1.232489824295044
+        ],
+        "goal": [
+          0,
+          -3.7
+        ],
+        "style": "inside",
+        "strike": {
+          "window": [
+            120,
+            122,
+            126,
+            138
+          ],
+          "offsets": {
+            "right_ankle_roll_joint": 0.12
+          }
+        },
+        "mode": "hip",
+        "goal_forward": [
+          0,
+          -1
+        ],
+        "policy_goal": [
+          0,
+          -3.7
+        ],
+        "strike_velocity": {
+          "window": [
+            120,
+            122,
+            125,
+            133
+          ],
+          "velocities": {
+            "right_hip_pitch_joint": -12,
+            "right_ankle_pitch_joint": -8
+          },
+          "minimum_support_N": 80
+        }
+      },
+      "observed": {
+        "contact_time_s": 2.4050000000000002,
+        "first_flight_apex_m": 0.4208132028579712,
+        "ball_bottom_clearance_m": 0.3108132028579712,
+        "first_flight_duration_s": 0.5,
+        "first_landing_s": 2.94,
+        "release_speed_mps": 5.842909521867914,
+        "release_vertical_speed_mps": 2.1269593238830566,
+        "estimated_contact_below_center_m": 0.04697788881088782,
+        "direct_foot_lift": true,
+        "illegal_body_ball_contact": false,
+        "fell": false,
+        "final_standing_seconds": 3.92,
+        "loft_success": true,
+        "scope": "Quick demonstration only; no robustness, three-level calibration or 3-D target accuracy claim"
+      },
+      "source": "reports/v016_short_run_chip_preview.json",
+      "source_trial_index": 0,
+      "source_sha256": "b0a32fd701dce7dd399bbc5946f3999b1cf72fc35fb1c1cd5800af40a4c9a5a1"
+    }
+  },
+  "source_sha256": {
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/runup_sequence.py": "6ba78e9aa9fff1e6d9d5657ca9094f4c285106e3fc16deafc6ddb74078e4c334",
+    "tools/runup_metrics.py": "fb7a13a0d9a56d1f636d8d5c85339b1ca884bfe9d7e4d7dfe5e606d5c515e5d2",
+    "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/targeted_shooting.py": "b9fb207076a928090f90e2f4ec8d1d2958700317a67a56deb4114d0e772ffd17",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz": "f7f4af14f11a7aa02c9cf92c2e4acfe6271dba14f31ee1335036e0344817d222",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz": "a031b43fcabd48edb3a1c9cf1f2d346e3928f50133a4d48d4024fa6d919b075b",
+    "tools/show_runup_shooting.py": "d5e54f86dcf6dc2f137036f7f166a9344487dbfc1d2f3175931aefe62164b01d",
+    "tools/strike_velocity.py": "65636859fa34b84e9699b922573e52e039e27733bb2ef671d0cb298812195698",
+    "tools/running_metrics.py": "6018d1cc90b274e7915cbc2ef059b132b06b37e865625dde68ab8cba70050097",
+    "tools/runup_targeting.py": "dfef6100041b7b2b2999f6c161222b6e78f871743ec22b275265af3a5342fb86",
+    "tools/show_targeted_runup.py": "d3ed46ce032d452d9462aa34e85c41c5c21d376027d5ead66dcad1e00b7a0b28",
+    "tools/lofted_shooting.py": "d6a157b7e2c4ed0c755e302086ed48eb9cf553540c813b99d40d83f31d35a4e9"
+  },
+  "upstream_sources_sha256": "10ea009ed41d89e9df26a224c6601c8e49f177566d336966aab834390fef05d9",
+  "scope": "Verified short-approach inside-foot chip, goal and standing recovery; continuous-running chip remains unverified",
+  "recorded_preview_config": {
+    "path": "configs/lofted_shooting_v1.json",
+    "profile": "loft",
+    "sha256": "6572bea2f2ec59bb08cd5bcdc9e9a217fd9eaf60a47d1db68adf789fd621781c"
+  },
+  "video_preview_local": "media/chip_short_run_v0.1.16.mp4",
+  "limitations": [
+    "Short approach, not continuous-running chip",
+    "One fixed ball and goal; no exact height target or three-level calibration",
+    "Tang local assets and weights remain required"
+  ]
+}
