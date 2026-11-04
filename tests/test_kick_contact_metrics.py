@@ -69,6 +69,17 @@ class ContactDiagnosticsTests(unittest.TestCase):
         terminal.update(terminated=True,time_s=float('nan'))
         with self.assertRaises(ValueError):contact_diagnostics(rows+[terminal],[0,-1,0])
 
+    def test_roundoff_overlap_cannot_pollute_balance_extrema(self):
+        rows=trace([0]*16)
+        rows[14].update(root_xyz=[0,0,.1],root_speed_xy=9.,root_tilt_deg=80.,nonfoot_contact_N=1000.)
+        result=balance_proxies(rows,.005,.070)
+        self.assertTrue(result['coverage_complete'])
+        self.assertAlmostEqual(result['observed_duration_s'],.065)
+        self.assertEqual(result['root_height_min_m'],.8)
+        self.assertEqual(result['root_speed_xy_max_mps'],.1)
+        self.assertEqual(result['root_tilt_max_deg'],5.)
+        self.assertEqual(result['nonfoot_net_force_peak_N'],0.)
+
     def test_balance_proxies_retain_transient_degradation_and_partial_coverage(self):
         rows = trace([0]*160)
         rows[20].update(root_xyz=[0, 0, .6], root_speed_xy=1.5, root_tilt_deg=40.,

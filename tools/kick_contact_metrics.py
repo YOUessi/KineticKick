@@ -100,13 +100,17 @@ def balance_proxies(trace, start_s, end_s):
     if not np.isfinite([start_s, end_s]).all() or end_s <= start_s:
         raise ValueError('Invalid observation window')
     selected = [row for row in rows if row['time_s'] > start_s and row['time_s']-row['physics_dt_s'] < end_s]
-    if not selected:
+    overlaps = [max(0., min(end_s, row['time_s'])-max(start_s, row['time_s']-row['physics_dt_s'])) for row in selected]
+    # Rounding-only overlap must not admit the next sample into extrema.
+    observed = [(row, weight) for row, weight in zip(selected, overlaps) if weight > 1e-9]
+    if not observed:
         return dict(coverage_complete=False, observed_duration_s=0.)
+    selected, overlaps = zip(*observed)
     values = np.asarray([[*row['root_xyz'], row['root_speed_xy'], row['root_tilt_deg'],
                           row['feet_support_N'], row['nonfoot_contact_N']] for row in selected], float)
     if values.shape != (len(selected), 7) or not np.all(np.isfinite(values)):
         raise ValueError('Invalid root/contact evidence')
-    weights = np.asarray([max(0., min(end_s, row['time_s'])-max(start_s, row['time_s']-row['physics_dt_s'])) for row in selected])
+    weights = np.asarray(overlaps)
     return dict(coverage_complete=bool(rows[0]['time_s']-rows[0]['physics_dt_s'] <= start_s+1e-8 and rows[-1]['time_s'] >= end_s-1e-8),
         observed_duration_s=float(weights.sum()), root_height_min_m=float(values[:, 2].min()),
         root_speed_xy_max_mps=float(values[:, 3].max()), root_tilt_max_deg=float(values[:, 4].max()),

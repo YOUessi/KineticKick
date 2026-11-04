@@ -23,6 +23,6 @@
 - [x] Write contact and balance diagnostics tests; observe missing module RED.
 - [x] Implement `tools/kick_contact_metrics.py` and pass tests.
 - [x] Replay matched existing demos, document objective correction and evidence gaps.
-- [ ] Run regression checks, one read-only final code review, publish version branch.
+- [x] Run regression checks and one read-only final code review; publish version branch after fixes.
 
 Independent read-only contact and balance investigations found no contact/initial-output gain despite increased instep travel, and worse outside recovery. Implementer owns all edits; no repeated experimental search.
