@@ -1,5 +1,11 @@
 # KineticKick
 
+## v0.1.20：脚弓停球、安全收脚与恢复站稳
+
+地面和高空两个固定场景的完整物理录像均通过：脚弓主动卸力，收脚后不再碰球，并分别在末段连续站稳2.80s与2.76s。最终球速为0.034/0.039m/s，达到近静止门槛，仍有少量余速。
+
+入口为`tools/run_balanced_receive.py`，配置为`configs/balanced_receive_ground_v1.json`与`configs/balanced_receive_aerial_v1.json`。预览：`media/balanced_inside_receive_v0.1.20.mp4`，包含正常速度和触球/收脚慢放。当前从准备姿态接固定来球，任意来球与走动接球未验证；实测、局限与复现见[脚弓停球恢复记录](reports/2026-11-05-balanced-inside-receiving.md)。
+
 ## v0.1.19：脚弓停地面球与高空球实验
 
 两种来球都已实现真实脚内侧接触和触球前回撤卸力。地面球曾降到0.016m/s，但恢复站立时再次被推走；高空球在落地前由5.665降到1.432m/s，恢复阶段仍失稳。**两种完整停球均未通过**，这是固定准备姿态下的实验入口。

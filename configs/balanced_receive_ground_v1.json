@@ -1,0 +1,242 @@
+{
+  "version": "0.1.20",
+  "status": "fixed_scenario_demo",
+  "receive_mode": "ground",
+  "reference": "experiments/inside_v019/ground_flat/ready_reference.npz",
+  "root_pose": [
+    0.0,
+    0.0,
+    0.7,
+    -0.17364817766693041,
+    0.0,
+    0.0,
+    0.9848077530122081
+  ],
+  "joint_names": [
+    "left_hip_pitch_joint",
+    "right_hip_pitch_joint",
+    "waist_yaw_joint",
+    "left_hip_roll_joint",
+    "right_hip_roll_joint",
+    "waist_roll_joint",
+    "left_hip_yaw_joint",
+    "right_hip_yaw_joint",
+    "waist_pitch_joint",
+    "left_knee_joint",
+    "right_knee_joint",
+    "left_shoulder_pitch_joint",
+    "right_shoulder_pitch_joint",
+    "left_ankle_pitch_joint",
+    "right_ankle_pitch_joint",
+    "left_shoulder_roll_joint",
+    "right_shoulder_roll_joint",
+    "left_ankle_roll_joint",
+    "right_ankle_roll_joint",
+    "left_shoulder_yaw_joint",
+    "right_shoulder_yaw_joint",
+    "left_elbow_joint",
+    "right_elbow_joint",
+    "left_wrist_roll_joint",
+    "right_wrist_roll_joint",
+    "left_wrist_pitch_joint",
+    "right_wrist_pitch_joint",
+    "left_wrist_yaw_joint",
+    "right_wrist_yaw_joint"
+  ],
+  "ready_joint_pos": [
+    -0.5352072605956678,
+    -1.115006945037595,
+    -0.0065086823888123035,
+    -0.19677222202033695,
+    -0.33875042656201154,
+    0.003332017920911312,
+    0.1665206975221547,
+    -0.0863640019741228,
+    -0.08434028923511505,
+    0.9604070665390404,
+    1.0159715382299368,
+    -0.060354966670274734,
+    -0.07161245495080948,
+    -0.44167507716645277,
+    0.11538085637532708,
+    0.55,
+    -0.55,
+    0.25707721314865384,
+    0.008899962201516594,
+    0.16122709214687347,
+    -0.01604282855987549,
+    1.5613445043563843,
+    1.5660767555236816,
+    -0.09264753758907318,
+    0.09747415035963058,
+    0.001688656397163868,
+    -0.08754078298807144,
+    -0.08189409971237183,
+    0.11674782633781433
+  ],
+  "feet": {
+    "left": [
+      [
+        -0.9396926207859083,
+        0.3420201433256688,
+        0.0,
+        -0.04601687577297467
+      ],
+      [
+        -0.3420201433256688,
+        -0.9396926207859083,
+        -0.0,
+        0.011770226259836154
+      ],
+      [
+        -0.0,
+        0.0,
+        0.9999999999999999,
+        0.035
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "right": [
+      [
+        -1.0,
+        1.2246467991473532e-16,
+        0.0,
+        -0.3775348382581628
+      ],
+      [
+        -1.2246467991473532e-16,
+        -1.0,
+        0.0,
+        0.10394311028583059
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.138
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "ball_position": [
+    -0.7025348382581628,
+    -0.7934781426108383,
+    0.113
+  ],
+  "ball_velocity": [
+    0.2999999999999999,
+    1.161895003862225,
+    0.0
+  ],
+  "ball_angular_velocity": [
+    -10.562681853292956,
+    2.727272727272726,
+    0.0
+  ],
+  "contact_point_local": [
+    0.10250000000000001,
+    0.03568245836551854,
+    -0.025
+  ],
+  "contact_center_local": [
+    0.1,
+    0.026,
+    -0.025
+  ],
+  "contact_normal_local": [
+    0.25,
+    0.9682458365518543,
+    0.0
+  ],
+  "impact_ball_position": [
+    -0.5075348382581628,
+    -0.03824639010039192,
+    0.11300000000000002
+  ],
+  "expected_contact_time_s": 0.65,
+  "balance_kp_com": 0.0,
+  "balance_kd_com": 0.0,
+  "balance_kp_tilt": 0.5,
+  "balance_kd_tilt": 0.05,
+  "steps": 250,
+  "seed": 1901,
+  "keep_receive_arms": true,
+  "recovery": {
+    "earliest_s": 0.0,
+    "contact_delay_s": 0.35,
+    "blend_seconds": 0.2,
+    "maximum_ball_speed": 0.08,
+    "maximum_ball_spin": 1.0,
+    "ready_steps": 5,
+    "maximum_wait_s": 0.55,
+    "clearance_seconds": 0.18,
+    "clearance_horizontal_m": 0.08,
+    "clearance_up_m": 0.025
+  },
+  "cushion": {
+    "velocity_fraction": 0.3,
+    "trajectory_lead_s": 0.16,
+    "freeze_prediction_lead_s": 0.08,
+    "follow_seconds": 0.25,
+    "velocity_limit_rad_s": 8.0,
+    "position_feedback_gain": 8.0,
+    "velocity_effort_gains": [
+      8.0,
+      3.0,
+      3.0,
+      6.0,
+      1.5,
+      1.5
+    ],
+    "actuator_lead_s": 0.04,
+    "crouch_depth_m": 0.0,
+    "absorption_limit_m": 0.04
+  },
+  "support_balance": {
+    "position_gain": 12.0,
+    "velocity_gain": 6.0,
+    "foot_x_min": -0.045,
+    "foot_x_max": 0.123,
+    "foot_y_limit": 0.026
+  },
+  "scope": "Prepared single-leg pose and fixed incoming trajectory; arbitrary arrivals and walking into the receive are untested.",
+  "viewer": {
+    "eye": [
+      -2.2,
+      -1.8,
+      1.4
+    ],
+    "lookat": [
+      -0.15,
+      -0.15,
+      0.6
+    ]
+  },
+  "source_sha256": {
+    "tools/run_balanced_receive.py": "887170dc6f1322c4afd6b863a08328c51d7d6ac4c3d61254c490a07baf6cac3d",
+    "tools/balanced_receive_motion.py": "c77ffa3d731f6b39d763485901d9441c737978cb82f43693ab0efa8d755ca6a4",
+    "tools/balanced_receive_metrics.py": "2f4a170664df80250600c916911ace0f992619ccfea89a7015027d2140801a7f",
+    "tools/support_balance.py": "eb57ba0442a62888b0c189e62b971593093ca03ceb16d8e1bac5fe42394a1ebc",
+    "tools/inside_receive_motion.py": "1b0a01d32e08fcaa2109fc7f29efc3f018c0894968cdd4f21547df1de82d5858",
+    "tools/inside_receive_metrics.py": "1828d9d46e2f1e3382f55a0aad3de2422e378c0b58fc3ced6c41d66a6dc0b471",
+    "tools/cushion_motion.py": "723b322fc00a6e90aa50f9e223e0cc81f41fcd391881acc92142ead4b5890f6b",
+    "tools/aerial_gravity.py": "67ea3c5d218b6e2c83ba2ad4ae3ca3df0172a4dd6a0a76bbad53360ebc7e513e",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/contact_frame_sampler.py": "813dec44d2308889cc3ec9e632f08b84d2317e23ffff204b5cd3790f2f6c4623",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    "configs/paid_original/main.urdf": "dbc8471004e9b0b85c27a4ebc1f0d90a727c1cf7ca9ef507b805596f2004d64b",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "experiments/inside_v019/ground_flat/ready_reference.npz": "7d49a5d8e079731214047873783f195d98e08a27da1e6d1b54a0c062dfa8d801"
+  }
+}
