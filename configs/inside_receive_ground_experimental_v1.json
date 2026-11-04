@@ -1,0 +1,252 @@
+{
+  "version": "0.1.19",
+  "status": "experimental_incomplete",
+  "receive_mode": "ground",
+  "reference": "experiments/inside_v019/ground_flat/ready_reference.npz",
+  "root_pose": [
+    0.0,
+    0.0,
+    0.7,
+    -0.17364817766693041,
+    0.0,
+    0.0,
+    0.9848077530122081
+  ],
+  "joint_names": [
+    "left_hip_pitch_joint",
+    "right_hip_pitch_joint",
+    "waist_yaw_joint",
+    "left_hip_roll_joint",
+    "right_hip_roll_joint",
+    "waist_roll_joint",
+    "left_hip_yaw_joint",
+    "right_hip_yaw_joint",
+    "waist_pitch_joint",
+    "left_knee_joint",
+    "right_knee_joint",
+    "left_shoulder_pitch_joint",
+    "right_shoulder_pitch_joint",
+    "left_ankle_pitch_joint",
+    "right_ankle_pitch_joint",
+    "left_shoulder_roll_joint",
+    "right_shoulder_roll_joint",
+    "left_ankle_roll_joint",
+    "right_ankle_roll_joint",
+    "left_shoulder_yaw_joint",
+    "right_shoulder_yaw_joint",
+    "left_elbow_joint",
+    "right_elbow_joint",
+    "left_wrist_roll_joint",
+    "right_wrist_roll_joint",
+    "left_wrist_pitch_joint",
+    "right_wrist_pitch_joint",
+    "left_wrist_yaw_joint",
+    "right_wrist_yaw_joint"
+  ],
+  "ready_joint_pos": [
+    -0.5352072605956678,
+    -1.115006945037595,
+    -0.0065086823888123035,
+    -0.19677222202033695,
+    -0.33875042656201154,
+    0.003332017920911312,
+    0.1665206975221547,
+    -0.0863640019741228,
+    -0.08434028923511505,
+    0.9604070665390404,
+    1.0159715382299368,
+    -0.060354966670274734,
+    -0.07161245495080948,
+    -0.44167507716645277,
+    0.11538085637532708,
+    0.55,
+    -0.55,
+    0.25707721314865384,
+    0.008899962201516594,
+    0.16122709214687347,
+    -0.01604282855987549,
+    1.5613445043563843,
+    1.5660767555236816,
+    -0.09264753758907318,
+    0.09747415035963058,
+    0.001688656397163868,
+    -0.08754078298807144,
+    -0.08189409971237183,
+    0.11674782633781433
+  ],
+  "feet": {
+    "left": [
+      [
+        -0.9396926207859083,
+        0.3420201433256688,
+        0.0,
+        -0.04601687577297467
+      ],
+      [
+        -0.3420201433256688,
+        -0.9396926207859083,
+        -0.0,
+        0.011770226259836154
+      ],
+      [
+        -0.0,
+        0.0,
+        0.9999999999999999,
+        0.035
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "right": [
+      [
+        -1.0,
+        1.2246467991473532e-16,
+        0.0,
+        -0.3775348382581628
+      ],
+      [
+        -1.2246467991473532e-16,
+        -1.0,
+        0.0,
+        0.10394311028583059
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.138
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "ball_position": [
+    -0.7025348382581628,
+    -0.7934781426108383,
+    0.113
+  ],
+  "ball_velocity": [
+    0.2999999999999999,
+    1.161895003862225,
+    0.0
+  ],
+  "ball_angular_velocity": [
+    -10.562681853292956,
+    2.727272727272726,
+    0.0
+  ],
+  "contact_point_local": [
+    0.10250000000000001,
+    0.03568245836551854,
+    -0.025
+  ],
+  "contact_center_local": [
+    0.1,
+    0.026,
+    -0.025
+  ],
+  "contact_normal_local": [
+    0.25,
+    0.9682458365518543,
+    0.0
+  ],
+  "impact_ball_position": [
+    -0.5075348382581628,
+    -0.03824639010039192,
+    0.11300000000000002
+  ],
+  "expected_contact_time_s": 0.65,
+  "balance_kp_com": 1.5,
+  "balance_kd_com": 0.3,
+  "balance_kp_tilt": 0.5,
+  "balance_kd_tilt": 0.05,
+  "steps": 220,
+  "seed": 1901,
+  "keep_receive_arms": true,
+  "recovery": {
+    "earliest_s": 0.0,
+    "contact_delay_s": 0.35,
+    "blend_seconds": 0.2,
+    "maximum_ball_speed": 0.08,
+    "maximum_ball_spin": 1.0,
+    "ready_steps": 5,
+    "maximum_wait_s": 0.55
+  },
+  "cushion": {
+    "velocity_fraction": 0.3,
+    "trajectory_lead_s": 0.16,
+    "freeze_prediction_lead_s": 0.08,
+    "follow_seconds": 0.25,
+    "velocity_limit_rad_s": 8.0,
+    "position_feedback_gain": 8.0,
+    "velocity_effort_gains": [
+      8.0,
+      3.0,
+      3.0,
+      6.0,
+      1.5,
+      1.5
+    ],
+    "actuator_lead_s": 0.04,
+    "crouch_depth_m": 0.0,
+    "absorption_limit_m": 0.04
+  },
+  "scope": "One prepared single-leg pose and one fixed incoming trajectory; approach and generalization untested.",
+  "evidence": {
+    "report": "reports/v019_inside_ground_compliant.json",
+    "report_sha256": "f25e8639eb7b398b63394978acd95451d350f2076f7b30a2e1f74ca63428c8c6",
+    "measured_plan": "experiments/inside_v019/ground_compliant/candidate.json",
+    "measured_plan_sha256": "0f233efabaa3c176001e77f7040143cf24005593b3a0bbe44ae9fb6a4412bd85",
+    "metrics": {
+      "metrics_version": 1,
+      "task": "inside_foot_ground_trap",
+      "success": false,
+      "receive_mode": "ground",
+      "contact_time_s": 0.68,
+      "first_ground_time_s": 0.025,
+      "airborne_contact": false,
+      "correct_arrival": true,
+      "inside_surface_impulse_fraction": 1.0,
+      "anticipatory_withdrawal": true,
+      "pre_contact_inside_point_speed_along_ball_mps": 0.358871434733063,
+      "pre_contact_relative_speed_mps": 0.8302086890756413,
+      "incoming_speed_mps": 1.1884837435063127,
+      "outgoing_speed_mps": 0.5661426194415862,
+      "speed_reduction_fraction": 0.5236429420806974,
+      "outgoing_measurement_time_s": 0.6900000000000001,
+      "outgoing_measured_before_ground_contact": false,
+      "speed_reduction_includes_ground": true,
+      "cushioned": true,
+      "ball_controlled_final_seconds": 0.0,
+      "balanced_final_seconds": 2.779999999999963,
+      "final_ball_speed_mps": 0.24649695749705114,
+      "final_ball_spin_rad_s": 2.2727438451595163,
+      "final_ball_distance_from_root_m": 0.8816277007395749,
+      "unintended_body_ball_contact": false,
+      "nonfoot_collision": false,
+      "terminated": false
+    }
+  },
+  "source_sha256": {
+    "tools/run_inside_receive.py": "14d89472808d003e860391529b3da1a376168a12bd894677366233b11ec8eff1",
+    "tools/inside_receive_motion.py": "1b0a01d32e08fcaa2109fc7f29efc3f018c0894968cdd4f21547df1de82d5858",
+    "tools/inside_receive_metrics.py": "1828d9d46e2f1e3382f55a0aad3de2422e378c0b58fc3ced6c41d66a6dc0b471",
+    "tools/cushion_motion.py": "723b322fc00a6e90aa50f9e223e0cc81f41fcd391881acc92142ead4b5890f6b",
+    "tools/aerial_gravity.py": "67ea3c5d218b6e2c83ba2ad4ae3ca3df0172a4dd6a0a76bbad53360ebc7e513e",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/contact_frame_sampler.py": "813dec44d2308889cc3ec9e632f08b84d2317e23ffff204b5cd3790f2f6c4623",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    "configs/paid_original/main.urdf": "dbc8471004e9b0b85c27a4ebc1f0d90a727c1cf7ca9ef507b805596f2004d64b",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "experiments/inside_v019/ground_flat/ready_reference.npz": "7d49a5d8e079731214047873783f195d98e08a27da1e6d1b54a0c062dfa8d801"
+  }
+}

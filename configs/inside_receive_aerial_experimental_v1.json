@@ -1,0 +1,252 @@
+{
+  "version": "0.1.19",
+  "status": "experimental_incomplete",
+  "receive_mode": "aerial",
+  "reference": "experiments/inside_v019/aerial/ready_reference.npz",
+  "root_pose": [
+    0.0,
+    0.0,
+    0.74,
+    -0.3826834323650899,
+    0.0,
+    0.0,
+    0.9238795325112867
+  ],
+  "joint_names": [
+    "left_hip_pitch_joint",
+    "right_hip_pitch_joint",
+    "waist_yaw_joint",
+    "left_hip_roll_joint",
+    "right_hip_roll_joint",
+    "waist_roll_joint",
+    "left_hip_yaw_joint",
+    "right_hip_yaw_joint",
+    "waist_pitch_joint",
+    "left_knee_joint",
+    "right_knee_joint",
+    "left_shoulder_pitch_joint",
+    "right_shoulder_pitch_joint",
+    "left_ankle_pitch_joint",
+    "right_ankle_pitch_joint",
+    "left_shoulder_roll_joint",
+    "right_shoulder_roll_joint",
+    "left_ankle_roll_joint",
+    "right_ankle_roll_joint",
+    "left_shoulder_yaw_joint",
+    "right_shoulder_yaw_joint",
+    "left_elbow_joint",
+    "right_elbow_joint",
+    "left_wrist_roll_joint",
+    "right_wrist_roll_joint",
+    "left_wrist_pitch_joint",
+    "right_wrist_pitch_joint",
+    "left_wrist_yaw_joint",
+    "right_wrist_yaw_joint"
+  ],
+  "ready_joint_pos": [
+    -0.3905728481379542,
+    -1.0505258134923354,
+    -0.0065086823888123035,
+    -0.19153570960193156,
+    -0.47401473927433696,
+    0.003332017920911312,
+    0.1202232197850492,
+    -0.9365805492586032,
+    -0.08434028923511505,
+    0.6719160635714719,
+    1.2246105362248985,
+    -0.060354966670274734,
+    -0.07161245495080948,
+    -0.29290705253331434,
+    -0.24459943671168427,
+    0.55,
+    -0.55,
+    0.22574767266027432,
+    0.02062793525229611,
+    0.16122709214687347,
+    -0.01604282855987549,
+    1.5613445043563843,
+    1.5660767555236816,
+    -0.09264753758907318,
+    0.09747415035963058,
+    0.001688656397163868,
+    -0.08754078298807144,
+    -0.08189409971237183,
+    0.11674782633781433
+  ],
+  "feet": {
+    "left": [
+      [
+        -0.7071067811865475,
+        0.7071067811865477,
+        0.0,
+        -0.03890173626767188
+      ],
+      [
+        -0.7071067811865477,
+        -0.7071067811865475,
+        -0.0,
+        -0.01556077549422144
+      ],
+      [
+        -0.0,
+        0.0,
+        1.0,
+        0.035
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "right": [
+      [
+        -1.0,
+        8.96060431238072e-17,
+        -8.347667256373471e-17,
+        -0.2789017362676719
+      ],
+      [
+        -1.2246467991473532e-16,
+        -0.7316888688738208,
+        0.6816387600233342,
+        -0.2755607754942214
+      ],
+      [
+        0.0,
+        0.6816387600233342,
+        0.7316888688738208,
+        0.27
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "ball_position": [
+    -1.36179341503739,
+    -3.0969625764361446,
+    0.60855
+  ],
+  "ball_velocity": [
+    1.4051519632597558,
+    3.9819460556168553,
+    2.943
+  ],
+  "ball_angular_velocity": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "contact_point_local": [
+    0.10250000000000001,
+    0.03568245836551854,
+    -0.025
+  ],
+  "contact_center_local": [
+    0.1,
+    0.026,
+    -0.025
+  ],
+  "contact_normal_local": [
+    0.25,
+    0.9682458365518543,
+    0.0
+  ],
+  "impact_ball_position": [
+    -0.40890173626767184,
+    -0.39664021919813364,
+    0.3486296530097566
+  ],
+  "expected_contact_time_s": 0.6781413709583004,
+  "balance_kp_com": 1.5,
+  "balance_kd_com": 0.3,
+  "balance_kp_tilt": 0.5,
+  "balance_kd_tilt": 0.05,
+  "steps": 220,
+  "seed": 1901,
+  "keep_receive_arms": true,
+  "recovery": {
+    "earliest_s": 0.0,
+    "contact_delay_s": 0.2,
+    "blend_seconds": 0.2,
+    "maximum_ball_speed": 0.2,
+    "maximum_ball_spin": 3.0,
+    "ready_steps": 5,
+    "maximum_wait_s": 0.35
+  },
+  "cushion": {
+    "velocity_fraction": 0.13,
+    "trajectory_lead_s": 0.16,
+    "freeze_prediction_lead_s": 0.08,
+    "follow_seconds": 0.2,
+    "velocity_limit_rad_s": 8.0,
+    "position_feedback_gain": 8.0,
+    "velocity_effort_gains": [
+      8.0,
+      3.0,
+      3.0,
+      6.0,
+      1.5,
+      1.5
+    ],
+    "actuator_lead_s": 0.04,
+    "crouch_depth_m": 0.0,
+    "absorption_limit_m": 0.04
+  },
+  "scope": "One prepared single-leg pose and one fixed incoming trajectory; approach and generalization untested.",
+  "evidence": {
+    "report": "reports/v019_inside_aerial_compliant.json",
+    "report_sha256": "6225177396e8ef9ad47a403bb0123491246b3b495d3c1c505b6e04b32bdf8b59",
+    "measured_plan": "experiments/inside_v019/aerial_compliant/candidate.json",
+    "measured_plan_sha256": "79cbf0012e2683c9e87a311b55dceeae596131c09d3ffb2a352926c5bd49dd2c",
+    "metrics": {
+      "metrics_version": 1,
+      "task": "inside_foot_aerial_trap",
+      "success": false,
+      "receive_mode": "aerial",
+      "contact_time_s": 0.6900000000000001,
+      "first_ground_time_s": 0.835,
+      "airborne_contact": true,
+      "correct_arrival": true,
+      "inside_surface_impulse_fraction": 1.0,
+      "anticipatory_withdrawal": true,
+      "pre_contact_inside_point_speed_along_ball_mps": 0.7334967700498499,
+      "pre_contact_relative_speed_mps": 4.933292610754693,
+      "incoming_speed_mps": 5.665242161055576,
+      "outgoing_speed_mps": 1.4316969050331614,
+      "speed_reduction_fraction": 0.7472840764204154,
+      "outgoing_measurement_time_s": 0.8,
+      "outgoing_measured_before_ground_contact": true,
+      "speed_reduction_includes_ground": false,
+      "cushioned": true,
+      "ball_controlled_final_seconds": 0.0,
+      "balanced_final_seconds": 0.0,
+      "final_ball_speed_mps": 0.5774157977716454,
+      "final_ball_spin_rad_s": 7.815977888775427,
+      "final_ball_distance_from_root_m": 0.14956292496325127,
+      "unintended_body_ball_contact": true,
+      "nonfoot_collision": true,
+      "terminated": true
+    }
+  },
+  "source_sha256": {
+    "tools/run_inside_receive.py": "14d89472808d003e860391529b3da1a376168a12bd894677366233b11ec8eff1",
+    "tools/inside_receive_motion.py": "1b0a01d32e08fcaa2109fc7f29efc3f018c0894968cdd4f21547df1de82d5858",
+    "tools/inside_receive_metrics.py": "1828d9d46e2f1e3382f55a0aad3de2422e378c0b58fc3ced6c41d66a6dc0b471",
+    "tools/cushion_motion.py": "723b322fc00a6e90aa50f9e223e0cc81f41fcd391881acc92142ead4b5890f6b",
+    "tools/aerial_gravity.py": "67ea3c5d218b6e2c83ba2ad4ae3ca3df0172a4dd6a0a76bbad53360ebc7e513e",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/contact_frame_sampler.py": "813dec44d2308889cc3ec9e632f08b84d2317e23ffff204b5cd3790f2f6c4623",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    "configs/paid_original/main.urdf": "dbc8471004e9b0b85c27a4ebc1f0d90a727c1cf7ca9ef507b805596f2004d64b",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "experiments/inside_v019/aerial/ready_reference.npz": "25e92b8321b6b4944daf7a30c68d1eacc04ae68b0df083853263237209ae5d65"
+  }
+}

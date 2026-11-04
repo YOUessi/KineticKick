@@ -1,5 +1,11 @@
 # KineticKick
 
+## v0.1.19：脚弓停地面球与高空球实验
+
+两种来球都已实现真实脚内侧接触和触球前回撤卸力。地面球曾降到0.016m/s，但恢复站立时再次被推走；高空球在落地前由5.665降到1.432m/s，恢复阶段仍失稳。**两种完整停球均未通过**，这是固定准备姿态下的实验入口。
+
+控制入口为`tools/run_inside_receive.py`，分别使用`configs/inside_receive_ground_experimental_v1.json`与`configs/inside_receive_aerial_experimental_v1.json`。预览：`media/inside_receive_experimental_v0.1.19.mp4`，含真实正常速度与慢放，明确保留失败过程。实测、失败诊断和复现见[脚弓接球实验记录](reports/2026-11-05-inside-foot-receiving.md)。
+
 ## v0.1.18：主动下撤实验
 
 接球控制加入来球预测、脚部位置/速度反馈和支撑腿协同。固定场景中，脚在首次触球前已向下运动0.35m/s；但随后仍有小腿碰球，**完整卸力停球尚未通过**。实验入口为`tools/run_aerial_cushion.py`，参数为`configs/aerial_cushion_experimental_v1.json`；不要把这份实验配置视为可用停球模式。
