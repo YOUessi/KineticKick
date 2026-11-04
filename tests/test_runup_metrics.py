@@ -54,6 +54,10 @@ class RunupMetricsTests(unittest.TestCase):
         self.assertTrue(measured['illegal_body_ball_contact'])
         self.assertEqual(measured['first_body_ball_contact']['body'],'right_knee_link')
 
+    def test_running_diagnostic_cannot_certify_shooting(self):
+        result=self.result();result['running_diagnostic']=True
+        self.assertFalse(summarize_trial(result,0)['sequence_success'])
+
     def test_missing_all_body_evidence_or_wrong_kicking_foot_cannot_pass(self):
         for missing in ('robot_ball_contact_force_N',):
             result=self.result();result['traces'][0][0].pop(missing)

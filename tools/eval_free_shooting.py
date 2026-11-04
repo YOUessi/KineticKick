@@ -62,6 +62,8 @@ def main():
     parser.add_argument("--trials", help="JSON manifest of independent ball, goal, style and strike corrections")
     parser.add_argument('--sequence-evidence', action='store_true',
                         help='Record whole-body and hip/knee evidence throughout the physical sequence')
+    parser.add_argument('--running-diagnostic', action='store_true',
+                        help='Locomotion probe: replace reference-error termination with absolute fall limits; never certifies shooting')
     parser.add_argument("--perturb-reset", action="store_true",
                         help="Seeded initial root xy +/-1 cm, yaw +/-0.01 rad and joint positions +/-0.005 rad")
     parser.add_argument("--output", required=True)
@@ -147,8 +149,12 @@ def main():
     if not args.reference_sweep:
         from runup_sequence import resolve_motion_files
         args.motion_files = resolve_motion_files(args.trials_data, ROOT, args.motion_files[0])
-    if any(t.get('coordination') for t in (args.trials_data or [])) and not args.sequence_evidence:
-        parser.error('Coordination requires --sequence-evidence for physical support feedback')
+    if args.running_diagnostic and (not args.sequence_evidence or args.steps > 300):
+        parser.error('Running diagnostic requires sequence evidence and at most 300 policy steps')
+    if any(t.get('coordination') or t.get('strike_velocity') for t in (args.trials_data or [])) and not args.sequence_evidence:
+        parser.error('Velocity/coordination control requires --sequence-evidence for physical support feedback')
+    if any(t.get('coordination') and t.get('strike_velocity') for t in (args.trials_data or [])):
+        parser.error('Do not combine two velocity controllers in one trial')
     from runup_sequence import approach_offset
     for trial in args.trials_data or []:
         approach_offset(trial, 0.)
@@ -229,6 +235,17 @@ def run(args, points):
     cfg.sim.device = "cuda:0"
     cfg.seed = args.seed
     cfg.episode_length_s = max(12., args.steps * .02 + 1)
+    if args.running_diagnostic:
+        import math
+        from isaaclab.envs import mdp as physical_mdp
+        from isaaclab.managers import TerminationTermCfg as DoneTerm
+        cfg.terminations.ee_body_pos = None
+        cfg.terminations.anchor_pos_z = None
+        cfg.terminations.anchor_ori = None
+        cfg.terminations.physical_height = DoneTerm(
+            func=physical_mdp.root_height_below_minimum, params={'minimum_height': .45})
+        cfg.terminations.physical_orientation = DoneTerm(
+            func=physical_mdp.bad_orientation, params={'limit_angle': math.radians(60.)})
     cfg.commands.motion.motion_files = args.motion_files
     cfg.commands.motion.debug_vis = False
     cfg.scene.contact_forces.debug_vis = False
@@ -287,6 +304,8 @@ def run(args, points):
     from runup_sequence import CoordinationTargets
     coordination = CoordinationTargets([t.get('coordination') for t in trials], robot.joint_names,
         cpu_array(action_term._scale), cpu_array(action_term._offset), cpu_array(robot.data.soft_joint_pos_limits))
+    from strike_velocity import StrikeVelocityPulse
+    velocity_pulse = StrikeVelocityPulse([t.get('strike_velocity') for t in trials], robot.joint_names)
     cartesian = None
     if any('cartesian' in t for t in trials):
         from cartesian_strike import CartesianStrike
@@ -513,7 +532,8 @@ def run(args, points):
                 support = cpu_array(ground_views['left'].get_contact_force_matrix(raw.physics_dt)).reshape(args.num_envs, -1, 3)[:, :, 2].sum(axis=1)
                 distance = cpu_array(torch.linalg.vector_norm(robot.data.body_pos_w[:, foot_indices['right']] - ball.data.root_pos_w, dim=-1))
                 action = coordination.apply(action, substep * raw.physics_dt, cpu_array(motion.time_steps), support, distance)
-                velocity_targets = torch.tensor(coordination.velocity_targets, device=robot.device, dtype=torch.float32)
+                pulse = velocity_pulse.apply(cpu_array(motion.time_steps), support)
+                velocity_targets = torch.tensor(coordination.velocity_targets + pulse, device=robot.device, dtype=torch.float32)
                 velocity_targets = torch.clamp(velocity_targets, -robot.data.joint_vel_limits, robot.data.joint_vel_limits)
                 robot.set_joint_velocity_target(velocity_targets)
             if cartesian is not None:
@@ -590,6 +610,8 @@ def run(args, points):
                       contact_evidence_version=2,
                       records=records, contacts=contacts, traces=traces,
                       kinematics=kinematics, joint_names=robot.joint_names)
+        result.update(running_diagnostic=args.running_diagnostic,
+            termination_policy='absolute_height_0.45m_tilt_60deg' if args.running_diagnostic else 'upstream_reference_tracking')
         result.update(perturb_reset=args.perturb_reset, initial_robot_state=initial_robot_state)
         result['automatic_resets_suppressed'] = sorted(suppressed_resets)
         result.update(controller_config=args.config,
@@ -606,7 +628,7 @@ def run(args, points):
                 joint_effort_limits=cpu_array(robot.data.joint_effort_limits).tolist(),
                 joint_velocity_limits=cpu_array(robot.data.joint_vel_limits).tolist(),
                 sequence_sources_sha256={name: hashlib.sha256((ROOT/'tools'/name).read_bytes()).hexdigest()
-                                        for name in ('runup_sequence.py', 'runup_metrics.py', 'cartesian_strike.py')})
+                                        for name in ('runup_sequence.py', 'runup_metrics.py', 'cartesian_strike.py', 'strike_velocity.py')})
             from runup_metrics import summarize_trial
             result['sequence_records'] = [summarize_trial(result, i) for i in range(args.num_envs)]
         result.update(args.targeted_provenance or {})

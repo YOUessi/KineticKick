@@ -84,6 +84,9 @@ class CoordinationTargets:
             for key, default in (('minimum_support_N', 80.), ('maximum_ball_distance_m', .8)):
                 if not np.isfinite(entry.get(key, default)) or entry.get(key, default) <= 0:
                     raise ValueError('Positive support and ball distance gates required')
+            gain = entry.get('velocity_feedforward_gain', 1.)
+            if not np.isfinite(gain) or not 0 <= gain <= 2.:
+                raise ValueError('Velocity feedforward gain must be within 0..2')
             ids = [joint_names.index(name) for name in prep]
             self.indices.append(ids)
             self.preparation.append(np.array(list(prep.values())))
@@ -127,7 +130,7 @@ class CoordinationTargets:
             blend = phase * phase * (3 - 2 * phase)
             target = np.clip(start + blend * (finish-start), self.limits[i, ids, 0], self.limits[i, ids, 1])
             if entry.get('velocity_feedforward', False) and t < b:
-                velocity = 6*phase*(1-phase)*(finish-start)/duration
+                velocity = entry.get('velocity_feedforward_gain', 1.)*6*phase*(1-phase)*(finish-start)/duration
                 unclipped = start + blend * (finish-start)
                 self.velocity_targets[i, ids] = np.where(target == unclipped, np.clip(velocity, -12., 12.), 0.)
             result[i, ids] = (target-self.offset[i, ids]) / self.scale[i, ids]

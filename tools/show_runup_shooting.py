@@ -7,6 +7,8 @@ fail explicitly; they are never replaced by another contact style or joint mode.
 from __future__ import annotations
 
 import argparse
+import copy
+import math
 import hashlib
 import json
 from pathlib import Path
@@ -30,11 +32,26 @@ def verify_runup_config(config, root):
         raise ValueError('The upstream physics/controller sources differ from the frozen validation')
 
 
+def select_runup_trial(config, mode, style, target_x=None):
+    entry = config['modes'].get(mode, {}).get(style)
+    if entry is None:
+        raise ValueError(f'No validated candidate for {mode}/{style}')
+    if target_x is not None:
+        if not math.isfinite(target_x):
+            raise ValueError('Target must be finite')
+        entry = next((command for command in entry.get('aim_commands', [])
+                      if abs(command['target_x_m']-target_x) <= 1e-8), None)
+        if entry is None or entry.get('status') != 'validated_in_listed_conditions':
+            raise ValueError('This fixed-power target has not passed acceptance; no interpolation')
+    return copy.deepcopy(entry['trial']), entry
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--mode', choices=('hip', 'knee'), default='hip')
     parser.add_argument('--style', choices=('inside', 'instep', 'outside'), default='inside')
-    parser.add_argument('--config', default=str(ROOT/'configs/runup_shooting_v1.json'))
+    parser.add_argument('--config', default=str(ROOT/'configs/runup_shooting_v2.json'))
+    parser.add_argument('--target-x', type=float, help="A validated goal point at this motion's native strength")
     parser.add_argument('--seed', type=int, default=1710)
     parser.add_argument('--headless', action='store_true')
     parser.add_argument('--video-dir')
@@ -42,14 +59,12 @@ def main():
     args = parser.parse_args()
     config_path = Path(args.config).resolve()
     config = json.loads(config_path.read_text())
-    entry = config['modes'].get(args.mode, {}).get(args.style)
-    if entry is None:
-        parser.error(f'No validated or recorded candidate for mode={args.mode}, style={args.style}; no substitution made')
     try:
         verify_runup_config(config, ROOT)
+        trial, entry = select_runup_trial(config, args.mode, args.style, args.target_x)
     except (ValueError, OSError) as error:
         parser.error(str(error))
-    trial = dict(entry['trial'], runup_config=str(config_path),
+    trial.update(runup_config=str(config_path),
                  runup_config_sha256=hashlib.sha256(config_path.read_bytes()).hexdigest())
     output = Path(args.output).resolve() if args.output else ROOT/'reports'/f'runup_{args.mode}_{args.style}_{time.time_ns()}.json'
     if output.exists():

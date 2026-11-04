@@ -44,7 +44,8 @@ def summarize_trial(result, index):
         first_body_ball_contact=first, contribution_foot_matches_contact=primary_foot_match,
         physical_integrity=physical, shot_success=bool(shot['success']),
         sequence_success=bool(summary['motion_sequence_pass'] and shot['success'] and physical
-                              and coverage and not illegal and primary_foot_match))
+                              and coverage and not illegal and primary_foot_match
+                              and not result.get('running_diagnostic', False)))
     return summary
 
 

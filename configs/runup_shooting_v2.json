@@ -1,0 +1,812 @@
+{
+  "trial_steps": 500,
+  "policy_dt_s": 0.02,
+  "source_sha256": {
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/runup_sequence.py": "6ba78e9aa9fff1e6d9d5657ca9094f4c285106e3fc16deafc6ddb74078e4c334",
+    "tools/runup_metrics.py": "fb7a13a0d9a56d1f636d8d5c85339b1ca884bfe9d7e4d7dfe5e606d5c515e5d2",
+    "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/targeted_shooting.py": "b9fb207076a928090f90e2f4ec8d1d2958700317a67a56deb4114d0e772ffd17",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz": "f7f4af14f11a7aa02c9cf92c2e4acfe6271dba14f31ee1335036e0344817d222",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz": "a031b43fcabd48edb3a1c9cf1f2d346e3928f50133a4d48d4024fa6d919b075b",
+    "tools/show_runup_shooting.py": "d5e54f86dcf6dc2f137036f7f166a9344487dbfc1d2f3175931aefe62164b01d",
+    "tools/strike_velocity.py": "65636859fa34b84e9699b922573e52e039e27733bb2ef671d0cb298812195698",
+    "tools/running_metrics.py": "6018d1cc90b274e7915cbc2ef059b132b06b37e865625dde68ab8cba70050097",
+    "tools/runup_targeting.py": "dfef6100041b7b2b2999f6c161222b6e78f871743ec22b275265af3a5342fb86",
+    "tools/show_targeted_runup.py": "d3ed46ce032d452d9462aa34e85c41c5c21d376027d5ead66dcad1e00b7a0b28"
+  },
+  "version": "0.1.8",
+  "modes": {
+    "hip": {
+      "inside": {
+        "status": "validated_in_listed_conditions",
+        "scope": "Short stepping approach, fixed native-strength aim, shot and stable recovery; not sustained running or three-level power.",
+        "trial": {
+          "name": "hip_inside_aim_+0.0",
+          "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+          "ball": [
+            -0.4475531578063965,
+            -1.232489824295044
+          ],
+          "goal": [
+            0,
+            -3.7
+          ],
+          "style": "inside",
+          "strike": {},
+          "mode": "hip",
+          "goal_forward": [
+            0,
+            -1
+          ],
+          "policy_goal": [
+            0,
+            -3.7
+          ],
+          "target": {
+            "target_x": 0,
+            "speed_mps": 5.0
+          }
+        },
+        "aim_commands": [
+          {
+            "target_x_m": -0.3,
+            "trial": {
+              "name": "hip_inside_aim_-0.3",
+              "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+              "ball": [
+                -0.4475531578063965,
+                -1.232489824295044
+              ],
+              "goal": [
+                0,
+                -3.7
+              ],
+              "style": "inside",
+              "strike": {},
+              "mode": "hip",
+              "goal_forward": [
+                0,
+                -1
+              ],
+              "policy_goal": [
+                -0.2,
+                -3.7
+              ],
+              "target": {
+                "target_x": -0.3,
+                "speed_mps": 5.0
+              }
+            },
+            "status": "validated_in_listed_conditions",
+            "scope": "Fixed native strength only. Goal-plane point within 0.15 m and full physical sequence; two seeded +/-1 cm reset perturbations.",
+            "acceptance": {
+              "passed": 2,
+              "total": 2,
+              "seeds": [
+                1813,
+                1814
+              ],
+              "max_aim_error_m": 0.0635219180806996
+            }
+          },
+          {
+            "target_x_m": 0,
+            "trial": {
+              "name": "hip_inside_aim_+0.0",
+              "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+              "ball": [
+                -0.4475531578063965,
+                -1.232489824295044
+              ],
+              "goal": [
+                0,
+                -3.7
+              ],
+              "style": "inside",
+              "strike": {},
+              "mode": "hip",
+              "goal_forward": [
+                0,
+                -1
+              ],
+              "policy_goal": [
+                0,
+                -3.7
+              ],
+              "target": {
+                "target_x": 0,
+                "speed_mps": 5.0
+              }
+            },
+            "status": "validated_in_listed_conditions",
+            "scope": "Fixed native strength only. Goal-plane point within 0.15 m and full physical sequence; two seeded +/-1 cm reset perturbations.",
+            "acceptance": {
+              "passed": 2,
+              "total": 2,
+              "seeds": [
+                1813,
+                1814
+              ],
+              "max_aim_error_m": 0.1000752160614945
+            }
+          },
+          {
+            "target_x_m": 0.3,
+            "trial": {
+              "name": "hip_inside_aim_+0.3",
+              "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+              "ball": [
+                -0.4475531578063965,
+                -1.232489824295044
+              ],
+              "goal": [
+                0,
+                -3.7
+              ],
+              "style": "inside",
+              "strike": {},
+              "mode": "hip",
+              "goal_forward": [
+                0,
+                -1
+              ],
+              "policy_goal": [
+                0.6,
+                -3.7
+              ],
+              "target": {
+                "target_x": 0.3,
+                "speed_mps": 5.0
+              }
+            },
+            "status": "validated_in_listed_conditions",
+            "scope": "Fixed native strength only. Goal-plane point within 0.15 m and full physical sequence; two seeded +/-1 cm reset perturbations.",
+            "acceptance": {
+              "passed": 2,
+              "total": 2,
+              "seeds": [
+                1813,
+                1814
+              ],
+              "max_aim_error_m": 0.0039233149535557454
+            }
+          }
+        ]
+      },
+      "instep": {
+        "status": "validated_in_listed_conditions",
+        "scope": "Short stepping approach, fixed native-strength aim, shot and stable recovery; not sustained running or three-level power.",
+        "trial": {
+          "name": "hip_instep_aim_+0.0",
+          "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+          "ball": [
+            -0.2718808352947235,
+            -1.2524207830429077
+          ],
+          "goal": [
+            0,
+            -3.7
+          ],
+          "style": "instep",
+          "strike": {
+            "window": [
+              104,
+              118,
+              124,
+              140
+            ],
+            "targets": {
+              "right_hip_pitch_joint": -0.8913877045333408,
+              "right_hip_roll_joint": 0.16649251005879276,
+              "right_hip_yaw_joint": -0.04720832564426347,
+              "right_knee_joint": 1.4999758777065266,
+              "right_ankle_pitch_joint": 0.4537864999999999,
+              "right_ankle_roll_joint": -0.21286945375295882
+            }
+          },
+          "policy_goal": [
+            1.05,
+            -6.322420783042908
+          ],
+          "mode": "hip",
+          "goal_forward": [
+            0,
+            -1
+          ],
+          "target": {
+            "target_x": 0,
+            "speed_mps": 1.4
+          }
+        },
+        "aim_commands": [
+          {
+            "target_x_m": -0.3,
+            "trial": {
+              "name": "hip_instep_aim_-0.3",
+              "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+              "ball": [
+                -0.2718808352947235,
+                -1.2524207830429077
+              ],
+              "goal": [
+                0,
+                -3.7
+              ],
+              "style": "instep",
+              "strike": {
+                "window": [
+                  104,
+                  118,
+                  124,
+                  140
+                ],
+                "targets": {
+                  "right_hip_pitch_joint": -0.8913877045333408,
+                  "right_hip_roll_joint": 0.16649251005879276,
+                  "right_hip_yaw_joint": -0.04720832564426347,
+                  "right_knee_joint": 1.4999758777065266,
+                  "right_ankle_pitch_joint": 0.4537864999999999,
+                  "right_ankle_roll_joint": -0.21286945375295882
+                }
+              },
+              "policy_goal": [
+                0.45,
+                -6.322420783042908
+              ],
+              "mode": "hip",
+              "goal_forward": [
+                0,
+                -1
+              ],
+              "target": {
+                "target_x": -0.3,
+                "speed_mps": 1.4
+              }
+            },
+            "status": "validated_in_listed_conditions",
+            "scope": "Fixed native strength only. Goal-plane point within 0.15 m and full physical sequence; two seeded +/-1 cm reset perturbations.",
+            "acceptance": {
+              "passed": 2,
+              "total": 2,
+              "seeds": [
+                1813,
+                1814
+              ],
+              "max_aim_error_m": 0.07307869986732407
+            }
+          },
+          {
+            "target_x_m": 0,
+            "trial": {
+              "name": "hip_instep_aim_+0.0",
+              "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+              "ball": [
+                -0.2718808352947235,
+                -1.2524207830429077
+              ],
+              "goal": [
+                0,
+                -3.7
+              ],
+              "style": "instep",
+              "strike": {
+                "window": [
+                  104,
+                  118,
+                  124,
+                  140
+                ],
+                "targets": {
+                  "right_hip_pitch_joint": -0.8913877045333408,
+                  "right_hip_roll_joint": 0.16649251005879276,
+                  "right_hip_yaw_joint": -0.04720832564426347,
+                  "right_knee_joint": 1.4999758777065266,
+                  "right_ankle_pitch_joint": 0.4537864999999999,
+                  "right_ankle_roll_joint": -0.21286945375295882
+                }
+              },
+              "policy_goal": [
+                1.05,
+                -6.322420783042908
+              ],
+              "mode": "hip",
+              "goal_forward": [
+                0,
+                -1
+              ],
+              "target": {
+                "target_x": 0,
+                "speed_mps": 1.4
+              }
+            },
+            "status": "validated_in_listed_conditions",
+            "scope": "Fixed native strength only. Goal-plane point within 0.15 m and full physical sequence; two seeded +/-1 cm reset perturbations.",
+            "acceptance": {
+              "passed": 2,
+              "total": 2,
+              "seeds": [
+                1813,
+                1814
+              ],
+              "max_aim_error_m": 0.14277724035316042
+            }
+          },
+          {
+            "target_x_m": 0.3,
+            "trial": {
+              "name": "hip_instep_aim_+0.3",
+              "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+              "ball": [
+                -0.2718808352947235,
+                -1.2524207830429077
+              ],
+              "goal": [
+                0,
+                -3.7
+              ],
+              "style": "instep",
+              "strike": {
+                "window": [
+                  104,
+                  118,
+                  124,
+                  140
+                ],
+                "targets": {
+                  "right_hip_pitch_joint": -0.8913877045333408,
+                  "right_hip_roll_joint": 0.16649251005879276,
+                  "right_hip_yaw_joint": -0.04720832564426347,
+                  "right_knee_joint": 1.4999758777065266,
+                  "right_ankle_pitch_joint": 0.4537864999999999,
+                  "right_ankle_roll_joint": -0.21286945375295882
+                }
+              },
+              "policy_goal": [
+                1.8,
+                -6.322420783042908
+              ],
+              "mode": "hip",
+              "goal_forward": [
+                0,
+                -1
+              ],
+              "target": {
+                "target_x": 0.3,
+                "speed_mps": 1.4
+              }
+            },
+            "status": "validated_in_listed_conditions",
+            "scope": "Fixed native strength only. Goal-plane point within 0.15 m and full physical sequence; two seeded +/-1 cm reset perturbations.",
+            "acceptance": {
+              "passed": 2,
+              "total": 2,
+              "seeds": [
+                1813,
+                1814
+              ],
+              "max_aim_error_m": 0.04724767463727553
+            }
+          }
+        ]
+      }
+    },
+    "knee": {
+      "instep": {
+        "status": "validated_in_listed_conditions",
+        "scope": "Short stepping approach, fixed native-strength aim, shot and stable recovery; not sustained running or three-level power.",
+        "trial": {
+          "name": "knee_instep_aim_+0.0",
+          "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+          "ball": [
+            -0.432274,
+            -1.214572
+          ],
+          "goal": [
+            0,
+            -3.7
+          ],
+          "style": "instep",
+          "strike": {},
+          "mode": "knee",
+          "coordination": {
+            "start_frame": 100,
+            "times_s": [
+              0.12,
+              0.27,
+              0.7
+            ],
+            "prepare": {
+              "right_hip_pitch_joint": -0.2125,
+              "right_hip_roll_joint": 0.2,
+              "right_hip_yaw_joint": 0.8187,
+              "right_knee_joint": 1.1,
+              "right_ankle_pitch_joint": 0.1,
+              "right_ankle_roll_joint": 0.0
+            },
+            "strike": {
+              "right_hip_pitch_joint": -0.2125,
+              "right_hip_roll_joint": 0.2,
+              "right_hip_yaw_joint": 0.8187,
+              "right_knee_joint": 0.2,
+              "right_ankle_pitch_joint": 0.1,
+              "right_ankle_roll_joint": 0.0
+            },
+            "velocity_feedforward": true
+          },
+          "approach_offset_xy": [
+            0.160394,
+            -0.037849
+          ],
+          "approach_offset_fade_s": [
+            3.0,
+            3.6
+          ],
+          "goal_forward": [
+            0,
+            -1
+          ],
+          "policy_goal": [
+            0.62,
+            -3.7
+          ],
+          "target": {
+            "target_x": 0,
+            "speed_mps": 3.8
+          }
+        },
+        "aim_commands": [
+          {
+            "target_x_m": -0.3,
+            "trial": {
+              "name": "knee_instep_aim_-0.3",
+              "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+              "ball": [
+                -0.432274,
+                -1.214572
+              ],
+              "goal": [
+                0,
+                -3.7
+              ],
+              "style": "instep",
+              "strike": {},
+              "mode": "knee",
+              "coordination": {
+                "start_frame": 100,
+                "times_s": [
+                  0.12,
+                  0.27,
+                  0.7
+                ],
+                "prepare": {
+                  "right_hip_pitch_joint": -0.2125,
+                  "right_hip_roll_joint": 0.2,
+                  "right_hip_yaw_joint": 0.8187,
+                  "right_knee_joint": 1.1,
+                  "right_ankle_pitch_joint": 0.1,
+                  "right_ankle_roll_joint": 0.0
+                },
+                "strike": {
+                  "right_hip_pitch_joint": -0.2125,
+                  "right_hip_roll_joint": 0.2,
+                  "right_hip_yaw_joint": 0.8187,
+                  "right_knee_joint": 0.2,
+                  "right_ankle_pitch_joint": 0.1,
+                  "right_ankle_roll_joint": 0.0
+                },
+                "velocity_feedforward": true
+              },
+              "approach_offset_xy": [
+                0.160394,
+                -0.037849
+              ],
+              "approach_offset_fade_s": [
+                3.0,
+                3.6
+              ],
+              "goal_forward": [
+                0,
+                -1
+              ],
+              "policy_goal": [
+                0.32,
+                -3.7
+              ],
+              "target": {
+                "target_x": -0.3,
+                "speed_mps": 3.8
+              }
+            },
+            "status": "validated_in_listed_conditions",
+            "scope": "Fixed native strength only. Goal-plane point within 0.15 m and full physical sequence; two seeded +/-1 cm reset perturbations.",
+            "acceptance": {
+              "passed": 2,
+              "total": 2,
+              "seeds": [
+                1813,
+                1814
+              ],
+              "max_aim_error_m": 0.08913531774593281
+            }
+          },
+          {
+            "target_x_m": 0,
+            "trial": {
+              "name": "knee_instep_aim_+0.0",
+              "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+              "ball": [
+                -0.432274,
+                -1.214572
+              ],
+              "goal": [
+                0,
+                -3.7
+              ],
+              "style": "instep",
+              "strike": {},
+              "mode": "knee",
+              "coordination": {
+                "start_frame": 100,
+                "times_s": [
+                  0.12,
+                  0.27,
+                  0.7
+                ],
+                "prepare": {
+                  "right_hip_pitch_joint": -0.2125,
+                  "right_hip_roll_joint": 0.2,
+                  "right_hip_yaw_joint": 0.8187,
+                  "right_knee_joint": 1.1,
+                  "right_ankle_pitch_joint": 0.1,
+                  "right_ankle_roll_joint": 0.0
+                },
+                "strike": {
+                  "right_hip_pitch_joint": -0.2125,
+                  "right_hip_roll_joint": 0.2,
+                  "right_hip_yaw_joint": 0.8187,
+                  "right_knee_joint": 0.2,
+                  "right_ankle_pitch_joint": 0.1,
+                  "right_ankle_roll_joint": 0.0
+                },
+                "velocity_feedforward": true
+              },
+              "approach_offset_xy": [
+                0.160394,
+                -0.037849
+              ],
+              "approach_offset_fade_s": [
+                3.0,
+                3.6
+              ],
+              "goal_forward": [
+                0,
+                -1
+              ],
+              "policy_goal": [
+                0.62,
+                -3.7
+              ],
+              "target": {
+                "target_x": 0,
+                "speed_mps": 3.8
+              }
+            },
+            "status": "validated_in_listed_conditions",
+            "scope": "Fixed native strength only. Goal-plane point within 0.15 m and full physical sequence; two seeded +/-1 cm reset perturbations.",
+            "acceptance": {
+              "passed": 2,
+              "total": 2,
+              "seeds": [
+                1813,
+                1814
+              ],
+              "max_aim_error_m": 0.013065637005233865
+            }
+          },
+          {
+            "target_x_m": 0.3,
+            "trial": {
+              "name": "knee_instep_aim_+0.3",
+              "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+              "ball": [
+                -0.432274,
+                -1.214572
+              ],
+              "goal": [
+                0,
+                -3.7
+              ],
+              "style": "instep",
+              "strike": {},
+              "mode": "knee",
+              "coordination": {
+                "start_frame": 100,
+                "times_s": [
+                  0.12,
+                  0.27,
+                  0.7
+                ],
+                "prepare": {
+                  "right_hip_pitch_joint": -0.2125,
+                  "right_hip_roll_joint": 0.2,
+                  "right_hip_yaw_joint": 0.8187,
+                  "right_knee_joint": 1.1,
+                  "right_ankle_pitch_joint": 0.1,
+                  "right_ankle_roll_joint": 0.0
+                },
+                "strike": {
+                  "right_hip_pitch_joint": -0.2125,
+                  "right_hip_roll_joint": 0.2,
+                  "right_hip_yaw_joint": 0.8187,
+                  "right_knee_joint": 0.2,
+                  "right_ankle_pitch_joint": 0.1,
+                  "right_ankle_roll_joint": 0.0
+                },
+                "velocity_feedforward": true
+              },
+              "approach_offset_xy": [
+                0.160394,
+                -0.037849
+              ],
+              "approach_offset_fade_s": [
+                3.0,
+                3.6
+              ],
+              "goal_forward": [
+                0,
+                -1
+              ],
+              "policy_goal": [
+                1.0,
+                -3.7
+              ],
+              "target": {
+                "target_x": 0.3,
+                "speed_mps": 3.8
+              }
+            },
+            "status": "validated_in_listed_conditions",
+            "scope": "Fixed native strength only. Goal-plane point within 0.15 m and full physical sequence; two seeded +/-1 cm reset perturbations.",
+            "acceptance": {
+              "passed": 2,
+              "total": 2,
+              "seeds": [
+                1813,
+                1814
+              ],
+              "max_aim_error_m": 0.09967620248690279
+            }
+          }
+        ]
+      },
+      "outside": {
+        "status": "validated_in_listed_conditions",
+        "scope": "Short approach, outside-foot contact, goal and stable recovery. Ball x +/-2 cm and two reset seeds. Aim/power uncalibrated.",
+        "trial": {
+          "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+          "ball": [
+            -0.5,
+            -1.47
+          ],
+          "goal": [
+            0,
+            -3.7
+          ],
+          "goal_forward": [
+            0,
+            -1
+          ],
+          "style": "outside",
+          "mode": "knee",
+          "strike": {
+            "window": [
+              130,
+              140,
+              155,
+              170
+            ],
+            "offsets": {
+              "left_shoulder_roll_joint": 0.15
+            }
+          },
+          "name": "knee_outside_runup",
+          "coordination": {
+            "start_frame": 115,
+            "minimum_support_N": 120,
+            "maximum_ball_distance_m": 0.8,
+            "times_s": [
+              0.1,
+              0.24,
+              0.8
+            ],
+            "prepare": {
+              "right_hip_pitch_joint": 0.15,
+              "right_hip_roll_joint": 0.15,
+              "right_hip_yaw_joint": 0.6,
+              "right_knee_joint": 1.05,
+              "right_ankle_pitch_joint": -0.3,
+              "right_ankle_roll_joint": 0.0
+            },
+            "strike": {
+              "right_hip_pitch_joint": 0.2907,
+              "right_hip_roll_joint": -0.1477,
+              "right_hip_yaw_joint": 1.6623,
+              "right_knee_joint": 0.2,
+              "right_ankle_pitch_joint": -0.5724,
+              "right_ankle_roll_joint": -0.1555
+            },
+            "velocity_feedforward": true
+          },
+          "approach_offset_xy": [
+            0.052446842193603516,
+            0.23751017570495603
+          ],
+          "approach_offset_fade_s": [
+            3.0,
+            3.6
+          ]
+        },
+        "acceptance": {
+          "passed": 6,
+          "total": 6,
+          "seeds": [
+            1811,
+            1812
+          ],
+          "ball_x_offsets_m": [
+            -0.02,
+            0,
+            0.02
+          ]
+        }
+      }
+    }
+  },
+  "upstream_sources_sha256": "10ea009ed41d89e9df26a224c6601c8e49f177566d336966aab834390fef05d9",
+  "acceptance": {
+    "aim_fixed_native_strength": {
+      "passed": 18,
+      "total": 18,
+      "seeds": [
+        1813,
+        1814
+      ],
+      "target_x_m": [
+        -0.3,
+        0,
+        0.3
+      ]
+    },
+    "outside": {
+      "passed": 6,
+      "total": 6,
+      "seeds": [
+        1811,
+        1812
+      ]
+    },
+    "sources_sha256": {
+      "reports/v018_aim_acceptance_seed1813.json": "526c8e0da24475264b886c172824627be24c1c7afd6cd47ae8c36f97c61571ab",
+      "reports/v018_aim_acceptance_seed1814.json": "a9e623f70a38d8091d2c5202bae17cc2c69216ab81753c19162e0f15bd27175c",
+      "reports/v018_outside_acceptance_seed1811.json": "911ea556fde60768a483c22e4567529315fd1b369a09eae9153aa6f248f2221c",
+      "reports/v018_outside_acceptance_seed1812.json": "829c3af519c93f0f9dd0062e636a36977288407db3b9d3a4983284b96b5d4658"
+    }
+  },
+  "unavailable_combinations": [
+    "hip/outside",
+    "knee/inside"
+  ],
+  "limitations": [
+    "No sustained flight-phase running: original actor falls in bounded RUN reference probe",
+    "No validated low/medium/high joint aim matrix; no power calibration is bundled",
+    "Fixed native-strength aim supports only x=-0.3,0,+0.3 at y=-3.7; no interpolation",
+    "Outside-foot native shot has not been calibrated for aim or power",
+    "Hip/knee contribution ratios describe foot kinematics, not motor work"
+  ]
+}

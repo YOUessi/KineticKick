@@ -1,5 +1,18 @@
 # KineticKick
 
+## v0.1.8：脚外侧新流程与原生力度定点
+
+新增小腿主导脚外侧的完整助跑、触球、进球和恢复流程，独立扰动验收 **6/6通过**。三种已有动作在各自原生力度下，瞄准球门左／中／右三点（x=-0.3/0/+0.3m，y=-3.7m），联合验收 **18/18通过**，最大误差14.28cm。
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/show_runup_shooting.py --mode knee --style outside
+/home/you/conda_env/env_isaaclab/bin/python tools/show_runup_shooting.py --mode knee --style instep --target-x 0.3
+/home/you/conda_env/env_isaaclab/bin/python tools/show_runup_shooting.py --mode hip --style instep --target-x -0.3
+```
+
+**持续腾空跑步、轻／中／重与定点联合控制仍未通过验收。**当前版本保留真实失败数据，不提供未通过的三档参数表。外侧流程尚未标定目标／力度。详见[完整结果与限制](reports/2026-11-04-running-aim.md)及[冻结配置](configs/runup_shooting_v2.json)。旧版本记录及指纹请在对应版本分支复现。
+
+
 ## v0.1.7：连续短程助跑与两种挥腿方式
 
 新增同一自由G1上的「短程助跑 → 触球射门 → 随摆 → 恢复站稳」。髋主导正脚背、髋主导脚内侧、膝主导正脚背在冻结的球位／初态扰动矩阵中 **18/18通过**，每回合完整验证10秒；158项CPU回归通过。详见 [实现与验收报告](reports/2026-11-04-runup-sequence.md)。

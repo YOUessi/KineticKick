@@ -88,6 +88,19 @@ class CoordinationTests(unittest.TestCase):
         self.step(c,2.7)
         np.testing.assert_allclose(c.velocity_targets, [[0,0]])
 
+    def test_velocity_gain_changes_only_feedforward_and_remains_bounded(self):
+        for gain,expected in [(0.,0.),(.5,-3.75),(2.,-12.)]:
+            c=self.make(dict(start_frame=100,times_s=[.2,.4,.7],prepare={'knee':1.2},
+                strike={'knee':.2},velocity_feedforward=True,velocity_feedforward_gain=gain))
+            self.step(c,2)
+            q=self.step(c,2.3)
+            np.testing.assert_allclose(q,[[.3,.7]])
+            np.testing.assert_allclose(c.velocity_targets,[[0,expected]])
+        for gain in [-1,2.1,float('nan')]:
+            with self.assertRaises(ValueError):
+                self.make(dict(start_frame=100,times_s=[.2,.4,.7],prepare={'knee':1.2},
+                    strike={'knee':.2},velocity_feedforward=True,velocity_feedforward_gain=gain))
+
     def test_approach_waypoint_fades_without_moving_physical_ball(self):
         entry = dict(approach_offset_xy=[.16,-.04], approach_offset_fade_s=[2.5,3.5])
         self.assertEqual(approach_offset(entry,2), [.16,-.04,0])
