@@ -63,4 +63,3 @@
 Tang本地`media/runup_sequence_v0.1.7.mp4`：1920×720、25fps、17.28秒、H.264。前10秒为两种正脚背踢法各自完整连续回合，随后为2.02–3.30秒触球／随摆区间的0.25倍裁剪慢放，最后保留结果。两侧采用各自冻结名义球位，相机与物理本体相同；没有生成或拼接机器人运动帧。
 
 两段原始录制均通过完整流程检查，控制源码指纹与最终验收一致。源数据为`reports/v017_hip_instep_preview.json`、`reports/v017_knee_instep_preview.json`；录像摘要、源数据摘要和剪辑说明保存在`reports/v017_preview_manifest.json`。已检查关键画面、字体数字显示、完整视频解码、帧数和时长。
-
