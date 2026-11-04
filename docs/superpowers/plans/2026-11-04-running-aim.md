@@ -44,7 +44,7 @@ Interface: validate_runup_targeting(config, root); resolve_runup_target(config, 
 ### Task 4: Release evidence
 - [x] Run focused tests and full asset-dependent suite; independently review whole diff once and fix material issues.
 - [x] Record exact physical passes/failures and remaining limitations in reports/2026-11-04-running-aim.md and VERSION_CONTROL.md.
-- [ ] Commit and push version/v0.1.8 with upstream; verify remote SHA; provide actual physical preview and concise outcome.
+- [x] Commit and push version/v0.1.8 with upstream; verify remote SHA; provide actual physical preview and concise outcome.
 
 ## Execution record
 
@@ -53,3 +53,5 @@ The feature objective remains partially complete: outside full sequence6/6 and n
 Verification: full Tang-local suite197/197; one independent whole-branch review independently replayed acceptance and checked fingerprints, with no Critical/Important findings. Final: minor (deferred): ordinary preview console's final line prints sequence status without the target error; target results remain in the complete output/evidence. No controller/code fix was required by review.
 
 Ruling: promote only fixed native-strength aiming and the six-case outside envelope, not the requested full running/three-level capability — raw evidence does not meet those gates — broader use remains unsupported. Existing user authorization selects publishing the version branch, with main and earlier branches preserved; no extra integration menu is needed.
+
+Publication verified: initial implementation commit084b6c5578b249dae229c39091101792859c0e60 was pushed with upstream tracking. Remote main and v0.1.7 hashes were unchanged. Both final H.264 videos decoded fully; all four rendered trials passed their applicable sequence/target gates.
