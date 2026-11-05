@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the frozen development cases and two prespecified combinations serially."""
+"""Run the frozen development cases and declared combinations serially."""
 import argparse
 import hashlib
 import json
@@ -8,23 +8,19 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-HOLDOUTS = [
-    dict(id='combined_left_slower', ball_offset_xy_m=[-.025, 0.], root_velocity_y_delta_mps=.10),
-    dict(id='combined_right_faster', ball_offset_xy_m=[.025, 0.], root_velocity_y_delta_mps=-.10),
-]
+from strike_cases import load_cases
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config', type=Path, default=ROOT/'configs/state_conditioned_strike_v1.json')
+    parser.add_argument('--config', type=Path, default=ROOT/'configs/state_conditioned_strike_v2.json')
     parser.add_argument('--prefix', required=True)
     parser.add_argument('--cases', nargs='+', required=True)
     parser.add_argument('--video-cases', nargs='*', default=[])
     args = parser.parse_args()
     if Path(args.prefix).name != args.prefix:
         parser.error('Prefix must be a filename component')
-    protocol = json.loads((ROOT/'configs/strike_baseline_v1.json').read_text())
-    cases = {case['id']: case for case in protocol['cases'] + HOLDOUTS}
+    cases = load_cases(ROOT)
     if len(set(args.cases)) != len(args.cases) or any(name not in cases for name in args.cases):
         parser.error('Unique declared case ids required')
     if any(name not in args.cases for name in args.video_cases):
@@ -43,7 +39,7 @@ def main():
                '--output', str(report), '--ball-offset', *map(str, case['ball_offset_xy_m']),
                '--velocity-delta', str(case['root_velocity_y_delta_mps'])]
         if name in args.video_cases:
-            cmd += ['--video-dir', str(ROOT/'experiments/closed_loop_v026'/f'{args.prefix}_{name}_frames')]
+            cmd += ['--video-dir', str(ROOT/'experiments/state_conditioned_v027'/f'{args.prefix}_{name}_frames')]
         print('CASE_START', name, flush=True)
         with log.open('w') as stream:
             subprocess.run(cmd, cwd=ROOT, stdout=stream, stderr=subprocess.STDOUT, check=True)

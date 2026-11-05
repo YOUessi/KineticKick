@@ -102,6 +102,16 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
         prefix=torch.tensor(coefficients,device=self.device)
         if prefix.shape!=(3,10) or not bool(torch.isfinite(prefix).all()) or bool((prefix.abs()>.20).any()):raise ValueError('Finite3x10 prefix coefficients bounded by0.20rad required')
         self.prefix_parameters=prefix.expand(self.n,3,10).clone()
+        self.clearance_cfg=config.get('follow_through_clearance')
+        self.hip_clearance=None
+        if self.clearance_cfg:
+            import math
+            values=[self.clearance_cfg[k] for k in ['margin_m','deceleration_rad_s2','gain','maximum_correction_rad','latest_s']]
+            if not all(math.isfinite(v) and v>0 for v in values) or self.clearance_cfg['maximum_correction_rad']>.4:raise ValueError('Finite positive clearance settings and correction<=0.4rad required')
+            from hip_clearance import HipClearance
+            self.hip_clearance=HipClearance(Path(__file__).resolve().parents[1]/'configs/paid_original/paid_main_resolved.urdf',self.device)
+            self.pitch_id=self.robot.joint_names.index('right_hip_pitch_joint')
+            self.roll_id=self.robot.joint_names.index('right_hip_roll_joint')
         self.anchor_shift=torch.zeros(self.n,3,device=self.device)
         self.phase_shift=torch.zeros(self.n,device=self.device)
         self.early_running=None
@@ -232,12 +242,34 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
             correction=(q-q0)*weight[ids,None]*valid[:,None]
             scale=torch.as_tensor(term._scale,device=self.device).expand(self.n,-1)
             out[ids[:,None],torch.tensor(joints,device=self.device)[None,:]]+=correction/scale[ids][:,joints]
+        clearance_delta=torch.zeros(self.n,device=self.device)
+        clearance_gap=torch.zeros_like(clearance_delta);clearance_stop=torch.zeros_like(clearance_delta)
+        clearance_floor=torch.zeros_like(clearance_delta);clearance_active=torch.zeros(self.n,device=self.device,dtype=torch.bool)
+        if self.hip_clearance is not None:
+            from hip_clearance import braking_correction,pulse_has_finished
+            force=self.env.scene['right_ball_contact'].data.force_matrix_w
+            separated=torch.zeros(self.n,device=self.device,dtype=torch.bool) if force is None else force.reshape(self.n,-1,3).sum(1).norm(dim=-1)<=2.
+            cfg=self.clearance_cfg
+            clearance_active=self.contact&separated&(self.gate>0.)&(now<float(cfg['latest_s']))&(r.joint_vel[:,self.pitch_id]<0.)&(r.joint_pos[:,self.pitch_id]<-.6)&pulse_has_finished(self.frame+1.,self.step_velocity[:,self.pitch_id],self.expert.plan['strike_velocity']['window'][-1])
+            selected=clearance_active.nonzero(as_tuple=False).flatten()
+            if len(selected):
+                position=r.joint_pos[selected,self.pitch_id];velocity=r.joint_vel[selected,self.pitch_id];roll=r.joint_pos[selected,self.roll_id]
+                floor,feasible=self.hip_clearance.pitch_floor(roll,float(cfg['margin_m']))
+                requested,stopping=braking_correction(position,velocity,floor,feasible,
+                    deceleration=float(cfg['deceleration_rad_s2']),gain=float(cfg['gain']),maximum=float(cfg['maximum_correction_rad']))
+                delta=torch.zeros_like(out);delta[selected,self.pitch_id]=requested
+                maximum=float(cfg['maximum_correction_rad'])
+                corrected=residual_action(out,torch.atanh((delta/maximum).clamp(-.999999,.999999)),term._scale,term._offset,r.soft_joint_pos_limits,maximum)
+                clearance_delta=((corrected-out)*term._scale)[:,self.pitch_id];out=corrected
+                clearance_gap[selected]=self.hip_clearance.gap(position,roll);clearance_stop[selected]=stopping;clearance_floor[selected]=floor
         if self.n==1:
             self.debug.append(dict(time_s=float(now[0]),phase_s=float(self.frame[0])*.02,context_gate=float(self.gate[0]),
                 measured_root_xy=root[0].tolist(),measured_ball_xyz=(self.ball.data.root_pos_w[0]-self.env.scene.env_origins[0]).tolist(),
                 measured_initial_velocity_error=self.velocity_error[0].tolist(),contact_latched=bool(self.contact[0]),
                 placement_command_xyz=self.anchor_shift[0].tolist(),stance_correction_rad=direct[0].tolist(),prefix_correction_rad=prefix_delta[0].tolist(),ik_error_m=float(errors[0]),ik_angle_error_rad=float(angles[0]),
-                residual_rad=((out-base)*term._scale)[0].tolist(),phase_action=float(self.phase_shift[0])))
+                residual_rad=((out-base)*term._scale)[0].tolist(),phase_action=float(self.phase_shift[0]),
+                follow_through_active=bool(clearance_active[0]),follow_through_correction_rad=float(clearance_delta[0]),
+                thigh_pelvis_gap_m=float(clearance_gap[0]),hip_stopping_angle_rad=float(clearance_stop[0]),hip_clearance_floor_rad=float(clearance_floor[0])))
         self.elapsed+=1
         return out
 

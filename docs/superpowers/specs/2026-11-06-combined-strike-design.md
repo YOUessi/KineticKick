@@ -1,0 +1,9 @@
+# Combined ball-position and speed adaptation
+
+Continue the authorized research on actual free-root running→legal instep contact→goal→standing. v0.1.26 (92141f6) passed seven calibration points but failed ballx−0.025m / initial worldvy+0.10m/s. Its measured first contact was1.585s; nonfoot force first exceeded1kN at1.655s while root height remained0.789m. Root cause of that collision is not established yet. The failure is now development data, never again a held-out result.
+
+Approaches: first identify colliding bodies and target/observed motion. If the fault is a systematic follow-through conflict, add measured-geometry clearance without changing nominal safe commands or contact acceptance. If the approach state itself lies outside the successful gait region, use early velocity-conditioned adaptation as in the already verified faster path; avoid repeatedly patching late foot geometry. The engineer chooses from actual diagnostic evidence under the user's standing authorization to continue. Preserve v0.1.26 configuration and all19 original v0.1.15 frozen files.
+
+No changes to physical limits, self-collision, nonfoot20N termination or original full acceptance. Commands only after initialization. Keep trials bounded and sequential on the GPU, require independent full physical replay and a real preview before publication. Stop a repeatedly failing approach and change it based on evidence, not another negative-only release.
+
+Prespecified new combinations, excluded from this round's tuning: (ballx,y,initial worldvy delta) = (-0.018,+0.020,+0.075), (+0.022,-0.025,+0.125), (-0.015,-0.030,-0.075), (+0.020,+0.025,-0.125). These are new evaluation combinations, not necessarily an unseen distribution for prior neural pilot training. Report all outcomes and do not tune on them while calling them held out.

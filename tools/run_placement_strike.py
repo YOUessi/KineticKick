@@ -7,11 +7,12 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--config',type=Path,default=ROOT/'configs/state_conditioned_strike_v1.json')
+    p.add_argument('--config',type=Path,default=ROOT/'configs/state_conditioned_strike_v2.json')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--ball-offset',nargs=2,type=float,default=[0.,0.])
     p.add_argument('--velocity-delta',type=float,default=0.)
     p.add_argument('--video-dir',type=Path)
+    p.add_argument('--contact-diagnostics',action='store_true',help='Record non-foot collision bodies without changing termination')
     a=p.parse_args()
     if a.output.exists():raise FileExistsError(a.output)
     if not all(math.isfinite(v) for v in [*a.ball_offset,a.velocity_delta]) or max(map(abs,a.ball_offset))>.15 or abs(a.velocity_delta)>.3:p.error('Perturbation outside bounded study')
@@ -48,11 +49,18 @@ def main():
                 if num_envs!=1:raise ValueError('Recorded physical evaluation uses one environment')
                 self.env=created['env'];self.task=get_task(self.env);created['actor']=self
                 self.observation_names=NativeActor(path,num_envs).observation_names
+                self.nonfoot_events=[]
                 self.contact_frames=ContactFrameSampler(self.env)
                 native_update=self.env.scene.update
                 def update(dt):
                     self.contact_frames.before_update();native_update(dt);self.contact_frames.after_update(dt)
                     self.task.after_physics(dt)
+                    if a.contact_diagnostics and dt>0:
+                        sensor=self.env.scene['contact_forces'];force=sensor.data.net_forces_w[0]
+                        for index,name in enumerate(sensor.body_names):
+                            if name in ('left_ankle_roll_link','right_ankle_roll_link') or float(force[index].norm())<5.:continue
+                            body=self.task.robot.body_names.index(name)
+                            self.nonfoot_events.append(dict(time_s=float(self.env.sim.current_time),body=name,force_w_N=force[index].cpu().tolist(),position_w=self.task.robot.data.body_pos_w[0,body].cpu().tolist()))
                 self.env.scene.update=update;self.first=True;self.initial=None
             def validate_joints(self,names):
                 if list(names)!=self.task.meta['joint_names']:raise ValueError('Joint order changed')
@@ -95,9 +103,10 @@ def main():
             result['joint_strike']=dict(mode='fitted_placement',
                 checkpoint=None,checkpoint_sha256=None,
                 template_sha256=cfgdata['template_sha256'],config=cfgdata,config_sha256=sha(a.config),
-                source_sha256={n:sha(ROOT/'tools'/n) for n in ['run_placement_strike.py','placement_strike.py','closed_loop_strike.py','closed_loop_expert.py','joint_strike_core.py','paid_actor_warmstart.py','closed_loop_acceptance.py']},
+                source_sha256={n:sha(ROOT/'tools'/n) for n in ['run_placement_strike.py','placement_strike.py','closed_loop_strike.py','closed_loop_expert.py','joint_strike_core.py','paid_actor_warmstart.py','closed_loop_acceptance.py','hip_clearance.py']},
                 initial_root_velocity=actor.initial,ball_offset_xy=a.ball_offset,velocity_y_delta=a.velocity_delta,
                 feedback=actor.task.debug,actual_policy='Frozen feedback experts with fitted state-conditioned placement/phase, foot-pose IK and bounded early actuator adapter',expert_backend=actor.task.expert.backend,expert_handoffs=actor.task.expert.events)
+            if a.contact_diagnostics:result['nonfoot_contact_diagnostics']=actor.nonfoot_events
             a.output.write_text(json.dumps(result,indent=2)+'\n')
             print('CLOSED_LOOP_STRIKE_RESULT',json.dumps(dict(success=result['stride_shot_success'],shot=result['records'][0],termination=result['termination_reasons'])),flush=True)
             return value
