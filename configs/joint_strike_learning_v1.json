@@ -1,0 +1,90 @@
+{
+  "version": "0.1.25",
+  "status": "experimental_not_accepted",
+  "template": "experiments/joint_strike_v025/nominal_center.npz",
+  "template_sha256": "0040b2e8736707bd51524c1c0b2ab3333eaa01521000e4b16ec22ce03b1ba72b",
+  "reference": "experiments/running_v013/stride_reference.npz",
+  "reference_sha256": "c4d6ed4c0d307ff53ee947de777b35c076b49679ab33303e5d8bd4bd97efdd2f",
+  "ball_xy": [
+    -0.12,
+    -4.02
+  ],
+  "goal_xy": [
+    0.7,
+    -6.52
+  ],
+  "maximum_joint_residual_rad": 0.25,
+  "maximum_phase_shift_s": 0.15,
+  "phase_rate_limit": 0.3,
+  "seed": 2501,
+  "frozen_files_sha256": {
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/runup_metrics.py": "fb7a13a0d9a56d1f636d8d5c85339b1ca884bfe9d7e4d7dfe5e606d5c515e5d2",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/running_metrics.py": "6018d1cc90b274e7915cbc2ef059b132b06b37e865625dde68ab8cba70050097",
+    "tools/runup_sequence.py": "6ba78e9aa9fff1e6d9d5657ca9094f4c285106e3fc16deafc6ddb74078e4c334",
+    "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/strike_velocity.py": "65636859fa34b84e9699b922573e52e039e27733bb2ef671d0cb298812195698",
+    "tools/run_stride_shot.py": "3b6c2da8d4e802a20cc3450782995e68bd19be19d28a0f51851aa6daac3e2663",
+    "tools/stride_shot_metrics.py": "c034e2ebae908d1df95534253061a4c9817a61aa97cf0f08c0f0dc083765b518",
+    "tools/run_stride_styles.py": "b66d831d05d2ee654723b5c54854164dc8d623b7eb8716fc9e9de97ecba1e934",
+    "tools/contact_frame_sampler.py": "813dec44d2308889cc3ec9e632f08b84d2317e23ffff204b5cd3790f2f6c4623",
+    "configs/stride_instep_strong_v1.json": "f4c04ba32ec19dda4cc5ca6fba9fb5a4ab9ba039b605394a7ba7fcec92c85f00",
+    "experiments/running_v013/stride_reference.npz": "c4d6ed4c0d307ff53ee947de777b35c076b49679ab33303e5d8bd4bd97efdd2f",
+    "experiments/running_v011/run_stop_n1024_i500/last_model.pt": "5c4e4f5505f13501614c45a4cc51dd8bc6e81818544de88240c2b05e23c410fa",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761"
+  },
+  "source_metadata": {
+    "source": "reports/v023_baseline_center.json",
+    "source_sha256": "aeeaa46a762b4569cdcea0fc4160b4e04c490608ff9f098f7791516e463528c1",
+    "joint_names": [
+      "left_hip_pitch_joint",
+      "right_hip_pitch_joint",
+      "waist_yaw_joint",
+      "left_hip_roll_joint",
+      "right_hip_roll_joint",
+      "waist_roll_joint",
+      "left_hip_yaw_joint",
+      "right_hip_yaw_joint",
+      "waist_pitch_joint",
+      "left_knee_joint",
+      "right_knee_joint",
+      "left_shoulder_pitch_joint",
+      "right_shoulder_pitch_joint",
+      "left_ankle_pitch_joint",
+      "right_ankle_pitch_joint",
+      "left_shoulder_roll_joint",
+      "right_shoulder_roll_joint",
+      "left_ankle_roll_joint",
+      "right_ankle_roll_joint",
+      "left_shoulder_yaw_joint",
+      "right_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_elbow_joint",
+      "left_wrist_roll_joint",
+      "right_wrist_roll_joint",
+      "left_wrist_pitch_joint",
+      "right_wrist_pitch_joint",
+      "left_wrist_yaw_joint",
+      "right_wrist_yaw_joint"
+    ],
+    "control_dt": 0.02,
+    "physics_dt": 0.005,
+    "velocity_reference": "20ms centered root finite difference; measured reset velocity at first frame"
+  },
+  "training": {
+    "nominal_fraction": 0.5,
+    "ball_jitter_xy_m": [
+      0.05,
+      0.1
+    ],
+    "initial_velocity_y_jitter_mps": 0.2,
+    "max_seconds": 900,
+    "max_iterations": 1000
+  },
+  "scope": "Single learned residual/phase controller across real approach-contact-recovery; frozen successful actuator trajectory prior, no human coordination claim"
+}
