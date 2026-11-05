@@ -1,0 +1,13 @@
+# Closed-loop expert residual learning
+
+User asks us to continue until there is concrete shooting adaptation, not stop after another failed release. Preserve all old branches and frozen physics. Current branch version/v0.1.26 starts at398f031; unused branch verified before editing.
+
+Replace the recorded actuator prior with the actual frozen running/swing/recovery experts acting on current state. Train bounded whole-body/timing residuals over that closed-loop expert. Retain the original hybrid expert's physical acceptance and original G1 actuators. A measured-reset context gate forces exactly zero learned residual at the nominal ball/velocity condition (within1e-4 numerical tolerance), regardless of network output; perturbed conditions activate the learned controller continuously. This is explicitly a protected expert/residual mixture, not a single unconstrained generalized policy or human-coordination discovery. Original expert remains responsive to current body/support state even when learned residual is zero.
+
+Alternatives considered: more optimization of the recorded open-loop prior already plateaued and lost nominal behavior; hand-tuning phase/IK previously failed recovery; an unconstrained full policy discards successful knowledge. Closed-loop expert plus nominal protection addresses the two measured failure modes.
+
+Use a batched Torch equivalent of the frozen recurrent experts for training; independently check teacher zero-correction physical behavior and any ONNX/Torch difference. Robot and ball state writes only on reset/initialization. Same actual contact, legal-body, goal, running strike and final-standing gates. No false claims from reward or test counts. Keep trials bounded and diagnostic, but a failed candidate ends that approach rather than the user's ongoing task. Work continues with evidence-directed changes.
+
+## Final evidence-driven implementation
+
+The two neural residual pilots failed and were not published as a successful policy. The retained architecture is the original frozen closed-loop experts with a measured nominal gate. The active adapter is instead a17-gain measured-state approach/stance/phase controller plus orientation-preserving foot IK and a30-coefficient early actuator prefix conditioned on actual initial velocity. Low-dimensional physical CEM and explicit local contact/timing calibration produced7/7 development passes; two prespecified combined conditions gave1/2. This is a fitted local control model, not general human coordination learning. Scope, exact source/asset fingerprints, unchanged acceptance, negative attempts and the actual preview are documented in reports/2026-11-05-closed-loop-strike-learning.md.
