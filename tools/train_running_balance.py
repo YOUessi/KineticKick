@@ -24,6 +24,7 @@ def parse_args():
     p.add_argument('--iters', type=int, default=800)
     p.add_argument('--max-seconds', type=float, default=900.)
     p.add_argument('--seed', type=int, default=1010)
+    p.add_argument('--initial-velocity-jitter', type=float, default=0., help='Uniform planar root-velocity reset perturbation in m/s, 0..0.3; training only')
     p.add_argument('--resume', type=Path)
     p.add_argument('--init-checkpoint', type=Path, default=Path(__file__).resolve().parents[1]/'experiments/running_v010/capsule_resume_seed1012_n96_i400/last_model.pt')
     p.add_argument('--evaluate', action='store_true')
@@ -36,6 +37,10 @@ def parse_args():
     a = p.parse_args()
     if not (1 <= a.num_envs <= 1024 and 1 <= a.iters <= 2000 and 0 < a.max_seconds <= 1800):
         p.error('Pilot bounds: 1..1024 envs, 1..2000 iterations, 0..1800 seconds')
+    if not math.isfinite(a.initial_velocity_jitter) or not 0 <= a.initial_velocity_jitter <= .3:
+        p.error('Initial velocity jitter must be finite and within 0..0.3 m/s')
+    if a.evaluate and a.initial_velocity_jitter:
+        p.error('Use fixed-condition evaluation; randomized resets are training only')
     if not 0 <= a.recovery_window <= 2.:p.error('Recovery window must be between 0 and 2 seconds')
     if not a.motion.is_file():
         p.error('Motion file must exist')
@@ -113,6 +118,8 @@ def train(args):
         cfg.commands.motion.pose_range[key] = (0., 0.)
     for key in cfg.commands.motion.velocity_range:
         cfg.commands.motion.velocity_range[key] = (0., 0.)
+    for key in ('x', 'y'):
+        cfg.commands.motion.velocity_range[key] = (-args.initial_velocity_jitter, args.initial_velocity_jitter)
     cfg.commands.motion.joint_position_range = (0., 0.)
     for key in ('physics_material', 'add_joint_default_pos', 'base_com', 'base_external_force_torque', 'push_robot'):
         setattr(cfg.events, key, None)
@@ -162,6 +169,7 @@ def train(args):
         urdf_sha256=sha(urdf), training_script_sha256=sha(__file__), actor_converter_sha256=sha(root / 'tools/running_balance.py'), warmstart_sha256=sha(args.init_checkpoint), warmstart=str(args.init_checkpoint), actor_observations=176,
         init='50% frame0; 50% uniform ' + ('complete reference' if args.full_phase_sampling else 'frames0..90') + '; physical state writes only on episode resets',
         full_phase_sampling=args.full_phase_sampling,recovery_window_s=args.recovery_window,
+        initial_planar_velocity_jitter_mps=args.initial_velocity_jitter,
         observation_points_world=[[0,-8,.11],[0,-10,.11]], original_actuators_unchanged=True,
         reference_end='Timeout; no loop or state write within an episode', runner=runner_cfg,
         resume=str(args.resume) if args.resume else None)
