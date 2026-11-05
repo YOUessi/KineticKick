@@ -84,11 +84,36 @@ class BatchedLeg:
         return q,(target-p).norm(dim=-1),angle
 
 
+    def translate_feasible(self,q0,rotation,position,delta_xy,yaw,*,pitch=None,height=None):
+        """Backtrack an unreachable task target instead of discarding all reach.
+
+        Preserve feasible original commands exactly. The bounded local search
+        finds an accepted fraction; it does not certify global IK optimality.
+        """
+        q,error,angle=self.translate(q0,rotation,position,delta_xy,yaw,pitch,height)
+        valid=(error<.025)&(angle<.12)
+        fraction=torch.ones_like(error)
+        ids=(~valid).nonzero(as_tuple=False).flatten()
+        if not len(ids):return q,error,angle,fraction
+        q[ids]=q0[ids];error[ids]=0.;angle[ids]=0.;fraction[ids]=0.
+        low=torch.zeros(len(ids),device=q0.device);high=torch.ones_like(low)
+        for _ in range(6):
+            mid=(low+high)*.5
+            candidate,e,a=self.translate(q0[ids],rotation[ids],position[ids],delta_xy[ids]*mid[:,None],yaw[ids]*mid,
+                None if pitch is None else pitch[ids]*mid,None if height is None else height[ids]*mid)
+            feasible=(e<.025)&(a<.12)
+            chosen=ids[feasible]
+            q[chosen]=candidate[feasible];error[chosen]=e[feasible];angle[chosen]=a[feasible];fraction[chosen]=mid[feasible]
+            low=torch.where(feasible,mid,low);high=torch.where(feasible,high,mid)
+        return q,error,angle,fraction
+
+
 class PlacementStrikeTask(ClosedLoopStrikeTask):
     def __init__(self,env,config):
         super().__init__(env,config)
         from pathlib import Path
         self.swing_max=float(config.get('maximum_swing_correction_rad',.25))
+        if config.get('project_swing_target') and any(config.get(k) for k in ['fast_global_retarget','fast_normal_only','fast_soft_ik','fast_project_ik']):raise ValueError('Feasible reach projection uses the original full-orientation IK only')
         if not .1<=self.swing_max<=.4:raise ValueError('Swing correction bound outside0.1..0.4rad')
         self.leg=BatchedLeg(Path(__file__).resolve().parents[1]/'configs/paid_original/paid_main_resolved.urdf',self.device,self.swing_max)
         values=list(config.get('placement_parameters',DEFAULT_PARAMETERS))
@@ -208,7 +233,7 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
             window[0]=window[0]+6.*near_gate;window[1]=window[1]+2.*near_gate
         weight=cosine_window(self.frame.double()+1.,window).float()*self.gate
         ids=(weight>0).nonzero(as_tuple=False).flatten();out=base.clone()
-        errors=torch.zeros(self.n,device=self.device);angles=torch.zeros_like(errors)
+        errors=torch.zeros(self.n,device=self.device);angles=torch.zeros_like(errors);reach_fraction=torch.zeros_like(errors)
         if len(ids):
             joints=self.expert.ids
             q0=(base*term._scale+term._offset)[ids][:,joints]
@@ -232,7 +257,12 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
                 delta[ids]=torch.where(fast[:,None],shift[ids],delta[ids]);yaw[ids]=torch.where(fast,0.,yaw[ids])
                 height=torch.where(fast,0.,height);pitch=torch.where(fast,0.,pitch)
                 maximum=torch.where(fast,float(self.cfg.get('fast_swing_correction_rad',self.swing_max)),self.swing_max)
-            q,error,angle=self.leg.translate(q0,matrix_from_quat(r.root_quat_w[ids]),r.root_pos_w[ids],delta[ids],yaw[ids],pitch,height,reference,maximum,(self.velocity_error[ids,1]<-1e-4) if self.cfg.get('fast_normal_only') else False,self.cfg.get('fast_contact_point_local'))
+            if self.cfg.get('project_swing_target'):
+                q,error,angle,fraction=self.leg.translate_feasible(q0,matrix_from_quat(r.root_quat_w[ids]),r.root_pos_w[ids],delta[ids],yaw[ids],pitch=pitch,height=height)
+                reach_fraction[ids]=fraction
+            else:
+                q,error,angle=self.leg.translate(q0,matrix_from_quat(r.root_quat_w[ids]),r.root_pos_w[ids],delta[ids],yaw[ids],pitch,height,reference,maximum,(self.velocity_error[ids,1]<-1e-4) if self.cfg.get('fast_normal_only') else False,self.cfg.get('fast_contact_point_local'))
+                reach_fraction[ids]=((error<.025)&(angle<.12)).float()
             valid=((error<.025)&(angle<.12)).float()
             if self.cfg.get('fast_soft_ik'):
                 feasible=((.08-error)/.055).clamp(0,1)*((.30-angle)/.18).clamp(0,1)
@@ -266,7 +296,7 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
             self.debug.append(dict(time_s=float(now[0]),phase_s=float(self.frame[0])*.02,context_gate=float(self.gate[0]),
                 measured_root_xy=root[0].tolist(),measured_ball_xyz=(self.ball.data.root_pos_w[0]-self.env.scene.env_origins[0]).tolist(),
                 measured_initial_velocity_error=self.velocity_error[0].tolist(),contact_latched=bool(self.contact[0]),
-                placement_command_xyz=self.anchor_shift[0].tolist(),stance_correction_rad=direct[0].tolist(),prefix_correction_rad=prefix_delta[0].tolist(),ik_error_m=float(errors[0]),ik_angle_error_rad=float(angles[0]),
+                placement_command_xyz=self.anchor_shift[0].tolist(),stance_correction_rad=direct[0].tolist(),prefix_correction_rad=prefix_delta[0].tolist(),ik_error_m=float(errors[0]),ik_angle_error_rad=float(angles[0]),swing_reach_fraction=float(reach_fraction[0]),
                 residual_rad=((out-base)*term._scale)[0].tolist(),phase_action=float(self.phase_shift[0]),
                 follow_through_active=bool(clearance_active[0]),follow_through_correction_rad=float(clearance_delta[0]),
                 thigh_pelvis_gap_m=float(clearance_gap[0]),hip_stopping_angle_rad=float(clearance_stop[0]),hip_clearance_floor_rad=float(clearance_floor[0])))

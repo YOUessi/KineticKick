@@ -41,6 +41,10 @@ def verify(candidate,baseline,case,config,config_sha,sources,nominal_velocity):
     for i,row in enumerate(feedback):
         t=i*.02;phase=row['phase_s'];actual_shift=phase-t
         scalars=[row['time_s'],phase,row['context_gate'],*row['measured_root_xy'],*row['measured_ball_xyz'],*row['residual_rad'],*row['stance_correction_rad'],*row['prefix_correction_rad'],*row['placement_command_xyz'],row.get('follow_through_correction_rad',0.),row.get('thigh_pelvis_gap_m',0.),row.get('hip_stopping_angle_rad',0.),row.get('hip_clearance_floor_rad',0.)]
+        if config.get('project_swing_target'):
+            fraction=row.get('swing_reach_fraction')
+            if fraction is None or not math.isfinite(fraction) or not 0.<=fraction<=1.:raise ValueError('Missing or invalid feasible swing fraction')
+            if fraction>0. and (row['ik_error_m']>=.025 or row['ik_angle_error_rad']>=.12):raise ValueError('Projected target violates original IK acceptance')
         if not all(math.isfinite(x) for x in scalars):raise ValueError('Nonfinite control evidence')
         if abs(row['time_s']-t)>2e-6 or abs(poses[i]['time_s']-t)>2e-6:raise ValueError('Shifted feedback timestamp')
         if abs(actual_shift)>.120003 or abs(actual_shift-last_shift)>.008003 or (last_phase is not None and phase<last_phase):raise ValueError('Phase correction bound/causality violated')

@@ -8,6 +8,8 @@ COMBINATIONS = [
     dict(id='heldout_right_far_slower',ball_offset_xy_m=[.022,-.025],root_velocity_y_delta_mps=.125),
     dict(id='heldout_left_far_faster',ball_offset_xy_m=[-.015,-.030],root_velocity_y_delta_mps=-.075),
     dict(id='heldout_right_near_faster',ball_offset_xy_m=[.020,.025],root_velocity_y_delta_mps=-.125),
+    dict(id='heldout_confirm_left_far_slower',ball_offset_xy_m=[-.020,-.020],root_velocity_y_delta_mps=.100),
+    dict(id='heldout_confirm_right_near_slower',ball_offset_xy_m=[.015,.015],root_velocity_y_delta_mps=.150),
 ]
 
 

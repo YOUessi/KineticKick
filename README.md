@@ -1,5 +1,11 @@
 # KineticKick
 
+## v0.1.27：组合扰动下的可达摆脚与恢复
+
+修复触球后骨盆/大腿自碰撞，以及不可达脚姿态请求使摆脚修正归零的问题。最终同一控制在15个离散球位/初速条件中完成14/15个“跑动→真实正脚背进球→恢复站稳”：九个已知条件9/9、修正中已观察的四个组合4/4、另行预留的两个确认组合1/2。旧版九个同条件为8/9；冻结v0.1.15保留。局部测试不代表任意球位或静止起跑泛化。
+
+默认配置为`configs/state_conditioned_strike_v4.json`；旧配置保留。Tang实际预览`media/combined_instep_v0.1.27.mp4`包含原速及明确标记的慢放，录像回合水平出球4.313m/s、末段站稳10.01s。失败、消融、全部条件和复现见[组合抽射研究报告](reports/2026-11-06-combined-strike-adaptation.md)。
+
 ## v0.1.26：实测状态驱动的跑动射门适应
 
 同一控制器在原始条件、球横向±5cm/远近±10cm、初速±0.20m/s的七个开发条件中，完整流程由冻结基线 **1/7提高到7/7**：连续跑动→真实正脚背触球进门→恢复站稳。较快初速实测触球时仍以2.32m/s前进，末段站稳9.25秒。模型根据实际球/身体状态修正落脚和触球相位，新增前1秒有界起步适配，原冻结基线保留。
@@ -8,6 +14,7 @@
 
 ```bash
 /home/you/conda_env/env_isaaclab/bin/python tools/run_placement_strike.py \
+  --config configs/state_conditioned_strike_v1.json \
   --velocity-delta=-0.20 --output reports/new_adaptive_fast.json \
   --video-dir media/new_adaptive_fast_frames
 ```

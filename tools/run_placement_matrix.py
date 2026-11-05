@@ -13,7 +13,7 @@ from strike_cases import load_cases
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config', type=Path, default=ROOT/'configs/state_conditioned_strike_v2.json')
+    parser.add_argument('--config', type=Path, default=ROOT/'configs/state_conditioned_strike_v4.json')
     parser.add_argument('--prefix', required=True)
     parser.add_argument('--cases', nargs='+', required=True)
     parser.add_argument('--video-cases', nargs='*', default=[])

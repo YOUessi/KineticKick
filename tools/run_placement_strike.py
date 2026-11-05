@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--config',type=Path,default=ROOT/'configs/state_conditioned_strike_v2.json')
+    p.add_argument('--config',type=Path,default=ROOT/'configs/state_conditioned_strike_v4.json')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--ball-offset',nargs=2,type=float,default=[0.,0.])
     p.add_argument('--velocity-delta',type=float,default=0.)
