@@ -29,7 +29,7 @@
 
 ### Task 3: Publish
 - [x] Record all outcomes, local raw evidence, costs, source fingerprints, limits in reports/2026-11-07-shank-path-adaptation.md, README and VERSION_CONTROL.
-- [ ] Version commit and non-forced upstream push; show actual preview and outstanding limitations.
+- [x] Version commit and non-forced upstream push; show actual preview and outstanding limitations.
 
 ## Progress ledger
 
@@ -49,4 +49,4 @@ Approach fit6generations215.95s produced proxy3/3, but N1 replay missed/hip coll
 
 Exact-runtime selection from already generated candidates (maximum4, stop at first original full success) passed at the first candidate, generation3,44.68s. Actual instep impulse1.927Ns, goal, full14s, finalstanding7.015s. Earlier generation5 missed; diagnostic batch best touched ambiguous surface then collided. Freeze generation3 bytes as finalv5; copy identical accepted raw report into final matrix prefix, retaining SHA/source evidence. Continue remaining development and prespecified evaluation; do not retune on new3.
 
-Final evidence:18/18 complete14s + actual instep + running contact + stable recovery, original full-goal acceptance16/18. Matched old15 improve14→15; newevaluation1/3 with both failures onlymissed_goal. Zero learned coefficients revert repaired case to no-contact physical failure. Actual preview independently passes with4.23m/s/6.10sstanding;20focusedtests pass,19frozenhashes unchanged. All owned GPU jobs finished; no training/deployment job left running. Publication pending.
+Final evidence:18/18 complete14s + actual instep + running contact + stable recovery, original full-goal acceptance16/18. Matched old15 improve14→15; newevaluation1/3 with both failures onlymissed_goal. Zero learned coefficients revert repaired case to no-contact physical failure. Actual preview independently passes with4.23m/s/6.10sstanding;20focusedtests pass,19frozenhashes unchanged. All owned GPU jobs finished; no training/deployment job left running. Code commit382e69f published to origin/version/v0.1.28 with upstream tracking; original previews and both held-out goal misses reported.
