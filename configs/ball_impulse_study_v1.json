@@ -1,0 +1,90 @@
+{
+  "version": "0.1.33",
+  "kind": "read_only_ball_impulse_mechanism",
+  "parent_version_commit": "5a940d97bbea534b0ef90f4b362614f38be99227",
+  "case_id": "heldout_v028_left_near_slow",
+  "ball_offset_xy_m": [
+    -0.01,
+    0.02
+  ],
+  "root_velocity_y_delta_mps": 0.15,
+  "bin_end_window_s": [
+    1.45,
+    1.72
+  ],
+  "maximum_complete_physical_replays": 1,
+  "closure_tolerance_Ns": 0.02,
+  "closure_scopes": [
+    "each_5ms_bin",
+    "whole_declared_window",
+    "first_force_episode_through_outgoing_sample"
+  ],
+  "probe": {
+    "path": "reports/v029_force_probe_cleanexit.json",
+    "sha256": "048cc33377338189d0940ad072bf72138f98064b4b3ae68726d79edfd818a316"
+  },
+  "fresh_cases_excluded": [
+    "landing_eval_left_near",
+    "landing_eval_right_far",
+    "landing_eval_faster"
+  ],
+  "decision": "Reject nearest/fastest contact scalar hypotheses. Measure missing ball-side tangent/ground impulses before any directional-control change. No refitting signs or tolerances from this replay.",
+  "reference_report": "reports/v032_learned_heldout_v028_left_near_slow.json",
+  "reference_report_sha256": "b10650329d4a032a0e143c2a553670511dc698dd693115aee397be0c6a3dd05c",
+  "candidate_config": {
+    "path": "configs/state_conditioned_strike_v9.json",
+    "sha256": "896cda44d5e718aed83ea35c027b252293672e65a438b14671444cfc4b36a8b5"
+  },
+  "checkpoint": {
+    "path": "experiments/post_shot_v032/ppo_s3201/last_model.pt",
+    "sha256": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326"
+  },
+  "frozen_files_sha256": {
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+    "tools/runup_metrics.py": "fb7a13a0d9a56d1f636d8d5c85339b1ca884bfe9d7e4d7dfe5e606d5c515e5d2",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/running_metrics.py": "6018d1cc90b274e7915cbc2ef059b132b06b37e865625dde68ab8cba70050097",
+    "tools/runup_sequence.py": "6ba78e9aa9fff1e6d9d5657ca9094f4c285106e3fc16deafc6ddb74078e4c334",
+    "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+    "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+    "tools/strike_velocity.py": "65636859fa34b84e9699b922573e52e039e27733bb2ef671d0cb298812195698",
+    "tools/run_stride_shot.py": "3b6c2da8d4e802a20cc3450782995e68bd19be19d28a0f51851aa6daac3e2663",
+    "tools/stride_shot_metrics.py": "c034e2ebae908d1df95534253061a4c9817a61aa97cf0f08c0f0dc083765b518",
+    "tools/run_stride_styles.py": "b66d831d05d2ee654723b5c54854164dc8d623b7eb8716fc9e9de97ecba1e934",
+    "tools/contact_frame_sampler.py": "813dec44d2308889cc3ec9e632f08b84d2317e23ffff204b5cd3790f2f6c4623",
+    "configs/stride_instep_strong_v1.json": "f4c04ba32ec19dda4cc5ca6fba9fb5a4ab9ba039b605394a7ba7fcec92c85f00",
+    "experiments/running_v013/stride_reference.npz": "c4d6ed4c0d307ff53ee947de777b35c076b49679ab33303e5d8bd4bd97efdd2f",
+    "experiments/running_v011/run_stop_n1024_i500/last_model.pt": "5c4e4f5505f13501614c45a4cc51dd8bc6e81818544de88240c2b05e23c410fa",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761"
+  },
+  "control_sources_sha256": {
+    "configs/state_conditioned_strike_v9.json": "896cda44d5e718aed83ea35c027b252293672e65a438b14671444cfc4b36a8b5",
+    "docs/research/2026-11-07-post-shot-recovery-learning.md": "be435b7ab08f8ab236e04850b279214a49ac5b58bec56cfc5b3c062a6a49c282",
+    "tools/run_placement_strike.py": "c3420aa0b7b14b98d0cbd07c8282bcb1b8f72796215db2008d0871e671ba97cb",
+    "tools/placement_strike.py": "e461ba4b025b38295295af883bc04beb5ea1289dcd24ac231cc7fafc85f27638",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/post_shot_objective.py": "5b0b2abc8f21df70d2130f84edb1b2a4d6b1be3df7566415bd281e0c5c6052f1",
+    "tools/closed_loop_strike.py": "ac6ee3f7f35716ec1e44e9008b7aef8bbf3a2221747ac2cbc7e89fc6a3b19e3e",
+    "tools/closed_loop_expert.py": "0cf2c0243be3c73f912f5dd1985d12f5db08d1d3f4fbb2c40f58ee2a1e0b617a",
+    "tools/joint_strike_core.py": "55a7ae2b2c5cf824385a6db91b0758a0dc2fe84b25aa48c22ce6840eb8405a30",
+    "tools/paid_actor_warmstart.py": "0f69f56d5a7a5657e07f5ccc3796bd675c7129b4b8560068c37a607dd021c62f",
+    "tools/closed_loop_acceptance.py": "184ff84e8e78d3a864d5d4342df40f9ed15002b706eb26192ecff8ca506e6c54",
+    "tools/hip_clearance.py": "0ff2e8a42435ae700c4a8c9e5befd1193f9069b1e4611442e46b8659867a8c87",
+    "tools/shank_clearance.py": "a515febfa46a452737559a9aaafa7e236c974a6d7f24f2156c379b4d7798fb2c",
+    "tools/approach_adapter.py": "7d7b2e921be61d40653a44914a22aba893a17d510efcdbbf43b9a07aaf801dec",
+    "tools/landing_release.py": "052e86d8bfb2b902173a798e44451eac165319da9142e4e2b02f2facd56cf667",
+    "tools/strike_dynamics_telemetry.py": "642150d97cabf728053f6d7eb7c4b943bf58f71a2ae876949b37dac186fbbb67",
+    "tools/train_post_shot_recovery.py": "68b4e82bb6ba3783e163dea96f04fe1cb9b6018b5f60dc8aba4ce7bc51b107b5",
+    "tools/ground_contact_observer.py": "33fca0ebe615fb7a616574591bc2831ac59220a79d5f7c6879915c42a7b35cd4"
+  },
+  "acquisition_sources_sha256": {
+    "tools/run_instrumented_strike.py": "fd08216fcaa12eb87f706c24365d3ccd7f42a36be14dbbbce24b2b70a8158fa1",
+    "tools/ball_contact_observer.py": "08b5ba1cbbd7158e58f6d958ad8f4884eb180bdf5c8758193f2a147c0f7f3f2b",
+    "tools/ground_contact_observer.py": "33fca0ebe615fb7a616574591bc2831ac59220a79d5f7c6879915c42a7b35cd4",
+    "tools/strike_dynamics_telemetry.py": "642150d97cabf728053f6d7eb7c4b943bf58f71a2ae876949b37dac186fbbb67"
+  },
+  "acquisition_status": "frozen_before_single_replay"
+}
