@@ -163,11 +163,19 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
             checkpoint=Path(__file__).resolve().parents[1]/config['early_running_checkpoint']
             if hashlib.sha256(checkpoint.read_bytes()).hexdigest()!=config['early_running_checkpoint_sha256']:raise ValueError('Early running checkpoint changed')
             self.early_running=FrozenRecurrent('running',self.n,self.device,checkpoint)
+        self.support_reference=None;self.support_reference_debug=None
+        if config.get('support_reference_frame'):
+            if not config.get('landing_release'):raise ValueError('Support handoff requires measured ball separation')
+            from support_reference_frame import SupportReferenceFrame
+            self.support_reference=SupportReferenceFrame(self.n,self.device,config['support_reference_frame'])
+            self.reference_feet=[self.expert.motion.cfg.body_names.index(side+'_ankle_roll_link') for side in ['left','right']]
         native=self.expert.running.act
         def running(observations,mask,frames):
             from isaaclab.utils.math import quat_apply_inverse
             observations=observations.clone()
             observations[:,160:163]+=quat_apply_inverse(self.expert.motion.robot_anchor_quat_w,self.anchor_shift)
+            if self.support_reference is not None:
+                observations=self.support_reference_observations(observations,mask)
             base=native(observations,mask,frames)
             if self.early_running is not None:
                 window=self.cfg.get('early_running_window_s',[0.,.10,.60,.90])
@@ -190,6 +198,36 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
             self.landing_radii=torch.tensor(radii,dtype=torch.float32,device=self.device)
             self.landing_ball_radius=float(self.ball.cfg.spawn.radius)
 
+    def support_reference_observations(self,observations,mask):
+        from isaaclab.utils.math import matrix_from_quat
+        from running_balance import ground_force
+        from support_reference_observation import transform_running_reference
+        motion=self.expert.motion;r=self.robot.data;plan=self.expert.plan
+        # The expert already selected round(frame)+1 before this callback.
+        reference_rotation=matrix_from_quat(motion.anchor_quat_w)
+        actual_rotation=matrix_from_quat(motion.robot_anchor_quat_w)
+        reference_yaw=torch.atan2(reference_rotation[:,1,0],reference_rotation[:,0,0])
+        actual_yaw=torch.atan2(actual_rotation[:,1,0],actual_rotation[:,0,0])
+        pulse_finished=(self.frame+1.>=plan['strike_velocity']['window'][-1])&(self.step_velocity.abs().amax(-1)<1e-6)
+        windows_finished=(self.frame+1.>=plan['strike']['window'][-1])&(self.frame*.02>=plan['stride']['window_s'][-1])
+        ready=mask&self.contact&pulse_finished&windows_finished&(self.landing.separated_s+1e-8>=self.landing.cfg['separation_s'])
+        reference_feet=motion.body_pos_w[:,self.reference_feet]+self.anchor_shift[:,None,:]
+        actual_feet=r.body_pos_w[:,self.feet]
+        support=ground_force(self.env)
+        evidence=self.support_reference.update(self.elapsed*.02,ready,support,reference_feet,actual_feet,reference_yaw,actual_yaw)
+        out=transform_running_reference(observations,self.support_reference,r.root_pos_w,
+            matrix_from_quat(r.root_quat_w),motion.robot_anchor_pos_w,actual_rotation,mask)
+        if self.n==1:
+            self.support_reference_debug={key:value[0].tolist() for key,value in evidence.items()}
+            self.support_reference_debug.update(ready=bool(ready[0]),running_active=bool(mask[0]),
+                pulse_finished=bool(pulse_finished[0]),windows_finished=bool(windows_finished[0]),
+                support_N=support[0].tolist(),support_time_s=self.support_reference.support_time[0].tolist(),
+                reference_feet_w=reference_feet[0].tolist(),actual_feet_w=actual_feet[0].tolist(),
+                reference_yaw_rad=float(reference_yaw[0]),actual_yaw_rad=float(actual_yaw[0]),
+                observation_before=observations[0,154:169].tolist(),observation_after=out[0,154:169].tolist(),
+                reference_angular_velocity_before=observations[0,61:64].tolist(),reference_angular_velocity_after=out[0,61:64].tolist())
+        return out
+
     def landing_geometry(self):
         from isaaclab.utils.math import matrix_from_quat
         from landing_release import capsule_landing_state
@@ -200,6 +238,9 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
 
     def after_physics(self,dt):
         super().after_physics(dt)
+        if self.support_reference is not None and dt>0:
+            from running_balance import ground_force
+            self.support_reference.after_physics(ground_force(self.env),dt)
         if self.landing is not None and dt>0:
             force=self.env.scene['right_ball_contact'].data.force_matrix_w
             magnitude=torch.full((self.n,),float('inf'),device=self.device) if force is None else force.reshape(self.n,-1,3).sum(1).norm(dim=-1)
@@ -211,6 +252,8 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
         self.approach_previous[ids]=0.
         if self.early_running is not None:self.early_running.reset(ids)
         if self.landing is not None:self.landing.reset(ids)
+        if self.support_reference is not None:self.support_reference.reset(ids)
+        self.support_reference_debug=None
 
     def commands(self,actions=None):
         from isaaclab.utils.math import matrix_from_quat,quat_apply_inverse
@@ -400,6 +443,8 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
             evidence.update({key:value[0].tolist() for key,value in self.expert.release_targets.items()})
             evidence.update(projection_semantics='whole_operator_retention',absolute_joint_names=[self.robot.joint_names[i] for i in self.expert.ids])
             self.debug[-1]['landing_release']=evidence
+        if self.n==1 and self.support_reference_debug is not None:
+            self.debug[-1]['support_reference_frame']=self.support_reference_debug
         self.elapsed+=1
         return out
 
