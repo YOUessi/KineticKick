@@ -1,0 +1,588 @@
+{
+  "schema_version": 1,
+  "version_branch": "version/v0.1.29",
+  "checked_on": "2026-11-07",
+  "scope": "Original-human kick source selection, local provenance and P3/P4 availability check",
+  "decision": {
+    "pipeline_source_id": "cmu_subject10_original",
+    "qualified_skilled_instep_source_id": null,
+    "p2_high_skill_instep_capture_requirement_met": false,
+    "reason": "One open optical human soccer-kick sample acquired, but no verified open source satisfies skilled-player + metric original 3D + instep/event metadata jointly.",
+    "strict_separation": [
+      "broadcast_video_pose_estimate",
+      "calibrated_multiview_pose_estimate",
+      "monocular_video_pose_estimate",
+      "original_human_optical_mocap",
+      "published_biomechanics_no_public_raw_data",
+      "published_biomechanics_request_access",
+      "robot_retargeted_reference"
+    ]
+  },
+  "sources": [
+    {
+      "id": "cmu_subject10_original",
+      "title": "CMU Graphics Lab subject 10 soccer kick optical mocap",
+      "source_class": "original_human_optical_mocap",
+      "access_status": "all_five_subject10_soccer_trials_acquired",
+      "primary_urls": [
+        "http://mocap.cs.cmu.edu/search.php?subjectnumber=10",
+        "http://mocap.cs.cmu.edu/faqs.php",
+        "http://mocap.cs.cmu.edu/info.php",
+        "http://mocap.cs.cmu.edu/"
+      ],
+      "download_urls": [
+        {
+          "path": "10.asf",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10.asf",
+          "bytes": 7260,
+          "sha256": "d4e604fd582403e9f4bca3382e74dd0cc01e15cd712255e7bd34863b922b6200"
+        },
+        {
+          "path": "10_01.amc",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_01.amc",
+          "bytes": 638446,
+          "sha256": "4277e748947e8703825f340f94582f48997ca01b308f2447075eab4c42029e84"
+        },
+        {
+          "path": "10_01.c3d",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_01.c3d",
+          "bytes": 4292816,
+          "sha256": "ae454c3e8c621076d01a00b510c48e4daf8efdf5b4e19e8d80d76d062ef415f1"
+        },
+        {
+          "path": "10_02.c3d",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_02.c3d",
+          "bytes": 3168608,
+          "sha256": "41a98640d0eab3391b2d98fa7f1a04b22f5646b785003967377b527d21f27299"
+        },
+        {
+          "path": "10_02.amc",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_02.amc",
+          "bytes": 469629,
+          "sha256": "68d08f7b47bca54e1fd9ca1739533f8dc973e1200a93c1f4471891a266769d53"
+        },
+        {
+          "path": "10_03.c3d",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_03.c3d",
+          "bytes": 1953824,
+          "sha256": "6147e764f80209a9d5dc70130f346c2daddf3d8edd7c858fa23555a5ae2cf462"
+        },
+        {
+          "path": "10_03.amc",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_03.amc",
+          "bytes": 288143,
+          "sha256": "ffc0f091c8eeb3392797933e23612540a711a07f9a7a49d62c7d1c6d0128a290"
+        },
+        {
+          "path": "10_05.c3d",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_05.c3d",
+          "bytes": 2348096,
+          "sha256": "1389f02ff7e20a9bb1d536cf4a2351abca887810f13ab6d113ff4f9272bf7337"
+        },
+        {
+          "path": "10_05.amc",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_05.amc",
+          "bytes": 347982,
+          "sha256": "e0d9f9c3fd5856325f4ac3aed71d24886ffad27adeed03887b006dfac49b7c38"
+        },
+        {
+          "path": "10_06.c3d",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_06.c3d",
+          "bytes": 3072704,
+          "sha256": "e967b4f33cb7d8cdb580a762af1e3392ff7de5d2cf4971ac211cca88820efded"
+        },
+        {
+          "path": "10_06.amc",
+          "source_url": "http://mocap.cs.cmu.edu/subjects/10/10_06.amc",
+          "bytes": 454705,
+          "sha256": "f1d5332d88cf419d3edae357886f59eb6345a577da1fc2846a04fb6afcd20e75"
+        }
+      ],
+      "local_root": "data/research_human_kicks/cmu_subject10",
+      "local_manifest": "data/research_human_kicks/cmu_subject10/download_manifest.json",
+      "local_inspection": "data/research_human_kicks/cmu_subject10/inspection.json",
+      "local_pipeline_input": "data/research_human_kicks/cmu_subject10/10_01_measured_markers.npz",
+      "pipeline_input_sha256": "b88e2eb13ff0ea49ee652b11b570bc0e5e21b2a278035f1dbc57d17cc596daf2",
+      "format": {
+        "original": [
+          "C3D physical markers plus model outputs",
+          "ASF subject skeleton",
+          "AMC Euler joint rotations/root motion"
+        ],
+        "export": "NPZ, physical human markers and ball markers separately, invalid observations NaN + masks",
+        "fps": 120,
+        "frames_acquired": 2761,
+        "physical_human_markers": 41,
+        "ball_markers": 3,
+        "c3d_stored_points": 333,
+        "excluded_model_output_points": 289,
+        "source_units": "mm",
+        "export_units": "m",
+        "coordinate_frame": "C3D laboratory frame; only unit conversion applied",
+        "clips_acquired": 5,
+        "source_frame_ranges": {
+          "10_01": [
+            8,
+            808
+          ],
+          "10_02": [
+            8,
+            597
+          ],
+          "10_03": [
+            268,
+            629
+          ],
+          "10_05": [
+            287,
+            722
+          ],
+          "10_06": [
+            19,
+            590
+          ]
+        },
+        "frame_counts": {
+          "10_01": 801,
+          "10_02": 590,
+          "10_03": 362,
+          "10_05": 436,
+          "10_06": 572
+        }
+      },
+      "skill_evidence": {
+        "level": null,
+        "professional_or_skilled_verified": false,
+        "reason": "Official index gives action labels and subject number, not training, competition level, or participant soccer skill."
+      },
+      "kick_evidence": {
+        "soccer_kick_trials": [
+          "10_01",
+          "10_02",
+          "10_03",
+          "10_05",
+          "10_06"
+        ],
+        "walking_trial": "10_04",
+        "kick_subtype": null,
+        "instep_verified": false,
+        "source_contact_events": 0
+      },
+      "measurements": {
+        "metric_3d": "optical marker coordinates; measured surface markers are not anatomical joint centers",
+        "body_shape": "subject-specific ASF bone lengths; no mass/inertia/SMPL shape verified",
+        "ball": "three labeled marker tracks; missing data; center calibration absent",
+        "forces": false,
+        "synchronized_video_acquired": false
+      },
+      "license": {
+        "identifier": "CMU-custom-public-use-statement",
+        "data_terms_urls": [
+          "http://mocap.cs.cmu.edu/",
+          "http://mocap.cs.cmu.edu/faqs.php"
+        ],
+        "research_use_explicit": true,
+        "summary": "Research use permitted; copy/modify/redistribute permitted by FAQ; home page prohibits direct resale even in converted form and requests acknowledgement. Not labeled CC0/MIT.",
+        "snapshot_paths": [
+          "data/research_human_kicks/cmu_subject10/source_home.html",
+          "data/research_human_kicks/cmu_subject10/source_faq.html"
+        ]
+      },
+      "quality": {
+        "confounders": [
+          "Early low-number session quality caveat",
+          "Toe/hand joint noise in CMU skeletons",
+          "Artificial finger/thumb skeleton joints must not be interpreted as measured",
+          "C3D includes processed/model-output points",
+          "Missing ball markers around/after kick",
+          "One participant/trial; skill and contact-surface labels unavailable",
+          "Stored marker presence does not establish absence of upstream gap filling"
+        ],
+        "sample_10_01_quality_only": {
+          "human_valid_fraction": 1.0,
+          "ball_valid_fraction": {
+            "Soccerball:WEP1": 0.7490636704119851,
+            "Soccerball:WEP2": 0.7802746566791511,
+            "Soccerball:WEP3": 0.7765293383270911
+          }
+        }
+      },
+      "allowed_role": "Original-human marker pipeline smoke test and explicitly ungraded human kinematic reference; any phase/contact estimates must be labeled inferred.",
+      "eligible_for_original_human_pipeline": true,
+      "eligible_for_skilled_instep_target": false,
+      "next_action": "Use the five explicit surface-marker coordination artifacts for a bounded P3 prototype. All skill/instep/contact truth remains unknown; no professional population claim.",
+      "local_coordination_manifest": "data/research_human_kicks/coordination_v1/manifest.json",
+      "coordination_schema": "configs/human_coordination_schema_v1.json",
+      "coordination_report": "docs/research/human-kick-coordination.md",
+      "independent_point_decoder_check": "data/research_human_kicks/reader_validation/crosscheck.json"
+    },
+    {
+      "id": "paid_g1_kicks_local",
+      "title": "PAiD/HumanoidSoccer released G1 kick references",
+      "source_class": "robot_retargeted_reference",
+      "access_status": "already_local",
+      "primary_urls": [
+        "https://github.com/TeleHuman/HumanoidSoccer/tree/e72e470230047dedaf66df0983f1d0ab746faeb5/motions",
+        "https://github.com/TeleHuman/HumanoidSoccer/blob/e72e470230047dedaf66df0983f1d0ab746faeb5/README.md",
+        "https://github.com/TeleHuman/HumanoidSoccer/blob/e72e470230047dedaf66df0983f1d0ab746faeb5/LICENSE.md"
+      ],
+      "upstream_revision": "e72e470230047dedaf66df0983f1d0ab746faeb5",
+      "local_paths": [
+        "third_party/HumanoidSoccer/motions/soccer-standard",
+        "third_party/HumanoidSoccer/motions/soccer-stylized",
+        "data/soccer-standard-001_right.npz"
+      ],
+      "format": {
+        "files": 13,
+        "standard_files": 10,
+        "stylized_files": 3,
+        "fps": 50,
+        "robot_joint_count": 29,
+        "robot_body_count": 30,
+        "keys": [
+          "fps",
+          "joint_pos",
+          "joint_vel",
+          "body_pos_w",
+          "body_quat_w",
+          "body_lin_vel_w",
+          "body_ang_vel_w",
+          "kick_leg"
+        ]
+      },
+      "license": {
+        "repository_declared": "CC-BY-NC-4.0",
+        "data_specific_notice_separately_verified": false,
+        "note": "Repository codebase statement is not independent evidence of rights to unreleased original human capture."
+      },
+      "skill_evidence": {
+        "professional_or_skilled_verified": false,
+        "level": null
+      },
+      "measurements": {
+        "original_human_markers_available_locally": false,
+        "human_body_shape": false,
+        "human_ball_impact_time": false
+      },
+      "allowed_role": "Existing robot controller/reference baseline only. Do not relabel robot links as original human landmarks.",
+      "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false
+    },
+    {
+      "id": "lafan1_g1_local",
+      "title": "LAFAN1 retargeted G1 walking/running clips",
+      "source_class": "robot_retargeted_reference",
+      "access_status": "already_local",
+      "primary_urls": [
+        "https://huggingface.co/datasets/lvhaidong/LAFAN1_Retargeting_Dataset",
+        "https://github.com/ubisoft/ubisoft-laforge-animation-dataset"
+      ],
+      "local_paths": [
+        "data/human_motion/lafan1_g1_29dof",
+        "data/human_motion/straight_reference29",
+        "data/human_motion/g1_29dof_reference_bank_v0.npz",
+        "data/assets/g1_29dof_lafan1/README.md"
+      ],
+      "format": {
+        "fps": 30,
+        "csv_columns": 36,
+        "root_columns": 7,
+        "robot_joint_columns": 29,
+        "selected_clips": 5,
+        "selected_frames_each": 240,
+        "selected_actions": [
+          "walk1_subject1",
+          "walk2_subject3",
+          "walk3_subject5",
+          "walk4_subject1",
+          "run1_subject2"
+        ]
+      },
+      "license": {
+        "original_lafan1_data": "CC-BY-NC-ND-4.0 as stated by the local upstream README",
+        "original_lafan1_code": "MIT as stated by local upstream README",
+        "robot_asset_license": "BSD-3-Clause in data/assets/g1_29dof_lafan1/LICENSE",
+        "note": "Robot asset license does not relicense LAFAN1 motion; local research files remain ignored."
+      },
+      "quality": {
+        "limitations": [
+          "Kinematic retargeting only; upstream excludes dynamics/actuator limits",
+          "Only walk/run among locally selected clips",
+          "Current extract_human_coordination_priors.py uses G1 joint/FK and inferred stance, not source human capture"
+        ]
+      },
+      "allowed_role": "Gait-only robot prior baseline, explicitly retargeted.",
+      "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false
+    },
+    {
+      "id": "sportspose",
+      "title": "SportsPose (CVsports 2023)",
+      "source_class": "calibrated_multiview_pose_estimate",
+      "access_status": "academic_email_request_required_not_acquired",
+      "primary_urls": [
+        "https://christianingwersen.github.io/SportsPose/",
+        "https://christianingwersen.github.io/SportsPose/download.html",
+        "https://arxiv.org/html/2304.01865v1",
+        "https://github.com/ChristianIngwersen/SportsPose"
+      ],
+      "download_urls": [],
+      "format": {
+        "fps": 90,
+        "cameras": 7,
+        "image_resolution": [
+          1920,
+          1200
+        ],
+        "landmarks": "17 COCO-style estimated joint locations; camera calibrations and multiview frames",
+        "body_shape": "Not provided as measured shape; paper suggests a solver if needed"
+      },
+      "skill_evidence": {
+        "professional_or_skilled_verified": false,
+        "level": null,
+        "reason": "24 participants across five activities; paper says participants were instructed and allowed creative freedom, not skilled/professional soccer athletes."
+      },
+      "measurements": {
+        "metric_3d": "calibrated multiview triangulation from HRNet 2D predictions with temporal selection and smoothing",
+        "original_marker_validation_subset": "Separate marker-based evaluation described; public raw access not verified",
+        "ball_trajectory": null,
+        "ball_contact_events": null,
+        "instep_labels": null
+      },
+      "quality": {
+        "reported_soccer_mean_error_mm": 32.0,
+        "reported_all_action_mean_error_mm": 34.5,
+        "not_per_trial_ground_truth_for_full_dataset": true
+      },
+      "license": {
+        "data": "Custom academic-only, limited/nontransferable terms with academic email request",
+        "code_license_not_used_as_data_license": true
+      },
+      "allowed_role": "Potential multiview validation source after legitimate access; keep reconstructed poses distinct from optical marker ground truth.",
+      "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false,
+      "next_action": "No author email sent. Gate prevents acquisition in this task."
+    },
+    {
+      "id": "zhou2025_elite_coordination",
+      "title": "Comparison of Interlimb Coordination During Soccer Instep Kicking Between Elite and Amateur Players",
+      "source_class": "published_biomechanics_no_public_raw_data",
+      "access_status": "raw_data_explicitly_not_public",
+      "primary_urls": [
+        "https://onlinelibrary.wiley.com/doi/full/10.1002/ejsc.70041",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC12358685/",
+        "https://github.com/teresashchen/crpdp"
+      ],
+      "download_urls": [],
+      "skill_evidence": {
+        "professional_or_skilled_verified": true,
+        "level": "Study-defined elite group (15) contrasted with 15 amateur players; this is cohort metadata, not a data-file label."
+      },
+      "measurements": {
+        "original_human_3d_study": true,
+        "raw_motion_format_publicly_verified": false,
+        "instep_protocol": true,
+        "sample_rate_hz": null,
+        "full_body_markers_and_ball_raw_available": false
+      },
+      "license": {
+        "article_open_access_does_not_grant_raw_data_access": true,
+        "raw_data": "No public raw-data license/repository verified; article says data are not publicly available."
+      },
+      "allowed_role": "Evidence for feature definitions/group differences only, not a trainable professional-player trajectory dataset.",
+      "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false
+    },
+    {
+      "id": "vector_coding2025_experienced",
+      "title": "Inter-Segmental Coordination During Soccer Instep Kicking: Experienced Athletes and Novices",
+      "source_class": "published_biomechanics_request_access",
+      "access_status": "request_only_no_raw_capture_acquired",
+      "primary_urls": [
+        "https://www.mdpi.com/2306-5354/12/11/1151",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC12649761/"
+      ],
+      "download_urls": [],
+      "skill_evidence": {
+        "professional_or_skilled_verified": true,
+        "level": "14 soccer-major college students vs 32 novices; experienced is not professional."
+      },
+      "format": {
+        "optical_cameras": 8,
+        "mocap_hz": 200,
+        "emg_hz": 2000,
+        "ball_video_hz": 60,
+        "raw_public_format": null
+      },
+      "measurements": {
+        "instep_protocol": "Two-step, 45-degree approach and maximal stationary-ball instep kicks",
+        "original_human_optical_3d_study": true,
+        "ball": "Two 2D camera views described; no public calibrated 3D ball file verified"
+      },
+      "license": {
+        "raw_data": "No public raw-data archive/license verified; availability statement says figures/online resources where possible and upon request."
+      },
+      "allowed_role": "Interpretive phase/coordination evidence only until raw data rights and files exist.",
+      "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false
+    },
+    {
+      "id": "autosoccerpose_3dsp",
+      "title": "AutoSoccerPose / 3D Shot Posture Dataset",
+      "source_class": "monocular_video_pose_estimate",
+      "access_status": "public_repository_not_acquired",
+      "primary_urls": [
+        "https://github.com/calvinyeungck/3D-Shot-Posture-Dataset",
+        "https://arxiv.org/abs/2405.12070",
+        "https://github.com/calvinyeungck/3D-Shot-Posture-Dataset/blob/main/3dsp.zip"
+      ],
+      "format": {
+        "training_shots": 200,
+        "images_per_shot": 20,
+        "landmarks": "manual 2D keypoints lifted to 3D with MotionAGFormer; SoccerNet broadcast frames",
+        "metric_3d_ground_truth": false
+      },
+      "skill_evidence": {
+        "professional_or_skilled_verified": true,
+        "level": "Repository/paper identify professional football match shots."
+      },
+      "license": {
+        "repository_license": "Apache-2.0",
+        "underlying_broadcast_rights": "Separate SoccerNet/broadcast-source terms; repository code license is not proof of unrestricted video rights."
+      },
+      "allowed_role": "Professional-shot qualitative/2D timing context only. 3D lifted pose cannot replace genuine metric human capture.",
+      "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false
+    },
+    {
+      "id": "soccerkicks_hmmr",
+      "title": "SoccerKicks",
+      "source_class": "monocular_video_pose_estimate",
+      "access_status": "public_landing_download_link_not_acquired",
+      "primary_urls": [
+        "https://github.com/nayariml/SoccerKicks"
+      ],
+      "format": {
+        "videos": 38,
+        "estimated_3d_joints": 25,
+        "smpl_rotations": [
+          24,
+          3,
+          3
+        ],
+        "smpl_shape_coefficients": 10,
+        "method": "OpenPose/AlphaPose 2D inputs then HMMR; JSON and pickle",
+        "metric_3d_ground_truth": false
+      },
+      "skill_evidence": {
+        "professional_or_skilled_verified": false,
+        "level": null,
+        "reason": "No per-file skill evidence verified in this audit."
+      },
+      "license": {
+        "dataset_declared": "CC0-1.0",
+        "source_code_declared": "MIT",
+        "underlying_video_rights_independently_verified": false
+      },
+      "allowed_role": "Video-derived estimate comparison only; not original 3D human ground truth.",
+      "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false
+    },
+    {
+      "id": "skillcorner_bodypose",
+      "title": "SkillCorner open body-pose data",
+      "source_class": "broadcast_video_pose_estimate",
+      "access_status": "public_dataset_card_only_inspected",
+      "primary_urls": [
+        "https://huggingface.co/datasets/SkillCorner/opendata-bodypose"
+      ],
+      "format": {
+        "description": "3D body pose derived from broadcast video",
+        "raw_original_mocap": false
+      },
+      "skill_evidence": {
+        "professional_or_skilled_verified": false,
+        "level": null,
+        "reason": "Per-clip competition/participant metadata not inspected."
+      },
+      "license": {
+        "terms_verified": false
+      },
+      "allowed_role": "Discovery lead only; rejected as original motion-capture ground truth.",
+      "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false
+    }
+  ],
+  "controller_availability_checks": [
+    {
+      "id": "beyondmimic",
+      "checked_on": "2026-11-07",
+      "primary_urls": [
+        "https://beyondmimic.github.io/",
+        "https://github.com/HybridRobotics/whole_body_tracking",
+        "https://github.com/HybridRobotics/motion_tracking_controller",
+        "https://github.com/mujocolab/mjlab/tree/main/src/mjlab/tasks/tracking"
+      ],
+      "official_training_code_available": true,
+      "legacy_training_repo_archived_on": "2026-10-16",
+      "official_readme_successor": "mujocolab/mjlab tracking task",
+      "deployment_code_available": true,
+      "deployment": "C++ ONNX CPU inference/ROS2; policy metadata holds joint order/impedance",
+      "input": "Robot-retargeted generalized-coordinate motion, not raw human keypoints",
+      "data_license_separate": true,
+      "guided_diffusion_release_verified": false,
+      "skilled_soccer_checkpoint_verified": false
+    },
+    {
+      "id": "supermimic",
+      "checked_on": "2026-11-07",
+      "primary_urls": [
+        "https://supermimic.github.io/",
+        "https://arxiv.org/abs/2610.28480"
+      ],
+      "official_paper_and_browser_demo_available": true,
+      "official_training_repository_link_verified": false,
+      "official_downloadable_training_checkpoint_and_license_verified": false,
+      "reported_data": "Filtered BONES-SEED 129514 motions; robot tracking benchmark, not verified professional instep capture",
+      "inference_limit": "Absence of a verified release link in this bounded audit is not proof that no code exists anywhere. Community reproductions are distinct."
+    }
+  ],
+  "bounded_search_record": {
+    "date": "2026-11-07",
+    "repositories_queried": [
+      "Zenodo",
+      "Figshare",
+      "OSF"
+    ],
+    "query_examples": [
+      "soccer kick data motion professional site:zenodo.org",
+      "soccer kicking kinematic site:figshare.com",
+      "soccer instep data site:osf.io",
+      "soccer motion capture dataset elite"
+    ],
+    "outcome": "No qualifying open skilled/professional instep original-3D motion archive verified. Article supplements/summary figures and request-only statements do not establish raw-data access.",
+    "negative_control_sources": [
+      "https://www.nature.com/articles/s41597-025-04505-y (elite player/ball positions, not body kinematics)",
+      "https://www.nature.com/articles/s41597-023-02082-6 (athlete motion screen, not soccer kicking)",
+      "https://www.mdpi.com/1424-8220/26/12/3654 (elite long pass/Xsens study; team-restricted data)"
+    ]
+  },
+  "performed_actions": {
+    "new_data_files_acquired": 11,
+    "provenance_pages_acquired": 4,
+    "new_raw_and_provenance_bytes": 17078488,
+    "emails_sent": 0,
+    "payments": 0,
+    "gpu_jobs": 0,
+    "independent_reader_wheel_bytes": 31316
+  },
+  "verification": {
+    "local_npz_inspection": "13 PAiD robot kick references, 5 LAFAN1 selected walk/run clips, 4 derived straight references inspected with allow_pickle=False.",
+    "cmu_acceptance": "Known-capture end-to-end check passed for 801 frames, 41 human markers, 3 ball tracks, exact metric conversion, excluded model outputs, missing-data NaN masks and absent source event/force labels.",
+    "full_project_suite_run_by_this_agent": false,
+    "unsupported_layouts": "Truncated data, non-Intel processor encoding and integer-point layouts were each rejected.",
+    "provenance": "Seven original/provenance files and the selected marker export independently matched recorded SHA-256 and sizes; research files match data/ ignore rule.",
+    "independent_c3d_decoding": "All five point arrays, source frame numbers and validity masks agree exactly with py-c3d 0.6.0. Four zero-analog-channel files need an explicitly recorded unused analog-header normalization inside the independent reader; originals untouched.",
+    "human_coordination_tests": "Ten targeted unittest cases passed, including synthetic geometry/invariance/gap handling and all five real clips. Sourcequalification remains false."
+  }
+}

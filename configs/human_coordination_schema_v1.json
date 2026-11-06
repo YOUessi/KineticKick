@@ -1,0 +1,444 @@
+{
+  "schema_version": 1,
+  "name": "human_surface_marker_coordination_v1",
+  "sourcequalification": false,
+  "qualification_scope": "Source does not satisfy verified skilled/professional instep reference requirements. Geometry features are surface-marker proxies, not anatomical joint center/angle ground truth.",
+  "allowed_source_classes": [
+    "original_human_optical_mocap",
+    "synthetic_test_fixture"
+  ],
+  "units": {
+    "positions": "m",
+    "time": "s",
+    "world_velocity": "m/s",
+    "normalized_positions": "dimensionless",
+    "normalized_coordinate_velocity": "1/s",
+    "direction_relations": "cosine, dimensionless"
+  },
+  "landmarks": {
+    "pelvis_center": [
+      "LFWT",
+      "RFWT",
+      "LBWT",
+      "RBWT"
+    ],
+    "thorax_center": [
+      "CLAV",
+      "STRN",
+      "C7",
+      "T10"
+    ],
+    "left_pelvis_side": [
+      "LFWT",
+      "LBWT"
+    ],
+    "right_pelvis_side": [
+      "RFWT",
+      "RBWT"
+    ],
+    "left_shoulder": [
+      "LSHO"
+    ],
+    "right_shoulder": [
+      "RSHO"
+    ],
+    "left_elbow": [
+      "LELB"
+    ],
+    "right_elbow": [
+      "RELB"
+    ],
+    "left_wrist": [
+      "LWRA",
+      "LWRB"
+    ],
+    "right_wrist": [
+      "RWRA",
+      "RWRB"
+    ],
+    "left_knee": [
+      "LKNE"
+    ],
+    "right_knee": [
+      "RKNE"
+    ],
+    "left_ankle": [
+      "LANK"
+    ],
+    "right_ankle": [
+      "RANK"
+    ],
+    "left_heel": [
+      "LHEE"
+    ],
+    "right_heel": [
+      "RHEE"
+    ],
+    "left_toe": [
+      "LTOE"
+    ],
+    "right_toe": [
+      "RTOE"
+    ],
+    "left_mt5": [
+      "LMT5"
+    ],
+    "right_mt5": [
+      "RMT5"
+    ]
+  },
+  "landmark_rule": "Arithmetic mean of all listed surface markers; requires every contributor valid. No anatomical joint-center fitting.",
+  "segments": {
+    "trunk": [
+      "pelvis_center",
+      "thorax_center"
+    ],
+    "pelvis_line": [
+      "right_pelvis_side",
+      "left_pelvis_side"
+    ],
+    "shoulder_line": [
+      "right_shoulder",
+      "left_shoulder"
+    ],
+    "left_upper_arm": [
+      "left_shoulder",
+      "left_elbow"
+    ],
+    "left_forearm": [
+      "left_elbow",
+      "left_wrist"
+    ],
+    "left_thigh": [
+      "left_pelvis_side",
+      "left_knee"
+    ],
+    "left_shank": [
+      "left_knee",
+      "left_ankle"
+    ],
+    "left_foot": [
+      "left_heel",
+      "left_toe"
+    ],
+    "right_upper_arm": [
+      "right_shoulder",
+      "right_elbow"
+    ],
+    "right_forearm": [
+      "right_elbow",
+      "right_wrist"
+    ],
+    "right_thigh": [
+      "right_pelvis_side",
+      "right_knee"
+    ],
+    "right_shank": [
+      "right_knee",
+      "right_ankle"
+    ],
+    "right_foot": [
+      "right_heel",
+      "right_toe"
+    ]
+  },
+  "segment_rule": "Endpoint difference in pelvis coordinates; lengths and directions are segment proxies.",
+  "relation_pairs": [
+    [
+      "pelvis_line",
+      "shoulder_line"
+    ],
+    [
+      "left_upper_arm",
+      "right_upper_arm"
+    ],
+    [
+      "left_forearm",
+      "right_forearm"
+    ],
+    [
+      "left_thigh",
+      "right_thigh"
+    ],
+    [
+      "left_shank",
+      "right_shank"
+    ],
+    [
+      "left_foot",
+      "right_foot"
+    ],
+    [
+      "trunk",
+      "left_thigh"
+    ],
+    [
+      "trunk",
+      "right_thigh"
+    ],
+    [
+      "left_thigh",
+      "left_shank"
+    ],
+    [
+      "right_thigh",
+      "right_shank"
+    ],
+    [
+      "left_shank",
+      "left_foot"
+    ],
+    [
+      "right_shank",
+      "right_foot"
+    ],
+    [
+      "left_upper_arm",
+      "right_thigh"
+    ],
+    [
+      "right_upper_arm",
+      "left_thigh"
+    ]
+  ],
+  "relation_rule": "Dot product of two valid unit segment directions; not a joint-angle measurement.",
+  "pelvis_frame": {
+    "origin_markers": [
+      "LFWT",
+      "RFWT",
+      "LBWT",
+      "RBWT"
+    ],
+    "left_markers": [
+      "LFWT",
+      "LBWT"
+    ],
+    "right_markers": [
+      "RFWT",
+      "RBWT"
+    ],
+    "front_markers": [
+      "LFWT",
+      "RFWT"
+    ],
+    "back_markers": [
+      "LBWT",
+      "RBWT"
+    ],
+    "axes": "columns: forward from front-back orthogonalized to left, left, cross(forward,left); right-handed. No laboratory-ground plane inferred.",
+    "degenerate_epsilon_m": 1e-08
+  },
+  "normalization": {
+    "length_scale": "Median across source-valid frames and both sides of pelvis_side-to-knee plus knee-to-ankle marker-chain length.",
+    "scale_is_anthropometric_leg_length_truth": false,
+    "no_valid_scale": "NaN scale and normalized features; never substitute a default scale.",
+    "velocity": "Finite differences of pelvis-coordinate normalized positions; includes changing pelvis frame, not an inertial segment velocity."
+  },
+  "missing_data": {
+    "default_max_gap_frames": 2,
+    "permitted": "Linear interpolation in time only for internal gaps bounded by valid samples, length <= configured maximum; every filled sample flagged.",
+    "never": "No boundary extrapolation, no long-gap fill, no interpolation across nonmonotonic time, no ball-marker interpolation.",
+    "source_zero_residual": "Preserve C3D zero-residual flag separately; it can indicate upstream modeling/filtering/gap filling, but exact upstream operation is unknown.",
+    "event_inputs": "Source-valid samples only, never newly interpolated samples."
+  },
+  "event_candidates": {
+    "confidence": "qualitative rule confidence only; never a calibrated probability",
+    "foot_speed_peak": "Source-valid fastest toe marker peak >1 m/s; candidate kicking side only, not contact.",
+    "approach": "Pelvis translation onset >0.15 m/s for >=3 frames before foot-speed peak; low confidence, not verified running.",
+    "support": "Contralateral heel/toe midpoint speed <=0.2 m/s for >=5 frames near peak; low-motion candidate only, no ground/force claim.",
+    "backswing": "Interior minimum of candidate kicking toe pelvis-forward coordinate in 1 s before peak with >=0.03 normalized excursion.",
+    "forward_swing": "Pelvis-forward toe coordinate rate >0.4 /s for >=3 source-valid frames after backswing and before peak.",
+    "strike": null,
+    "contact_truth": null,
+    "ball_centroid_motion_onset": "A fixed two-marker subset selected by source-valid completeness; median first 0.5 s stationary baseline; speed above max(0.5 m/s, baseline median+6*MAD), displacement >0.03 m, >=3 frames; candidate interval retains last baseline-like observation. Marker centroid is not a calibrated ball center.",
+    "follow_through": "First >=5-frame toe-speed decay below max(0.3 m/s, 0.3*peak) after peak+0.05 s; low-confidence recovery candidate.",
+    "unavailable_event": "null with reason; no fallback from toe peak to impact."
+  },
+  "outputs": {
+    "npz": "Numeric/string/bool arrays only, allow_pickle=False. Raw source samples, validity and source zero-residual flags retained alongside processed features and interpolation masks.",
+    "json": "Source and schema hashes, parameters, quality/feature availability, normalization, event candidates, sourcequalification=false and explicit null truth labels.",
+    "aggregate": "One clip summary per actual acquired trial; no fabricated cohort statistics or professional reference distribution."
+  },
+  "version": "1.0.0",
+  "npz_fields": {
+    "source_markers_m": {
+      "shape": [
+        "T",
+        "M",
+        3
+      ],
+      "units": "m",
+      "validity": "source_marker_valid",
+      "upstream_processing_flag": "source_zero_residual_flag"
+    },
+    "markers_m": {
+      "shape": [
+        "T",
+        "M",
+        3
+      ],
+      "units": "m",
+      "validity": "marker_valid",
+      "new_interpolation_flag": "marker_interpolated"
+    },
+    "landmarks_world_m": {
+      "shape": [
+        "T",
+        20,
+        3
+      ],
+      "units": "m",
+      "validity": "landmark_valid",
+      "source_only_validity": "landmark_source_valid",
+      "new_interpolation_flag": "landmark_interpolated"
+    },
+    "pelvis_axes_world": {
+      "shape": [
+        "T",
+        3,
+        3
+      ],
+      "columns": [
+        "forward",
+        "left",
+        "up_normal"
+      ],
+      "validity": "pelvis_frame_valid",
+      "source_only_validity": "pelvis_frame_source_valid",
+      "new_interpolation_flag": "pelvis_frame_interpolated"
+    },
+    "pelvis_origin_m": {
+      "shape": [
+        "T",
+        3
+      ],
+      "units": "m"
+    },
+    "landmarks_pelvis_m": {
+      "shape": [
+        "T",
+        20,
+        3
+      ],
+      "units": "m",
+      "validity": "landmark_local_valid",
+      "source_only_validity": "landmark_local_source_valid",
+      "new_interpolation_flag": "landmark_local_interpolated"
+    },
+    "landmarks_normalized": {
+      "shape": [
+        "T",
+        20,
+        3
+      ],
+      "units": "dimensionless",
+      "validity": "landmark_normalized_valid",
+      "source_only_validity": "landmark_normalized_source_valid",
+      "new_interpolation_flag": "landmark_normalized_interpolated"
+    },
+    "landmark_velocity_world_mps": {
+      "shape": [
+        "T",
+        20,
+        3
+      ],
+      "units": "m/s",
+      "validity": "landmark_velocity_world_valid",
+      "new_interpolation_flag": "landmark_velocity_world_interpolated"
+    },
+    "landmark_normalized_velocity_per_s": {
+      "shape": [
+        "T",
+        20,
+        3
+      ],
+      "units": "1/s",
+      "validity": "landmark_normalized_velocity_valid",
+      "new_interpolation_flag": "landmark_normalized_velocity_interpolated"
+    },
+    "length_scale_m": {
+      "shape": [],
+      "units": "m",
+      "validity": "length_scale_valid"
+    },
+    "segment_vectors_pelvis_m": {
+      "shape": [
+        "T",
+        13,
+        3
+      ],
+      "units": "m",
+      "validity": "segment_valid",
+      "new_interpolation_flag": "segment_interpolated"
+    },
+    "segment_lengths_m": {
+      "shape": [
+        "T",
+        13
+      ],
+      "units": "m",
+      "validity": "segment_valid"
+    },
+    "segment_directions_pelvis": {
+      "shape": [
+        "T",
+        13,
+        3
+      ],
+      "units": "unit_vector",
+      "validity": "segment_valid",
+      "new_interpolation_flag": "segment_interpolated"
+    },
+    "relation_cosines": {
+      "shape": [
+        "T",
+        14
+      ],
+      "units": "dimensionless_cosine",
+      "validity": "relation_valid",
+      "new_interpolation_flag": "relation_interpolated"
+    },
+    "ball_markers_m": {
+      "shape": [
+        "T",
+        "B",
+        3
+      ],
+      "units": "m",
+      "validity": "ball_marker_valid",
+      "upstream_processing_flag": "ball_zero_residual_flag",
+      "interpolated": false
+    },
+    "ball_marker_centroid_m": {
+      "shape": [
+        "T",
+        3
+      ],
+      "units": "m",
+      "validity": "ball_centroid_valid",
+      "fixed_marker_subset": "ball_centroid_marker_names",
+      "calibrated_ball_center": false
+    },
+    "time_s": {
+      "shape": [
+        "T"
+      ],
+      "units": "s",
+      "origin": "First acquired sample in each clip, not impact."
+    },
+    "source_frame_numbers": {
+      "shape": [
+        "T"
+      ],
+      "meaning": "Original C3D frame indices; not reset or merged across clips."
+    },
+    "sourcequalification": {
+      "shape": [],
+      "value": false
+    },
+    "source_sha256": {
+      "shape": [],
+      "meaning": "Original C3D SHA-256"
+    }
+  }
+}
