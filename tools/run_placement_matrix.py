@@ -13,7 +13,7 @@ from strike_cases import load_cases
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config', type=Path, default=ROOT/'configs/state_conditioned_strike_v4.json')
+    parser.add_argument('--config', type=Path, default=ROOT/'configs/state_conditioned_strike_v5.json')
     parser.add_argument('--prefix', required=True)
     parser.add_argument('--cases', nargs='+', required=True)
     parser.add_argument('--video-cases', nargs='*', default=[])
@@ -39,7 +39,7 @@ def main():
                '--output', str(report), '--ball-offset', *map(str, case['ball_offset_xy_m']),
                '--velocity-delta', str(case['root_velocity_y_delta_mps'])]
         if name in args.video_cases:
-            cmd += ['--video-dir', str(ROOT/'experiments/state_conditioned_v027'/f'{args.prefix}_{name}_frames')]
+            cmd += ['--video-dir', str(ROOT/'experiments/state_conditioned_v028'/f'{args.prefix}_{name}_frames')]
         print('CASE_START', name, flush=True)
         with log.open('w') as stream:
             subprocess.run(cmd, cwd=ROOT, stdout=stream, stderr=subprocess.STDOUT, check=True)

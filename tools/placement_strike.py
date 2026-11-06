@@ -127,6 +127,15 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
         prefix=torch.tensor(coefficients,device=self.device)
         if prefix.shape!=(3,10) or not bool(torch.isfinite(prefix).all()) or bool((prefix.abs()>.20).any()):raise ValueError('Finite3x10 prefix coefficients bounded by0.20rad required')
         self.prefix_parameters=prefix.expand(self.n,3,10).clone()
+        self.approach_cfg=config.get('approach_adapter')
+        approach=torch.tensor((self.approach_cfg or {}).get('coefficients',[[0.]*10 for _ in range(3)]),device=self.device)
+        if approach.shape!=(3,10) or not bool(torch.isfinite(approach).all()) or bool((approach.abs()>.20).any()):raise ValueError('Finite3x10 approach coefficients bounded by0.20rad required')
+        if self.approach_cfg:
+            import math
+            ac=self.approach_cfg
+            if not all(math.isfinite(ac[k]) and ac[k]>0 for k in ['lookahead_s','scale_m','maximum_rad','maximum_step_rad']) or ac['maximum_rad']>.2 or ac['maximum_step_rad']>.04:raise ValueError('Invalid approach adapter bounds')
+        self.approach_parameters=approach.expand(self.n,3,10).clone()
+        self.approach_previous=torch.zeros(self.n,10,device=self.device)
         self.clearance_cfg=config.get('follow_through_clearance')
         self.hip_clearance=None
         if self.clearance_cfg:
@@ -137,6 +146,15 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
             self.hip_clearance=HipClearance(Path(__file__).resolve().parents[1]/'configs/paid_original/paid_main_resolved.urdf',self.device)
             self.pitch_id=self.robot.joint_names.index('right_hip_pitch_joint')
             self.roll_id=self.robot.joint_names.index('right_hip_roll_joint')
+        self.shank_cfg=config.get('shank_clearance');self.shank_geometry=None
+        self.shank_delta=torch.zeros(self.n,device=self.device);self.shank_ankle_delta=self.shank_delta.clone()
+        if self.shank_cfg:
+            from shank_clearance import ShankClearance
+            import math
+            values=[self.shank_cfg[k] for k in ['margin_m','horizon_s','maximum_correction_rad','maximum_step_rad','start_s','end_s','support_min_N','swing_max_N']]
+            if not all(math.isfinite(x) and x>0 for x in values) or self.shank_cfg['maximum_correction_rad']>.2 or self.shank_cfg['horizon_s']>.1 or self.shank_cfg['start_s']>=self.shank_cfg['end_s']:raise ValueError('Invalid bounded shank-clearance settings')
+            self.shank_geometry=ShankClearance(Path(__file__).resolve().parents[1]/'configs/paid_original/paid_main_resolved.urdf',self.robot.joint_names,self.device)
+            self.shank_roll_id=self.robot.joint_names.index('right_hip_roll_joint');self.shank_ankle_id=self.robot.joint_names.index('right_ankle_roll_joint')
         self.anchor_shift=torch.zeros(self.n,3,device=self.device)
         self.phase_shift=torch.zeros(self.n,device=self.device)
         self.early_running=None
@@ -164,7 +182,8 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
 
     def reset_fields(self,ids):
         super().reset_fields(ids)
-        self.anchor_shift[ids]=0.;self.phase_shift[ids]=0.
+        self.anchor_shift[ids]=0.;self.phase_shift[ids]=0.;self.shank_delta[ids]=0.;self.shank_ankle_delta[ids]=0.
+        self.approach_previous[ids]=0.
         if self.early_running is not None:self.early_running.reset(ids)
 
     def commands(self,actions=None):
@@ -207,6 +226,22 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
             correction=(weights[:,:,None]*self.prefix_parameters).sum(1).clamp(-.20,.20)*((-self.velocity_error[:,1]/.2).clamp(0,1)*prefix_only)[:,None]
             prefix_delta[:,self.prefix_ids]=correction
             base=residual_action(base,torch.atanh((prefix_delta/.20).clamp(-.999999,.999999)),term._scale,term._offset,self.robot.data.soft_joint_pos_limits,.20)
+        approach_delta=torch.zeros_like(base);approach_feature=torch.zeros(self.n,device=self.device)
+        approach_request=torch.zeros_like(self.approach_previous);approach_before=approach_request.clone()
+        approach_limits=torch.zeros(self.n,10,2,device=self.device)
+        if self.approach_cfg:
+            from approach_adapter import approach_features,approach_command
+            cfg=self.approach_cfg
+            approach_feature=approach_features(nominal,velocity,root,r.root_lin_vel_w[:,:2],shift,ramp,self.velocity_error[:,1],cfg['lookahead_s'],cfg['scale_m'])
+            windows=self.cfg['fast_prefix_windows_s']
+            weights=torch.stack([cosine_window(now.double(),w).float() for w in windows],-1)
+            approach_request=approach_command(weights,self.approach_parameters,approach_feature,self.approach_previous,cfg['maximum_rad'],cfg['maximum_step_rad'])
+            approach_before=(base*term._scale+term._offset)[:,self.prefix_ids]
+            approach_limits=r.soft_joint_pos_limits[:,self.prefix_ids]
+            delta=torch.zeros_like(base);delta[:,self.prefix_ids]=approach_request
+            maximum=cfg['maximum_rad']
+            adapted=residual_action(base,torch.atanh((delta/maximum).clamp(-.999999,.999999)),term._scale,term._offset,r.soft_joint_pos_limits,maximum)
+            approach_delta=(adapted-base)*term._scale;self.approach_previous=approach_delta[:,self.prefix_ids];base=adapted
         error=torch.cat([nominal+shift*ramp[:,None]-root,torch.zeros(self.n,1,device=self.device)],-1)
         verror=torch.cat([velocity-r.root_lin_vel_w[:,:2],torch.zeros(self.n,1,device=self.device)],-1)
         body_error=quat_apply_inverse(r.root_quat_w,error);body_velocity=quat_apply_inverse(r.root_quat_w,verror)
@@ -292,12 +327,33 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
                 corrected=residual_action(out,torch.atanh((delta/maximum).clamp(-.999999,.999999)),term._scale,term._offset,r.soft_joint_pos_limits,maximum)
                 clearance_delta=((corrected-out)*term._scale)[:,self.pitch_id];out=corrected
                 clearance_gap[selected]=self.hip_clearance.gap(position,roll);clearance_stop[selected]=stopping;clearance_floor[selected]=floor
+        shank_active=torch.zeros(self.n,device=self.device,dtype=torch.bool)
+        shank_gap=torch.zeros_like(self.shank_delta);shank_pred=shank_gap.clone();shank_time=shank_gap.clone();shank_ankle=shank_gap.clone()
+        shank_requested=torch.zeros(self.n,2,device=self.device);shank_before=shank_requested.clone();shank_limits=torch.zeros(self.n,2,2,device=self.device)
+        if self.shank_geometry is not None:
+            from shank_clearance import ankle_compensation
+            cfg=self.shank_cfg;ground=ground_force(self.env)
+            shank_active=(self.gate>0)&(~self.contact)&(now>=cfg['start_s'])&(now<cfg['end_s'])&(ground[:,0]>=cfg['support_min_N'])&(ground[:,1]<=cfg['swing_max_N'])
+            requested,evidence=self.shank_geometry.command(r.joint_pos,r.joint_vel,shank_active,self.shank_delta,
+                margin=cfg['margin_m'],horizon=cfg['horizon_s'],maximum=cfg['maximum_correction_rad'],maximum_step=cfg['maximum_step_rad'])
+            ankle_request=ankle_compensation(requested,self.shank_ankle_delta,shank_active,cfg['maximum_step_rad'])
+            shank_requested=torch.stack([requested,ankle_request],-1)
+            indices=[self.shank_roll_id,self.shank_ankle_id]
+            shank_before=(out*term._scale+term._offset)[:,indices];shank_limits=r.soft_joint_pos_limits[:,indices]
+            delta=torch.zeros_like(out);delta[:,self.shank_roll_id]=requested;delta[:,self.shank_ankle_id]=ankle_request
+            maximum=cfg['maximum_correction_rad']
+            corrected=residual_action(out,torch.atanh((delta/maximum).clamp(-.999999,.999999)),term._scale,term._offset,r.soft_joint_pos_limits,maximum)
+            applied=(corrected-out)*term._scale;self.shank_delta=applied[:,self.shank_roll_id];self.shank_ankle_delta=applied[:,self.shank_ankle_id];shank_ankle=self.shank_ankle_delta;out=corrected
+            shank_gap=self.shank_geometry.gap(r.joint_pos);shank_pred=evidence['predicted_gap'];shank_time=evidence['closest_time']
         if self.n==1:
             self.debug.append(dict(time_s=float(now[0]),phase_s=float(self.frame[0])*.02,context_gate=float(self.gate[0]),
                 measured_root_xy=root[0].tolist(),measured_ball_xyz=(self.ball.data.root_pos_w[0]-self.env.scene.env_origins[0]).tolist(),
                 measured_initial_velocity_error=self.velocity_error[0].tolist(),contact_latched=bool(self.contact[0]),
+                approach_feature=float(approach_feature[0]),approach_correction_rad=approach_delta[0].tolist(),approach_requested_rad=approach_request[0].tolist(),approach_target_before_rad=approach_before[0].tolist(),approach_soft_limits_rad=approach_limits[0].tolist(),
                 placement_command_xyz=self.anchor_shift[0].tolist(),stance_correction_rad=direct[0].tolist(),prefix_correction_rad=prefix_delta[0].tolist(),ik_error_m=float(errors[0]),ik_angle_error_rad=float(angles[0]),swing_reach_fraction=float(reach_fraction[0]),
                 residual_rad=((out-base)*term._scale)[0].tolist(),phase_action=float(self.phase_shift[0]),
+                shank_requested_rad=shank_requested[0].tolist(),shank_target_before_rad=shank_before[0].tolist(),shank_soft_limits_rad=shank_limits[0].tolist(),
+                shank_active=bool(shank_active[0]),shank_correction_rad=float(self.shank_delta[0]),shank_ankle_correction_rad=float(shank_ankle[0]),shank_gap_m=float(shank_gap[0]),shank_predicted_gap_m=float(shank_pred[0]),shank_closest_time_s=float(shank_time[0]),
                 follow_through_active=bool(clearance_active[0]),follow_through_correction_rad=float(clearance_delta[0]),
                 thigh_pelvis_gap_m=float(clearance_gap[0]),hip_stopping_angle_rad=float(clearance_stop[0]),hip_clearance_floor_rad=float(clearance_floor[0])))
         self.elapsed+=1

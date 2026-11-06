@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--config',type=Path,default=ROOT/'configs/state_conditioned_strike_v4.json')
+    p.add_argument('--config',type=Path,default=ROOT/'configs/state_conditioned_strike_v5.json')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--ball-offset',nargs=2,type=float,default=[0.,0.])
     p.add_argument('--velocity-delta',type=float,default=0.)
@@ -49,7 +49,7 @@ def main():
                 if num_envs!=1:raise ValueError('Recorded physical evaluation uses one environment')
                 self.env=created['env'];self.task=get_task(self.env);created['actor']=self
                 self.observation_names=NativeActor(path,num_envs).observation_names
-                self.nonfoot_events=[]
+                self.nonfoot_events=[];self.state_inputs=[]
                 self.contact_frames=ContactFrameSampler(self.env)
                 native_update=self.env.scene.update
                 def update(dt):
@@ -77,6 +77,7 @@ def main():
                     target=root.clone() if float(self.task.elapsed[0])*.02<1.3 else .5*(root+ball)
                     target[:,2]=.55
                     self.env.scene['review_camera'].set_world_poses_from_view(eyes=target+torch.tensor([[3.8,1.5,2.1]],device=self.task.device),targets=target)
+                self.state_inputs.append(dict(time_s=float(self.task.elapsed[0])*.02,root_velocity_w=self.task.robot.data.root_lin_vel_w[0].cpu().tolist()))
                 with torch.inference_mode():
                     actions=torch.zeros(1,30,device=self.task.device)
                     return self.task.commands(actions).cpu().numpy()
@@ -103,9 +104,9 @@ def main():
             result['joint_strike']=dict(mode='fitted_placement',
                 checkpoint=None,checkpoint_sha256=None,
                 template_sha256=cfgdata['template_sha256'],config=cfgdata,config_sha256=sha(a.config),
-                source_sha256={n:sha(ROOT/'tools'/n) for n in ['run_placement_strike.py','placement_strike.py','closed_loop_strike.py','closed_loop_expert.py','joint_strike_core.py','paid_actor_warmstart.py','closed_loop_acceptance.py','hip_clearance.py']},
+                source_sha256={n:sha(ROOT/'tools'/n) for n in ['run_placement_strike.py','placement_strike.py','closed_loop_strike.py','closed_loop_expert.py','joint_strike_core.py','paid_actor_warmstart.py','closed_loop_acceptance.py','hip_clearance.py','shank_clearance.py','approach_adapter.py']},
                 initial_root_velocity=actor.initial,ball_offset_xy=a.ball_offset,velocity_y_delta=a.velocity_delta,
-                feedback=actor.task.debug,actual_policy='Frozen feedback experts with fitted state-conditioned placement/phase, foot-pose IK and bounded early actuator adapter',expert_backend=actor.task.expert.backend,expert_handoffs=actor.task.expert.events)
+                feedback=actor.task.debug,state_inputs=actor.state_inputs,actual_policy='Frozen feedback experts with fitted state-conditioned placement/phase, foot-pose IK and bounded early actuator adapter',expert_backend=actor.task.expert.backend,expert_handoffs=actor.task.expert.events)
             if a.contact_diagnostics:result['nonfoot_contact_diagnostics']=actor.nonfoot_events
             a.output.write_text(json.dumps(result,indent=2)+'\n')
             print('CLOSED_LOOP_STRIKE_RESULT',json.dumps(dict(success=result['stride_shot_success'],shot=result['records'][0],termination=result['termination_reasons'])),flush=True)
