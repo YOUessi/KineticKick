@@ -1,0 +1,231 @@
+{
+  "version": "0.1.32",
+  "status": "fixed_single_candidate_before_remaining_matrix",
+  "candidate_config": "configs/state_conditioned_strike_v9.json",
+  "candidate_config_sha256": "896cda44d5e718aed83ea35c027b252293672e65a438b14671444cfc4b36a8b5",
+  "checkpoint_sha256": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+  "runtime_sources_sha256": {
+    "configs/state_conditioned_strike_v9.json": "896cda44d5e718aed83ea35c027b252293672e65a438b14671444cfc4b36a8b5",
+    "docs/research/2026-11-07-post-shot-recovery-learning.md": "be435b7ab08f8ab236e04850b279214a49ac5b58bec56cfc5b3c062a6a49c282",
+    "tools/run_placement_strike.py": "c3420aa0b7b14b98d0cbd07c8282bcb1b8f72796215db2008d0871e671ba97cb",
+    "tools/run_instrumented_strike.py": "d01751a552bd508886a5a1542357a10efd59f023e7eb97dad13b87095e7800c1",
+    "tools/placement_strike.py": "e461ba4b025b38295295af883bc04beb5ea1289dcd24ac231cc7fafc85f27638",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/post_shot_objective.py": "5b0b2abc8f21df70d2130f84edb1b2a4d6b1be3df7566415bd281e0c5c6052f1",
+    "tools/closed_loop_strike.py": "ac6ee3f7f35716ec1e44e9008b7aef8bbf3a2221747ac2cbc7e89fc6a3b19e3e",
+    "tools/closed_loop_expert.py": "0cf2c0243be3c73f912f5dd1985d12f5db08d1d3f4fbb2c40f58ee2a1e0b617a",
+    "tools/joint_strike_core.py": "55a7ae2b2c5cf824385a6db91b0758a0dc2fe84b25aa48c22ce6840eb8405a30",
+    "tools/paid_actor_warmstart.py": "0f69f56d5a7a5657e07f5ccc3796bd675c7129b4b8560068c37a607dd021c62f",
+    "tools/closed_loop_acceptance.py": "184ff84e8e78d3a864d5d4342df40f9ed15002b706eb26192ecff8ca506e6c54",
+    "tools/hip_clearance.py": "0ff2e8a42435ae700c4a8c9e5befd1193f9069b1e4611442e46b8659867a8c87",
+    "tools/shank_clearance.py": "a515febfa46a452737559a9aaafa7e236c974a6d7f24f2156c379b4d7798fb2c",
+    "tools/approach_adapter.py": "7d7b2e921be61d40653a44914a22aba893a17d510efcdbbf43b9a07aaf801dec",
+    "tools/landing_release.py": "052e86d8bfb2b902173a798e44451eac165319da9142e4e2b02f2facd56cf667",
+    "tools/strike_dynamics_telemetry.py": "642150d97cabf728053f6d7eb7c4b943bf58f71a2ae876949b37dac186fbbb67",
+    "tools/train_post_shot_recovery.py": "68b4e82bb6ba3783e163dea96f04fe1cb9b6018b5f60dc8aba4ce7bc51b107b5",
+    "tools/ground_contact_observer.py": "33fca0ebe615fb7a616574591bc2831ac59220a79d5f7c6879915c42a7b35cd4"
+  },
+  "existing_cases": [
+    {
+      "id": "center",
+      "ball_offset_xy_m": [
+        0.0,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.0
+    },
+    {
+      "id": "ball_x_minus_5cm",
+      "ball_offset_xy_m": [
+        -0.05,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.0
+    },
+    {
+      "id": "ball_x_plus_5cm",
+      "ball_offset_xy_m": [
+        0.05,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.0
+    },
+    {
+      "id": "ball_near_10cm",
+      "ball_offset_xy_m": [
+        0.0,
+        0.1
+      ],
+      "root_velocity_y_delta_mps": 0.0
+    },
+    {
+      "id": "ball_far_10cm",
+      "ball_offset_xy_m": [
+        0.0,
+        -0.1
+      ],
+      "root_velocity_y_delta_mps": 0.0
+    },
+    {
+      "id": "initial_slower_02",
+      "ball_offset_xy_m": [
+        0.0,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.2
+    },
+    {
+      "id": "initial_faster_02",
+      "ball_offset_xy_m": [
+        0.0,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": -0.2
+    },
+    {
+      "id": "combined_left_slower",
+      "ball_offset_xy_m": [
+        -0.025,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.1
+    },
+    {
+      "id": "combined_right_faster",
+      "ball_offset_xy_m": [
+        0.025,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": -0.1
+    },
+    {
+      "id": "heldout_left_near_slower",
+      "ball_offset_xy_m": [
+        -0.018,
+        0.02
+      ],
+      "root_velocity_y_delta_mps": 0.075
+    },
+    {
+      "id": "heldout_right_far_slower",
+      "ball_offset_xy_m": [
+        0.022,
+        -0.025
+      ],
+      "root_velocity_y_delta_mps": 0.125
+    },
+    {
+      "id": "heldout_left_far_faster",
+      "ball_offset_xy_m": [
+        -0.015,
+        -0.03
+      ],
+      "root_velocity_y_delta_mps": -0.075
+    },
+    {
+      "id": "heldout_right_near_faster",
+      "ball_offset_xy_m": [
+        0.02,
+        0.025
+      ],
+      "root_velocity_y_delta_mps": -0.125
+    },
+    {
+      "id": "heldout_confirm_left_far_slower",
+      "ball_offset_xy_m": [
+        -0.02,
+        -0.02
+      ],
+      "root_velocity_y_delta_mps": 0.1
+    },
+    {
+      "id": "heldout_confirm_right_near_slower",
+      "ball_offset_xy_m": [
+        0.015,
+        0.015
+      ],
+      "root_velocity_y_delta_mps": 0.15
+    },
+    {
+      "id": "heldout_v028_near_slow_13",
+      "ball_offset_xy_m": [
+        0.01,
+        0.02
+      ],
+      "root_velocity_y_delta_mps": 0.13
+    },
+    {
+      "id": "heldout_v028_near_slow_17",
+      "ball_offset_xy_m": [
+        0.02,
+        0.01
+      ],
+      "root_velocity_y_delta_mps": 0.17
+    },
+    {
+      "id": "heldout_v028_left_near_slow",
+      "ball_offset_xy_m": [
+        -0.01,
+        0.02
+      ],
+      "root_velocity_y_delta_mps": 0.15
+    }
+  ],
+  "fresh_evaluation": [
+    {
+      "id": "landing_eval_left_near",
+      "ball_offset_xy_m": [
+        -0.012,
+        0.018
+      ],
+      "root_velocity_y_delta_mps": 0.165
+    },
+    {
+      "id": "landing_eval_right_far",
+      "ball_offset_xy_m": [
+        0.018,
+        -0.018
+      ],
+      "root_velocity_y_delta_mps": 0.11
+    },
+    {
+      "id": "landing_eval_faster",
+      "ball_offset_xy_m": [
+        -0.012,
+        -0.022
+      ],
+      "root_velocity_y_delta_mps": -0.11
+    }
+  ],
+  "first_four_completed": [
+    "heldout_left_near_slower",
+    "center",
+    "combined_right_faster",
+    "initial_slower_02"
+  ],
+  "remaining_execution_order": [
+    "ball_x_minus_5cm",
+    "ball_x_plus_5cm",
+    "ball_near_10cm",
+    "ball_far_10cm",
+    "initial_faster_02",
+    "combined_left_slower",
+    "heldout_right_far_slower",
+    "heldout_left_far_faster",
+    "heldout_right_near_faster",
+    "heldout_confirm_left_far_slower",
+    "heldout_confirm_right_near_slower",
+    "heldout_v028_near_slow_13",
+    "heldout_v028_near_slow_17",
+    "heldout_v028_left_near_slow",
+    "landing_eval_left_near",
+    "landing_eval_right_far",
+    "landing_eval_faster"
+  ],
+  "training_scope": "old18 development only, fresh3 excluded",
+  "source_of_case_design": "configs/landing_release_study_v3.json",
+  "case_design_sha256": "8dade0d54d1ffc9b58a91214229fb6eb88b0edb7bd852c210f8b2a81fb162a88",
+  "fixed_model": true,
+  "stop_on_physical_failure": true,
+  "historical_reference_scope": "Matched v6 reports exist for six already observed conditions; other old cases have v28 records for earlier strike comparison, not isolated post-residual prefix parity. Fresh3 have no executed v30 baseline. Missing matched controls remain unavailable; do not fabricate full comparative evidence."
+}

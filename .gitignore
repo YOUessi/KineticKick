@@ -12,6 +12,8 @@
 # Keep written research reports, not generated measurements or captures.
 /reports/*
 !/reports/*.md
+# Generated audit snapshots are local evidence, separate from written reports.
+/reports/*_matrix_snapshot_*.md
 
 # Model weights, motion arrays, and runtime logs.
 *.pt

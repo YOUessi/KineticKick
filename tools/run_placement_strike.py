@@ -30,7 +30,10 @@ def main():
         from isaaclab.envs import mdp as physical_mdp
         from isaaclab.managers import TerminationTermCfg as DoneTerm
         from running_balance import nonfoot_contact_termination
-        from placement_strike import get_task
+        if cfgdata.get('post_shot_recovery'):
+            from post_shot_recovery import get_task
+        else:
+            from placement_strike import get_task
         from contact_frame_sampler import ContactFrameSampler
         import soccer_onnx_policy,free_shooting_metrics,strike_velocity
         native_make=gym.make;NativeActor=soccer_onnx_policy.OnnxSoccerPolicy
@@ -79,7 +82,7 @@ def main():
                     self.env.scene['review_camera'].set_world_poses_from_view(eyes=target+torch.tensor([[3.8,1.5,2.1]],device=self.task.device),targets=target)
                 self.state_inputs.append(dict(time_s=float(self.task.elapsed[0])*.02,root_velocity_w=self.task.robot.data.root_lin_vel_w[0].cpu().tolist()))
                 with torch.inference_mode():
-                    actions=torch.zeros(1,30,device=self.task.device)
+                    actions=None if cfgdata.get('post_shot_recovery') else torch.zeros(1,30,device=self.task.device)
                     return self.task.commands(actions).cpu().numpy()
         class Pulse:
             def __init__(self,*pos,**kw):pass
@@ -101,12 +104,12 @@ def main():
             result['legacy_observation_metadata_policy']=dict(path=result['policy'],sha256=result['policy_sha256'])
             result['policy']=str(a.config.resolve())
             result['policy_sha256']=sha(a.config)
-            result['joint_strike']=dict(mode='fitted_placement',
-                checkpoint=None,checkpoint_sha256=None,
+            result['joint_strike']=dict(mode='post_shot_residual' if cfgdata.get('post_shot_recovery') else 'fitted_placement',
+                checkpoint=cfgdata.get('post_shot_recovery',{}).get('checkpoint'),checkpoint_sha256=cfgdata.get('post_shot_recovery',{}).get('checkpoint_sha256'),
                 template_sha256=cfgdata['template_sha256'],config=cfgdata,config_sha256=sha(a.config),
-                source_sha256={n:sha(ROOT/'tools'/n) for n in ['run_placement_strike.py','placement_strike.py','closed_loop_strike.py','closed_loop_expert.py','joint_strike_core.py','paid_actor_warmstart.py','closed_loop_acceptance.py','hip_clearance.py','shank_clearance.py','approach_adapter.py']+(['landing_release.py'] if cfgdata.get('landing_release') else [])+(['support_reference_frame.py','support_reference_observation.py'] if cfgdata.get('support_reference_frame') else [])},
+                source_sha256={n:sha(ROOT/'tools'/n) for n in ['run_placement_strike.py','placement_strike.py','closed_loop_strike.py','closed_loop_expert.py','joint_strike_core.py','paid_actor_warmstart.py','closed_loop_acceptance.py','hip_clearance.py','shank_clearance.py','approach_adapter.py']+(['landing_release.py'] if cfgdata.get('landing_release') else [])+(['support_reference_frame.py','support_reference_observation.py'] if cfgdata.get('support_reference_frame') else [])+(['post_shot_recovery.py','post_shot_objective.py'] if cfgdata.get('post_shot_recovery') else [])},
                 initial_root_velocity=actor.initial,ball_offset_xy=a.ball_offset,velocity_y_delta=a.velocity_delta,
-                feedback=actor.task.debug,state_inputs=actor.state_inputs,actual_policy='Frozen feedback experts with fitted state-conditioned placement/phase, foot-pose IK and bounded early actuator adapter'+(' and measured post-contact landing release' if cfgdata.get('landing_release') else '')+(' and post-shot support-reference SE(2) handoff' if cfgdata.get('support_reference_frame') else ''),expert_backend=actor.task.expert.backend,expert_handoffs=actor.task.expert.events)
+                feedback=actor.task.debug,state_inputs=actor.state_inputs,actual_policy='Frozen feedback experts with fitted state-conditioned placement/phase, foot-pose IK and bounded early actuator adapter'+(' and measured post-contact landing release' if cfgdata.get('landing_release') else '')+(' and post-shot support-reference SE(2) handoff' if cfgdata.get('support_reference_frame') else '')+(' and shared learned post-shot whole-body residual' if cfgdata.get('post_shot_recovery') else ''),expert_backend=actor.task.expert.backend,expert_handoffs=actor.task.expert.events)
             if a.contact_diagnostics:result['nonfoot_contact_diagnostics']=actor.nonfoot_events
             a.output.write_text(json.dumps(result,indent=2)+'\n')
             print('CLOSED_LOOP_STRIKE_RESULT',json.dumps(dict(success=result['stride_shot_success'],shot=result['records'][0],termination=result['termination_reasons'])),flush=True)
