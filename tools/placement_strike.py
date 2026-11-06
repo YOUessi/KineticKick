@@ -180,11 +180,37 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
             return base
         self.expert.running.act=running
 
+        self.landing=None
+        if config.get('landing_release'):
+            from landing_release import LandingRelease
+            from running_balance import capsule_foot_local
+            self.landing=LandingRelease(self.n,self.device,config['landing_release'])
+            points,radii=capsule_foot_local(Path(__file__).resolve().parents[1]/'configs/paid_original/paid_main_resolved.urdf','right')
+            self.landing_points=torch.tensor(points,dtype=torch.float32,device=self.device)
+            self.landing_radii=torch.tensor(radii,dtype=torch.float32,device=self.device)
+            self.landing_ball_radius=float(self.ball.cfg.spawn.radius)
+
+    def landing_geometry(self):
+        from isaaclab.utils.math import matrix_from_quat
+        from landing_release import capsule_landing_state
+        r=self.robot.data;index=self.feet[1]
+        return capsule_landing_state(self.landing_points,self.landing_radii,r.body_pos_w[:,index],
+            matrix_from_quat(r.body_quat_w[:,index]),r.body_link_lin_vel_w[:,index],r.body_ang_vel_w[:,index],
+            self.ball.data.root_pos_w,self.landing_ball_radius,self.env.scene.env_origins[:,2],self.landing.cfg['lookahead_s'])
+
+    def after_physics(self,dt):
+        super().after_physics(dt)
+        if self.landing is not None and dt>0:
+            force=self.env.scene['right_ball_contact'].data.force_matrix_w
+            magnitude=torch.full((self.n,),float('inf'),device=self.device) if force is None else force.reshape(self.n,-1,3).sum(1).norm(dim=-1)
+            self.landing.after_physics(self.contact,magnitude,self.landing_geometry()['capsule_ball_gap_m'],dt)
+
     def reset_fields(self,ids):
         super().reset_fields(ids)
         self.anchor_shift[ids]=0.;self.phase_shift[ids]=0.;self.shank_delta[ids]=0.;self.shank_ankle_delta[ids]=0.
         self.approach_previous[ids]=0.
         if self.early_running is not None:self.early_running.reset(ids)
+        if self.landing is not None:self.landing.reset(ids)
 
     def commands(self,actions=None):
         from isaaclab.utils.math import matrix_from_quat,quat_apply_inverse
@@ -217,7 +243,14 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
         active=(~self.contact)&(now<2.1)
         self.phase_shift+=torch.where(active,(desired-self.phase_shift).clamp(-.008,.008),0.)
         self.frame=self.elapsed+self.phase_shift/.02
-        with torch.no_grad():base,self.step_velocity=self.expert.act(self.frame,self.elapsed,self.contact)
+        retention=None;landing_geometry=None;pulse_finished=None
+        if self.landing is not None:
+            landing_geometry=self.landing_geometry()
+            pulse_finished=(self.frame+1.>=self.expert.plan['strike_velocity']['window'][-1])&(self.step_velocity.abs().amax(-1)<1e-6)
+            retention=self.landing.command(now,landing_geometry,pulse_finished,ground_force(self.env)[:,1],phase_lag_s=(-self.phase_shift).clamp_min(0.))
+        with torch.no_grad():
+            base,self.step_velocity=self.expert.act(self.frame,self.elapsed,self.contact,
+                landing_retention=retention,release_mode=self.cfg.get('landing_release',{}).get('mode','all'))
         term=self.env.action_manager.get_term('joint_pos')
         prefix_delta=torch.zeros_like(base)
         if self.cfg.get('fast_prefix_only'):
@@ -266,7 +299,8 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
         if self.cfg.get('late_near_retarget'):
             near_gate=(self.shift[:,1]/.1).clamp(0,1).double()
             window[0]=window[0]+6.*near_gate;window[1]=window[1]+2.*near_gate
-        weight=cosine_window(self.frame.double()+1.,window).float()*self.gate
+        placement_original=cosine_window(self.frame.double()+1.,window).float()*self.gate
+        weight=placement_original if retention is None else placement_original*retention
         ids=(weight>0).nonzero(as_tuple=False).flatten();out=base.clone()
         errors=torch.zeros(self.n,device=self.device);angles=torch.zeros_like(errors);reach_fraction=torch.zeros_like(errors)
         if len(ids):
@@ -356,6 +390,16 @@ class PlacementStrikeTask(ClosedLoopStrikeTask):
                 shank_active=bool(shank_active[0]),shank_correction_rad=float(self.shank_delta[0]),shank_ankle_correction_rad=float(shank_ankle[0]),shank_gap_m=float(shank_gap[0]),shank_predicted_gap_m=float(shank_pred[0]),shank_closest_time_s=float(shank_time[0]),
                 follow_through_active=bool(clearance_active[0]),follow_through_correction_rad=float(clearance_delta[0]),
                 thigh_pelvis_gap_m=float(clearance_gap[0]),hip_stopping_angle_rad=float(clearance_stop[0]),hip_clearance_floor_rad=float(clearance_floor[0])))
+        if self.n==1 and self.landing is not None:
+            evidence={key:float(value[0]) for key,value in landing_geometry.items()}
+            evidence.update(retention=float(retention[0]),trigger_time_s=float(self.landing.trigger_time_s[0]),
+                phase_lag_s=float((-self.phase_shift[0]).clamp_min(0.)),frame_phase_lag_s=float(((self.elapsed[0]-self.frame[0])*.02).clamp_min(0.)),
+                release_strength=float(self.landing.release_strength[0]),separated_s=float(self.landing.separated_s[0]),pulse_finished=bool(pulse_finished[0]),mode=self.landing.cfg['mode'],
+                placement_weight_original=float(placement_original[0]),placement_weight_effective=float(weight[0]))
+            evidence.update({key:float(value[0]) for key,value in self.expert.release_weights.items()})
+            evidence.update({key:value[0].tolist() for key,value in self.expert.release_targets.items()})
+            evidence.update(projection_semantics='whole_operator_retention',absolute_joint_names=[self.robot.joint_names[i] for i in self.expert.ids])
+            self.debug[-1]['landing_release']=evidence
         self.elapsed+=1
         return out
 

@@ -74,3 +74,26 @@ Measurement release checkpoint:
 - P1 report and CLI include40 historical episodes, three instrumented runs, exact provenance and the single-bin residual. The all-joint-velocity scaling hypothesis predicts the abnormal residual within0.000756Ns, but local binary behavior remains an inference. Do not add the inferred correction to measured forces.
 - P2 CMU pipeline complete:five realclips2761frames,10 tests, original/source-zero-residual/new-fill masks, candidateevents only. Skilled/professional instepqualification remainsfalse. A new official SkillCorner professional-match continuous pose/event sample is being investigated as reconstructed3D evidence; it is not yet part of this release.
 - P0 full completion remainsopen because dynamic landing regression andtwo new-case goal misses are not solved. P2–P4 research requirements remainopen. Next is a new version branch for the measured-state landing-release experiment; do not stop the sustained goal after publishing this measurement release.
+
+
+Live update — v30 ongoing, no GPU currently active:
+- v29 measurement release published793ed63; createdversion/v0.1.30 before behavior changes.
+- Parent completed five causal runs. All-release falls4.56s and is rejected. Pose-only succeeds; whole-operator retention fixes introduced projection discontinuity. Slower no longer exceeds recorded speed limits, but unconditional release delays stronger-case recovery3.685s.
+- Next bounded hypothesis freezes release amplitude from already recorded control-phase lag; zero lag stays identical. 18 reused cases remain development, fresh3 declared before tuning are not yet run. All19 frozen assets remain required.
+- P1 independent landing audit preserves first five outcomes; agent extends only audit code forv2. P0 agent selects one existing small-positive-lag diagnostic.
+- P2 professional SkillCorner full one-match scan:153252frames,24non-header windows,1817shooterframes. No continuous full coordination passes unchanged uncertainty screen.629275569B within750MB ceiling; no second match. P2–P4 remain incomplete.
+
+
+V30 phase-lag representatives checkpoint:
+- Matrix session2369 exited0 after initial_slower_02/center/combined_right_faster. Session18656 exited0 after selectedpartial heldout_confirm_right_near_slower. No GPU active at this checkpoint.
+- Slower complete original physics identical to continuous-posev1; center/strong complete original physics identical tov28, eliminating3.685s strong recovery regression. Intermediate-lag case retains4.228121m/s and stands9.99s (old7.015). All four original tasks pass with no observed joint overspeed.
+- Studyv3 fixes a demonstrated nonfinite-trigger edge case only, no numeric parameter change. Prior four finite-input traces remain valid evidence with their original source hashes.12 helper tests pass. P1 independently auditingpartial projection exit before remaining14 reused cases andfresh3.
+
+
+V30 matrix failure and changed diagnostic route:
+- Session15971 exited2 after two of remaining14: combined_left_slower passed/nooverspeed; heldout_left_near_slower passes originaltask but rightknee2.25s21.143692/20rad/s, vsoriginal20.988663. Current6executed/15unexecuted; nofresh3read/run. Matrix stopped, no tuning onnewcase or pretending full acceptance.
+- The failure is the second right-foot post-shot touchdown2.245s, with allstrike/swing/IK weights andvelocitypulse0. It is outside the solved first-landing retained-pose mechanism. Existing late anomaly slightly worsens; blanket release and single-joint schedules are not a complete solution.
+- One new read-only ground-contact observer replay session66181 exited0. Reportv030_late_contact_heldout_left_near_slower.json contains17bins2.20–2.28s of independentnormal/frictionanchor data andpre/postlinkorigin footvelocities. All2800oldtracefields,records,kinematics,sequence exactly unchanged. Existing generic comparator mistook added ground_contact_detail aslegacy; direct old-key equality confirms no physical changes.
+- P1 analyzes actual contact leverage/approach velocities; P0 independently compares actual support/body state to fixed world running references to inform an earlier whole-body reference handoff. No GPU currently active. No new behavior parameters chosen yet.
+- All originalstudy_v3 runtime sources/config archived underexperiments/landing_v030/lag_v3_sources. Optionalnewobserver wrapper is a later source change, not retroactively assigned to the6matrix acquisitions.
+- P2 now has175frames25Hz KTH professional-match multiview joint reconstruction, original14joints+3camera annotations; units arbitrary, instep/contact/independent3Daccuracyunknown. Adapter5tests passed. Bounded CPU retriangulation and<=7sourceimage inspection underway; no training orpaid/APIcost.

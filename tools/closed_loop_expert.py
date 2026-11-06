@@ -97,7 +97,7 @@ class FrozenStrideExpert:
             r.root_ang_vel_b,r.joint_pos-r.default_joint_pos,r.joint_vel-r.default_joint_vel,
             self.env.action_manager.action,ball,goal],-1)
 
-    def act(self,frame,elapsed,kicked):
+    def act(self,frame,elapsed,kicked,*,landing_retention=None,release_mode="all"):
         from isaaclab.utils.math import quat_apply_inverse,quat_apply
         from soccer.tasks.tracking import mdp
         from running_balance import ground_force,support_observation,reference_contact
@@ -128,7 +128,9 @@ class FrozenStrideExpert:
         shot_obs=obs.clone();shot_obs[:,:29]=self.ref['joint_pos'][shot_frame];shot_obs[:,29:58]=self.ref['joint_vel'][shot_frame]
         shot_obs[:,61:64]=self.ref['body_ang_vel_w'][shot_frame,self.motion.robot_anchor_body_index]
         swing=self.swing.act(shot_obs,swinging,shot_frame-self.plan['shot_start_frame'])
-        weight=cosine_window(phase,[start,full,release,end]).float()[:,None]
+        swing_original=cosine_window(phase,[start,full,release,end]).float()[:,None]
+        weight=swing_original if landing_retention is None or release_mode=='pose' else swing_original*landing_retention[:,None]
+        swing_effective=weight
         mixed=(1-weight)*running[:,self.ids]+weight*swing[:,self.ids]
         action[:,self.ids]=torch.where(swinging[:,None],mixed,action[:,self.ids])
         recovery_obs=obs.clone();hold=recovering&kicked&(distance>2.)
@@ -151,12 +153,24 @@ class FrozenStrideExpert:
         external_frame=torch.where(elapsed==0,torch.zeros_like(frame),frame+1.).double()
         external_frame=torch.where(recovering,self.motion.time_steps.double(),external_frame)
         term=self.env.action_manager.get_term('joint_pos');scale=torch.as_tensor(term._scale,device=self.device).double();offset=torch.as_tensor(term._offset,device=self.device).double()
-        weight=cosine_window(external_frame,self.plan['strike']['window'])[:,None]
-        target=action.double()*scale+offset;absolute=torch.isfinite(self.strike_target)[None,:]&(weight>0.)
-        modified=target*(1-weight)+torch.nan_to_num(self.strike_target)[None,:]*weight
+        absolute_original=cosine_window(external_frame,self.plan['strike']['window'])[:,None]
+        weight=absolute_original if landing_retention is None else absolute_original*landing_retention[:,None]
+        self.release_weights=dict(swing_weight_original=swing_original[:,0],swing_weight_effective=swing_effective[:,0],absolute_weight_original=absolute_original[:,0],absolute_weight_effective=weight[:,0])
+        target=action.double()*scale+offset;absolute=torch.isfinite(self.strike_target)[None,:]&(absolute_original>0.)
+        modified=target*(1-absolute_original)+torch.nan_to_num(self.strike_target)[None,:]*absolute_original
         limits=self.robot.data.soft_joint_pos_limits
-        modified=modified.clamp(min=limits[:,:,0],max=limits[:,:,1])
+        projected=modified.clamp(min=limits[:,:,0],max=limits[:,:,1])
+        modified=projected
+        if landing_retention is not None:
+            from landing_release import retain_operator
+            modified=retain_operator(target,projected,landing_retention)
+            self.release_targets=dict(absolute_base_target_rad=target[:,self.ids],
+                absolute_projected_target_rad=projected[:,self.ids],absolute_blended_target_rad=modified[:,self.ids],
+                absolute_soft_limits_rad=limits[:,self.ids])
+        original_action=action
         action=torch.where(absolute,((modified-offset)/scale).float(),action)
+        if landing_retention is not None:
+            action=torch.where((landing_retention==0.)[:,None],original_action,action)
         pulse=self.plan['strike_velocity'];w=cosine_window(external_frame,pulse['window'])
         velocity=(w[:,None]*self.velocity_peak).float()*(support[:,0]>=pulse['minimum_support_N'])[:,None]
         return action,velocity.clamp(-r.joint_vel_limits,r.joint_vel_limits)

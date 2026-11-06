@@ -492,24 +492,599 @@
       "id": "skillcorner_bodypose",
       "title": "SkillCorner open body-pose data",
       "source_class": "broadcast_video_pose_estimate",
-      "access_status": "public_dataset_card_only_inspected",
+      "access_status": "explicit_mit_continuous_professional_shot_sample_acquired",
       "primary_urls": [
-        "https://huggingface.co/datasets/SkillCorner/opendata-bodypose"
+        "https://huggingface.co/datasets/SkillCorner/opendata-bodypose",
+        "https://github.com/SkillCorner/opendata/blob/4340d274572876239c154c90bc507a9b3250a656/data/bodypose/README.md",
+        "https://github.com/SkillCorner/opendata/blob/4340d274572876239c154c90bc507a9b3250a656/LICENSE",
+        "https://perthglory.com.au/news/alm-match-wrap-williams-goal-seals-vital-victory-over-roar/"
       ],
       "format": {
         "description": "3D body pose derived from broadcast video",
-        "raw_original_mocap": false
+        "raw_original_mocap": false,
+        "fps": 25,
+        "joints": 29,
+        "tracking_fps_before_upstream_interpolation": 10,
+        "frames_acquired": 309,
+        "source_frame_range": [
+          124487,
+          124795
+        ],
+        "units": "m; p90_mae_cm retained and converted explicitly",
+        "z_semantics": "relative to player centroid; not calibrated elevation above pitch"
       },
       "skill_evidence": {
-        "professional_or_skilled_verified": false,
-        "level": null,
-        "reason": "Per-clip competition/participant metadata not inspected."
+        "professional_or_skilled_verified": true,
+        "level": "professional_match_participation",
+        "reason": "Jacob Brazete, Brisbane Roar number 18, A-League Men match 2024-12-21; official club match report lists 67-minute substitution, vendor id 965698 links to shot event 8_871.",
+        "scope_limit": "Participation does not certify optimal instep form, maximum power, or framewise identity ground truth."
       },
       "license": {
-        "terms_verified": false
+        "terms_verified": true,
+        "name": "MIT",
+        "basis": "Official dataset card explicitly states MIT for data, matching repository license.",
+        "required_notice": "Preserve copyright and permission notice; credit SkillCorner.",
+        "broadcast_video_rights_inferred": false
       },
-      "allowed_role": "Discovery lead only; rejected as original motion-capture ground truth.",
+      "allowed_role": "Uncertainty-screened professional-match reconstructed3D parsing/coarse-torso prototype; not optical ground truth or a qualified whole-body shooting prior.",
       "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false,
+      "prior_inspection_v0_1_29": {
+        "access_status": "public_dataset_card_only_inspected",
+        "skill_evidence": {
+          "professional_or_skilled_verified": false,
+          "level": null,
+          "reason": "Per-clip competition/participant metadata not inspected."
+        },
+        "license": {
+          "terms_verified": false
+        },
+        "allowed_role": "Discovery lead only; rejected as original motion-capture ground truth."
+      },
+      "follow_up_v0_1_30": {
+        "checked_on": "2026-11-07",
+        "github_revision": "4340d274572876239c154c90bc507a9b3250a656",
+        "hf_revision": "a62e1ec1e3b82952042a7f7fa9dafd77c0e0822a",
+        "local_root": "data/research_human_kicks/skillcorner_probe_20261107",
+        "local_manifest": "data/research_human_kicks/skillcorner_probe_20261107/acquisition_manifest.json",
+        "source_files": [
+          {
+            "name": "sample_1925299_phase406.jsonl.gz",
+            "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/bodypose/sample_1925299_phase406.jsonl.gz",
+            "size_bytes": 1926895,
+            "sha256": "eb10f537c5c3b3c80018d5670f16cb788b14a3529d0be0b36a077bd1b41aeb4a"
+          },
+          {
+            "name": "1925299_dynamic_events.csv",
+            "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/matches/1925299/1925299_dynamic_events.csv",
+            "size_bytes": 5043601,
+            "sha256": "2557acbdcba6547d764b9f7c277c3d7e81a4d58692d6c20c2bfa28625ae0cce3"
+          },
+          {
+            "name": "1925299_phases_of_play.csv",
+            "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/matches/1925299/1925299_phases_of_play.csv",
+            "size_bytes": 131104,
+            "sha256": "a1682a736a9cf1c311cb799f0a949f7e023dca4ebaa9dd294b138e8929271274"
+          },
+          {
+            "name": "1925299_match.json",
+            "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/matches/1925299/1925299_match.json",
+            "size_bytes": 28396,
+            "sha256": "f4345b32c0fdd7c9990df70050b3a74f57b1992cf762e20f2a4d309bd2fba7d2"
+          },
+          {
+            "name": "MANIFEST.json",
+            "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/bodypose/MANIFEST.json",
+            "size_bytes": 1278,
+            "sha256": "2e82e7b72e6e8cfd562fe5a706ac6fc4eabee93e97e8256b1bfb1587fbc84224"
+          },
+          {
+            "name": "bodypose_README.md",
+            "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/bodypose/README.md",
+            "size_bytes": 6542,
+            "sha256": "4a272ae1941c9c13ff5fa0c9b9b6c651935b183c2c035172a58a16787fcdccf0"
+          },
+          {
+            "name": "LICENSE",
+            "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/LICENSE",
+            "size_bytes": 1097,
+            "sha256": "3384cc66ffd008209759af5e6328677eabded72756fb1f56f4f82e68e9b3c6eb"
+          },
+          {
+            "name": "HF_dataset_card.md",
+            "url": "https://huggingface.co/datasets/SkillCorner/opendata-bodypose/raw/a62e1ec1e3b82952042a7f7fa9dafd77c0e0822a/README.md",
+            "size_bytes": 6408,
+            "sha256": "2397aadbdb2f3573427879c149815a19461f8d637497d7cffcc274debd5f9d41"
+          }
+        ],
+        "total_source_bytes": 7145321,
+        "shot": {
+          "event_id": "8_871",
+          "match_id": 1925299,
+          "player_id": 965698,
+          "period": 2,
+          "time": "77:45.7",
+          "tracking_frame": 49907,
+          "pose_frame_fractional": 124767.5,
+          "current_phase_index": 397,
+          "old_sample_filename_phase_index": 406,
+          "is_header": false
+        },
+        "qualification_dimensions": {
+          "professional_participation": "verified",
+          "vendor_shot_event": "verified",
+          "continuous_reconstructed3d": "verified",
+          "independent_ground_truth": "unavailable",
+          "instep": "unknown",
+          "kick_side": "unknown",
+          "kick_strength": "unknown",
+          "contact_time": "unknown",
+          "p2_complete": false
+        },
+        "quality": {
+          "joint_frames": 8961,
+          "geometry_valid_joint_frames": 8961,
+          "joint_screen_pass_frames": 6922,
+          "relation_frames": 4326,
+          "relation_screen_pass_frames": 303,
+          "shot_plus_minus_1s_frames": 50,
+          "shot_plus_minus_1s_relation_screen_pass_frames": 13,
+          "only_passing_shot_window_relation": "trunk_shoulder_line",
+          "shot_window_predicted_error_cm_median": 16.62,
+          "shot_window_predicted_error_cm_p95": 35.05,
+          "shot_window_predicted_error_cm_max": 43.01,
+          "screen_is_externally_validated": false,
+          "whole_body_shot_prior_qualified": false
+        },
+        "pipeline_config": "configs/skillcorner_coordination_v1.json",
+        "pipeline_tool": "tools/build_skillcorner_coordination.py",
+        "pipeline_doc": "docs/research/skillcorner-reconstruction.md",
+        "output_root": "data/research_human_kicks/skillcorner_coordination_v1",
+        "full_match_archives_acquired": true
+      },
+      "bounded_single_match_scan": {
+        "checked_on": "2026-11-07",
+        "match_id": 1925299,
+        "archive_source_url": "https://huggingface.co/datasets/SkillCorner/opendata-bodypose/resolve/a62e1ec1e3b82952042a7f7fa9dafd77c0e0822a/raw/1925299.jsonl.zip",
+        "archive_bytes": 623408231,
+        "archive_sha256": "0415665098d594fb5681815000f7a6312037788a3237910a9f41bb8de5c336a0",
+        "byte_budget": 750000000,
+        "second_match_acquired": false,
+        "local_root": "data/research_human_kicks/skillcorner_match1925299_scan_v1",
+        "local_report": "data/research_human_kicks/skillcorner_match1925299_scan_v1/scan_report.json",
+        "frames_streamed": 153252,
+        "whole_jsonl_written": false,
+        "shot_events": 30,
+        "nonheader_windows": 24,
+        "header_exclusions": 6,
+        "retained_shooter_frame_records": 1817,
+        "windows_with_complete_joint_geometry": 16,
+        "reliability_exclusions": {
+          "8_308": [
+            "fully extrapolated event",
+            "possession end unmatched",
+            "no shooter pose"
+          ]
+        },
+        "quality_thresholds_unchanged": true,
+        "max_joint_predicted_p90_m": 0.2,
+        "max_relation_cosine_error_budget": 0.75,
+        "whole_body_coordination_candidates": 0,
+        "simultaneous_core_relation_frames": 0,
+        "best_partial_event": "8_804",
+        "best_partial_player": "Quinn MacNicol",
+        "best_partial_role": "72/76 trunk-leg frames pass; pelvis/leg-chain/cross-arm relations do not",
+        "p2_complete": false,
+        "conclusion": "No qualifying continuous pelvis-leg-trunk-upper-arm coupled-motion window under unchanged gates; bounded search ended without second-match acquisition."
+      }
+    },
+    {
+      "id": "kth_multiview_football2_p1s2",
+      "title": "KTH Multiview Football Dataset II / Player 1 Sequence 2",
+      "source_class": "calibrated_multiview_pose_estimate",
+      "access_status": "official_academic_research_numeric_members_acquired_by_http_range",
+      "primary_urls": [
+        "https://www.csc.kth.se/cvap/cvg/?page=footballdataset2",
+        "https://www.csc.kth.se/cvap/cvg/MultiViewFootballData/player1sequence2.zip",
+        "https://www.csc.kth.se/cvap/cvg/MultiViewFootballData/code3d.zip",
+        "https://www.csc.kth.se/cvap/cvg/papers/Burenius4DMOD2011.pdf"
+      ],
+      "format": {
+        "frames": 175,
+        "fps": 25,
+        "cameras": 3,
+        "joints": 14,
+        "joint_names": [
+          "R_ANKLE",
+          "R_KNEE",
+          "R_HIP",
+          "L_HIP",
+          "L_KNEE",
+          "L_ANKLE",
+          "R_WRIST",
+          "R_ELBOW",
+          "R_SHOULDER",
+          "L_SHOULDER",
+          "L_ELBOW",
+          "L_WRIST",
+          "BOTTOM_HEAD",
+          "TOP_HEAD"
+        ],
+        "positions3d_shape": [
+          175,
+          14,
+          3
+        ],
+        "positions2d_shape": [
+          175,
+          3,
+          14,
+          2
+        ],
+        "camera_matrix_shape": [
+          175,
+          3,
+          2,
+          4
+        ],
+        "units": "Euclidean-rectified arbitrary units, normalized to sequence unit cube; no meters-per-unit supplied",
+        "raw_original_mocap": false,
+        "positions2d": "manual image annotations",
+        "positions3d": "orthographic factorization reconstruction of manual 2D annotations",
+        "camera_matrices": "fitted orthographic 2x4 matrices; no independently measured perspective calibration",
+        "missing_source_fields": [
+          "toe",
+          "heel",
+          "ball",
+          "thorax surface landmarks",
+          "joint visibility",
+          "joint error",
+          "body shape",
+          "floor plane",
+          "world trajectory",
+          "contact event"
+        ]
+      },
+      "skill_evidence": {
+        "professional_or_skilled_verified": true,
+        "level": "professional_Allsvenskan_match_context",
+        "reason": "Official dataset landing page explicitly describes professional footballers during an Allsvenskan match.",
+        "named_player": null,
+        "match_date": null,
+        "scope_limit": "Professional context does not establish optimal instep form or maximum effort."
+      },
+      "license": {
+        "name": "KTH custom academic-research-only terms",
+        "source": "https://www.csc.kth.se/cvap/cvg/?page=footballdataset2",
+        "academic_research_only": true,
+        "commercial_use_permitted": false,
+        "citation": "Kazemi, Burenius, Azizpour, Sullivan. Multi-view Body Part Recognition with Random Forests. BMVC 2013.",
+        "raw_distribution_policy": "Raw files and generated artifacts remain local and ignored; no unrestricted redistribution or MIT license inferred.",
+        "terms_verified": true,
+        "code_or_paper_license_substituted_for_data_terms": false
+      },
+      "qualification_dimensions": {
+        "human_professional_football_context": "verified_by_official_landing_page_Allsvenskan_match",
+        "named_player_or_match_id": "unknown",
+        "source_shot_or_goal_sequence": "verified_by_official_Player1_Sequence2_scoring_goal_label",
+        "continuous_multiview_reconstructed3d": "verified_175_frames",
+        "instep": "unknown",
+        "effort_or_ball_speed": "unknown",
+        "actual_ball_impact_frame": "unknown",
+        "metric_meter_scale": "unavailable_in_released_numeric_files",
+        "independent_3d_accuracy": "unknown_not_rejected",
+        "per_joint_uncertainty": "unavailable",
+        "skillcorner_cm_error_gate_applicability": "not_applicable_without_metric_scale_and_error_estimates",
+        "whole_body_coordination_qualification": "not_yet_established"
+      },
+      "allowed_role": "Source-conditioned continuous professional-match reconstruction prototype for scale-free coarse segment relationships; independent 3D precision and instep qualification unresolved.",
+      "eligible_for_original_human_pipeline": false,
+      "eligible_for_skilled_instep_target": false,
+      "acquisition": {
+        "checked_on": "2026-11-07",
+        "local_root": "data/research_human_kicks/kth_player1_sequence2_probe_v1",
+        "manifest": "data/research_human_kicks/kth_player1_sequence2_probe_v1/acquisition_manifest.json",
+        "archive_content_length": 214590675,
+        "archive_sha256": null,
+        "whole_archive_downloaded": false,
+        "image_or_video_downloaded": false,
+        "new_downloaded_bytes": 3210408,
+        "download_budget_bytes": 15000000,
+        "http_range_status": 206,
+        "central_directory": {
+          "entry_count": 532,
+          "size_bytes": 58994,
+          "offset": 214531659
+        },
+        "downloaded_files": [
+          {
+            "name": "dataset_page.html",
+            "source_url": "https://www.csc.kth.se/cvap/cvg/?page=footballdataset2",
+            "range": null,
+            "status": 200,
+            "content_range": null,
+            "size_bytes": 5880,
+            "sha256": "066aa23858e02a83a43709c08157547e9db359565adb8262c9a013c0bcdcaff0"
+          },
+          {
+            "name": "code3d.zip",
+            "source_url": "https://www.csc.kth.se/cvap/cvg/MultiViewFootballData/code3d.zip",
+            "range": null,
+            "status": 200,
+            "content_range": null,
+            "size_bytes": 7952,
+            "sha256": "12405e1157466c6d4fa8a3241b9c0b88dd647b1681374d1f1bc188aec53af4b2"
+          },
+          {
+            "name": "archive_tail_65536.bin",
+            "source_url": "https://www.csc.kth.se/cvap/cvg/MultiViewFootballData/player1sequence2.zip",
+            "range": "bytes=-65536",
+            "status": 206,
+            "content_range": "bytes 214525139-214590674/214590675",
+            "size_bytes": 65536,
+            "sha256": "b4a947b70bf20e2fee3729aae7924472f5f630be6ebf724edeb73376637601a4"
+          },
+          {
+            "name": "numeric_members_range.bin",
+            "source_url": "https://www.csc.kth.se/cvap/cvg/MultiViewFootballData/player1sequence2.zip",
+            "range": "bytes=214466611-214531658",
+            "status": 206,
+            "content_range": "bytes 214466611-214531658/214590675",
+            "size_bytes": 65048,
+            "sha256": "d04196203641c983301b2f5d6a663363938fa4d849c6fd53bd53809045090f88"
+          },
+          {
+            "name": "Burenius4DMOD2011.pdf",
+            "source_url": "https://www.csc.kth.se/cvap/cvg/papers/Burenius4DMOD2011.pdf",
+            "range": null,
+            "status": 200,
+            "content_range": null,
+            "size_bytes": 3065992,
+            "sha256": "4e2c3eb577a622eef112d98fe16214fe4b9faa45ba2bddc43914a46ddd531d96"
+          }
+        ],
+        "numeric_members": [
+          {
+            "name": "cameras.txt",
+            "archive_member": "Sequence 2/cameras.txt",
+            "source_range_file": "numeric_members_range.bin",
+            "source_compressed_payload_offset_bytes": 214466663,
+            "compressed_size_bytes": 3568,
+            "size_bytes": 75600,
+            "sha256": "9f815dfa57f78d85ba9c7d65e8c1003a5b96c369de585adcfdc853c9ad06fada",
+            "zip_crc32_verified": true
+          },
+          {
+            "name": "positions2d.txt",
+            "archive_member": "Sequence 2/positions2d.txt",
+            "source_range_file": "numeric_members_range.bin",
+            "source_compressed_payload_offset_bytes": 214470287,
+            "compressed_size_bytes": 22219,
+            "size_bytes": 88200,
+            "sha256": "38dbb657eb95746a1e94e14e5d53bd1c9aaa0fc04445d211ec89f8b187f3e9ce",
+            "zip_crc32_verified": true
+          },
+          {
+            "name": "positions3d.txt",
+            "archive_member": "Sequence 2/positions3d.txt",
+            "source_range_file": "numeric_members_range.bin",
+            "source_compressed_payload_offset_bytes": 214492562,
+            "compressed_size_bytes": 39097,
+            "size_bytes": 132300,
+            "sha256": "f98feba689ce5bda4ad592e16e963e7a0bdfab36649db6d0db0a82a0f2bff83e",
+            "zip_crc32_verified": true
+          }
+        ]
+      },
+      "observed_quality": {
+        "interpretation": "In-sample reprojection and length-variation diagnostics only; not independent 3D uncertainty or an acceptance/rejection test.",
+        "all_numeric_values_finite": true,
+        "reprojection_rms_px": 10.475061176914755,
+        "reprojection_p95_px": 17.791086471517243,
+        "reprojection_max_px": 101.01609336294582,
+        "segment_length_variation": {
+          "r_thigh": {
+            "median_arbitrary_units": 0.3809623421198663,
+            "cv_std_over_mean": 0.08770986315684584,
+            "min_over_median": 0.7981798148070275,
+            "max_over_median": 1.3081536083750247
+          },
+          "r_shank": {
+            "median_arbitrary_units": 0.4402594418867116,
+            "cv_std_over_mean": 0.10750345979224805,
+            "min_over_median": 0.6031761648897065,
+            "max_over_median": 1.3182497040875971
+          },
+          "l_thigh": {
+            "median_arbitrary_units": 0.38590259323656484,
+            "cv_std_over_mean": 0.11017951228784051,
+            "min_over_median": 0.7052852234557687,
+            "max_over_median": 1.3315740440588095
+          },
+          "l_shank": {
+            "median_arbitrary_units": 0.4277968464263417,
+            "cv_std_over_mean": 0.14018678247073127,
+            "min_over_median": 0.4524830678142528,
+            "max_over_median": 1.4032068076372375
+          },
+          "r_upperarm": {
+            "median_arbitrary_units": 0.32574970968108474,
+            "cv_std_over_mean": 0.11862569080081097,
+            "min_over_median": 0.38821332119951474,
+            "max_over_median": 1.155550170090845
+          },
+          "r_forearm": {
+            "median_arbitrary_units": 0.2699423850181293,
+            "cv_std_over_mean": 0.13707715068589002,
+            "min_over_median": 0.6177772302332756,
+            "max_over_median": 1.4107262660412627
+          },
+          "l_upperarm": {
+            "median_arbitrary_units": 0.30416477200064695,
+            "cv_std_over_mean": 0.12254399308462324,
+            "min_over_median": 0.6503876136607114,
+            "max_over_median": 1.2602537627514518
+          },
+          "l_forearm": {
+            "median_arbitrary_units": 0.2707333210868956,
+            "cv_std_over_mean": 0.17630153854409927,
+            "min_over_median": 0.5049050762431744,
+            "max_over_median": 1.4591401053391848
+          },
+          "pelvis_width": {
+            "median_arbitrary_units": 0.21723056428061385,
+            "cv_std_over_mean": 0.14507737773976914,
+            "min_over_median": 0.5071213194971693,
+            "max_over_median": 1.620074321120602
+          },
+          "shoulder_width": {
+            "median_arbitrary_units": 0.3674871287701401,
+            "cv_std_over_mean": 0.0730504532864542,
+            "min_over_median": 0.7736965815156022,
+            "max_over_median": 1.1794292519073508
+          }
+        },
+        "independent_3d_precision": "unknown_not_rejected",
+        "metric_skillcorner_gate_applicability": "not_applicable_without_meter_scale_and_3d_error_values"
+      },
+      "pipeline": {
+        "tool": "tools/build_kth_coordination.py",
+        "config": "configs/kth_coordination_v1.json",
+        "tests": "tests/test_kth_coordination.py",
+        "local_output_root": "data/research_human_kicks/kth_coordination_v1",
+        "output_files": [
+          {
+            "name": "kth_player1_sequence2_coordination.npz",
+            "size_bytes": 695797,
+            "sha256": "5366476aa1aef2aa562da40c595b8e3b54a1ac7e8932d24832eccc92232f6e71"
+          },
+          {
+            "name": "kth_player1_sequence2_coordination.json",
+            "size_bytes": 20947,
+            "sha256": "6a90bb3c9decb4bf1387d9fa2b693d54aabfc12b7a58a6ecdc8ca545d2993844"
+          },
+          {
+            "name": "projection_diagnostic.png",
+            "size_bytes": 264304,
+            "sha256": "dfaf8c03ed360bbb3113bcd32c64b630c3065d13375b081850bf37fa24ee9bdb"
+          }
+        ],
+        "geometry_valid_joint_frames": 2450,
+        "geometry_valid_relation_frames": 1925,
+        "precision_known_relation_frames": 0,
+        "cmu_relation_names_preserved": true,
+        "source_definitions_identical_to_cmu": false,
+        "trunk_proxy": "bilateral hip midpoint to bilateral shoulder midpoint; actual thorax landmarks unavailable",
+        "unavailable_relations": [
+          "left_foot__right_foot",
+          "left_shank__left_foot",
+          "right_shank__right_foot"
+        ],
+        "smoothing": false,
+        "interpolation": false,
+        "filtering": false,
+        "training": false,
+        "p2_complete": false
+      }
+    },
+    {
+      "id": "athletepose3d",
+      "title": "AthletePose3D",
+      "source_class": "calibrated_multiview_pose_estimate",
+      "access_status": "official_license_and_corrected_paper_inspected_no_raw_acquisition",
+      "primary_urls": [
+        "https://github.com/calvinyeungck/AthletePose3D",
+        "https://github.com/calvinyeungck/AthletePose3D/blob/main/license/README.md",
+        "https://arxiv.org/html/2503.07499v3"
+      ],
+      "format": {
+        "fps_by_activity": {
+          "running": 120,
+          "throwing": 60,
+          "figure_skating": 60
+        },
+        "joints_by_activity": [
+          55,
+          86
+        ],
+        "camera_counts": [
+          4,
+          8,
+          12
+        ],
+        "hardware_synchronized": true,
+        "football_activity_present": false,
+        "activities": [
+          "running",
+          "shot put",
+          "glide shot put",
+          "javelin",
+          "discus",
+          "spin discus",
+          "Axel",
+          "Salchow",
+          "Toe Loop",
+          "Loop",
+          "Flip",
+          "Lutz"
+        ]
+      },
+      "skill_evidence": {
+        "professional_or_skilled_verified": true,
+        "level": "university_and_national_representatives",
+        "reason": "Eight participants include university/national representatives with inter-university/international experience; these are not soccer-kick participants."
+      },
+      "license": {
+        "terms_verified": true,
+        "name": "Custom noncommercial scientific-research terms",
+        "nontransferable": true,
+        "third_party_reproduction_modification_provision_requires_written_permission": true,
+        "paper_cc_by_nc_sa_is_not_data_license": true,
+        "license_readme_git_blob_sha": "9f02f49000adf80d29b91b644ed01a1b84f21f2e"
+      },
+      "allowed_role": "Possible general athletic-motion benchmark, outside the football-kick task.",
+      "decision": "excluded_for_activity_mismatch_not_failed_accuracy",
+      "independent_3d_precision": "not_assessed_locally",
+      "calibration_claim_limit": "Published <1 mm wand camera-calibration error is not a per-joint 3D-accuracy guarantee.",
+      "raw_files_acquired": 0,
+      "eligible_for_skilled_instep_target": false
+    },
+    {
+      "id": "worldpose",
+      "title": "WorldPose: A World Cup Dataset for Global 3D Human Pose Estimation",
+      "source_class": "calibrated_multiview_pose_estimate",
+      "access_status": "official_institutional_email_application_required_no_request_submitted",
+      "primary_urls": [
+        "https://eth-ait.github.io/WorldPoseDataset/",
+        "https://worldpose.ait.ethz.ch/",
+        "https://arxiv.org/abs/2501.02771"
+      ],
+      "format": {
+        "representation": "SMPL poses and broadcasting-camera parameters reconstructed using static multiview HD footage",
+        "continuous_sequences": true,
+        "individual_shot_windows_available_locally": false,
+        "metric_accuracy_locally_verified": false
+      },
+      "skill_evidence": {
+        "professional_or_skilled_verified": true,
+        "level": "2022_FIFA_World_Cup_professional_match_context",
+        "per_shot_instantiated": false
+      },
+      "license": {
+        "terms_verified": true,
+        "name": "ETH noncommercial academic research terms",
+        "institutional_email_required": true,
+        "application_review_required": true,
+        "nontransferable": true,
+        "redistribution_prohibited": true,
+        "reidentification_prohibited": true,
+        "fifa_footage_additional_agreement": true
+      },
+      "allowed_role": "Potential future professional reconstructed-motion source only after authorized valid access.",
+      "decision": "access_not_obtained_not_failed_accuracy",
+      "independent_3d_precision": "not_assessed_locally",
+      "raw_files_acquired": 0,
+      "applications_submitted": 0,
       "eligible_for_skilled_instep_target": false
     }
   ],
@@ -584,5 +1159,32 @@
     "provenance": "Seven original/provenance files and the selected marker export independently matched recorded SHA-256 and sizes; research files match data/ ignore rule.",
     "independent_c3d_decoding": "All five point arrays, source frame numbers and validity masks agree exactly with py-c3d 0.6.0. Four zero-analog-channel files need an explicitly recorded unused analog-header normalization inside the independent reader; originals untouched.",
     "human_coordination_tests": "Ten targeted unittest cases passed, including synthetic geometry/invariance/gap handling and all five real clips. Sourcequalification remains false."
+  },
+  "follow_up_v0_1_30": {
+    "source_updated": "skillcorner_bodypose",
+    "reason": "P2 scope explicitly permits quality-controlled reconstructed3D; professional continuous-shot provenance is now supported separately from instep/impact/precision requirements.",
+    "p2_complete": false,
+    "original_cmu_interpretation_unchanged": true
+  },
+  "bounded_new_source_follow_up_v0_1_30": {
+    "checked_on": "2026-11-07",
+    "sources_inspected": [
+      "kth_multiview_football2_p1s2",
+      "athletepose3d",
+      "worldpose"
+    ],
+    "max_new_sources": 3,
+    "actionable_source": "kth_multiview_football2_p1s2",
+    "total_new_downloaded_bytes": 3210408,
+    "new_download_limit_bytes": 15000000,
+    "second_skillcorner_match_acquired": false,
+    "gpu_jobs": 0,
+    "dependency_installations": 0,
+    "emails_or_access_applications": 0,
+    "payments": 0,
+    "targeted_kth_tests": 5,
+    "kth_actual_cpu_run": true,
+    "p2_complete": false,
+    "stop_reason": "Bounded three-source inspection and authorized small KTH adapter completed. Remaining instep, independent precision, and exact impact evidence gaps are explicit."
   }
 }

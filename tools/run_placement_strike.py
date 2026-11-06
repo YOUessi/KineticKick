@@ -104,9 +104,9 @@ def main():
             result['joint_strike']=dict(mode='fitted_placement',
                 checkpoint=None,checkpoint_sha256=None,
                 template_sha256=cfgdata['template_sha256'],config=cfgdata,config_sha256=sha(a.config),
-                source_sha256={n:sha(ROOT/'tools'/n) for n in ['run_placement_strike.py','placement_strike.py','closed_loop_strike.py','closed_loop_expert.py','joint_strike_core.py','paid_actor_warmstart.py','closed_loop_acceptance.py','hip_clearance.py','shank_clearance.py','approach_adapter.py']},
+                source_sha256={n:sha(ROOT/'tools'/n) for n in ['run_placement_strike.py','placement_strike.py','closed_loop_strike.py','closed_loop_expert.py','joint_strike_core.py','paid_actor_warmstart.py','closed_loop_acceptance.py','hip_clearance.py','shank_clearance.py','approach_adapter.py']+(['landing_release.py'] if cfgdata.get('landing_release') else [])},
                 initial_root_velocity=actor.initial,ball_offset_xy=a.ball_offset,velocity_y_delta=a.velocity_delta,
-                feedback=actor.task.debug,state_inputs=actor.state_inputs,actual_policy='Frozen feedback experts with fitted state-conditioned placement/phase, foot-pose IK and bounded early actuator adapter',expert_backend=actor.task.expert.backend,expert_handoffs=actor.task.expert.events)
+                feedback=actor.task.debug,state_inputs=actor.state_inputs,actual_policy='Frozen feedback experts with fitted state-conditioned placement/phase, foot-pose IK and bounded early actuator adapter'+(' and measured post-contact landing release' if cfgdata.get('landing_release') else ''),expert_backend=actor.task.expert.backend,expert_handoffs=actor.task.expert.events)
             if a.contact_diagnostics:result['nonfoot_contact_diagnostics']=actor.nonfoot_events
             a.output.write_text(json.dumps(result,indent=2)+'\n')
             print('CLOSED_LOOP_STRIKE_RESULT',json.dumps(dict(success=result['stride_shot_success'],shot=result['records'][0],termination=result['termination_reasons'])),flush=True)

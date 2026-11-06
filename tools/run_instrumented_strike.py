@@ -6,10 +6,14 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--controller',choices=['v15','v28'],default='v28')
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--controller',choices=['v15','v28','placement'],default='v28')
+    p.add_argument('--config',type=Path,help='Required only for placement research controllers')
     p.add_argument('--case',required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--ground-contact-window',type=float,nargs=2,help='Optional bounded raw ground contact/anchor and pre/post foot evidence')
     p.add_argument('--probe',type=Path,default=ROOT/'reports/v029_force_probe.json');a=p.parse_args()
     if a.output.exists():raise FileExistsError(a.output)
+    if (a.controller=='placement') != (a.config is not None):p.error('--config is required only with --controller placement')
+    config=a.config if a.config is not None else ROOT/'configs/state_conditioned_strike_v5.json'
     from strike_cases import load_cases
     cases=load_cases(ROOT)
     if a.case not in cases:p.error('Unknown registered condition')
@@ -29,7 +33,11 @@ def main():
                     env=native_make(*pos,**kw);raw=env.unwrapped
                     created.update(raw=raw,scene=raw.scene)
                     try:
-                        observer=StrikeDynamicsObserver(raw,a.probe);created['observer']=observer
+                        if a.ground_contact_window is None:observer=StrikeDynamicsObserver(raw,a.probe)
+                        else:
+                            from ground_contact_observer import GroundContactObserver
+                            observer=GroundContactObserver(raw,a.probe,a.ground_contact_window)
+                        created['observer']=observer
                         native_update=raw.scene.update;native_step=raw.step
                         created.update(native_update=native_update,native_step=native_step)
                         def update(dt):
@@ -59,14 +67,14 @@ def main():
             module.run=observed_run
         spec.loader.exec_module=load
         return spec
-    path=ROOT/'tools'/('run_placement_strike.py' if a.controller=='v28' else 'run_strike_baseline_case.py')
+    path=ROOT/'tools'/('run_placement_strike.py' if a.controller!='v15' else 'run_strike_baseline_case.py')
     spec=original_spec('_observed_original_runner',path);runner=importlib.util.module_from_spec(spec);spec.loader.exec_module(runner)
     argv=sys.argv
     try:
         importlib.util.spec_from_file_location=instrumented_spec
-        if a.controller=='v28':
+        if a.controller!='v15':
             c=cases[a.case]
-            sys.argv=[str(path),'--config',str(ROOT/'configs/state_conditioned_strike_v5.json'),'--output',str(a.output),'--ball-offset',*map(str,c['ball_offset_xy_m']),'--velocity-delta',str(c['root_velocity_y_delta_mps']),'--contact-diagnostics']
+            sys.argv=[str(path),'--config',str(config),'--output',str(a.output),'--ball-offset',*map(str,c['ball_offset_xy_m']),'--velocity-delta',str(c['root_velocity_y_delta_mps']),'--contact-diagnostics']
         else:sys.argv=[str(path),'--case',a.case,'--output',str(a.output)]
         runner.main()
     finally:importlib.util.spec_from_file_location=original_spec;sys.argv=argv

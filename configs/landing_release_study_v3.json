@@ -1,0 +1,235 @@
+{
+  "version": "0.1.30",
+  "status": "fixed_after_finite_input_guard_before_remaining18_and_fresh3",
+  "candidate_config": "configs/state_conditioned_strike_v6.json",
+  "candidate_config_sha256": "3e7647e05b071d3f257e16a046f63f674821d44f1489cc69b175e9ab40aeb39f",
+  "runtime_sources_sha256": {
+    "tools/run_placement_strike.py": "3247a79f9eb940d8df54e677d78b8065215300259714c7a4ed19f4a4f409aefe",
+    "tools/run_instrumented_strike.py": "580c32fa124cb34889ff76e8dddc4e8af86615cfbc510de83f6d582f1886b3e4",
+    "tools/placement_strike.py": "09863a12444d67d832afdce2115bc935a2225ebb9973e5820ba1857f0cea366a",
+    "tools/closed_loop_expert.py": "0cf2c0243be3c73f912f5dd1985d12f5db08d1d3f4fbb2c40f58ee2a1e0b617a",
+    "tools/closed_loop_strike.py": "ac6ee3f7f35716ec1e44e9008b7aef8bbf3a2221747ac2cbc7e89fc6a3b19e3e",
+    "tools/joint_strike_core.py": "55a7ae2b2c5cf824385a6db91b0758a0dc2fe84b25aa48c22ce6840eb8405a30",
+    "tools/landing_release.py": "052e86d8bfb2b902173a798e44451eac165319da9142e4e2b02f2facd56cf667",
+    "tools/strike_dynamics_telemetry.py": "642150d97cabf728053f6d7eb7c4b943bf58f71a2ae876949b37dac186fbbb67",
+    "tools/hip_clearance.py": "0ff2e8a42435ae700c4a8c9e5befd1193f9069b1e4611442e46b8659867a8c87",
+    "tools/shank_clearance.py": "a515febfa46a452737559a9aaafa7e236c974a6d7f24f2156c379b4d7798fb2c",
+    "tools/approach_adapter.py": "7d7b2e921be61d40653a44914a22aba893a17d510efcdbbf43b9a07aaf801dec"
+  },
+  "existing_cases": [
+    {
+      "id": "center",
+      "ball_offset_xy_m": [
+        0.0,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.0,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "ball_x_minus_5cm",
+      "ball_offset_xy_m": [
+        -0.05,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.0,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "ball_x_plus_5cm",
+      "ball_offset_xy_m": [
+        0.05,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.0,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "ball_near_10cm",
+      "ball_offset_xy_m": [
+        0.0,
+        0.1
+      ],
+      "root_velocity_y_delta_mps": 0.0,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "ball_far_10cm",
+      "ball_offset_xy_m": [
+        0.0,
+        -0.1
+      ],
+      "root_velocity_y_delta_mps": 0.0,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "initial_slower_02",
+      "ball_offset_xy_m": [
+        0.0,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.2,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "initial_faster_02",
+      "ball_offset_xy_m": [
+        0.0,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": -0.2,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "combined_left_slower",
+      "ball_offset_xy_m": [
+        -0.025,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": 0.1,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "combined_right_faster",
+      "ball_offset_xy_m": [
+        0.025,
+        0.0
+      ],
+      "root_velocity_y_delta_mps": -0.1,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "heldout_left_near_slower",
+      "ball_offset_xy_m": [
+        -0.018,
+        0.02
+      ],
+      "root_velocity_y_delta_mps": 0.075,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "heldout_right_far_slower",
+      "ball_offset_xy_m": [
+        0.022,
+        -0.025
+      ],
+      "root_velocity_y_delta_mps": 0.125,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "heldout_left_far_faster",
+      "ball_offset_xy_m": [
+        -0.015,
+        -0.03
+      ],
+      "root_velocity_y_delta_mps": -0.075,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "heldout_right_near_faster",
+      "ball_offset_xy_m": [
+        0.02,
+        0.025
+      ],
+      "root_velocity_y_delta_mps": -0.125,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "heldout_confirm_left_far_slower",
+      "ball_offset_xy_m": [
+        -0.02,
+        -0.02
+      ],
+      "root_velocity_y_delta_mps": 0.1,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "heldout_confirm_right_near_slower",
+      "ball_offset_xy_m": [
+        0.015,
+        0.015
+      ],
+      "root_velocity_y_delta_mps": 0.15,
+      "study_group": "development_reused_v028",
+      "historical_group": "development"
+    },
+    {
+      "id": "heldout_v028_near_slow_13",
+      "ball_offset_xy_m": [
+        0.01,
+        0.02
+      ],
+      "root_velocity_y_delta_mps": 0.13,
+      "study_group": "development_reused_v028",
+      "historical_group": "evaluation"
+    },
+    {
+      "id": "heldout_v028_near_slow_17",
+      "ball_offset_xy_m": [
+        0.02,
+        0.01
+      ],
+      "root_velocity_y_delta_mps": 0.17,
+      "study_group": "development_reused_v028",
+      "historical_group": "evaluation"
+    },
+    {
+      "id": "heldout_v028_left_near_slow",
+      "ball_offset_xy_m": [
+        -0.01,
+        0.02
+      ],
+      "root_velocity_y_delta_mps": 0.15,
+      "study_group": "development_reused_v028",
+      "historical_group": "evaluation"
+    }
+  ],
+  "fresh_evaluation": [
+    {
+      "id": "landing_eval_left_near",
+      "ball_offset_xy_m": [
+        -0.012,
+        0.018
+      ],
+      "root_velocity_y_delta_mps": 0.165
+    },
+    {
+      "id": "landing_eval_right_far",
+      "ball_offset_xy_m": [
+        0.018,
+        -0.018
+      ],
+      "root_velocity_y_delta_mps": 0.11
+    },
+    {
+      "id": "landing_eval_faster",
+      "ball_offset_xy_m": [
+        -0.012,
+        -0.022
+      ],
+      "root_velocity_y_delta_mps": -0.11
+    }
+  ],
+  "selection": "pose mode with whole-operator retention; thresholds/duration unchanged from initial declared all/pose experiment; no further tuning on fresh evaluation",
+  "invariants": "Original19 frozen files, physical termination, collider, actuator limits, phase and velocity pulse unchanged; force observer only",
+  "quality": "Original task outcomes kept separate from no actual joint overspeed (ratio<=1.0001 numerical tolerance), impulse closure, follow-through and measured performance deltas. No human naturalness claim.",
+  "stop_rule": "Stop development queue on failed original recovery/physical/surface criterion or observed overspeed; goal-only failures remain failures and do not conceal recovery evidence. All results retained.",
+  "study_revision": 3,
+  "supersedes": "configs/landing_release_study_v2.json",
+  "phase_lag_hypothesis": "Freeze release strength at first valid trigger, clamp(max(-phase_shift,0)/0.08,0,1); zero lag remains unchanged. Duration and amplitude scale independently declared. Center and strong full trace expected equalv28; slower expected equal continuous-posev1.",
+  "revision_note": "Only added finite-input checks at first trigger. Four previously completed v2 representative episodes have finite decision geometry/time/ground observations; all numerical controller parameters and strength rule unchanged."
+}

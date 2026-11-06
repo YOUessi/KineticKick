@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "name": "skillcorner_reconstructed_coordination_v1",
+  "version_branch": "version/v0.1.30",
+  "max_frames": 2000,
+  "github_revision": "4340d274572876239c154c90bc507a9b3250a656",
+  "hf_revision": "a62e1ec1e3b82952042a7f7fa9dafd77c0e0822a",
+  "input_files": {
+    "sample_1925299_phase406.jsonl.gz": {
+      "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/bodypose/sample_1925299_phase406.jsonl.gz",
+      "size_bytes": 1926895,
+      "sha256": "eb10f537c5c3b3c80018d5670f16cb788b14a3529d0be0b36a077bd1b41aeb4a"
+    },
+    "1925299_dynamic_events.csv": {
+      "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/matches/1925299/1925299_dynamic_events.csv",
+      "size_bytes": 5043601,
+      "sha256": "2557acbdcba6547d764b9f7c277c3d7e81a4d58692d6c20c2bfa28625ae0cce3"
+    },
+    "1925299_phases_of_play.csv": {
+      "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/matches/1925299/1925299_phases_of_play.csv",
+      "size_bytes": 131104,
+      "sha256": "a1682a736a9cf1c311cb799f0a949f7e023dca4ebaa9dd294b138e8929271274"
+    },
+    "1925299_match.json": {
+      "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/matches/1925299/1925299_match.json",
+      "size_bytes": 28396,
+      "sha256": "f4345b32c0fdd7c9990df70050b3a74f57b1992cf762e20f2a4d309bd2fba7d2"
+    },
+    "MANIFEST.json": {
+      "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/bodypose/MANIFEST.json",
+      "size_bytes": 1278,
+      "sha256": "2e82e7b72e6e8cfd562fe5a706ac6fc4eabee93e97e8256b1bfb1587fbc84224"
+    },
+    "bodypose_README.md": {
+      "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/data/bodypose/README.md",
+      "size_bytes": 6542,
+      "sha256": "4a272ae1941c9c13ff5fa0c9b9b6c651935b183c2c035172a58a16787fcdccf0"
+    },
+    "LICENSE": {
+      "url": "https://raw.githubusercontent.com/SkillCorner/opendata/4340d274572876239c154c90bc507a9b3250a656/LICENSE",
+      "size_bytes": 1097,
+      "sha256": "3384cc66ffd008209759af5e6328677eabded72756fb1f56f4f82e68e9b3c6eb"
+    },
+    "HF_dataset_card.md": {
+      "url": "https://huggingface.co/datasets/SkillCorner/opendata-bodypose/raw/a62e1ec1e3b82952042a7f7fa9dafd77c0e0822a/README.md",
+      "size_bytes": 6408,
+      "sha256": "2397aadbdb2f3573427879c149815a19461f8d637497d7cffcc274debd5f9d41"
+    }
+  },
+  "sample": {
+    "pose_file": "sample_1925299_phase406.jsonl.gz",
+    "match_file": "1925299_match.json",
+    "events_file": "1925299_dynamic_events.csv",
+    "phases_file": "1925299_phases_of_play.csv",
+    "match_id": 1925299,
+    "player_id": 965698,
+    "event_id": "8_871"
+  },
+  "data_license": {
+    "name": "MIT",
+    "basis": "Explicit official dataset card License and credit section, matching official repository license. Data and software are not conflated by inference.",
+    "notice_file": "LICENSE",
+    "dataset_card": "HF_dataset_card.md",
+    "attribution": "SkillCorner; retain copyright and permission notice.",
+    "broadcast_video_rights": "Not included or inferred; no broadcast video acquired."
+  },
+  "professional_participation_evidence": {
+    "player": "Jacob Brazete",
+    "club": "Brisbane Roar",
+    "number": 18,
+    "fixture": "Brisbane Roar 0-1 Perth Glory, A-League Men, 2024-12-21",
+    "official_club_report": "https://perthglory.com.au/news/alm-match-wrap-williams-goal-seals-vital-victory-over-roar/",
+    "participation": "Official report lists number 18 Jacob Brazete substituted on at 67 minutes; vendor metadata id 965698 is matched to shot event 8_871.",
+    "scope": "Professional match participation; not a certification of optimal instep form or maximal power."
+  },
+  "joint_names": [
+    "nose",
+    "neck",
+    "lEye",
+    "rEye",
+    "lEar",
+    "rEar",
+    "lShoulder",
+    "rShoulder",
+    "lElbow",
+    "rElbow",
+    "lWrist",
+    "rWrist",
+    "lThumb",
+    "rThumb",
+    "lPinky",
+    "rPinky",
+    "midHip",
+    "lHip",
+    "rHip",
+    "lKnee",
+    "rKnee",
+    "lAnkle",
+    "rAnkle",
+    "lHeel",
+    "rHeel",
+    "lBigToe",
+    "rBigToe",
+    "lSmallToe",
+    "rSmallToe"
+  ],
+  "segments": {
+    "trunk": [
+      "midHip",
+      "neck"
+    ],
+    "pelvis_line": [
+      "rHip",
+      "lHip"
+    ],
+    "shoulder_line": [
+      "rShoulder",
+      "lShoulder"
+    ],
+    "left_upper_arm": [
+      "lShoulder",
+      "lElbow"
+    ],
+    "left_forearm": [
+      "lElbow",
+      "lWrist"
+    ],
+    "left_thigh": [
+      "lHip",
+      "lKnee"
+    ],
+    "left_shank": [
+      "lKnee",
+      "lAnkle"
+    ],
+    "left_foot": [
+      "lHeel",
+      "lBigToe"
+    ],
+    "right_upper_arm": [
+      "rShoulder",
+      "rElbow"
+    ],
+    "right_forearm": [
+      "rElbow",
+      "rWrist"
+    ],
+    "right_thigh": [
+      "rHip",
+      "rKnee"
+    ],
+    "right_shank": [
+      "rKnee",
+      "rAnkle"
+    ],
+    "right_foot": [
+      "rHeel",
+      "rBigToe"
+    ]
+  },
+  "relations": {
+    "shoulder_pelvis": [
+      "shoulder_line",
+      "pelvis_line"
+    ],
+    "trunk_left_thigh": [
+      "trunk",
+      "left_thigh"
+    ],
+    "trunk_right_thigh": [
+      "trunk",
+      "right_thigh"
+    ],
+    "left_leg_chain": [
+      "left_thigh",
+      "left_shank"
+    ],
+    "right_leg_chain": [
+      "right_thigh",
+      "right_shank"
+    ],
+    "left_arm_chain": [
+      "left_upper_arm",
+      "left_forearm"
+    ],
+    "right_arm_chain": [
+      "right_upper_arm",
+      "right_forearm"
+    ],
+    "left_arm_right_thigh": [
+      "left_upper_arm",
+      "right_thigh"
+    ],
+    "right_arm_left_thigh": [
+      "right_upper_arm",
+      "left_thigh"
+    ],
+    "bilateral_thighs": [
+      "left_thigh",
+      "right_thigh"
+    ],
+    "bilateral_upper_arms": [
+      "left_upper_arm",
+      "right_upper_arm"
+    ],
+    "left_foot_shank": [
+      "left_foot",
+      "left_shank"
+    ],
+    "right_foot_shank": [
+      "right_foot",
+      "right_shank"
+    ],
+    "trunk_shoulder_line": [
+      "trunk",
+      "shoulder_line"
+    ]
+  },
+  "quality_policy": {
+    "max_joint_predicted_p90_m": 0.2,
+    "max_relation_cosine_error_budget": 0.75,
+    "min_scale_frames": 3,
+    "status": "Exploratory feature screening, not an externally calibrated acceptance standard. Availability and quality masks remain separate.",
+    "joint_quality_requires": [
+      "joint present",
+      "finite xyz",
+      "finite nonnegative p90",
+      "p90 <= 0.20 m",
+      "upstream player is_detected is true"
+    ],
+    "relation_quality_requires": [
+      "both segments pass endpoint screen",
+      "conditional cosine sensitivity budget <= 0.75"
+    ]
+  },
+  "uncertainty": {
+    "is_calibrated_confidence_interval": false,
+    "independence_assumed": false,
+    "interpretation": "Vendor predicted p90 values are used as isotropic radial sensitivity budgets only. The source also calls them p90 MAE; no independent calibration or simultaneous coverage is supplied.",
+    "relative_position": "sum of joint and midHip budgets; identical midHip variable cancels to zero.",
+    "segment_vector": "sum of endpoint budgets.",
+    "segment_direction": "For radius e smaller than vector length L, unit-direction budget is 2*sin(asin(e/L)/2); else 2. Conditional on endpoint errors lying inside assumed radial budgets.",
+    "relation_cosine": "min(2, direction_budget_A + direction_budget_B), no independence assumption.",
+    "normalizer": "Median of selected mean bilateral chain lengths; lower/upper medians propagate summed endpoint budgets with fixed eligibility.",
+    "normalized_position": "(relative_budget + norm(relative_position)*scale_budget/scale)/(scale-scale_budget), available only if scale > scale_budget.",
+    "claim_limit": "These operations do not turn marginal predicted p90 values into a joint 90% bound or an independently measured uncertainty distribution."
+  },
+  "field_semantics": {
+    "joints_reconstructed_m": "Unchanged vendor xyz values in metres, no smoothing/filling. x/y use pitch axes; z is reliable relative to player centroid only, not elevation above pitch.",
+    "joint_predicted_p90_cm/m": "Source predicted error preserved in cm and explicitly divided by 100 for m.",
+    "joint_present/geometry_valid/error_valid/quality_pass": "Separate schema presence, finite geometry, finite nonnegative error, and configured quality screen.",
+    "player_is_detected": "Vendor player-screen detection flag, not per-joint visibility. Flag availability retained separately; false/missing never erases available geometry.",
+    "player_xy_resampled_m": "Vendor 10 Hz XY tracking interpolated to 25 Hz. Series resampling flag is true even at source-aligned anchors.",
+    "exact_even_tracking_frame_alignment": "pose_frame modulo 5 == 0; these exactly match even 10 Hz tracking frames.",
+    "pipeline_joint_interpolated": "Always false: this adapter never fills gaps. It does not assert that upstream joint estimates were never smoothed or interpolated.",
+    "joints_pelvis_relative_m": "Subtract the same-frame estimated midHip, retaining source axes. No anatomical pelvis orientation frame or world floor is invented.",
+    "ball_reconstructed_xyz_m": "Unchanged upstream ball estimate; all xyz exhibit piecewise-linear 10 Hz-grid resampling in this pinned sample. No per-point error, calibrated center, spin, radius, or native 25 Hz measurement claim.",
+    "ball_is_detected": "Vendor detection flag; it is not independent native 25 Hz observation evidence.",
+    "possession": "Availability and equals-shooter masks preserve the older sample: shooter id is absent even during the newer vendor shot event.",
+    "relation_cosines": "Dimensionless directed-vector relationships, not measured anatomical joint angles.",
+    "event_alignment": "Matched vendor shot annotation at 10 Hz frame_end. Fractional 25 Hz frame and timestamp bracket retained; never a contact label.",
+    "event_time_to_impact": "If present in source CSV, this is an opponent-pressure category, not foot-ball collision timing."
+  },
+  "known_conflicts": [
+    {
+      "field": "sample phase index",
+      "filename_value": 406,
+      "current_event_phase": 397,
+      "action": "Join match/period/frame/time, not filename phase."
+    },
+    {
+      "field": "stadium",
+      "vendor_value": "Kayo Stadium",
+      "club_reports_value": "Suncorp Stadium",
+      "action": "Preserve source inconsistency; raw metadata unchanged."
+    },
+    {
+      "field": "possession.player_id",
+      "sample_shooter_possession_frames": 0,
+      "new_event_id": "8_871",
+      "action": "Event identity comes from current official event CSV, not null pose possession."
+    }
+  ],
+  "limitations": [
+    "This is broadcast-video reconstructed3D, not optical marker ground truth or robot-retargeted data.",
+    "Professional participation and vendor shot occurrence are supported; instep, kick side, maximal effort, support force and precise contact remain unknown.",
+    "z is not calibrated ground height; do not infer penetration, foot support, ball-foot distance in a shared vertical frame, or force.",
+    "Predicted extremity errors are large around this shot; valid geometry alone does not pass quality screening.",
+    "No original video, independent pose validation, anthropometric shape model, foot mesh, force plates, native rotations or collision labels acquired.",
+    "No velocity/acceleration or phase timing is derived in this small adapter; finite differencing would magnify uncertain 25 Hz estimates.",
+    "One continuous sample cannot establish population skill statistics or full-match robustness.",
+    "P2 is not complete; no model training, retargeting or controller replacement performed.",
+    "Repository reports approximately 97% player-identity accuracy overall; no independent framewise identity/video audit is supplied for this sample."
+  ]
+}

@@ -13,6 +13,9 @@ COMBINATIONS = [
     dict(id='heldout_v028_near_slow_13',ball_offset_xy_m=[.010,.020],root_velocity_y_delta_mps=.130),
     dict(id='heldout_v028_near_slow_17',ball_offset_xy_m=[.020,.010],root_velocity_y_delta_mps=.170),
     dict(id='heldout_v028_left_near_slow',ball_offset_xy_m=[-.010,.020],root_velocity_y_delta_mps=.150),
+    dict(id='landing_eval_left_near',ball_offset_xy_m=[-.012,.018],root_velocity_y_delta_mps=.165),
+    dict(id='landing_eval_right_far',ball_offset_xy_m=[.018,-.018],root_velocity_y_delta_mps=.110),
+    dict(id='landing_eval_faster',ball_offset_xy_m=[-.012,-.022],root_velocity_y_delta_mps=-.110),
 ]
 
 
@@ -22,6 +25,7 @@ def load_cases(root):
 
 
 EVALUATION_CASES={
+    '0.1.30':{'landing_eval_left_near','landing_eval_right_far','landing_eval_faster'},
     '0.1.26':{'combined_left_slower','combined_right_faster'},
     '0.1.27':{'heldout_confirm_left_far_slower','heldout_confirm_right_near_slower'},
     '0.1.28':{'heldout_v028_near_slow_13','heldout_v028_near_slow_17','heldout_v028_left_near_slow'},

@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "name": "kth_reconstructed_joint_coordination_v1",
+  "source_class": "calibrated_multiview_pose_estimate",
+  "frames": 175,
+  "fps": 25,
+  "cameras": 3,
+  "joint_names": [
+    "R_ANKLE",
+    "R_KNEE",
+    "R_HIP",
+    "L_HIP",
+    "L_KNEE",
+    "L_ANKLE",
+    "R_WRIST",
+    "R_ELBOW",
+    "R_SHOULDER",
+    "L_SHOULDER",
+    "L_ELBOW",
+    "L_WRIST",
+    "BOTTOM_HEAD",
+    "TOP_HEAD"
+  ],
+  "input_files": {
+    "cameras.txt": {
+      "size_bytes": 75600,
+      "sha256": "9f815dfa57f78d85ba9c7d65e8c1003a5b96c369de585adcfdc853c9ad06fada"
+    },
+    "positions2d.txt": {
+      "size_bytes": 88200,
+      "sha256": "38dbb657eb95746a1e94e14e5d53bd1c9aaa0fc04445d211ec89f8b187f3e9ce"
+    },
+    "positions3d.txt": {
+      "size_bytes": 132300,
+      "sha256": "f98feba689ce5bda4ad592e16e963e7a0bdfab36649db6d0db0a82a0f2bff83e"
+    },
+    "dataset_page.html": {
+      "size_bytes": 5880,
+      "sha256": "066aa23858e02a83a43709c08157547e9db359565adb8262c9a013c0bcdcaff0"
+    },
+    "code3d.zip": {
+      "size_bytes": 7952,
+      "sha256": "12405e1157466c6d4fa8a3241b9c0b88dd647b1681374d1f1bc188aec53af4b2"
+    },
+    "Burenius4DMOD2011.pdf": {
+      "size_bytes": 3065992,
+      "sha256": "4e2c3eb577a622eef112d98fe16214fe4b9faa45ba2bddc43914a46ddd531d96"
+    }
+  },
+  "provenance": {
+    "dataset": "KTH Multiview Football Dataset II",
+    "sequence": "Player 1 Sequence 2",
+    "landing_page": "https://www.csc.kth.se/cvap/cvg/?page=footballdataset2",
+    "archive": "https://www.csc.kth.se/cvap/cvg/MultiViewFootballData/player1sequence2.zip",
+    "loader": "https://www.csc.kth.se/cvap/cvg/MultiViewFootballData/code3d.zip",
+    "method": "https://www.csc.kth.se/cvap/cvg/papers/Burenius4DMOD2011.pdf",
+    "professional_context": "Official landing page identifies professional footballers in an Allsvenskan match; no named player or match date supplied.",
+    "event": "Official sequence label describes scoring a goal; no ball track, foot-contact classification or shot frame annotation.",
+    "fps_evidence": "Burenius et al. 2011 section 4 records three 1920x1080 cameras at 25 Hz and a seven-second goal sequence. Archive has 175 consecutive frames in each of 3 cameras."
+  },
+  "license": {
+    "name": "KTH custom academic-research-only terms",
+    "source": "https://www.csc.kth.se/cvap/cvg/?page=footballdataset2",
+    "academic_research_only": true,
+    "commercial_use_permitted": false,
+    "citation": "Kazemi, Burenius, Azizpour, Sullivan. Multi-view Body Part Recognition with Random Forests. BMVC 2013.",
+    "raw_distribution_policy": "Raw files and generated artifacts remain local and ignored; no unrestricted redistribution or MIT license inferred."
+  },
+  "coordinate_system": {
+    "position_units": "arbitrary Euclidean-rectified units (au)",
+    "meters_per_unit": null,
+    "source_frame": "Official reconstruction rotates to last-camera axes and MATLAB up convention; this is not a calibrated world/floor frame.",
+    "source_centering": "Official algorithm subtracts the 14-joint image mean per frame and camera before factorization; provided 3D joint mean is approximately zero every frame. Raw positions retained unchanged.",
+    "scale": "Official ScaleToUnitCube divides all reconstructed points by one sequence-wide max(abs(X)); |coordinate| <= 1. No participant height supplied.",
+    "pelvis_relative": "Subtract bilateral hip midpoint while retaining source axes. No anatomical pelvis orientation is constructed.",
+    "normalization": "Median of finite positive left and right hip-knee-ankle chain lengths over all frames, in arbitrary units; not anthropometric leg-length truth.",
+    "floor": null,
+    "global_translation": null
+  },
+  "time_semantics": {
+    "source_frame_numbers": "1-based sequence image-member indices; not match time",
+    "time_s": "(source_frame-1)/25; relative first sample, not shot or impact; no timestamp file",
+    "source_centering_is_not_interpolation": true,
+    "upstream_visibility_or_filling": "No per-joint visibility, occlusion, uncertainty or interpolation labels supplied; finite coordinates do not prove visible observations.",
+    "pipeline_interpolation": false,
+    "pipeline_smoothing": false
+  },
+  "landmarks": {
+    "pelvis_center": [
+      "L_HIP",
+      "R_HIP"
+    ],
+    "thorax_center": null,
+    "shoulder_midpoint": [
+      "L_SHOULDER",
+      "R_SHOULDER"
+    ],
+    "left_pelvis_side": [
+      "L_HIP"
+    ],
+    "right_pelvis_side": [
+      "R_HIP"
+    ],
+    "left_shoulder": [
+      "L_SHOULDER"
+    ],
+    "left_elbow": [
+      "L_ELBOW"
+    ],
+    "left_wrist": [
+      "L_WRIST"
+    ],
+    "left_knee": [
+      "L_KNEE"
+    ],
+    "left_ankle": [
+      "L_ANKLE"
+    ],
+    "left_heel": null,
+    "left_toe": null,
+    "left_mt5": null,
+    "right_shoulder": [
+      "R_SHOULDER"
+    ],
+    "right_elbow": [
+      "R_ELBOW"
+    ],
+    "right_wrist": [
+      "R_WRIST"
+    ],
+    "right_knee": [
+      "R_KNEE"
+    ],
+    "right_ankle": [
+      "R_ANKLE"
+    ],
+    "right_heel": null,
+    "right_toe": null,
+    "right_mt5": null
+  },
+  "segments": {
+    "trunk": [
+      "pelvis_center",
+      "shoulder_midpoint"
+    ],
+    "pelvis_line": [
+      "right_pelvis_side",
+      "left_pelvis_side"
+    ],
+    "shoulder_line": [
+      "right_shoulder",
+      "left_shoulder"
+    ],
+    "left_upper_arm": [
+      "left_shoulder",
+      "left_elbow"
+    ],
+    "left_forearm": [
+      "left_elbow",
+      "left_wrist"
+    ],
+    "left_thigh": [
+      "left_pelvis_side",
+      "left_knee"
+    ],
+    "left_shank": [
+      "left_knee",
+      "left_ankle"
+    ],
+    "left_foot": [
+      "left_heel",
+      "left_toe"
+    ],
+    "right_upper_arm": [
+      "right_shoulder",
+      "right_elbow"
+    ],
+    "right_forearm": [
+      "right_elbow",
+      "right_wrist"
+    ],
+    "right_thigh": [
+      "right_pelvis_side",
+      "right_knee"
+    ],
+    "right_shank": [
+      "right_knee",
+      "right_ankle"
+    ],
+    "right_foot": [
+      "right_heel",
+      "right_toe"
+    ]
+  },
+  "relation_pairs": [
+    [
+      "pelvis_line",
+      "shoulder_line"
+    ],
+    [
+      "left_upper_arm",
+      "right_upper_arm"
+    ],
+    [
+      "left_forearm",
+      "right_forearm"
+    ],
+    [
+      "left_thigh",
+      "right_thigh"
+    ],
+    [
+      "left_shank",
+      "right_shank"
+    ],
+    [
+      "left_foot",
+      "right_foot"
+    ],
+    [
+      "trunk",
+      "left_thigh"
+    ],
+    [
+      "trunk",
+      "right_thigh"
+    ],
+    [
+      "left_thigh",
+      "left_shank"
+    ],
+    [
+      "right_thigh",
+      "right_shank"
+    ],
+    [
+      "left_shank",
+      "left_foot"
+    ],
+    [
+      "right_shank",
+      "right_foot"
+    ],
+    [
+      "left_upper_arm",
+      "right_thigh"
+    ],
+    [
+      "right_upper_arm",
+      "left_thigh"
+    ]
+  ],
+  "direction_epsilon_au": 1e-12,
+  "landmark_semantics": {
+    "direct_points": "Reconstructed estimates of manually labelled anatomical image joints; not optical markers or validated anatomical centers.",
+    "pelvis_center": "Mean of the two estimated hip joints.",
+    "thorax_center": "Unavailable: no CLAV/STRN/C7/T10 or equivalent source landmark. Its geometry mask remains false.",
+    "shoulder_midpoint": "Mean of estimated shoulder joints; used only as a declared coarse upper-trunk endpoint.",
+    "feet": "Heel/toe/MT5 absent. No foot direction or ankle dorsiflexion can be recovered from ankle alone."
+  },
+  "relation_semantics": {
+    "names": "Exact CMU schema pair names for source-conditioned interfaces, not interchangeable biological measurements.",
+    "trunk": "Hip-midpoint to shoulder-midpoint proxy differs from CMU surface-marker thorax center; source class and definition must remain attached.",
+    "cosines": "Dot products of two finite nondegenerate directed segment vectors in retained source axes; not measured anatomical joint angles.",
+    "unavailable": "left_foot__right_foot, left_shank__left_foot, right_shank__right_foot are always NaN with false geometry masks.",
+    "precision_known_mask": "Always false because independent 3D uncertainty is unavailable; this is unknown, not a failed quality threshold."
+  },
+  "diagnostic_semantics": {
+    "reprojection": "Per camera/joint pixel residual against the same manual 2D annotations used by the reconstruction. In-sample consistency only; no conversion to independent 3D error or confidence.",
+    "bone_length_variation": "Length/sequence-median minus 1 and std/mean over finite endpoints, including zero-length cases. Diagnostic only, not a bone constraint, filter or uncertainty model.",
+    "quality_filtering": false,
+    "skillcorner_gate": "Not applicable: no meters-per-unit or predicted/validated 3D error values. Do not relax or transfer its centimeter threshold.",
+    "missing": "NaNs/degenerate vectors invalidate only dependent geometry. No gaps filled and high residuals never erase available source geometry."
+  },
+  "qualification": {
+    "professional_match_context_verified": true,
+    "goal_sequence_label_verified": true,
+    "instep": null,
+    "kick_strength": null,
+    "contact_time_s": null,
+    "independent_3d_accuracy": null,
+    "p2_complete": false
+  }
+}

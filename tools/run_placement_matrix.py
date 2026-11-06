@@ -17,12 +17,15 @@ def main():
     parser.add_argument('--prefix', required=True)
     parser.add_argument('--cases', nargs='+', required=True)
     parser.add_argument('--video-cases', nargs='*', default=[])
+    parser.add_argument('--dynamics-probe',type=Path,help='Record normal/friction and segment telemetry with the probed observer')
+    parser.add_argument('--stop-on-physical-failure',action='store_true',help='Stop after preserving a failed recovery/physical episode or observed joint overspeed')
     args = parser.parse_args()
     if Path(args.prefix).name != args.prefix:
         parser.error('Prefix must be a filename component')
     cases = load_cases(ROOT)
     if len(set(args.cases)) != len(args.cases) or any(name not in cases for name in args.cases):
         parser.error('Unique declared case ids required')
+    if args.dynamics_probe and args.video_cases:parser.error('Instrumented matrix and rendered cases use separate explicit runs')
     if any(name not in args.cases for name in args.video_cases):
         parser.error('Video cases must be included in the run')
     digest = hashlib.sha256(args.config.read_bytes()).hexdigest()
@@ -38,15 +41,27 @@ def main():
         cmd = [sys.executable, str(ROOT/'tools/run_placement_strike.py'), '--config', str(args.config),
                '--output', str(report), '--ball-offset', *map(str, case['ball_offset_xy_m']),
                '--velocity-delta', str(case['root_velocity_y_delta_mps'])]
+        if args.dynamics_probe:
+            cmd=[sys.executable,str(ROOT/'tools/run_instrumented_strike.py'),'--controller','placement','--config',str(args.config.resolve()),'--case',name,'--probe',str(args.dynamics_probe.resolve()),'--output',str(report)]
         if name in args.video_cases:
             cmd += ['--video-dir', str(ROOT/'experiments/state_conditioned_v028'/f'{args.prefix}_{name}_frames')]
         print('CASE_START', name, flush=True)
         with log.open('w') as stream:
             subprocess.run(cmd, cwd=ROOT, stdout=stream, stderr=subprocess.STDOUT, check=True)
         # App shutdown may mask a Python exception. Require the completed report.
-        result = summarize_strike(json.loads(report.read_text()))
+        recorded=json.loads(report.read_text())
+        result = summarize_strike(recorded)
         print('CASE_RESULT', name, json.dumps({key: result[key] for key in
               ['outcome', 'contact', 'final_standing_seconds', 'completed_physics_seconds']}), flush=True)
+        if args.stop_on_physical_failure:
+            from audit_p0_dynamic_strike import limit_observations
+            limits=limit_observations(recorded['traces'][0],recorded)
+            good=recorded['sequence_records'][0]['recovery']['passed'] and not any(recorded['termination_reasons'])
+            good &= recorded['records'][0]['surface_match'] and not recorded['sequence_records'][0]['illegal_body_ball_contact']
+            good &= limits['maximum_actual_speed_ratio']<=1.0001
+            if not good:
+                print('MATRIX_STOP_PHYSICAL_FAILURE',name,json.dumps(limits),flush=True)
+                raise SystemExit(2)
 
 
 if __name__ == '__main__':

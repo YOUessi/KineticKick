@@ -84,3 +84,81 @@ A known-capture end-to-end acceptance check passed: frame/marker counts, indepen
 [BeyondMimic's official training repository](https://github.com/HybridRobotics/whole_body_tracking) is archived from 2026-10-16. Its README marks it retired and points to [mjlab's tracking task](https://github.com/mujocolab/mjlab/tree/main/src/mjlab/tasks/tracking). The official [motion_tracking_controller](https://github.com/HybridRobotics/motion_tracking_controller) supplies C++ ONNX CPU inference with ROS 2 deployment. Training expects retargeted robot generalized coordinates. Code availability and its license are separate from source motion rights, a skilled soccer dataset, or evidence that the guided-diffusion portion/checkpoints are released.
 
 The [official SuperMimic page](https://supermimic.github.io/) and [paper](https://arxiv.org/abs/2610.28480) provide method/results and a browser demo. This audit did not verify an author-linked training repository or downloadable training checkpoint with license. Its BONES-SEED tracking benchmark is not evidence of professional soccer capture. Community reproductions must retain their own identity; neither a demo nor a reported compute result establishes a ready replacement for the current controller.
+
+## v0.1.30 follow-up: continuous professional reconstructed3D
+
+The earlier SkillCorner discovery-only row below is superseded by the [acquired sample and working independent adapter](skillcorner-reconstruction.md). Under the explicitly expanded reconstructed3D scope, the official MIT dataset supplies a **309-frame, 25 Hz continuous A-League sequence** for Jacob Brazete and a synchronized official non-header shot event (`8_871`, 77:45.7). Official club match reporting corroborates his professional match participation. This is model-estimated body pose with predicted per-joint errors, not original optical mocap.
+
+Eight source files totaling **7,145,321 bytes** are preserved with URLs and hashes under ignored `data/research_human_kicks/skillcorner_probe_20261107/`. The separate v30 adapter preserves 29 estimated joints, uncertainty, detection/missing/resampling semantics, fractional event timing and 14 coarse geometric relationships. The earlier CMU data and interpretation are unchanged.
+
+The skill/continuous-action provenance gap is partly closed; **P2 remains incomplete**. Instep, maximum effort and actual contact remain unknown. Shot-window predicted errors have median 16.62 cm and maximum 43.01 cm. Under the explicit exploratory sensitivity screen, only 13 trunk–shoulder-line frames pass within shot ±1 s; no knee/foot or cross-arm/leg relation passes. Complete joint coverage is not evidence of adequate fine biomechanics. Source qualification is therefore recorded in separate dimensions, with no blanket claim that this is a qualified whole-body shooting prior.
+
+### One-match bounded scan result
+
+A subsequent authorized acquisition added only the 623,408,231-byte official archive for match 1925299. Its full 153,252-frame stream yielded all 24 non-header shot windows (±1.5 s, 1,817 shooter frame records); six header shots and one fully extrapolated/unmatched non-header event have explicit exclusion records. Under the unchanged 20 cm joint-error / 0.75 relation-budget screen, no window supports simultaneous pelvis–leg–trunk–upper-arm coordination. `8_804` Quinn MacNicol is a better partial trunk–leg example (72/76 passing frames), but no leg chain or cross-arm/leg relation passes anywhere in the scan. The [complete report and reproducible scanner](skillcorner-reconstruction.md#bounded-full-match-follow-up-no-qualifying-coupled-motion-candidate) document this negative result. Archive plus outputs remain below 750 MB; no second match was downloaded, and P2 remains incomplete.
+
+## Three-source follow-up: KTH selected for a bounded prototype
+
+This round inspected exactly three previously unaudited sources. The actionable result is **KTH Multiview Football II, Player 1 Sequence 2**: a small, acquired continuous reconstruction from a documented professional match. Independent 3D accuracy and instep/contact labels remain unknown. It is a source-conditioned P3 input prototype, not completion of P2.
+
+| New source | Primary evidence and access | Decision |
+|---|---|---|
+| [KTH Multiview Football II](https://www.csc.kth.se/cvap/cvg/?page=footballdataset2) | Official page identifies professional Allsvenskan players and labels P1S2 as a goal sequence. Academic research only; commercial use excluded, BMVC 2013 attribution requested. | Numerical 2D/3D/camera files acquired by HTTP Range; qualified professional context, continuous 3D, unknown independent precision and instep. |
+| [AthletePose3D](https://github.com/calvinyeungck/AthletePose3D) / [corrected paper v3](https://arxiv.org/html/2503.07499v3) | Eight university/national representatives perform running, five throwing motions, and six figure-skating jumps. Hardware-synchronized multiview capture at 60/120 Hz; 55/86 landmarks. | **Activity mismatch:** no football kick in the listed 12 motions. No raw files acquired. This is not a failed accuracy test. The claimed sub-millimeter camera calibration is not a bound on joint accuracy. |
+| [WorldPose](https://eth-ait.github.io/WorldPoseDataset/) / [official access terms](https://worldpose.ait.ethz.ch/) | Continuous 2022 FIFA World Cup reconstructions, SMPL poses and cameras. An institutional-email application and review are required; FIFA footage needs an additional agreement. | **Access not obtained:** no application submitted and no pose/video downloaded. The research license is nontransferable, prohibits redistribution and re-identification. Accuracy remains unassessed locally, not rejected. |
+
+AthletePose3D's [data license](https://github.com/calvinyeungck/AthletePose3D/blob/main/license/README.md) permits noncommercial scientific research and restricts reproduction, modification and third-party provision without written permission. Its paper's CC BY-NC-SA license does not replace those data terms. The author-linked download exists behind that terms page; no archive was needed to establish the activity mismatch. The repository also flags corrected running-camera preprocessing; any future use should pin the corrected release.
+
+### KTH acquisition and exact source schema
+
+Original bytes and provenance are local under `data/research_human_kicks/kth_player1_sequence2_probe_v1/`. The [official archive](https://www.csc.kth.se/cvap/cvg/MultiViewFootballData/player1sequence2.zip) has HEAD Content-Length **214,590,675 bytes**. HTTP Range was honored with status 206. A 65,536-byte suffix contains the central directory; a separate range `bytes=214466611-214531658` contains all three numerical members. No image/video or complete archive was downloaded. The complete archive hash is deliberately null.
+
+Together with the [7,952-byte official loader](https://www.csc.kth.se/cvap/cvg/MultiViewFootballData/code3d.zip), landing-page license snapshot and [3,065,992-byte methods paper](https://www.csc.kth.se/cvap/cvg/papers/Burenius4DMOD2011.pdf), total new downloaded bodies are **3,210,408 bytes**, below the authorized 15,000,000-byte ceiling. `acquisition_manifest.json` preserves response ranges, source URLs, byte counts and SHA-256 values; decompressed numeric members were checked against their ZIP CRCs.
+
+| Original member | Bytes | SHA-256 | Python array order |
+|---|---:|---|---|
+| `positions3d.txt` | 132,300 | `f98feba689ce5bda4ad592e16e963e7a0bdfab36649db6d0db0a82a0f2bff83e` | `loadtxt(...).reshape(175,14,3)` = frame, joint, xyz |
+| `positions2d.txt` | 88,200 | `38dbb657eb95746a1e94e14e5d53bd1c9aaa0fc04445d211ec89f8b187f3e9ce` | `reshape(175,3,14,2)` = frame, camera, joint, xy |
+| `cameras.txt` | 75,600 | `9f815dfa57f78d85ba9c7d65e8c1003a5b96c369de585adcfdc853c9ad06fada` | `reshape(175,3,4,2).transpose(0,1,3,2)` = frame, camera, row, column |
+
+Joint order is `R_ANKLE, R_KNEE, R_HIP, L_HIP, L_KNEE, L_ANKLE, R_WRIST, R_ELBOW, R_SHOULDER, L_SHOULDER, L_ELBOW, L_WRIST, BOTTOM_HEAD, TOP_HEAD`. This covers bilateral hip/knee/ankle and shoulder/elbow/wrist, but supplies no heel, toe, ball, thorax-surface landmarks, force or body shape. Each of the three camera folders contains image member indices 1–175 without gaps. The methods paper §4 documents three 25 Hz cameras and a seven-second goal sequence; sample times are therefore 0–6.96 s, with no match-clock or impact anchor.
+
+The official `Reconstruct3d.m` reconstructs points and orthographic cameras from manually labeled 2D observations. Its Euclidean rectification is followed by rotation into the last-camera convention and a **sequence-wide unit-cube normalization**. The release supplies no meters-per-unit. The algorithm removes each frame's joint mean; observed maximum absolute 3D frame mean is `2.22e-9`. It supplies neither measured ground height nor absolute player trajectory. Its camera matrices are fitted estimates, not independently measured perspective intrinsics/extrinsics. The 2×3 camera component is exactly constant across these 175 frames; image translations vary.
+
+### KTH CPU adapter and diagnostic result
+
+The [adapter](../../tools/build_kth_coordination.py), [contract](../../configs/kth_coordination_v1.json) and [five focused tests](../../tests/test_kth_coordination.py) preserve the original numerical arrays and generate scale-free geometry:
+
+```bash
+/home/you/conda_env/env_isaaclab/bin/python tools/build_kth_coordination.py \
+  --source-dir data/research_human_kicks/kth_player1_sequence2_probe_v1 \
+  --output-dir data/research_human_kicks/kth_coordination_v1 --plot
+```
+
+The resulting NPZ loads with `allow_pickle=False`; the adjacent JSON documents source hashes, definitions, qualification dimensions, array shapes and limitations. `manifest.json` records all output hashes. Main arrays are:
+
+| Output family | Shape | Meaning |
+|---|---|---|
+| `joints_reconstructed_au` / `joint_geometry_valid` | 175×14×3 / 175×14 | Unchanged arbitrary-unit reconstruction and finite-value mask. |
+| `manual_positions2d_px` / `orthographic_cameras` | 175×3×14×2 / 175×3×2×4 | Unchanged manual image labels and fitted orthographic matrices. |
+| `joints_pelvis_relative_au` / `joints_normalized` | 175×14×3 | Subtract estimated bilateral hip midpoint, retain source axes; normalize by median bilateral hip–knee–ankle chain length. No anatomical pelvis orientation or metric calibration. |
+| `landmarks_source_axes_au` / `landmark_geometry_valid` | 175×21×3 / 175×21 | Direct joints, declared midpoint proxies and explicit unavailable landmarks. Thorax center, heel, toe and MT5 masks remain false. |
+| `segment_directions_source_axes` / `segment_geometry_valid` | 175×13×3 / 175×13 | Eleven computable segment directions; both foot directions unavailable. Trunk uses a shoulder-midpoint proxy, distinct from CMU's thorax-marker construction. |
+| `relation_cosines` / `relation_geometry_valid` | 175×14 | Same pair names/order as the CMU contract. Eleven relations have finite geometry; three foot-dependent relations remain NaN/false. Values are directed-vector relationships, not anatomical joint-angle truth. |
+| `reprojection_residual_norm_px` / `joint_reprojection_rms_px` | 175×3×14 / 175×14 | Per-camera/joint pixel residual and same-frame camera RMS. These are fitting-observation diagnostics, not independent 3D error. |
+| `segment_length_relative_deviation` / `segment_length_cv` | 175×13 / 13 | Length divided by its sequence median minus one; sequence std/mean. No bone-length correction or rejection. |
+
+All 2,450 joint frames contain finite source 3D; 1,925 of 2,450 relation slots have computable geometry. `joint_visibility_known` and `relation_precision_known` are false throughout, because the source has no corresponding labels. **Unknown precision does not mean failure.** The unavailable relations are `left_foot__right_foot`, `left_shank__left_foot`, and `right_shank__right_foot`. No interpolation, smoothing, new reconstruction, quality filtering, velocity/acceleration fitting or event estimation is performed.
+
+The measured reprojection residual is RMS **10.48 px**, median **5.70 px**, p95 **17.79 px**, maximum **101.02 px**. Left-shank length spans 0.45–1.40 times its sequence median (CV 14.0%); left forearm CV is 17.6%, pelvis-line CV 14.5%, shoulder-line CV 7.3%. These observed instabilities warrant caution for detailed coordination, but they neither quantify independent 3D error nor justify applying SkillCorner's centimeter gate. All original values remain available.
+
+The local `data/research_human_kicks/kth_coordination_v1/projection_diagnostic.png` shows manual 2D labels and reprojections for frames 1, 83 (largest frame RMS), and 175 in all three cameras. It contains plotted numerical coordinates, not downloaded match imagery. The source label verifies a goal sequence, while exact shot frame, named player, instep, effort, ball center and true contact remain null. **P2 remains incomplete.**
+
+Validation: five targeted tests passed for source hashes/shape order, known synthetic projection, scale/rotation/translation invariance, separate 2D-observation/3D-geometry masks, degenerate and missing segments, preservation of high residuals, source qualification, exact 175-frame roundtrip and JSON/NPZ types. A real CPU run generated the NPZ/JSON/PNG, and the figure was visually inspected. This source investigation ended after the three candidates; no second SkillCorner match, GPU job, dependency installation, author contact or paid access was used.
+
+
+### KTH后续有界资格检查
+
+固定相机逐点重三角化只复现原rank-3列空间的最小二乘结果，整体RMS仍10.4751px，3D最大差4.08e-8任意单位；不支持“直接重新三角化即可恢复快速踢腿”的假设。两视图预测另一视图的诊断仍使用全数据拟合的相机，不能称为独立验证。结果在ignored`kth_retriangulation_probe_v1/`。
+
+在总下载10,545,932B内检查原75–91帧多视图及1–175帧的12个均匀关键帧。61–91帧为空中争抢；91–121帧是被遮挡的低置信可能动作区间；后段有庆祝样奔跑。依然不能确认脚部射门、正脚背或实际触球。此源的本轮资格搜集已关闭，不因goal标签或庆祝推断instep。记录/接触表在ignored`kth_action_qualification_v1/`，已有adapter原始数值和未知标记未改。
