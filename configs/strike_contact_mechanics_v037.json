@@ -1,0 +1,68 @@
+{
+  "version": "0.1.37",
+  "kind": "READ_ONLY paired real foot-ball contact mechanism study",
+  "base": "version/v0.1.36",
+  "base_commit": "d43e185fdbd22f7fed26173f8916e0157b8329d7",
+  "original_task_gate": "Unchanged full sphere goal, instep contact, actual actuator speeds and recovery",
+  "window_bin_end_s": [
+    1.45,
+    1.72
+  ],
+  "physics_dt_s": 0.005,
+  "max_new_complete_physical_replays": 3,
+  "replay_order": [
+    {
+      "id": "heldout_v028_left_near_slow",
+      "controller": "v36",
+      "source_report": "reports/v036_prestrike_left_near_slow.json",
+      "candidate_report": "reports/v037_contact_v36_left_near_slow.json",
+      "source_sha256": "64d6ec5a2f649a4e09a37e09f0efbc2d9f4d4e644f52af6254b05127deb05a54"
+    },
+    {
+      "id": "heldout_v028_near_slow_17",
+      "controller": "v36",
+      "source_report": "reports/v036_prestrike_near_slow_17.json",
+      "candidate_report": "reports/v037_contact_v36_near_slow_17.json",
+      "source_sha256": "6eaa12cda38e23297f09a73ddb6d972a18f79df98133432288de2ba8d537c979"
+    },
+    {
+      "id": "heldout_v028_near_slow_17",
+      "controller": "v32",
+      "source_report": "reports/v032_learned_heldout_v028_near_slow_17.json",
+      "candidate_report": "reports/v037_contact_v32_near_slow_17.json",
+      "source_sha256": "4fb724b5f8cbbe224a456535981e21c3e24a1de08b666e9d0b9d898145189b48"
+    }
+  ],
+  "previous_v32_left_case_diagnostic": {
+    "source": "reports/v033_ball_impulse_left_near_slow.json",
+    "signed_audit": "reports/v033_ball_impulse_signed_audit.json",
+    "signed_audit_sha256": "e774dc2385a3701aa71417aa585f0768a7c2f5b2e7c4c5bb16a59c80311284df"
+  },
+  "fixed_ball_contact_probe_sha256": "d6e585664fa6f1e7939d606db79837c150fe44eb57f7a98f90627ef373cb5a02",
+  "force_sign": "Use original certified friction sign=+1; raw signed normal coefficients may be decoded only explicitly offline",
+  "source_sha256": {
+    "tools/run_instrumented_strike.py": "fd08216fcaa12eb87f706c24365d3ccd7f42a36be14dbbbce24b2b70a8158fa1",
+    "tools/ball_contact_observer.py": "08b5ba1cbbd7158e58f6d958ad8f4884eb180bdf5c8758193f2a147c0f7f3f2b",
+    "tools/ground_contact_observer.py": "33fca0ebe615fb7a616574591bc2831ac59220a79d5f7c6879915c42a7b35cd4",
+    "tools/strike_dynamics_telemetry.py": "642150d97cabf728053f6d7eb7c4b943bf58f71a2ae876949b37dac186fbbb67",
+    "tools/audit_ball_impulse.py": "eb9874a3d4b3c70cb764ba6f8eb4a1d453a23b6205a9687515325a15991ae78c",
+    "tools/strike_baseline_metrics.py": "22a86d021cf358f9f6c3a18b13166fd8dea81b31b535b28b5870ee51146fb1e5",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "tools/strike_cases.py": "441c01468f4e8522e004759eb7cf5ea3ef04dc8d4fd327d84ad16a701dffe117",
+    "tools/placement_strike.py": "e461ba4b025b38295295af883bc04beb5ea1289dcd24ac231cc7fafc85f27638",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/prestrike_feedback.py": "762cf3edc40b39295ced436832bded9e6e08a3b95a7490ed78e999e1811c758d",
+    "tools/run_placement_strike.py": "acabba788c6c5a9801ed9f78d0cee0e9e24a83a481a86fd44779ca02181f816d",
+    "configs/state_conditioned_strike_v12.json": "c3ed51b09a18baa90bbea7a7a0b61a324e6f0737df06cd039e8ab4ece8558465",
+    "configs/state_conditioned_strike_v9.json": "896cda44d5e718aed83ea35c027b252293672e65a438b14671444cfc4b36a8b5",
+    "reports/v029_force_probe.json": "d6e585664fa6f1e7939d606db79837c150fe44eb57f7a98f90627ef373cb5a02",
+    "experiments/prestrike_v035/ppo_s3501/last_model.pt": "bf51f9cc9aead37fe1a474a1eed77fd7cf2cc5d6b833087eb616541f4dead9f0",
+    "experiments/post_shot_v032/ppo_s3201/last_model.pt": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326"
+  },
+  "external_limits_unchanged": true,
+  "new_training": false,
+  "fresh_cases_used": false,
+  "abort_if": "any physical path/status or original control record differs from matching preserved read-only baseline; audit provenance failure; missing complete 55 bins; unexplained impulse closure>0.02N*s",
+  "interpretation": "If signed impulse closure and matched parity both pass, report contribution to direction without claiming counterfactual causality. Existing failed goal remains failed.",
+  "next_control": "Only after evidence and distinct prespecified control protocol."
+}
