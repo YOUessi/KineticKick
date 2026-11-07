@@ -1,0 +1,75 @@
+{
+  "version": "0.1.34",
+  "candidate": "configs/state_conditioned_strike_v10.json",
+  "zero": "configs/state_conditioned_strike_v10_zero.json",
+  "cases": [
+    {
+      "id": "heldout_v028_left_near_slow",
+      "baseline": {
+        "path": "/home/you/projects/kinetickick/reports/v032_learned_heldout_v028_left_near_slow.json",
+        "sha256": "b10650329d4a032a0e143c2a553670511dc698dd693115aee397be0c6a3dd05c"
+      },
+      "speed_xy_mps": 4.296256512636222,
+      "final_standing_s": 7.67,
+      "goal": false
+    },
+    {
+      "id": "heldout_v028_near_slow_17",
+      "baseline": {
+        "path": "/home/you/projects/kinetickick/reports/v032_learned_heldout_v028_near_slow_17.json",
+        "sha256": "4fb724b5f8cbbe224a456535981e21c3e24a1de08b666e9d0b9d898145189b48"
+      },
+      "speed_xy_mps": 4.737232056067209,
+      "final_standing_s": 9.915,
+      "goal": false
+    },
+    {
+      "id": "center",
+      "baseline": {
+        "path": "/home/you/projects/kinetickick/reports/v032_learned_center.json",
+        "sha256": "17d294d6563b5695edb2444e768650e26b145a67d08626693e3012fa2cd981b0"
+      },
+      "speed_xy_mps": 4.631403423758371,
+      "final_standing_s": 8.565,
+      "goal": true
+    },
+    {
+      "id": "combined_right_faster",
+      "baseline": {
+        "path": "/home/you/projects/kinetickick/reports/v032_learned_combined_right_faster.json",
+        "sha256": "df547636f5ba86ada7762f248efd940fd8dc49f8346f6062ccac7957b7d3dfcb"
+      },
+      "speed_xy_mps": 5.525366230485013,
+      "final_standing_s": 8.705,
+      "goal": true
+    }
+  ],
+  "training_seconds": 0,
+  "maximum_candidate_episodes": 4,
+  "zero_episodes": 1,
+  "minimum_speed_ratio": 0.95,
+  "stop_on": [
+    "physical termination",
+    "actual joint velocity above original limit",
+    "invalid instep or body-ball contact",
+    "incomplete 14 s",
+    "original recovery failure",
+    "speed retention below .95"
+  ],
+  "goal_gate": "Both first two old misses must become goals before running center/strong. If either remains a miss, no fresh matrix and no parameter sweep.",
+  "fresh_cases_used": false,
+  "scope": "engineering feedback test; no P2/P3 learned-coordination claim",
+  "source_sha256": {
+    "tools/early_path_controller.py": "aec65cbf550c5028ab6d6890c9d3fcaee3cf3ae9ee37459b9bbad508069f7b5a",
+    "tools/early_path_feedback.py": "ce9670823799ebe11ea502a8e620297eb842a6394eba300454ca96560c4fe6a4",
+    "tools/run_placement_strike.py": "a8b39f5984cf580cacbd4c628f58061b80ab047e1fc8b0d021d8ac33123e4c86",
+    "tools/run_instrumented_strike.py": "fd08216fcaa12eb87f706c24365d3ccd7f42a36be14dbbbce24b2b70a8158fa1",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/placement_strike.py": "e461ba4b025b38295295af883bc04beb5ea1289dcd24ac231cc7fafc85f27638",
+    "tools/closed_loop_expert.py": "0cf2c0243be3c73f912f5dd1985d12f5db08d1d3f4fbb2c40f58ee2a1e0b617a",
+    "tools/strike_dynamics_telemetry.py": "642150d97cabf728053f6d7eb7c4b943bf58f71a2ae876949b37dac186fbbb67",
+    "configs/state_conditioned_strike_v10.json": "2369cef9ae1a7c85f7098fd2f3142fa619352429d46fcfe20698cca314524844",
+    "configs/state_conditioned_strike_v10_zero.json": "f36b43de852e5d3c115e309490661c7a5e69b9de815ac83eb0653b4d72a1605e",
+    "docs/research/2026-11-07-early-lateral-path-feedback.md": "3461ee711845c9011556b35ec4fa728a630ead346a6245256d853ae8fc97aa9d"
+  }
+}

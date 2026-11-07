@@ -280,3 +280,12 @@ CMU subject10的01/02/03/05/06原始C3D、ASF/AMC、许可出处和协调输出�
 一个旧miss的14秒回合exit0，全部2800原物理样本/旧记录逐值保持。collector过严的非负标量检查导致4bin初判invalid，保留raw及原拒绝；显式offline signed重读通过相同阈值与原probe符号，最大球动量bin残差1.39e-6Ns，量化切向冲量造成的−3.574°向量和偏转。原任务仍miss，不宣称控制修复。20项定向CPU检查通过；没有训练或重复GPU。MUVY相机两次条件诊断均失败，数据未升级为合格3D。
 
 源码/数据快照、模型、原始报告和媒体保留Tang ignored目录；main和旧分支不变。见`reports/2026-11-07-ball-impulse-direction.md`。
+
+
+## v0.1.34 早期横向路径反馈（固定候选被拒）
+
+从已发布v33的`d230be3a9c6e1f98fd7758d9d1b67464387f7c5a`在修改前创建独立`version/v0.1.34`。新增实际足参考点横向位置/速度反馈、实测支撑与5ms首触锁存、有限DLS关节增量和连续退出；继承冻结v32恢复权重。原19文件、碰撞体/执行器限制/验收门槛、上游与默认v5保持。
+
+零修正2800物理样本和700控制样本与v32逐值一致。随后只运行一个固定候选的两个旧miss：均仍miss，第二例左踝实际37.056236/37rad/s触发停止；center/strong及fresh未执行。三回合均exit0，15项针对性CPU测试通过，无训练/调参/新视频。候选未推广，P0仍未通过。
+
+并行补充公开全身抽射数据的三项来源核查及PAiD/BeyondMimic/SuperMimic接口、许可与预算边界；未取得合格P2原始全身正脚背数据，未执行论文级比较。原始数据、源码快照及模型留Tang ignored目录，main和旧分支保留。详见`reports/2026-11-07-early-path-feedback-negative-result.md`。
