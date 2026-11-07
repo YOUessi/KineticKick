@@ -1,0 +1,105 @@
+{
+  "version": "0.1.35",
+  "zero_config": "configs/state_conditioned_strike_v11.json",
+  "zero_case": "heldout_v028_left_near_slow",
+  "zero_reference": "reports/v032_learned_heldout_v028_left_near_slow.json",
+  "cases": [
+    {
+      "id": "heldout_v028_left_near_slow",
+      "baseline": {
+        "path": "/home/you/projects/kinetickick/reports/v032_learned_heldout_v028_left_near_slow.json",
+        "sha256": "b10650329d4a032a0e143c2a553670511dc698dd693115aee397be0c6a3dd05c"
+      },
+      "speed_xy_mps": 4.296256512636222,
+      "final_standing_s": 7.67,
+      "goal": false
+    },
+    {
+      "id": "heldout_v028_near_slow_17",
+      "baseline": {
+        "path": "/home/you/projects/kinetickick/reports/v032_learned_heldout_v028_near_slow_17.json",
+        "sha256": "4fb724b5f8cbbe224a456535981e21c3e24a1de08b666e9d0b9d898145189b48"
+      },
+      "speed_xy_mps": 4.737232056067209,
+      "final_standing_s": 9.915,
+      "goal": false
+    },
+    {
+      "id": "center",
+      "baseline": {
+        "path": "/home/you/projects/kinetickick/reports/v032_learned_center.json",
+        "sha256": "17d294d6563b5695edb2444e768650e26b145a67d08626693e3012fa2cd981b0"
+      },
+      "speed_xy_mps": 4.631403423758371,
+      "final_standing_s": 8.565,
+      "goal": true
+    },
+    {
+      "id": "combined_right_faster",
+      "baseline": {
+        "path": "/home/you/projects/kinetickick/reports/v032_learned_combined_right_faster.json",
+        "sha256": "df547636f5ba86ada7762f248efd940fd8dc49f8346f6062ccac7957b7d3dfcb"
+      },
+      "speed_xy_mps": 5.525366230485013,
+      "final_standing_s": 8.705,
+      "goal": true
+    }
+  ],
+  "training": {
+    "case_ids": [
+      "center",
+      "ball_x_minus_5cm",
+      "ball_x_plus_5cm",
+      "ball_near_10cm",
+      "ball_far_10cm",
+      "initial_slower_02",
+      "initial_faster_02",
+      "combined_left_slower",
+      "combined_right_faster",
+      "heldout_left_near_slower",
+      "heldout_right_far_slower",
+      "heldout_left_far_faster",
+      "heldout_right_near_faster",
+      "heldout_confirm_left_far_slower",
+      "heldout_confirm_right_near_slower",
+      "heldout_v028_near_slow_13",
+      "heldout_v028_near_slow_17",
+      "heldout_v028_left_near_slow"
+    ],
+    "seed": 3501,
+    "num_envs": 256,
+    "max_seconds": 600.0,
+    "max_updates": 400,
+    "episode_seconds": 7.0,
+    "rollout_steps": 64,
+    "model_selection": "final_finite_checkpoint",
+    "nominal_fraction": 0.25,
+    "context_sampling": "Original old18 only; no jitter, no fresh conditions"
+  },
+  "minimum_speed_ratio": 0.95,
+  "maximum_old_development_evaluations": 4,
+  "stop_on": [
+    "physical termination",
+    "actual joint velocity above original limit",
+    "invalid instep or body-ball contact",
+    "incomplete 14 s",
+    "original recovery failure",
+    "speed retention below .95"
+  ],
+  "goal_gate": "Both first two old misses must become goals before running center/strong. If either remains a miss, no fresh matrix and no parameter sweep.",
+  "fresh_cases_used": false,
+  "source_sha256": {
+    "tools/prestrike_feedback.py": "762cf3edc40b39295ced436832bded9e6e08a3b95a7490ed78e999e1811c758d",
+    "tools/prestrike_objective.py": "805c36149773bc5ee317f469df8c791422233e685b69f04e174acbc654bf7e37",
+    "tools/train_prestrike_feedback.py": "33aaa53aef3e218d2c7b24fe7525afc2bcd3c4946fa2092c5a04d22a5088343d",
+    "tools/run_placement_strike.py": "acabba788c6c5a9801ed9f78d0cee0e9e24a83a481a86fd44779ca02181f816d",
+    "tools/run_instrumented_strike.py": "fd08216fcaa12eb87f706c24365d3ccd7f42a36be14dbbbce24b2b70a8158fa1",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/post_shot_objective.py": "5b0b2abc8f21df70d2130f84edb1b2a4d6b1be3df7566415bd281e0c5c6052f1",
+    "tools/placement_strike.py": "e461ba4b025b38295295af883bc04beb5ea1289dcd24ac231cc7fafc85f27638",
+    "tools/closed_loop_expert.py": "0cf2c0243be3c73f912f5dd1985d12f5db08d1d3f4fbb2c40f58ee2a1e0b617a",
+    "tools/strike_dynamics_telemetry.py": "642150d97cabf728053f6d7eb7c4b943bf58f71a2ae876949b37dac186fbbb67",
+    "configs/state_conditioned_strike_v11.json": "a728b7768bf459e488aeb7a5aa0e19ece589ecd1467a7c78af36d143bb4925c6",
+    "docs/research/2026-11-07-prestrike-whole-body-learning.md": "c5d66bfd701869a2ab73b8a075ceb36da44d62effb93b4bd914aceb438d8371f"
+  }
+}
