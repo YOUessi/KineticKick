@@ -325,3 +325,17 @@ CMU subject10的01/02/03/05/06原始C3D、ASF/AMC、许可出处和协调输出�
 唯一注册候选在同一旧偏门场景正脚背首击后出球4.729m/s（原4.737m/s），但未进球，2.645s左膝实际角速度21.439rad/s超过原20rad/s限速，4.52s发生非脚部物理碰撞而终止，未恢复站立。峰值关节修正0.02078rad/20ms最大变化0.004rad虽受参考界约束，却不能保证真实关节速度和全身后续稳定。完整失败审核与停止遵循预注册协议，未运行第二个旧偏门、中心或未见新条件；默认v5与全部旧权重均未升级。见 reports/2026-11-08-foot-sweep-direction-negative-result.md；冻结配置在 configs/foot_sweep_direction_study_v038.json。21项定向CPU测试通过，未跑全项目。
 
 本版本主要证据是“仅调整末端扫腿方向仍可能破坏支撑与收势”，论文创新应转向真正的人体跨部位动态协调生成和物理闭环执行。Tang原始数值与日志都保留在忽略目录；GitHub只追踪代码、报告及实验协议。
+
+
+## v0.1.39：职业射门视频估计3D协调时序学习 + 原G1正运动学特征接口
+
+从 v0.1.38/672d1d9 clean分支派生，P0仍维持冻结原控制，不再对局部球位加力或放宽任何真实G1关节/接触限制。本版真正执行了P2/P3前置学习原型：
+
+- 从校验的AutoSoccerPose/3DSP上游c34f46d2取得原始职业足球比赛射门压缩包23,496,450 bytes、SHA256=3696523b69dd3033435f76ab64410aa8e34172df32bb9673eca93b6609c87ee7，完整ZIP CRC。原始数据在Tang data/（Git忽略、不得重传原比赛画面）。
+- 提取200段、4,000帧、17个3D视频估计关节点与11组跨躯干/肩/上下肢方向余弦，按比赛做无重叠108训练/47验证/45测试，覆盖20场有可用3D关键点的比赛。此原始3D是视频预测而不是职业高速光学捕捉；没有精确接触、正脚背分类、力量或球体速度真值，用户原研究的高爆发力数据资格未完成。
+- 固定预注册一次条件VAE时序监督学习：前8帧→后12帧，119,092参数，1200步AdamW，选最佳验证第100步（不看测试挑模型）。heldout4场比赛测试原余弦MSE：静止0.235215、训练均值0.148531、Ridge固定alpha20为0.141046、本条件VAE为0.170381。**条件VAE虽然优于静止却劣于Ridge，4/4场都劣于Ridge**；严格报告负结果、不调测试。
+- G1端使用原29DoF URDF正运动学和两份过去保存的真正PhysX踢球轨迹计算同名11组机器人link-origin方向余弦，共40个25Hz等效帧；以10个时刻的左/右踝link位姿对照已有Isaac测量，最大差7.62192e−7m。严格强调这只验证了机器人端FK及特征名称，不表示人体姿态已精确重定向成可执行29DoF动作，更不表示职业球员动作动力学已学习。
+- 运行数据读取/模型训练/结果后处理/独立FK bridge脚本，数据、随机种子、源SHA、模型权重SHA留档；12项新数据与桥接测试通过。第三方比赛图像/原ZIP、生成NPZ、训练权重和图均保存在Tang的Git忽略目录；GitHub只纳入读取处理、学习/对照、桥接、测试、预注册配置及真实负结果文档。
+- 报告 reports/2026-11-08-professional-shot-coordination-pilot.md；源码 tools/build_professional_shot_coordination_v039.py、tools/conditional_coordination_v039.py、tools/train_professional_coordination_v039.py、tools/analyze_professional_coordination_v039.py、tools/g1_coordination_bridge_v039.py；冻结配置 configs/professional_coordination_pilot_v039.json；真实图 media/v039_coordination_prediction_baselines.png 留Tang。
+
+本版结果不改变默认足球小脑控制器，也不构成完整P2/P3/P4验收。下一阶段必须补足专业正脚背高速触球时序、足面、骨盆/支撑脚与球轨迹/力的真值，定义跨形态物理可执行协调约束，并在原G1 PhysX中进行明确的多任务/未见状态自然性及功能性对照。

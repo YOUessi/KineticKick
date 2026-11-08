@@ -1,0 +1,59 @@
+{
+  "version": "0.1.39",
+  "science_scope": "Temporal conditional coordination relations from 3DSP video-estimated 3D pro-football shot poses; NOT verified explosive instep mechanics or G1 control",
+  "origin_repo": "https://github.com/calvinyeungck/3D-Shot-Posture-Dataset",
+  "origin_commit": "c34f46d2f5d42e996ee328a95ad49217206b5607",
+  "original_archive_sha256": "3696523b69dd3033435f76ab64410aa8e34172df32bb9673eca93b6609c87ee7",
+  "data_sha256": "304b0f56c8de089fd50a56fab8fc1e43a873a2430028b4e2d1488a69d90bd1a6",
+  "metadata_sha256": "4360d93361f1c59e9d634710d0d586c36c5b94da1e9b33f76237d2d9da5f5f8f",
+  "human_generator_claim_allowed": false,
+  "verified_impact_or_ball_velocity": false,
+  "history_frames": 8,
+  "future_frames": 12,
+  "relations": 11,
+  "fps_estimate": 25.0,
+  "training": {
+    "seed": 3901,
+    "steps": 1200,
+    "eval_period": 100,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size": 32,
+    "kl_weight": 0.008,
+    "posterior_weight": 0.3,
+    "max_grad_norm": 2.0,
+    "checkpoint_selection": "best_raw_cosine_validation_MSE_only"
+  },
+  "ridge_alpha": 20.0,
+  "baselines": [
+    "last_pose_persistence",
+    "mean_future_curve_train_only",
+    "train_only_ridge20"
+  ],
+  "train_val_test_match_disjoint": true,
+  "sample_counts": {
+    "train": 108,
+    "val": 47,
+    "test": 45
+  },
+  "game_counts": {
+    "train": 12,
+    "val": 4,
+    "test": 4
+  },
+  "no_train_test_leakage": true,
+  "no_original_test_postures_used": true,
+  "output_dir": "experiments/human_coordination_v039/cvae",
+  "source_sha256": {
+    "tools/build_professional_shot_coordination_v039.py": "c3678c5dc74d3040fab53f1cfdbc66b9e089d665a59517a8fc13be11db22587a",
+    "tools/conditional_coordination_v039.py": "38266579a0a1d40cfb6e5b0d5be8a2a7ae20fa35d15c1cd9e10087b4c9ff3de0",
+    "tools/train_professional_coordination_v039.py": "12be69c1faad119084ce32f9541521a42fe11ee51913cd25c47550babb7dbbf5"
+  },
+  "stop_policy": "One predeclared training run and one final test evaluation; report failure if test MSE not better than persistence, no model selection from held-out test",
+  "cross_domain_limitations": [
+    "No G1 joint-space mapping or PhysX verification",
+    "No verified 3D professional instep impact time or force",
+    "12 predicted future frames are broadcast-estimated pose relation cosines",
+    "Not a generative human-robot manipulation or autonomous soccer skill model"
+  ]
+}
