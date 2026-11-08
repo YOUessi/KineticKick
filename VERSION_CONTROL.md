@@ -339,3 +339,12 @@ CMU subject10的01/02/03/05/06原始C3D、ASF/AMC、许可出处和协调输出�
 - 报告 reports/2026-11-08-professional-shot-coordination-pilot.md；源码 tools/build_professional_shot_coordination_v039.py、tools/conditional_coordination_v039.py、tools/train_professional_coordination_v039.py、tools/analyze_professional_coordination_v039.py、tools/g1_coordination_bridge_v039.py；冻结配置 configs/professional_coordination_pilot_v039.json；真实图 media/v039_coordination_prediction_baselines.png 留Tang。
 
 本版结果不改变默认足球小脑控制器，也不构成完整P2/P3/P4验收。下一阶段必须补足专业正脚背高速触球时序、足面、骨盆/支撑脚与球轨迹/力的真值，定义跨形态物理可执行协调约束，并在原G1 PhysX中进行明确的多任务/未见状态自然性及功能性对照。
+
+
+## v0.1.40：人体相对协调到 G1 29DoF 可微投影，但被原误差门控屏蔽
+
+从 v0.1.39/2b0c395 创建新分支，直接执行了一轮较大的跨形态动作生成与完整物理对照。实现 Torch 可微全G1 URDF正运动学、和独立NumPy FK的全身骨段及双脚验证、训练集内3DSP姿态相对变化的20帧时序约束优化、支撑/摆腿脚/平滑约束、严格幅度受限700×29动作参考。冻结源CSV/NPZ/原v32物理轨迹/原模型SHA，参考最大0.00504rad，每步0.0012rad；未引入新神经网络或宣称真实职业正脚背动力学。
+
+独立真实PhysX零模块回放14秒/2800步/700控制，原v32全身动作/球/接触/原反馈等价，中心正脚背击球和4.631403m/s进球并恢复站立。打开候选模块的同场景尽管照样进球，原误差补偿context_gate==0导致新增协调参考始终被清零，700次新增动作绝对零。严格ACTIVE审计FAIL(no generated_ref_observable)，实测身体协调变化为0，不能把旧射门进球算作新方法成功。第二第三预注册场景及新未见测试都没有执行；原v32与默认v5和训练数据不覆盖。这个负结果真实暴露了“风格/协调生成信号”和“足球误差修正信号”不能复用一个仅对球位偏差生效的门控逻辑。
+
+可复现源码 tools/g1_contact_coordination_projection_v040.py、tools/build_g1_coordination_candidate_v040.py、tools/coordination_reference_v040.py、tools/audit_g1_coordination_v040.py、tools/audit_g1_coordination_effect_v040.py；预注册配置 configs/g1_coordination_generation_v040.json、configs/g1_coordination_physics_v040.json；完整真实负结果 reports/2026-11-09-whole-body-coordination-projection.md。原体积大的PhysX样本、生成的NPZ权重留Tang不上传。后续必须新协议单独激活协调生成，并以同一物理标准比较真实应用是否安全/有效。

@@ -1,0 +1,62 @@
+{
+  "version": "0.1.40",
+  "original_source_commit": "2b0c395",
+  "frozen_model": "existing G1 v32 only; no new neural policy or ball-conditioned human inverse dynamics",
+  "human_training_clip": "00001, first predeclared 3DSP train-split shot-on-target, broadcast-estimated joint proxies",
+  "human_contact_time_truth_available": false,
+  "source_clip_interaction_ground_truth": false,
+  "reference_generator_sha256": "080c5001b1753dd48ce090ffffadb88033d3ca27d0188bf5a9bca76cf248f088",
+  "generated_q_trajectory_sha256": "e74438befc96d523dc95032f93dee67b2911988ca920305e362fa951ec3a9881",
+  "original_postshot_checkpoint": "experiments/post_shot_v032/ppo_s3201/last_model.pt",
+  "original_postshot_sha256": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+  "zero": {
+    "case": "center",
+    "config": "configs/state_conditioned_strike_v14_zero.json",
+    "report": "reports/v040_human_proxy_zero_center.json"
+  },
+  "candidate_config": "configs/state_conditioned_strike_v14.json",
+  "cases_in_conditional_order": [
+    {
+      "id": "center",
+      "baseline": "reports/v032_learned_center.json",
+      "candidate": "reports/v040_human_proxy_center.json"
+    },
+    {
+      "id": "heldout_v028_near_slow_17",
+      "baseline": "reports/v032_learned_heldout_v028_near_slow_17.json",
+      "candidate": "reports/v040_human_proxy_near_slow_17.json"
+    },
+    {
+      "id": "heldout_v028_left_near_slow",
+      "baseline": "reports/v032_learned_heldout_v028_left_near_slow.json",
+      "candidate": "reports/v040_human_proxy_left_near_slow.json"
+    }
+  ],
+  "stop_rules": "First exact-zero physical parity, then active center. If any miss/wrong foot/velocity exceedance/early termination/bad recovery/nonzero artifact anomaly, stop. Only if center passes go to old B; only if old B passes go to old A; never touch new unseen cases.",
+  "true_14_second_full_ball_gate": true,
+  "minimum_outgoing_ball_xy_speed_ratio": 0.95,
+  "max_full_physical_rollouts": 4,
+  "no_hyperparameter_search": true,
+  "no_human_naturalness_claim": true,
+  "no_G1_policy_promotion": true,
+  "actual_joint_speed_limit_mandatory": true,
+  "original_collision_and_ball_material_unchanged": true,
+  "sources": {
+    "tools/g1_contact_coordination_projection_v040.py": "c6d1c95bd2922223797c67ceeeeb6253e959a7c956921b0d81cbc5698f5abd56",
+    "tools/build_g1_coordination_candidate_v040.py": "a533174d0e1a8674a137bae3c4a61e6d1ce38ff10a883ed90b5d3401ab59d060",
+    "tools/coordination_reference_v040.py": "a21cc7c915a22a220bbb010af06dfdeee0769cb439fbb9edbaeed4b70cd7f177",
+    "tools/run_placement_strike.py": "923a7896c99ccaad8e9e2505220768c483d3e6012bf101f4cf28bc337e61c4e7",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/strike_baseline_metrics.py": "22a86d021cf358f9f6c3a18b13166fd8dea81b31b535b28b5870ee51146fb1e5",
+    "tools/audit_p0_dynamic_strike.py": "f2dfa4ad64991c2be26275fb231e31ee938730d46b286e95046e82d79d361bcf",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "configs/state_conditioned_strike_v9.json": "896cda44d5e718aed83ea35c027b252293672e65a438b14671444cfc4b36a8b5",
+    "configs/state_conditioned_strike_v14_zero.json": "b6c734749ac74b02b697482b28542ffc6caa60af894c72e64fbe7fbb75d66053",
+    "configs/state_conditioned_strike_v14.json": "bcf060b218a0c6695a02fdde49cffe9ebab3d3b3459a648327e48e28b6c60444",
+    "experiments/post_shot_v032/ppo_s3201/last_model.pt": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+    "reports/v032_learned_center.json": "17d294d6563b5695edb2444e768650e26b145a67d08626693e3012fa2cd981b0",
+    "reports/v032_learned_heldout_v028_near_slow_17.json": "4fb724b5f8cbbe224a456535981e21c3e24a1de08b666e9d0b9d898145189b48",
+    "reports/v032_learned_heldout_v028_left_near_slow.json": "b10650329d4a032a0e143c2a553670511dc698dd693115aee397be0c6a3dd05c",
+    "experiments/coordination_projection_v040/train_clip00001_center/g1_joint_delta_50hz.npz": "e74438befc96d523dc95032f93dee67b2911988ca920305e362fa951ec3a9881"
+  }
+}
