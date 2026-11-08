@@ -1,0 +1,72 @@
+{
+  "version": "0.1.38",
+  "parent_version": "0.1.37",
+  "parent_commit": "f84c5d78e3fe171e57e9f98ba98f8eab823c720d",
+  "description": "Fixed bounded contact-point SWEEP-VELOCITY corrective control, not a trained human-coordination model. One physical candidate, no fitting or parameter search.",
+  "zero_trial": {
+    "case": "heldout_v028_near_slow_17",
+    "config": "configs/state_conditioned_strike_v13_zero.json",
+    "report": "reports/v038_zero_corrected_near_slow_17.json"
+  },
+  "candidate_config": "configs/state_conditioned_strike_v13.json",
+  "candidate_cases_order": [
+    {
+      "id": "heldout_v028_near_slow_17",
+      "baseline": "reports/v032_learned_heldout_v028_near_slow_17.json",
+      "candidate": "reports/v038_candidate_near_slow_17.json"
+    },
+    {
+      "id": "heldout_v028_left_near_slow",
+      "baseline": "reports/v032_learned_heldout_v028_left_near_slow.json",
+      "candidate": "reports/v038_candidate_left_near_slow.json"
+    },
+    {
+      "id": "center",
+      "baseline": "reports/v032_learned_center.json",
+      "candidate": "reports/v038_candidate_center.json"
+    }
+  ],
+  "gating": "Strict stop immediately upon any candidate old missed goal, invalid instep/body contact, complete 14s loss, speed or effort limit, physical termination, or final recovery failure. Both old misses must pass before center; no new fresh cases.",
+  "maximum_full_14s_physical_runs": 4,
+  "new_training": false,
+  "hyperparameter_search": false,
+  "new_fresh_cases_used": false,
+  "full_goal_requires": "ball radius 0.11m sphere completely inside original 1.6m goal, original scorer unchanged",
+  "source_sha256": {
+    "tools/run_placement_strike.py": "0657974d3ca1a02a34bb5edc0c9f64b9e597f1997f8869478a3bd53a53c1b2da",
+    "tools/run_instrumented_strike.py": "fd08216fcaa12eb87f706c24365d3ccd7f42a36be14dbbbce24b2b70a8158fa1",
+    "tools/foot_sweep_direction_v038.py": "c156be829f009cb5db326800c20b3760db5be08b1cdd8f952051f43d122525d0",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/placement_strike.py": "e461ba4b025b38295295af883bc04beb5ea1289dcd24ac231cc7fafc85f27638",
+    "tools/early_path_feedback.py": "ce9670823799ebe11ea502a8e620297eb842a6394eba300454ca96560c4fe6a4",
+    "tools/early_path_controller.py": "aec65cbf550c5028ab6d6890c9d3fcaee3cf3ae9ee37459b9bbad508069f7b5a",
+    "tools/closed_loop_expert.py": "0cf2c0243be3c73f912f5dd1985d12f5db08d1d3f4fbb2c40f58ee2a1e0b617a",
+    "tools/strike_baseline_metrics.py": "22a86d021cf358f9f6c3a18b13166fd8dea81b31b535b28b5870ee51146fb1e5",
+    "tools/audit_p0_dynamic_strike.py": "f2dfa4ad64991c2be26275fb231e31ee938730d46b286e95046e82d79d361bcf",
+    "tools/strike_cases.py": "441c01468f4e8522e004759eb7cf5ea3ef04dc8d4fd327d84ad16a701dffe117",
+    "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+    "configs/state_conditioned_strike_v9.json": "896cda44d5e718aed83ea35c027b252293672e65a438b14671444cfc4b36a8b5",
+    "configs/state_conditioned_strike_v13.json": "5a1e3f185e1c54ccd34ad189c599b1812afe5ec1d683707c417ea8d86bfbb4f0",
+    "configs/state_conditioned_strike_v13_zero.json": "356076ae6927fc3d3515f730103d336a4ed2b5ce44c071511958432fba32094d",
+    "experiments/post_shot_v032/ppo_s3201/last_model.pt": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+    "reports/v032_learned_heldout_v028_near_slow_17.json": "4fb724b5f8cbbe224a456535981e21c3e24a1de08b666e9d0b9d898145189b48",
+    "reports/v032_learned_heldout_v028_left_near_slow.json": "b10650329d4a032a0e143c2a553670511dc698dd693115aee397be0c6a3dd05c",
+    "reports/v032_learned_center.json": "17d294d6563b5695edb2444e768650e26b145a67d08626693e3012fa2cd981b0"
+  },
+  "failure_handling": "Store each failed trajectory and per-5ms qdot/contact metrics, publish a negative result, keep old v32 unchanged.",
+  "initial_invalid_zero_attempt": {
+    "status": "REJECTED: enabled=False was ignored by prototype task",
+    "original_protocol_sha256": "1731ca7f9a013979a0ac9eb03ccd6b01b9afe3bc7585f3eca8e92703a1876ea8",
+    "original_module_sha256": "222a82b40e971bbde5ea9ca9a728683728e05a21c9f3bc34b058d9a6264f4182",
+    "original_failed_output_path": "reports/v038_zero_near_slow_17.json",
+    "original_failed_output_sha256": "72da9683b599913227a075f93a9f4dd3ea04474da5848dd19fb4deb7b72a3464",
+    "first_applied_wrong_delta_control_index": 71,
+    "original_physics_terminated": [
+      [
+        "physical_nonfoot"
+      ]
+    ],
+    "repaired_by": "Hard disabled branch returns parent action directly before any new CUDA kinematic operations",
+    "physics_acceptance_claim": false
+  }
+}
