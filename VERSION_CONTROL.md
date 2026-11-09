@@ -381,3 +381,13 @@ CMU subject10的01/02/03/05/06原始C3D、ASF/AMC、许可出处和协调输出�
 一次预注册1000次AdamW更新，验证选择第50步模型。首次训练满1000步却因torch 2.10 weights_only安全反序列化拒绝TorchVersion对象无法载入最佳权重，原失败日志/权重完整保留。只把checkpoint版本元数据从TorchVersion改为纯str并保留前后源SHA/冻结协议补正记录；同种子、同训练数据/超参复现选定第50步，两次最佳网络权重逐元素误差严格0，测试集只在此后完成评价，没有测试驱动调参。
 
 v44按原joint speed ratio MAE，测试持久化0.18295、训练均值0.04149、Ridge0.04513、动作条件MLP0.04256。虽然MLP比Ridge稍好但仍不如训练均值；更关键的是测试组包含12个高度相关的真正危险触球前观察窗口，MLP将**全部12个未来真实超限时刻预测为安全**。因此明确禁止把模型作为安全屏障或升级默认控制器。预注册配置 configs/contact_future_forecast_v044.json，源码 tools/build_contact_future_v044.py、tools/contact_risk_model_v044.py、tools/train_contact_future_v044.py、tools/plot_contact_forecast_v044.py，数据/权重只在Tang；报告 reports/2026-11-09-contact-future-model-study.md。本版是真实动力学模型失败证据，不是安全世界模型/职业球员类人暴力抽射已做出。
+
+## v0.1.45 — 新触球后29DoF反速度恢复控制器：真实15次PhysX负结果
+
+从冻结v0.1.44/58e0fbc，在独立v0.1.45分支实施29关节真实速度反馈的触球后关节目标制动器（真实脚球接触+分离15ms，+0.10–1.25s窗口，qdot原限速比超过0.68才产生有限逆向关节位置修正）。原G1自由根部、原PD/速度/扭矩限、球/脚/接触、v32恢复PPO和v41弱人体姿态参考不变；v44不能准确识别超速的MLP不用于物理控制。动作每步/最大限幅限制不冒充真实安全证书。
+
+按事前固定球位协议实际运行完整15个真实PhysX回合（1个zero，2个已观察旧开发案例，随机种子4501产生6组未命名精确新球位各跑冻结v41与新v45）。全部严格保留物理JSON及哈希、失败回合提前终止证据，不改限速/物理/阈值，不挑选成功。Zero case与原v41共享的28项真实物理通道在2800×5ms样本上严格逐值一致、700原动作不变，另7个旧可选仪器元数据不在新core runner中，因此不能称两份完整JSON字节一致。
+
+核心结果**失效**：两旧诊断及全部6组新参数情况下，v45调节器实际非零控制步均为零；旧v41严格通过0/6，新v45严格通过0/6（有的直接在到球前终止、有的真实qdot超速/接触表面不合法）。回看真实控制日志：已通过后接触合格门控的控制时刻qdot/原限制通常在.2–.56范围，最高低于预注册.68阈值；重要超速发生于后续5ms物理子步而非提前有足够可反应的50Hz事件。不能将未激活的v45宣布为安全改善。已确认v45控制器没有修改原G1碰撞体/脚/球/上限，也没有增加实际触球爆发力。研究报告 reports/2026-11-09-v045-contact-recovery-governor.md，冻结注册 configs/contact_recovery_governor_v045.json，原始完整审计 reports/v045_governor_final_independent_audit.json（Tang本地）。
+
+实现/审计/防重跑：tools/contact_recovery_governor_v045.py、tools/run_contact_recovery_v045.py、tools/run_contact_recovery_study_v045.py、tools/audit_contact_recovery_v045.py、tools/write_contact_recovery_report_v045.py；单测和全部源码归档，596项主测试+69项子测试通过。旧默认v5不升级。下一阶段应针对接触前/支撑换脚/预期落点动态进行阶段条件的全身可执行轨迹设计，而不是再做一次等速度已超限才响应的局部补丁；后续参数若变化必须重新冻结独立条件，不能把已观察过的v45场景重新称为盲测。

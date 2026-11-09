@@ -1,0 +1,173 @@
+{
+  "version": "0.1.45",
+  "previous_branch": "version/v0.1.44",
+  "previous_commit": "58e0fbc",
+  "hypothesis": "Can a separate REAL contact-triggered 29DoF qdot-opposing position reference curb delayed landing joint overspeed while preserving original high-dynamic instep task?",
+  "v44_future_risk_model_used_in_controller": false,
+  "v44_model_rejected_for_unsafe_false_safes": true,
+  "original_floating_root_physx": true,
+  "original_29dof_PD_and_joint_speed_torque_limits_unchanged": true,
+  "no_ball_or_robot_state_injections": true,
+  "original_foot_ball_contact_and_goal_unchanged": true,
+  "no_controller_PPO_retraining": true,
+  "no_human_professional_instestep_biomechanics_claim": true,
+  "future_control_design_but_not_certified_hardware_barrier": true,
+  "original_v32_checkpoint_sha256": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+  "original_human_weak_pose_proxy_sha256": "e74438befc96d523dc95032f93dee67b2911988ca920305e362fa951ec3a9881",
+  "governor_parameters": {
+    "warning_ratio": 0.68,
+    "maximum_ratio": 0.98,
+    "maximum_position_brake_rad": 0.025,
+    "maximum_position_step_rad": 0.004,
+    "after_contact_min_s": 0.1,
+    "after_contact_max_s": 1.25,
+    "separation_confirm_s": 0.015
+  },
+  "original_baseline_config": "configs/state_conditioned_strike_v15.json",
+  "governor_enabled_config": "configs/state_conditioned_strike_v16.json",
+  "governor_zero_config": "configs/state_conditioned_strike_v16_zero.json",
+  "baseline_runner": "tools/run_placement_strike.py",
+  "governor_runner": "tools/run_contact_recovery_v045.py",
+  "zero_physics_trial": {
+    "case": "center",
+    "output": "reports/v045_governor_zero_center.json",
+    "original_reference": "reports/v041_human_style_center.json"
+  },
+  "known_development_diagnostics": [
+    {
+      "id": "known_trial01",
+      "ball_offset_xy_m": [
+        -0.034,
+        -0.007
+      ],
+      "velocity_y_delta_mps": 0.03,
+      "reference": "reports/v042_trial01_style_v41.json",
+      "output": "reports/v045_known_trial01_governor.json"
+    },
+    {
+      "id": "known_trial03",
+      "ball_offset_xy_m": [
+        0.034,
+        -0.031
+      ],
+      "velocity_y_delta_mps": -0.1,
+      "reference": "reports/v042_trial03_style_v41.json",
+      "output": "reports/v045_known_trial03_governor.json"
+    }
+  ],
+  "six_new_parameter_conditions": [
+    {
+      "id": "novel01",
+      "ball_offset_xy_m": [
+        0.059,
+        0.011
+      ],
+      "velocity_y_delta_mps": 0.041,
+      "outputs": {
+        "style_v41": "reports/v045_novel01_style_v41.json",
+        "governor_v45": "reports/v045_novel01_governor_v45.json"
+      }
+    },
+    {
+      "id": "novel02",
+      "ball_offset_xy_m": [
+        -0.039,
+        -0.056
+      ],
+      "velocity_y_delta_mps": 0.089,
+      "outputs": {
+        "style_v41": "reports/v045_novel02_style_v41.json",
+        "governor_v45": "reports/v045_novel02_governor_v45.json"
+      }
+    },
+    {
+      "id": "novel03",
+      "ball_offset_xy_m": [
+        0.022,
+        0.055
+      ],
+      "velocity_y_delta_mps": -0.043,
+      "outputs": {
+        "style_v41": "reports/v045_novel03_style_v41.json",
+        "governor_v45": "reports/v045_novel03_governor_v45.json"
+      }
+    },
+    {
+      "id": "novel04",
+      "ball_offset_xy_m": [
+        0.039,
+        -0.012
+      ],
+      "velocity_y_delta_mps": -0.091,
+      "outputs": {
+        "style_v41": "reports/v045_novel04_style_v41.json",
+        "governor_v45": "reports/v045_novel04_governor_v45.json"
+      }
+    },
+    {
+      "id": "novel05",
+      "ball_offset_xy_m": [
+        -0.017,
+        -0.034
+      ],
+      "velocity_y_delta_mps": 0.137,
+      "outputs": {
+        "style_v41": "reports/v045_novel05_style_v41.json",
+        "governor_v45": "reports/v045_novel05_governor_v45.json"
+      }
+    },
+    {
+      "id": "novel06",
+      "ball_offset_xy_m": [
+        -0.066,
+        0.027
+      ],
+      "velocity_y_delta_mps": -0.139,
+      "outputs": {
+        "style_v41": "reports/v045_novel06_style_v41.json",
+        "governor_v45": "reports/v045_novel06_governor_v45.json"
+      }
+    }
+  ],
+  "study_seed": 4501,
+  "trials_unseen_exact_parameter_triples_not_new_physics_domain": true,
+  "physical_episode_seconds": 14,
+  "physics_dt_s": 0.005,
+  "policy_dt_s": 0.02,
+  "total_prespecified_physx_runs": 15,
+  "all_new_cases_run_regardless_of_other_trial_failures": true,
+  "gate_criteria": [
+    "full 14 sec original PhysX",
+    "G1 qdot actual within original actuator limits",
+    "whole soccer ball crosses goal through legal area",
+    "correct physical right instep impact",
+    "no illegal body-ball contact",
+    "fully recovered standing, original PPO",
+    "minimum horizontal ball exit speed 3.5m/s",
+    "positive actual governor delta in enabled runs, no governor delta if disabled"
+  ],
+  "no_gain_tuning_after_observing_cases": true,
+  "no_repetitions_per_case": true,
+  "no_default_robot_policy_upgrade_by_one_trial": true,
+  "source_sha256": {
+    "tools/run_placement_strike.py": "7c5cfb0e32cecb6ea877858bc8e6e473b74f4ca6d8a3cae790069d8e3b1043e4",
+    "tools/run_contact_recovery_v045.py": "69a2977a7b9b1894bb336651111874b1eb5b2fb09867cf612c1ef52b81f56b4b",
+    "tools/coordination_style_v041.py": "04db612299bdb4a093d1c71efae6478ff4a18f973ccbfa4686f5353631209b15",
+    "tools/coordination_reference_v040.py": "a21cc7c915a22a220bbb010af06dfdeee0769cb439fbb9edbaeed4b70cd7f177",
+    "tools/contact_recovery_governor_v045.py": "3ca3a3316632d34c8ea935b9026b1e410c3a2669639cbae0887d187a410d6435",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/strike_baseline_metrics.py": "22a86d021cf358f9f6c3a18b13166fd8dea81b31b535b28b5870ee51146fb1e5",
+    "tools/audit_p0_dynamic_strike.py": "f2dfa4ad64991c2be26275fb231e31ee938730d46b286e95046e82d79d361bcf",
+    "tools/strike_cases.py": "441c01468f4e8522e004759eb7cf5ea3ef04dc8d4fd327d84ad16a701dffe117",
+    "configs/state_conditioned_strike_v15.json": "89f807ed8d338171e8e6b53ae045e359017d35935280075cae0d1a3e6c19513a",
+    "configs/state_conditioned_strike_v16.json": "df03ba625997e58b8d8f19bed56ebc5262ab51478958b65ffc59574f5bb8fc45",
+    "configs/state_conditioned_strike_v16_zero.json": "df43b74ec8405f4eb3d9b659ee3dfcd6d95de8c8bcbf39f182d047d50a782fb3",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    "experiments/post_shot_v032/ppo_s3201/last_model.pt": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+    "experiments/coordination_projection_v040/train_clip00001_center/g1_joint_delta_50hz.npz": "e74438befc96d523dc95032f93dee67b2911988ca920305e362fa951ec3a9881",
+    "reports/v041_human_style_center.json": "40e02bd5536a298c3bc43dfcc573f3054d3ad8babb5a8734b3afd7df2dcaca25",
+    "reports/v042_trial01_style_v41.json": "dda8fa6d632cf0a5bfab17f109275dfc048811f0946ac8d063fe25ebbc7ae461",
+    "reports/v042_trial03_style_v41.json": "2f11d7eabf8a964ce788802711359fbef8277dbbf57004054410799621145279"
+  }
+}
