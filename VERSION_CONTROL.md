@@ -391,3 +391,13 @@ v44按原joint speed ratio MAE，测试持久化0.18295、训练均值0.04149、
 核心结果**失效**：两旧诊断及全部6组新参数情况下，v45调节器实际非零控制步均为零；旧v41严格通过0/6，新v45严格通过0/6（有的直接在到球前终止、有的真实qdot超速/接触表面不合法）。回看真实控制日志：已通过后接触合格门控的控制时刻qdot/原限制通常在.2–.56范围，最高低于预注册.68阈值；重要超速发生于后续5ms物理子步而非提前有足够可反应的50Hz事件。不能将未激活的v45宣布为安全改善。已确认v45控制器没有修改原G1碰撞体/脚/球/上限，也没有增加实际触球爆发力。研究报告 reports/2026-11-09-v045-contact-recovery-governor.md，冻结注册 configs/contact_recovery_governor_v045.json，原始完整审计 reports/v045_governor_final_independent_audit.json（Tang本地）。
 
 实现/审计/防重跑：tools/contact_recovery_governor_v045.py、tools/run_contact_recovery_v045.py、tools/run_contact_recovery_study_v045.py、tools/audit_contact_recovery_v045.py、tools/write_contact_recovery_report_v045.py；单测和全部源码归档，596项主测试+69项子测试通过。旧默认v5不升级。下一阶段应针对接触前/支撑换脚/预期落点动态进行阶段条件的全身可执行轨迹设计，而不是再做一次等速度已超限才响应的局部补丁；后续参数若变化必须重新冻结独立条件，不能把已观察过的v45场景重新称为盲测。
+
+## v0.1.46：触球后、第一次落脚前的全身协同过渡方案——严格原G1物理退化（研究分支拒绝晋升）
+
+从v0.1.45/01e6441隔离新分支，真实实现和执行在接触后+0.06–0.62秒内，利用G1原左右脚触地载荷、脚底碰撞胶囊最低高度/下降速度及29DoF真实关节速度的全身协同参考。支撑腿/摆腿/腰/双臂均有受限的关节位置改动；原G1完整自由根部PhysX、原扭矩/速度PD限制、原足球/足部几何、冻结v32 PPO、v41弱人体视频姿态参考不变；未使用漏报危险的v44 MLP与v45不触发的速度报警。约束最大附加关节目标0.016rad、每20ms参考变动0.002rad，但始终以真实5ms qdot为最终安全判据。
+
+按照冻结协议configs/landing_transfer_study_v046.json，实际完成1次零动作中心+2个已经使用过的开发球位诊断+6组新连续参数各原v41/新v46一次，总15个14秒G1 PhysX真实回放，SHA锁定，每个条件仅一次，不按结果优化超参。调度器第一次启动时读到与冻结协议字段不一致导致无主动物理结果，已将旧协议字节/失败日志保存，并在任何主动仿真前仅修正字段映射，原增益与球位不变。零模块动作及28项共享物理记录、原接触/球运动学完全等价，未宣称完整JSON字节相同（旧instrumented多7字段）。
+
+旧已知trial01真实改变19个控制时刻，消除了原左踝轻微超速，原成功trial03保持成功。但6组新精确球位原v41严格完整通过4/6，v46只3/6：0组从原失败变成功、1组原成功变FAIL。新球位04新v46脚触球后0.685秒右膝qdot=30.049rad/s/原上限20（原v41同一时刻5.549），原右足支撑载荷4358.646N，说明小幅全身目标可能在落脚转换时严重放大动力学风险，不能仅凭同一时刻数据证明唯一因果机制。其余失败包括脚面不合法/球速太低与偏门，严格按照原门槛判。所有6个新球位确有18–19个非零关节参考控制步。原球速与原正脚背判据不因新方法人为修改。
+
+源码 tools/contact_landing_transfer_v046.py、tools/run_contact_landing_v046.py、tools/run_landing_transfer_study_v046.py、tools/audit_contact_landing_v046.py、tools/analyze_contact_landing_v046.py、tools/plot_landing_safety_v046.py、tools/plot_landing_six_cases_v046.py、tools/write_landing_report_v046.py；报告 reports/2026-11-09-v046-anticipatory-landing-physx.md；全部实测原JSON/SHA/图留在Tang已忽略目录。全项目606 passed、69 subtests passed。**决策：不晋升v46为默认控制器，不宣称更自然或更强力人类抽射，保留安全退化负例用于下一独立动力学研究。**

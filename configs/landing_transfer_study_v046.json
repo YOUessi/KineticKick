@@ -1,0 +1,189 @@
+{
+  "version": "0.1.46",
+  "parent_commit": "01e6441",
+  "research_question": "Can an EARLY after-impact, before-first-landing phase-conditioned 29DoF trajectory improve full strict G1 kicking without waiting for joint overspeed?",
+  "original_29dof_G1_free_root": true,
+  "frozen_v32_PPO_sha256": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+  "original_clip_00001_3dsp_video_pose_not_qualified": true,
+  "original_foot_ball_contact_and_actuator_limits_unchanged": true,
+  "original_ball_trajectory_no_state_injection": true,
+  "rejected_v044_forecaster_NOT_used": true,
+  "rejected_v045_non_engagement_controller_NOT_combined": true,
+  "no_new_policy_PPO_training": true,
+  "no_gain_fitting_after_physical_results": true,
+  "v41_config": "configs/state_conditioned_strike_v15.json",
+  "v46_active_config": "configs/state_conditioned_strike_v17.json",
+  "v46_zero_config": "configs/state_conditioned_strike_v17_zero.json",
+  "baseline_runner": "tools/run_placement_strike.py",
+  "active_runner": "tools/run_contact_landing_v046.py",
+  "zero_physical": "reports/v046_zero_original_center.json",
+  "zero_reference": "reports/v041_human_style_center.json",
+  "zero_audit": "reports/v046_zero_original_center_audit.json",
+  "old_diagnostics": [
+    {
+      "id": "known_trial01",
+      "ball_offset_xy_m": [
+        -0.034,
+        -0.007
+      ],
+      "velocity_y_delta_mps": 0.03,
+      "source": "reports/v042_trial01_style_v41.json",
+      "output": "reports/v046_known_trial01_landing.json"
+    },
+    {
+      "id": "known_trial03",
+      "ball_offset_xy_m": [
+        0.034,
+        -0.031
+      ],
+      "velocity_y_delta_mps": -0.1,
+      "source": "reports/v042_trial03_style_v41.json",
+      "output": "reports/v046_known_trial03_landing.json"
+    }
+  ],
+  "six_new_ball_conditions": [
+    {
+      "id": "landing_new01",
+      "ball_offset_xy_m": [
+        0.018,
+        -0.016
+      ],
+      "velocity_y_delta_mps": 0.044,
+      "outputs": {
+        "original_v41": "reports/v046_landing_new01_original_v41.json",
+        "landing_v46": "reports/v046_landing_new01_landing_v46.json"
+      }
+    },
+    {
+      "id": "landing_new02",
+      "ball_offset_xy_m": [
+        -0.008,
+        0.026
+      ],
+      "velocity_y_delta_mps": -0.015,
+      "outputs": {
+        "original_v41": "reports/v046_landing_new02_original_v41.json",
+        "landing_v46": "reports/v046_landing_new02_landing_v46.json"
+      }
+    },
+    {
+      "id": "landing_new03",
+      "ball_offset_xy_m": [
+        -0.026,
+        0.016
+      ],
+      "velocity_y_delta_mps": 0.068,
+      "outputs": {
+        "original_v41": "reports/v046_landing_new03_original_v41.json",
+        "landing_v46": "reports/v046_landing_new03_landing_v46.json"
+      }
+    },
+    {
+      "id": "landing_new04",
+      "ball_offset_xy_m": [
+        0.006,
+        -0.026
+      ],
+      "velocity_y_delta_mps": -0.044,
+      "outputs": {
+        "original_v41": "reports/v046_landing_new04_original_v41.json",
+        "landing_v46": "reports/v046_landing_new04_landing_v46.json"
+      }
+    },
+    {
+      "id": "landing_new05",
+      "ball_offset_xy_m": [
+        -0.017,
+        0.007
+      ],
+      "velocity_y_delta_mps": -0.069,
+      "outputs": {
+        "original_v41": "reports/v046_landing_new05_original_v41.json",
+        "landing_v46": "reports/v046_landing_new05_landing_v46.json"
+      }
+    },
+    {
+      "id": "landing_new06",
+      "ball_offset_xy_m": [
+        0.024,
+        -0.007
+      ],
+      "velocity_y_delta_mps": 0.015,
+      "outputs": {
+        "original_v41": "reports/v046_landing_new06_original_v41.json",
+        "landing_v46": "reports/v046_landing_new06_landing_v46.json"
+      }
+    }
+  ],
+  "previous_six_v42_training_distribution_already_inspected": true,
+  "new_exact_ball_values_not_new_robot_environment": true,
+  "new_trial_generation_seed": 4601,
+  "new_parameter_levels": {
+    "x": [
+      -0.024,
+      -0.017,
+      -0.008,
+      0.008,
+      0.017,
+      0.024
+    ],
+    "y": [
+      -0.026,
+      -0.018,
+      -0.007,
+      0.007,
+      0.018,
+      0.026
+    ],
+    "root_velocity_y": [
+      -0.068,
+      -0.044,
+      -0.016,
+      0.016,
+      0.044,
+      0.068
+    ]
+  },
+  "total_prespecified_physx_runs": 15,
+  "new_episodes_all_executed_without_success_selection": true,
+  "qdot_original_limits_100_percent_hard_gate": true,
+  "physical_dt_s": 0.005,
+  "control_dt_s": 0.02,
+  "episode_s": 14.0,
+  "no_model_upgrade_based_on_small_sample": true,
+  "source_sha256": {
+    "tools/run_placement_strike.py": "7c5cfb0e32cecb6ea877858bc8e6e473b74f4ca6d8a3cae790069d8e3b1043e4",
+    "tools/run_contact_landing_v046.py": "34c2c4ac4afc588604c4c7ae760b8a1c7da4d72216c7208a9de78612dc756208",
+    "tools/run_landing_transfer_study_v046.py": "cbc959a2636e62647d839b1c7e2138e170f5fe73f3569125df5bf2d194ac8cd8",
+    "tools/contact_landing_transfer_v046.py": "f6476a91ae491882c60eb497898cb054101e298bd855d6f59e7e4297af4a5b20",
+    "tools/coordination_style_v041.py": "04db612299bdb4a093d1c71efae6478ff4a18f973ccbfa4686f5353631209b15",
+    "tools/coordination_reference_v040.py": "a21cc7c915a22a220bbb010af06dfdeee0769cb439fbb9edbaeed4b70cd7f177",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/placement_strike.py": "e461ba4b025b38295295af883bc04beb5ea1289dcd24ac231cc7fafc85f27638",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/strike_baseline_metrics.py": "22a86d021cf358f9f6c3a18b13166fd8dea81b31b535b28b5870ee51146fb1e5",
+    "tools/audit_p0_dynamic_strike.py": "f2dfa4ad64991c2be26275fb231e31ee938730d46b286e95046e82d79d361bcf",
+    "tools/strike_cases.py": "441c01468f4e8522e004759eb7cf5ea3ef04dc8d4fd327d84ad16a701dffe117",
+    "configs/state_conditioned_strike_v15.json": "89f807ed8d338171e8e6b53ae045e359017d35935280075cae0d1a3e6c19513a",
+    "configs/state_conditioned_strike_v17.json": "c10d1708dafe3f9f9359163747096cff951c8b66407ee56bc127fe1b7dc7f1cc",
+    "configs/state_conditioned_strike_v17_zero.json": "b8157093a89134d499b97410fdd079cf2d58fcf3a98d8b74ecb7f318c2da9f5d",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    "experiments/post_shot_v032/ppo_s3201/last_model.pt": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+    "experiments/coordination_projection_v040/train_clip00001_center/g1_joint_delta_50hz.npz": "e74438befc96d523dc95032f93dee67b2911988ca920305e362fa951ec3a9881",
+    "reports/v041_human_style_center.json": "40e02bd5536a298c3bc43dfcc573f3054d3ad8babb5a8734b3afd7df2dcaca25",
+    "reports/v042_trial01_style_v41.json": "dda8fa6d632cf0a5bfab17f109275dfc048811f0946ac8d063fe25ebbc7ae461",
+    "reports/v042_trial03_style_v41.json": "2f11d7eabf8a964ce788802711359fbef8277dbbf57004054410799621145279"
+  },
+  "dispatcher_schema_correction_before_any_active_physics": {
+    "original_study_sha256": "0c04c73e12ae92f8496a67db4c24d55edf5d009881d6e58038a43f02db99ea07",
+    "original_dispatcher_sha256": "0fbe5d836e4fbc947a51db55b061ba9eaa4bcbdf8ca1ba06106bbde2f5aa9777",
+    "repaired_dispatcher_sha256": "cbc959a2636e62647d839b1c7e2138e170f5fe73f3569125df5bf2d194ac8cd8",
+    "failed_launch_log": "reports/v046_full_physics_execution.log",
+    "failure": "The original study runner used the nonexistent active_config and no_adaptive_gain_search keys; it stopped before creating any active PhysX result",
+    "fix": "Correct only the JSON names to frozen v46_active_config/v41_config/no_gain_fitting_after_physical_results",
+    "ball_parameters_and_gain_unchanged": true,
+    "zero_physics_already_completed_and_unchanged": true,
+    "active_physics_started_before_correction": false,
+    "original_bytes_preserved": "experiments/v046_protocol_history/source_locked_study_before_dispatcher_schema_fix.json"
+  }
+}
