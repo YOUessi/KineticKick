@@ -348,3 +348,12 @@ CMU subject10的01/02/03/05/06原始C3D、ASF/AMC、许可出处和协调输出�
 独立真实PhysX零模块回放14秒/2800步/700控制，原v32全身动作/球/接触/原反馈等价，中心正脚背击球和4.631403m/s进球并恢复站立。打开候选模块的同场景尽管照样进球，原误差补偿context_gate==0导致新增协调参考始终被清零，700次新增动作绝对零。严格ACTIVE审计FAIL(no generated_ref_observable)，实测身体协调变化为0，不能把旧射门进球算作新方法成功。第二第三预注册场景及新未见测试都没有执行；原v32与默认v5和训练数据不覆盖。这个负结果真实暴露了“风格/协调生成信号”和“足球误差修正信号”不能复用一个仅对球位偏差生效的门控逻辑。
 
 可复现源码 tools/g1_contact_coordination_projection_v040.py、tools/build_g1_coordination_candidate_v040.py、tools/coordination_reference_v040.py、tools/audit_g1_coordination_v040.py、tools/audit_g1_coordination_effect_v040.py；预注册配置 configs/g1_coordination_generation_v040.json、configs/g1_coordination_physics_v040.json；完整真实负结果 reports/2026-11-09-whole-body-coordination-projection.md。原体积大的PhysX样本、生成的NPZ权重留Tang不上传。后续必须新协议单独激活协调生成，并以同一物理标准比较真实应用是否安全/有效。
+
+
+## v0.1.41：人体姿态启发全身参考独立激活、3个已知任务的实测进球
+
+从v0.1.40/e65d5fd分支并独立冻结场景、源码/weight原SHA。v40已证明一个人类3DSP视频估计射门片段可生成700×29全身参考但被旧足球误差补偿门控self.gate=0彻底清零。本轮新实现独立运动协调风格门控（不乘足球误差门控），只依赖真实左支撑脚承重、右摆腿载荷、实际G1 qdot/原限速、球距、原真实触球状态和动作时间窗口；原G1、原PD电机、球和碰撞/限速/进球判据及v32恢复PPO全部未改。不是新的学习小脑或职业正脚背高冲量生物力学方法。
+
+4次按预注册顺序的实际14s PhysX：zero中心100%原全物理动作/接触/原策略debug等价；active中心6次新增全关节真实参考，4.631332m/s合法进球并站稳8.985s；旧射偏B near_slow_17新增5次，4.743554m/s合法进球站稳8.570s；旧射偏A left_near_slow新增5次，4.313940m/s合法进球站稳9.870s。三条件均2800×5ms物理步/700×20ms控制、右正脚背冲量100%、原真实关节速度超限0，固定v32原在3组仅1组进球；这三组以前均用作研发，非未见泛化。
+
+首次B审计把仅用于nominal center场景的“旧误差门控=0仍激活人体协调”错误施加到原本self.gate≈0.9447的偏球位B。保存初始负审计，并把不可适用条件记为null，不放宽任何真正的球速、脚面、限速、全程和恢复门槛；修正后才依协议进入旧A。重新从原始PhysX数据计算机器人真实11维人体姿态代理误差，三条件只降低0.66%、0.70%、0.83%，不能冒充真实人体自然度大幅提高，也没有展现职业爆发性动力学。原始大体积JSON、代理NPZ和媒体留Tang，GitHub仅源码、实验协议、测试、负/正结果文字报告。报告 reports/2026-11-09-coordination-style-physx.md；科研图 media/v041_three_known_case_physical_shots.png留Tang；默认v5绝不升级。下一阶段需独立固定未见扰动验证与真实职业正脚背接触/全身发力数据，而非依据3个已开发球位宣称已完成论文研究。
