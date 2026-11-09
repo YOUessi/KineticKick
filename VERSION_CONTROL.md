@@ -365,3 +365,11 @@ CMU subject10的01/02/03/05/06原始C3D、ASF/AMC、许可出处和协调输出�
 严格“合法正脚背+进球+真实原始关节速度无超限+完整14秒+站稳+球速≥3.5m/s”任务门槛：原v32 2/6，v41 3/6；旧FAIL→新PASS为2组，旧PASS→新FAIL为1组。全部12回合虽然都将球送入门框，但有几组因脚面判定或速度超限按严格规则判失败，特别是trial01在触球后0.460s新style左踝翻滚速度37.047rad/s超过原37rad/s（原控制同一时刻20.372rad/s）。trial02双方右膝超速，trial04两者为非目标脚背接触；trial05、trial06由原控制真实超速失败变成style严格通过。不能把6组单次结果宣称为有统计把握的泛化进步或职业球员自然大力抽射；这些数值组合在原有任务/物理区间，不是新领域或真实硬件。
 
 原始逐5ms qdot、裁剪PD估计功率（非真实硬件力矩功率）、完整射门/力学信息由只读审计器生成并以SHA关联。试验源码 tools/run_novel_ball_v042.py、tools/audit_novel_ball_v042.py、tools/analyze_novel_ball_dynamics_v042.py、tools/plot_novel_ball_v042.py、tools/write_v042_report.py；冻结配置 configs/novel_ball_generalization_v042.json；完整自动生成研究报告 reports/2026-11-09-v042-novel-ball-generalization.md；Tang本地图 media/v042_novel_ball_paired_physx.png。全项目回归575项通过、69项子测试通过。由于存在原本正常安全的球位被style动作引入真实关节超速，v41**不提升为默认正式控制器**。下一研究必须针对全身支撑与触球后0.46–1秒动作/关节限速联合建模、职业正脚背高速动作数据质量，而不是只优化触球前单条脚部运动。
+
+## v0.1.43：脚球真实接触事件对齐、29DoF全身动力学、延迟超速风险
+
+在v0.1.42/ad7bd18 clean工作树另建v0.1.43研究分支。没有重新运行G1/PhysX，不训练新网络，不修改旧v32或v41控制器，也不改变原碰撞、球体或任何执行器限速。以冻结SHA锁定原12份v42真实PhysX回放（6个连续球位初速，每组原v32与v41各1次），按原脚球传感器的第一次物理触球时刻对齐，从接触前0.25s到接触后1.0s提取12×251个连续5ms真实测量：29关节q/实际qdot/关节target/裁剪PD估计torque、双脚支撑、质心、右脚材料点速度、球速和非脚部接触。17份原始代码/源物理数据SHA先冻结再构建，不允许重复或无效样本混入。Tang本地数据包 SHA256 dbaf61a3d19a54ac7b8482011df7717c8d8475257019e873cb3f9900a62cf6ae，所有数据留Tang/Git忽略目录。
+
+独立全14秒真实关节限速审计：12次原物理回合共5次发生过实际qdot限值超速。事前选定仅以触球前250ms最大实测qdot/原限速≥0.9作为预警，会得到TP3、FP1、FN2、TN6（开发集回顾性召回3/5）；原v41 trial01接触前最大比例仅0.710，却在接触后0.460s左踝翻滚37.047/37.0rad/s超速；原v32 trial06接触前最大比例0.704，却在接触后1.040s左膝20.448/20.0rad/s超速，超出只看后1s的原事件数据窗。由此提出后续独立研究至少观察接触后1.25s的全身延迟动态及支撑/恢复动作，不能以当前qdot安全阈值或小幅参考修正证明未来一定安全。
+
+数据不是新的未见科研测试集，也没有真实职业球员的足面接触、支撑反力、足速/球速生物力学标注。此次贡献为可复用的接触事件真实动力学特征/风险审计协议、机器人全关节速度和原接触测量分析、失败时间/关节分类和图像；不能称为全身安全控制器或专业类人暴力抽射已学成。代码 tools/build_contact_event_safety_v043.py、tools/analyze_contact_event_safety_v043.py，配置 configs/contact_event_safety_v043.json，回归 tests/test_contact_event_safety_v043.py；完整报告 reports/2026-11-09-contact-event-delayed-safety.md。Tang图 media/v043_contact_event_delayed_joint_speed_risk.png，源数据/NPZ与JSON全留Tang。旧v32/v41仍未升级，实际默认v5不变。

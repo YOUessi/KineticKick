@@ -1,0 +1,52 @@
+{
+  "version": "0.1.43",
+  "parent_branch": "version/v0.1.42",
+  "parent_commit": "ad7bd18",
+  "task": "Construct physically measured contact-aligned 29DoF whole-body and support risk dataset from existing v42 paired fixed 12 PhysX episodes. No future-state generator, no new soccer controller, no new physics and no user hardware tests.",
+  "original_5ms_timestep_required": true,
+  "original_contact_ground_truth": "shot record measured first original physical foot-ball contact, not human video annotation",
+  "phase_window_center": "measured first valid foot-ball contact",
+  "window_start_s": -0.25,
+  "window_end_s": 1.0,
+  "window_start_end_s": [
+    -0.25,
+    1.0
+  ],
+  "bins": 251,
+  "precontact_warn_ratio": 0.9,
+  "postcontact_failure_ratio": 1.0,
+  "original_joint_velocity_limits_unchanged": true,
+  "original_G1_29dof": true,
+  "no_new_physics": true,
+  "no_new_training": true,
+  "no_new_unseen_conditions_used": true,
+  "v42_data_is_development_not_future_holdout": true,
+  "output_directory": "data/research_human_kicks/contact_event_safety_v043",
+  "previous_v42_protocol_sha256": "0f9d1d796bfa5cd346218db38a800a0e57444b0dd44f46dd27c7e4a1dbb3d872",
+  "source_sha256": {
+    "tools/build_contact_event_safety_v043.py": "2edc77b761fe6dd65e65d4ea3d7aa7e0ff321e136cc7c46dafb52c6de440d47b",
+    "tools/strike_baseline_metrics.py": "22a86d021cf358f9f6c3a18b13166fd8dea81b31b535b28b5870ee51146fb1e5",
+    "tools/audit_p0_dynamic_strike.py": "f2dfa4ad64991c2be26275fb231e31ee938730d46b286e95046e82d79d361bcf",
+    "reports/v042_paired_novel_ball_audit.json": "0920b5fa8f31a4279423f0d0f118b75335981148dd56fdf96adbba95816f9f3f",
+    "configs/novel_ball_generalization_v042.json": "0f9d1d796bfa5cd346218db38a800a0e57444b0dd44f46dd27c7e4a1dbb3d872",
+    "reports/v042_trial01_original_v32.json": "22289418419bc8fe63a527914649c7bb54175cd102daaf8b64417f89072faf53",
+    "reports/v042_trial01_style_v41.json": "dda8fa6d632cf0a5bfab17f109275dfc048811f0946ac8d063fe25ebbc7ae461",
+    "reports/v042_trial02_original_v32.json": "b24ab82ccfc6ce07076c380d2aa5dde26862eeae1f985edb52fe00ffbb378d5f",
+    "reports/v042_trial02_style_v41.json": "de33f93ed8621b0caac871598b360ddd59f239fcb2850afda13f2409c19821b3",
+    "reports/v042_trial03_original_v32.json": "f08a1c0dd5754f866b3fd5f953a1c030cf2faaed9cbdeb0a83f24014ed867767",
+    "reports/v042_trial03_style_v41.json": "2f11d7eabf8a964ce788802711359fbef8277dbbf57004054410799621145279",
+    "reports/v042_trial04_original_v32.json": "16fe92a87386fc40d5ec2e0c19426f1e6a1e747ee30192826eb4e3efa85e4a82",
+    "reports/v042_trial04_style_v41.json": "cd7983d46bcf6ce811bd886d0a57bddc68481177fe72ede2c32aec118ed6f1db",
+    "reports/v042_trial05_original_v32.json": "40bcf5a0efe055144f4c97ad4ff19052766d52a1d8a0996c9bbc06d27018f836",
+    "reports/v042_trial05_style_v41.json": "81e32e98c8dcbfd04dae53d74aa0d667b79a18b5ce691dd80b8deea608d1ab82",
+    "reports/v042_trial06_original_v32.json": "c15e1deb675263cc189438840f7a87fde0f53382306978c2a511ca22fb7e8335",
+    "reports/v042_trial06_style_v41.json": "f5ad67448315a0a04d607a44b5803a605f7fa3b3e063eee8cc5cee3c9c9b08ea"
+  },
+  "claim_restrictions": [
+    "All original 12 physical episodes already inspected; no honest blind-physics validation possible on these cases after this analysis",
+    "No professional human joint kinetics or instep-time truth is included",
+    "Only qdot, support-foot load and estimated PD torque are original Isaac Sim model measurements",
+    "Even a threshold with high sensitivity on these trials cannot certify future unobserved robot safety",
+    "Future controller changes must be tested on new independent frozen PhysX task conditions"
+  ]
+}
