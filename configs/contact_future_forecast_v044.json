@@ -1,0 +1,117 @@
+{
+  "version": "0.1.44",
+  "parent": "version/v0.1.43",
+  "parent_commit": "a5edc268c3012d33563a0791b456fe5b08dd0e11",
+  "research_goal": "Can a small action-plan-conditioned whole-body network predict original G1 peak future joint-speed limits through 1.25s after first physical contact, compared with unchanged current qdot, train mean and train-only ridge?",
+  "previous_physics_is_retrospectively_known": true,
+  "training_uses_v42_existing_development_data": true,
+  "training_data_is_NOT_a_blind_heldout_benchmark": true,
+  "future_target_at_prediction_time_unknown": true,
+  "model_uses_future_physics_at_inference": false,
+  "no_new_physical_run_in_this_model_training": true,
+  "source_physics_5ms_dt": 0.005,
+  "observation_relative_to_impact_start_s": -0.24,
+  "observation_relative_to_impact_end_s": -0.02,
+  "observation_stride_s": 0.02,
+  "future_end_relative_to_impact_s": 1.25,
+  "original_29_joint_qdot_limits_unchanged": true,
+  "source_episodes": 12,
+  "feature_width": 67,
+  "future_joint_count": 29,
+  "group_split": {
+    "train": [
+      "trial01",
+      "trial02",
+      "trial03",
+      "trial04"
+    ],
+    "val": [
+      "trial05"
+    ],
+    "test": [
+      "trial06"
+    ]
+  },
+  "grouped_by_ball_initial_condition_NOT_by5ms_window": true,
+  "input_feature_roles": [
+    "measured G1 original joint angles (29)",
+    "actual 29 G1 qdot/original limits",
+    "left/right measured support vertical forces",
+    "ball-minus-root actual XY",
+    "actual ball 3D velocity",
+    "absolute policy time / 2",
+    "precommitted future style policy indicator"
+  ],
+  "target_role": "per-joint maximum actual ratio abs(qdot)/original joint limit from each preimpact observation through 1.25s after measured physical ball contact",
+  "future_impact_time_is_source_offline_label_not_available_at_deployment": true,
+  "source_human_is_VIDEO_ESTIMATED_not_professional_instep_kinetics": true,
+  "data_qualified_for_safety_certificate": false,
+  "output_directory": "data/research_human_kicks/contact_future_v044",
+  "training_dir": "experiments/contact_future_v044/seed4401_group_trial_holdout",
+  "training": {
+    "seed": 4401,
+    "steps": 1000,
+    "val_interval": 50,
+    "lr": 0.0009,
+    "weight_decay": 0.002,
+    "batch_size": 32,
+    "huber_beta": 0.2,
+    "max_grad_norm": 2.0,
+    "checkpoint_selection": "one minimum validation original joint qdot ratio MAE"
+  },
+  "ridge_alpha": 18.0,
+  "baselines": [
+    "current joint qdot persistence",
+    "train future mean",
+    "train-only ridge alpha18"
+  ],
+  "model_promotion_rule": "Do not deploy any model just from offline result. At minimum validation and group-test must beat ridge and have no false-safe classifications on all held-out unsafe episodes; even then require new independently frozen original PhysX trials.",
+  "unseen_ball_physics_test_reserved_after_training": true,
+  "source_sha256": {
+    "tools/build_contact_future_v044.py": "3d5cbbf9e67259a67f14d745ff8c8753b6fc06d28e82d465c689abe5acde8b99",
+    "tools/contact_risk_model_v044.py": "87990468e2e83aea46341145f42b8e86fabd4f1ced1caa29e2a5770b0fa8c4c0",
+    "tools/train_contact_future_v044.py": "2e0db9ac708d62d933cff701e32616ed6febfc06ffe2ec66cc0c04476f54e207",
+    "reports/v042_paired_novel_ball_audit.json": "0920b5fa8f31a4279423f0d0f118b75335981148dd56fdf96adbba95816f9f3f",
+    "configs/novel_ball_generalization_v042.json": "0f9d1d796bfa5cd346218db38a800a0e57444b0dd44f46dd27c7e4a1dbb3d872",
+    "data/research_human_kicks/contact_event_safety_v043/event_aligned_qdot_dynamics.npz": "dbaf61a3d19a54ac7b8482011df7717c8d8475257019e873cb3f9900a62cf6ae",
+    "reports/v042_trial01_original_v32.json": "22289418419bc8fe63a527914649c7bb54175cd102daaf8b64417f89072faf53",
+    "reports/v042_trial01_style_v41.json": "dda8fa6d632cf0a5bfab17f109275dfc048811f0946ac8d063fe25ebbc7ae461",
+    "reports/v042_trial02_original_v32.json": "b24ab82ccfc6ce07076c380d2aa5dde26862eeae1f985edb52fe00ffbb378d5f",
+    "reports/v042_trial02_style_v41.json": "de33f93ed8621b0caac871598b360ddd59f239fcb2850afda13f2409c19821b3",
+    "reports/v042_trial03_original_v32.json": "f08a1c0dd5754f866b3fd5f953a1c030cf2faaed9cbdeb0a83f24014ed867767",
+    "reports/v042_trial03_style_v41.json": "2f11d7eabf8a964ce788802711359fbef8277dbbf57004054410799621145279",
+    "reports/v042_trial04_original_v32.json": "16fe92a87386fc40d5ec2e0c19426f1e6a1e747ee30192826eb4e3efa85e4a82",
+    "reports/v042_trial04_style_v41.json": "cd7983d46bcf6ce811bd886d0a57bddc68481177fe72ede2c32aec118ed6f1db",
+    "reports/v042_trial05_original_v32.json": "40bcf5a0efe055144f4c97ad4ff19052766d52a1d8a0996c9bbc06d27018f836",
+    "reports/v042_trial05_style_v41.json": "81e32e98c8dcbfd04dae53d74aa0d667b79a18b5ce691dd80b8deea608d1ab82",
+    "reports/v042_trial06_original_v32.json": "c15e1deb675263cc189438840f7a87fde0f53382306978c2a511ca22fb7e8335",
+    "reports/v042_trial06_style_v41.json": "f5ad67448315a0a04d607a44b5803a605f7fa3b3e063eee8cc5cee3c9c9b08ea"
+  },
+  "restrictions": [
+    "All v42 ball-state outcomes are already known to the project; group split prevents direct statistical training leakage but is NOT prospective experimental blindness",
+    "Windows in a single episode are correlated and must NOT be counted as independent trials",
+    "Training has only 4 initial-condition groups, validation one, diagnostics one",
+    "No human professional instep contact truth, ball spin, muscle dynamics or hardware qdot certification",
+    "Predictive machine learning risk is not a safety barrier; original G1 qdot and original physical scorer remain authoritative"
+  ],
+  "original_dataset_sha256": "52e6b1dfb0421c09cf691b856bc2a7066763aaf73c6cb4b692c92247f421a531",
+  "metadata_completion_before_any_training": {
+    "previous_sha256": "fa9c572025606a97a262a12aab6b2017a7020be5c163a07e78cc9724e23b2d12",
+    "reason": "Initial locked schema omitted two artifact path/hash fields required by already-frozen training script; no change to predefined split, reward, architecture, optimizer, validation-selection or rollout data.",
+    "training_started_before_this": false,
+    "original_bytes_saved_tang_only": "data/research_human_kicks/contact_future_v044/initial_protocol_before_metadata_completion.json"
+  },
+  "serialization_only_retry": {
+    "old_source_sha256": "dd17f35a551649efd197b0df3379e9f3125de2cd88a457b35b029c68ac652315",
+    "new_source_sha256": "2e0db9ac708d62d933cff701e32616ed6febfc06ffe2ec66cc0c04476f54e207",
+    "prior_study_sha256": "2546cda04984c3c40456963ff86da933c986c6e20708bf2641f04480e0e8578d",
+    "previous_attempt_finished_updates": 1000,
+    "previous_attempt_selection_step": 50,
+    "previous_attempt_best_model_sha256": "a196832c3e68705bed1d35cc0e401445398047c0280b88a9613bc213e397065c",
+    "previous_attempt_error": "torch.load(weights_only=True) rejected a TorchVersion metadata object; physical tensor checkpoint is valid",
+    "fix": "Cast torch_version in checkpoint metadata to a plain string only",
+    "hyperparameters_and_train_val_test_unchanged": true,
+    "first_test_evaluation_completed_before_fix": false,
+    "prior_preserved_directory": "experiments/contact_future_v044/seed4401_first_attempt_serialization_failed"
+  }
+}

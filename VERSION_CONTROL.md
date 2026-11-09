@@ -373,3 +373,11 @@ CMU subject10的01/02/03/05/06原始C3D、ASF/AMC、许可出处和协调输出�
 独立全14秒真实关节限速审计：12次原物理回合共5次发生过实际qdot限值超速。事前选定仅以触球前250ms最大实测qdot/原限速≥0.9作为预警，会得到TP3、FP1、FN2、TN6（开发集回顾性召回3/5）；原v41 trial01接触前最大比例仅0.710，却在接触后0.460s左踝翻滚37.047/37.0rad/s超速；原v32 trial06接触前最大比例0.704，却在接触后1.040s左膝20.448/20.0rad/s超速，超出只看后1s的原事件数据窗。由此提出后续独立研究至少观察接触后1.25s的全身延迟动态及支撑/恢复动作，不能以当前qdot安全阈值或小幅参考修正证明未来一定安全。
 
 数据不是新的未见科研测试集，也没有真实职业球员的足面接触、支撑反力、足速/球速生物力学标注。此次贡献为可复用的接触事件真实动力学特征/风险审计协议、机器人全关节速度和原接触测量分析、失败时间/关节分类和图像；不能称为全身安全控制器或专业类人暴力抽射已学成。代码 tools/build_contact_event_safety_v043.py、tools/analyze_contact_event_safety_v043.py，配置 configs/contact_event_safety_v043.json，回归 tests/test_contact_event_safety_v043.py；完整报告 reports/2026-11-09-contact-event-delayed-safety.md。Tang图 media/v043_contact_event_delayed_joint_speed_risk.png，源数据/NPZ与JSON全留Tang。旧v32/v41仍未升级，实际默认v5不变。
+
+## v0.1.44：接触后1.25秒全身29关节速度预测模型（真实训练，安全性不通过）
+
+从v0.1.43/a5edc26继续，同一原29DoF G1真实PhysX原回合不改，使用v42已有12份14s实际物理数据训练一个“当前身体状态+提前选定未来style控制策略”条件的29关节真实未来qdot峰值预测器（67维输入、29维未来最大|qdot|/原限速输出）。未来标签至真实触球后1.25s。共144个触球前相关观测，按原球位试验组严格划分：4组训练、1组验证、1组测试；这六个结果此前已在项目中看过，不能冒充未来真正盲测或144个独立机器人实验。
+
+一次预注册1000次AdamW更新，验证选择第50步模型。首次训练满1000步却因torch 2.10 weights_only安全反序列化拒绝TorchVersion对象无法载入最佳权重，原失败日志/权重完整保留。只把checkpoint版本元数据从TorchVersion改为纯str并保留前后源SHA/冻结协议补正记录；同种子、同训练数据/超参复现选定第50步，两次最佳网络权重逐元素误差严格0，测试集只在此后完成评价，没有测试驱动调参。
+
+v44按原joint speed ratio MAE，测试持久化0.18295、训练均值0.04149、Ridge0.04513、动作条件MLP0.04256。虽然MLP比Ridge稍好但仍不如训练均值；更关键的是测试组包含12个高度相关的真正危险触球前观察窗口，MLP将**全部12个未来真实超限时刻预测为安全**。因此明确禁止把模型作为安全屏障或升级默认控制器。预注册配置 configs/contact_future_forecast_v044.json，源码 tools/build_contact_future_v044.py、tools/contact_risk_model_v044.py、tools/train_contact_future_v044.py、tools/plot_contact_forecast_v044.py，数据/权重只在Tang；报告 reports/2026-11-09-contact-future-model-study.md。本版是真实动力学模型失败证据，不是安全世界模型/职业球员类人暴力抽射已做出。
