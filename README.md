@@ -1,5 +1,13 @@
 # KineticKick
 
+## v0.1.54：三次原G1碰撞传感器复跑，定位10_05失败时左腕/左髋等大反向接触力
+
+接续上一批12回合原PhysX比较，本轮另开branch，冻结14项原版本源码/3组真实物理结果SHA。只在原已知球位的v32-zero、CMU10_02、CMU10_05三种原控制配置上使用现有`--contact-diagnostics`开启**只读**命名非足刚体合力记录，一共实际运行三组独立原G1/Isaac物理回合。三组的真实200Hz追踪、完整接触、50Hz29DoF关节/目标、射门和全部终止结果与原v52历史源**在所有共同物理字段逐值相同**，新增诊断无策略/本体/球状态扰动；源数据保存在Tang忽略目录，没有人工修改或挑选。
+
+失败组CMU10_05再次在5.140001s`physical_nonfoot`终止。独立碰撞传感器在约**5.145s**同时记录左手腕`left_wrist_yaw_link`和左髋`left_hip_roll_link`各25.890153N、方向**完全相反**的原始合接触力，两个连杆原点相距0.1139m；两个原成功对照都没有≥5N的命名非脚碰撞。证据强烈符合**左腕—左髋自碰撞**，而不是声称“整个机器人已经跌倒”；但net contact force仍不提供PhysX碰撞对/contact manifold，因此**可能的自碰撞尚不是严格验证的碰撞对真值**。下一批应验证碰撞对而非放宽安全终止门槛；保留v32/v5默认小脑不变。
+
+审计与来源：`configs/cmu_named_nonfoot_diagnostics_v054.json`、`tools/run_named_nonfoot_diagnostics_v054.py`、`tools/audit_named_nonfoot_diagnostics_v054.py`、`tools/infer_nonfoot_pair_v054.py`、`tools/write_named_nonfoot_report_v054.py`；[完整真实PhysX失败碰撞体研究报告](reports/2026-11-11-v054-original-PhysX-named-nonfoot-contact.md)，新增测试tests/test_named_nonfoot_v054.py。**655 passed +69 subtests passed**。仍不是专业人类自然暴力抽射学习成功；暂时没有新训练的小脑/脑网络，也不升默认策略。
+
 ## v0.1.53：四球位×三冻结控制器=12次真实PhysX，人体时序先验未带来严格射门成功
 
 本轮按照一个完整研发批次（冻结协议、12个原始G1 PhysX回合、200Hz失败归因、独立审计、全项目测试、GitHub发布）执行，而非每一步等待“继续”。在训练/重定向任何新策略前，冻结4组球位xy偏移/机器人初速度，比较原v32、小幅真实CMU10_02先验、小幅CMU10_05先验；全部12个控制/球体结果有SHA证据、原脚球碰撞与原执行器限制保持不变。**严格合法正脚背、≥3.5m/s出球、全14s、跑动/接触/射后恢复及实际qdot安全：三个方案均0/4成功**；新CMU参考在两组各4/4真实生效，但没有改善严格过关，部分场景出现新的真实关节超速。trial01球速约4.25m/s但正脚背冲量分数不足95%，trial02/03约2.0–2.33m/s且脚面不符，trial04原v32和CMU10_05都出现非脚物理接触提前终止。用户要求的专业类人暴力抽射仍未实现，默认控制器绝不升级。

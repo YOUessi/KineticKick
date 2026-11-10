@@ -466,3 +466,11 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 另以v52实际真实200Hz三条中心球位轨迹SHA复核失败“倒地”说法：原10_05源在5.140001s物理终止，第一共1028个5ms物理行、额外1µs终止快照，根高度约0.786m/倾角3.07°并未触及根部跌倒阈值，**能证实的是nonfoot终止，不是根倾倒**；已有原记录只有总非脚力，不提供具体身段，下一批按原位置/机器人策略仅开启只读contact-diagnostics重新定位。相比正常原v32，人体先验影响2.77s左右才把根位置推离超过5mm，表明微小前触球关节改动可能通过长时恢复造成显著轨迹分叉，现有两个先验并无安全验证。
 
 新增12回合顺序互斥并可用原hash断点续跑工具 tools/run_cmu_physics_matrix_v053.py，完整严格分场景门禁 tools/audit_cmu_physics_matrix_v053.py，200Hz原失败归因 tools/inspect_cmu_recovery_mechanism_v053.py，文字+本地媒体输出 tools/write_cmu_batch_report_v053.py，测试 tests/test_cmu_batch_v053.py，报告 reports/2026-11-11-v053-real-CMU-12-physx-ablation-and-recovery.md；完整研究分批契约 docs/RESEARCH_BATCH_SERIES_2026-11-11.md。全部原权重、C3D、NPZ、12次JSON、图像保持Tang忽略目录。全项目651 passed +69 subtests passed，原默认v5/v32不升级。
+
+## v0.1.54 — 原PhysX三策略可复现非脚碰撞体命名与左手腕-左髋净力对向分析
+
+在clean v0.1.53/164e9ff创建新分支，锁定原v52三种中心足球控制器（三个SHA不变的原config及原30MB级物理数据）和原run_placement_strike.py/协调style控制脚本等共14项SHA。顺序使用新增`--contact-diagnostics`只读参数三次运行真实IsaacLab/G1/PhysX，GPU互斥、原小脑权重/动作参考/足球/G1根位置/限速/接触从未调整，没有进行新RL训练。为防传感器读取影响仿真，审计每一份新原物理报告与v52旧报告所有共有字段全结构逐值相同：三组**全部一致**，原成功两组仍完整14s成功且没有≥5N非脚命名刚体事件，原CMU10_05仍在5.140001s以`physical_nonfoot`终止。
+
+独立命名contact采集在5.144999885s检测到G1 `left_hip_roll_link` 和 `left_wrist_yaw_link` 两个不同非脚碰撞体分别承受 `[-21.220844,-14.821829,-0.537769] N` 和 `[21.220844,14.821829,0.537769] N`，每个力模长25.890153N，方向余弦-1.0，合力和严格0N，原连杆原点相隔0.113883m。符合**左腕-左髋自碰撞的强候选机制**，但原ContactSensor提供的是每个body的净力而不是接触manifold/pair collider paths，故不能将“这两个刚体真的互相接触”称作认证真值；该发现可指导下轮只读接触对验证。根高度约0.786m、根倾约3.07°，无法从原物理确定整体摔倒，也不改变原失败结论。
+
+冻结配置 `configs/cmu_named_nonfoot_diagnostics_v054.json`、真实三联物理复跑 `tools/run_named_nonfoot_diagnostics_v054.py`、整段原物理逐字段严格审计 `tools/audit_named_nonfoot_diagnostics_v054.py`、净力配对原始SHA分析 `tools/infer_nonfoot_pair_v054.py`、报告生成 `tools/write_named_nonfoot_report_v054.py`，报告`reports/2026-11-11-v054-original-PhysX-named-nonfoot-contact.md`，回归 `tests/test_named_nonfoot_v054.py`。原物理/模型/CMU与附加分析JSON保留Tang的ignored目录，源码/报告/协议/测试放GitHub。**655 passed+69 subtests passed**。已确认了一个具体恢复安全风险的可观测通道，但没有发明更自然的全身足球动作，也不宣称高爆发力或人类真值成立；默认策略保持冻结。

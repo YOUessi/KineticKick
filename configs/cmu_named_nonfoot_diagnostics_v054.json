@@ -1,0 +1,47 @@
+{
+  "version": "0.1.54",
+  "parent": "164e9ff",
+  "purpose": "Read-only named non-foot body contact diagnosis for original known v52 center-ball PhysX outcomes. Preserve old case selection and no policy tuning.",
+  "original_three_center_policies": {
+    "frozen_v32": {
+      "config": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+      "original": "reports/v052_cmu_10_02_center_zero_physx.json",
+      "instrumented_output": "reports/v054_frozen_v32_contact_diagnostics.json"
+    },
+    "cmu_10_02": {
+      "config": "configs/cmu_real_120hz_10_02_physx_v052.json",
+      "original": "reports/v052_cmu_10_02_center_physx.json",
+      "instrumented_output": "reports/v054_cmu_10_02_contact_diagnostics.json"
+    },
+    "cmu_10_05": {
+      "config": "configs/cmu_real_120hz_10_05_physx_v052.json",
+      "original": "reports/v052_cmu_10_05_center_physx.json",
+      "instrumented_output": "reports/v054_cmu_10_05_contact_diagnostics.json"
+    }
+  },
+  "immutable_sha256": {
+    "configs/cmu_real_120hz_10_02_physx_v052.json": "aaf097a6f4aacb225820313ca50738cd45a5b9d0f1e2b30019de309cb85c74bf",
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18",
+    "reports/v052_cmu_10_02_center_physx.json": "00b7b7ac54d1a3c5ff5eb603eb2588adda3c18268da28fa6b070c167fb844718",
+    "reports/v052_cmu_10_02_center_zero_physx.json": "fea926daeb26fd7de97c6f9b3e77d2e1cd3b45b1bb69dff5164ea3b6fafa15cc",
+    "reports/v052_cmu_10_05_center_physx.json": "e9d238a81bf7f68b7a2002edfc6fe875f3765a744fcc0ced24850d7bac00219f",
+    "reports/v053_cmu_frozen_matrix_audit.json": "746370c98a65d15708f195a93b0eddf2411a26481900a7cd6a3915e88f5bad13",
+    "tools/audit_cmu_physics_matrix_v053.py": "ffce22d2bc56a83aaa2ddb328fc03997d87d10990b3868c01d7c023287f13a5e",
+    "tools/coordination_reference_v040.py": "a21cc7c915a22a220bbb010af06dfdeee0769cb439fbb9edbaeed4b70cd7f177",
+    "tools/coordination_style_v041.py": "04db612299bdb4a093d1c71efae6478ff4a18f973ccbfa4686f5353631209b15",
+    "tools/run_placement_strike.py": "7c5cfb0e32cecb6ea877858bc8e6e473b74f4ca6d8a3cae790069d8e3b1043e4",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/stride_shot_metrics.py": "c034e2ebae908d1df95534253061a4c9817a61aa97cf0f08c0f0dc083765b518",
+    "tools/strike_baseline_metrics.py": "22a86d021cf358f9f6c3a18b13166fd8dea81b31b535b28b5870ee51146fb1e5"
+  },
+  "new_physics_rollouts": 3,
+  "nonfoot_sensor_threshold_for_readonly_trace_N": 5.0,
+  "original_nonfoot_termination_is_not_verified_fall": true,
+  "match_all_common_physical_time_fields": true,
+  "no_policy_or_ball_state_changes": true,
+  "no_adaptive_retraining": true,
+  "source_CMU_human_launch_inferred_not_contact": true,
+  "scoped_to_known_development_center": true,
+  "diagnostic_contract": "All three identical physics setups rerun with --contact-diagnostics. Validate complete original 5ms fields and contact/termination, then report exact named contact bodies where measurable; a changed trajectory fails parity."
+}
