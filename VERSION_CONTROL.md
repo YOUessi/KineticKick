@@ -409,3 +409,12 @@ v44按原joint speed ratio MAE，测试持久化0.18295、训练均值0.04149、
 训练前固定6个新精确球位/机器人初始y速度，与此前所有v42、v45、v46真实PhysX条件均不重合；每组旧v32与新v47各跑一次完整14秒原场景，结束后独立按真实正脚背球、全部球越门线、≥3.5m/s出球、原5ms实际qdot无任何超原限制、正常助跑衔接与最后稳定站立全部门槛验收。**原v32严格通过4/6、新PPO也是4/6、0个旧失败修复、0个旧成功退化。** 6组触球前G1关节轨迹与出球速度完全相同，原后接触策略的学习只能改变恢复：例如第一组站稳从7.760s变为9.255s但仍射偏，另有一组由10.375s变为8.905s。第5组球速2.7566m/s/正脚背失败，新模型依旧无法改善。全程无qdot超限属于这6组原环境物理观测，不代表多种子鲁棒安全证书或专业人类运动美感。默认v5及冻结v32不升级。
 
 训练源 tools/train_contact_phase_rl_v047.py + tools/post_shot_objective_v047.py；原真PhysX评估 tools/run_contact_recovery_rl_v047.py + tools/audit_contact_recovery_rl_v047.py；事前协议 configs/learned_contact_recovery_study_v047.json；专用训练配置 configs/state_conditioned_strike_v18_train.json；新真实PPO动作评估配置 configs/state_conditioned_strike_v18.json。报告 reports/2026-11-09-v047-real-ppo-contact-recovery.md。真实模型权重2MB/训练日志/12个约28MB的原回合及绘图留Tang本地，不纳入GitHub。接下来不再继续只对后接触恢复做手工补丁，而是研究触球前的髋膝踝/躯干/手臂协同生成、物理合法脚面/速度和动作审美数据；尚未完成真正类人暴力抽射论文方法。
+
+
+## v0.1.48 — 触球前G1全身PPO真实训练与严格安全对照，实际动作生效但未提高合法强力射门
+
+独立分支承接v0.1.47/50f8e50，在原G1自由根部29DoF、原PD/足面/球完整PhysX不改的条件下，训练一个160维身体/球状态→29维全关节触球前残差PPO，新策略仅在实际左脚支撑、右摆腿卸载且原足端首次接触前1.02–1.54s以不超0.018rad/每20ms不超0.003rad的目标界产生参考；原v32已训练的射后恢复PPO始终冻结。训练奖励基于真实球出射方向和速度、原5ms实测qdot及训练集唯一一段3DSP广播视频估计3D的人体跨部位弱参考，不是有真实脚球接触/足端发力标注的职业人类爆发式动作捕捉。
+
+已在Tang RTX4090按事先锁定seed4801训练64个真实G1环境、96次PPO更新、316.25s；新模型SHA256为16c6dccae019c92a7326c7cdf7e9cb9595e865832fe345712e309f4b29fdb628，已冻结原训练配置、随机种子与6组新测试球位和初始y速度三元组。零Actor的整段14s原物理字段和旧v32关节动作等价。新6组各原v32+新PPO各一次完整原PhysX，原v32严格合法右正脚背/整球进门/≥3.5m/s出球/原G1全部5ms实际qdot≤原限/完整14s站立成功2/6，新PPO还是2/6。新策略每个条件都确实执行6个非零全身动作目标20ms步，新出球速度只比原策略变化几毫米每秒，0旧失败修复/0退化。新05号出现真实G1 qdot轻微超过原限，新06号出现非目标脚面接触和physical_nonfoot提前终止。小规模实验不能代表整个人群/球场泛化，也不能把人体余弦相似度冒充自然美感。
+
+原G1小脑和默认v5继续冻结不升级，论文B路线的自然高爆发正脚背抽射仍未完成。研究源码tools/preimpact_wholebody_v048.py、tools/train_preimpact_wholebody_v048.py、tools/run_preimpact_wholebody_v048.py、tools/run_preimpact_study_v048.py、tools/audit_preimpact_wholebody_v048.py、tools/write_preimpact_report_v048.py、tools/plot_preimpact_v048.py，冻结配置configs/learned_preimpact_wholebody_study_v048.json与v19训练/零/验证三配置，测试tests/test_preimpact_wholebody_v048.py。所有模型权重、第三方素材和12个原30MB PhysX报告留Tang忽略目录，GitHub记录方案、SHA、实证正/负结果、报告reports/2026-11-10-v048-learned-preimpact-ppo-physx.md；全回归620 passed+69 subtests。

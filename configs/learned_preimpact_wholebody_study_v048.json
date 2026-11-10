@@ -1,0 +1,125 @@
+{
+  "version": "0.1.48",
+  "parent_commit": "50f8e50",
+  "research_question": "Can NEW learned 29DoF G1 preimpact wholebody coordination change real instep ball contact, outgoing speed and strict original full14s safety, unlike 7s postshot-only v47 PPO?",
+  "original_v32_PPO_recovery_sha256": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+  "human_training_source_qualifies_real_athlete_instestep": false,
+  "source_3dsp_weak_pose_prior_sha256": "e74438befc96d523dc95032f93dee67b2911988ca920305e362fa951ec3a9881",
+  "all_G1_29dof_and_PhysX_contact_no_state_write": true,
+  "exact_original_motor_qdot_and_torque_limits": true,
+  "zero_reference_disabled_config": "configs/state_conditioned_strike_v19_zero.json",
+  "zero_case": "center",
+  "zero_result": "reports/v048_preimpact_zero_center.json",
+  "zero_audit": "reports/v048_preimpact_zero_center_audit.json",
+  "original_v32_baseline_config": "configs/state_conditioned_strike_v9.json",
+  "training_config": "configs/state_conditioned_strike_v19_train.json",
+  "candidate_evaluation_config": "configs/state_conditioned_strike_v19.json",
+  "training_spec": {
+    "seed": 4801,
+    "num_envs": 64,
+    "iterations": 96,
+    "max_seconds": 420.0,
+    "output": "experiments/preimpact_wholebody_v048/seed4801_env64_iter96",
+    "model_initialization": "zero-final-layer randomized PPO, no imitation of professional absolute joint angles",
+    "actor_features": 160,
+    "action_dofs": 29,
+    "trained_context_source": "18 existing previously observed G1 ball/velocity cases",
+    "only_human_source": "3DSP TRAIN clip00001, broadcast estimated 3D pose weak cue without accurate foot ball contact, no force/power",
+    "physical_reward": "Actual G1 original qdot and real outgoing soccer ball direction/speed with original v32 post-shot actor unchanged",
+    "checkpoint_selection": "final finite PPO checkpoint only, no test/validation-driven hyperparameter search"
+  },
+  "planned_6_new_exact_soccer_conditions": [
+    {
+      "id": "preimpact_new01",
+      "ball_offset_xy_m": [
+        0.005,
+        -0.028
+      ],
+      "velocity_y_delta_mps": -0.067,
+      "baseline_output": "reports/v048_preimpact_new01_original_v32.json",
+      "candidate_output": "reports/v048_preimpact_new01_learned_preimpact.json"
+    },
+    {
+      "id": "preimpact_new02",
+      "ball_offset_xy_m": [
+        -0.017,
+        -0.005
+      ],
+      "velocity_y_delta_mps": -0.018,
+      "baseline_output": "reports/v048_preimpact_new02_original_v32.json",
+      "candidate_output": "reports/v048_preimpact_new02_learned_preimpact.json"
+    },
+    {
+      "id": "preimpact_new03",
+      "ball_offset_xy_m": [
+        0.028,
+        0.006
+      ],
+      "velocity_y_delta_mps": -0.041,
+      "baseline_output": "reports/v048_preimpact_new03_original_v32.json",
+      "candidate_output": "reports/v048_preimpact_new03_learned_preimpact.json"
+    },
+    {
+      "id": "preimpact_new04",
+      "ball_offset_xy_m": [
+        0.017,
+        -0.015
+      ],
+      "velocity_y_delta_mps": 0.041,
+      "baseline_output": "reports/v048_preimpact_new04_original_v32.json",
+      "candidate_output": "reports/v048_preimpact_new04_learned_preimpact.json"
+    },
+    {
+      "id": "preimpact_new05",
+      "ball_offset_xy_m": [
+        -0.028,
+        0.026
+      ],
+      "velocity_y_delta_mps": 0.017,
+      "baseline_output": "reports/v048_preimpact_new05_original_v32.json",
+      "candidate_output": "reports/v048_preimpact_new05_learned_preimpact.json"
+    },
+    {
+      "id": "preimpact_new06",
+      "ball_offset_xy_m": [
+        -0.007,
+        0.015
+      ],
+      "velocity_y_delta_mps": 0.068,
+      "baseline_output": "reports/v048_preimpact_new06_original_v32.json",
+      "candidate_output": "reports/v048_preimpact_new06_learned_preimpact.json"
+    }
+  ],
+  "no_extra_model_tuning_or_seed_selection_after_results": true,
+  "tests_new_exact_ball_parameters_with_original_physics_not_new_domain": true,
+  "training_episodes_seconds": 7.0,
+  "full_physical_test_seconds": 14.0,
+  "evaluator": "Original whole-ball legal goal + true right instep impulse >=95% + >=3.5m/s + original actual G1 qdot <= limit for all 5ms + no nonfoot fall + standing recovery",
+  "original_expert_and_contact_will_not_be_replaced": true,
+  "original_v32_reset_source_SHA256": "896cda44d5e718aed83ea35c027b252293672e65a438b14671444cfc4b36a8b5",
+  "source_sha256": {
+    "tools/preimpact_wholebody_v048.py": "75c9068014dcc4fac5ffda7bfa28251996c21c91a7cab894a64717ee3452d169",
+    "tools/train_preimpact_wholebody_v048.py": "bc3da4134ec80f60b00c38bd8cad87607f1c8a6242ee005a52d19ea343b11aaa",
+    "tools/run_preimpact_wholebody_v048.py": "2ade8957e3b12d51c7166e7cf0810b81ef74b03f7e8c1906ce000263f3b5fba3",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/post_shot_objective.py": "5b0b2abc8f21df70d2130f84edb1b2a4d6b1be3df7566415bd281e0c5c6052f1",
+    "tools/placement_strike.py": "e461ba4b025b38295295af883bc04beb5ea1289dcd24ac231cc7fafc85f27638",
+    "tools/train_post_shot_recovery.py": "68b4e82bb6ba3783e163dea96f04fe1cb9b6018b5f60dc8aba4ce7bc51b107b5",
+    "tools/strike_cases.py": "441c01468f4e8522e004759eb7cf5ea3ef04dc8d4fd327d84ad16a701dffe117",
+    "configs/state_conditioned_strike_v9.json": "896cda44d5e718aed83ea35c027b252293672e65a438b14671444cfc4b36a8b5",
+    "configs/state_conditioned_strike_v19_train.json": "4efd7ed16e739b8b59226ab34a4aab867bedae6885c9e3a07c63d038e5eaa81b",
+    "configs/state_conditioned_strike_v19_zero.json": "3f2641932133cf0a3adcb431af1e5563958c15a796ad947e3c2567c7fe6609af",
+    "experiments/post_shot_v032/ppo_s3201/last_model.pt": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+    "experiments/coordination_projection_v040/train_clip00001_center/g1_joint_delta_50hz.npz": "e74438befc96d523dc95032f93dee67b2911988ca920305e362fa951ec3a9881"
+  },
+  "post_training_final_only_frozen": {
+    "initial_preregister_sha256": "dec7f66c9bc5a27a734ac38adcb664404908f56eceb37206873d543f47bbe09b",
+    "original_preserved": "experiments/preimpact_wholebody_v048/study_initial_before_trained_actor_metadata.json",
+    "final_checkpoint_sha256": "16c6dccae019c92a7326c7cdf7e9cb9595e865832fe345712e309f4b29fdb628",
+    "final_PPO_updates": 96,
+    "eval_config_sha256": "9142ed40d6274fabe7d63791087e701737c8bc238a95429f40d389cd7263defb",
+    "runner_sha256": "814b2f0b19ae90492274fc8c93a6f0b963f67ba5e2466be48ea6ffbf0049632e",
+    "physx_auditor_sha256": "7311e6d9aae12e2a36aefc85cefa0142b76d7067ef96d62bc8900b37c4a7b800",
+    "no_eval_trial_run_before_model_lock": true
+  }
+}
