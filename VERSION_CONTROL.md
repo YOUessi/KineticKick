@@ -444,3 +444,15 @@ v44按原joint speed ratio MAE，测试持久化0.18295、训练均值0.04149、
 新增冻结configs/cmu_g1_cross_morph_v051.json（12个原代码/G1和真实CMU源SHA），脚本tools/cmu_g1_semantic_bridge_v051.py、tools/plot_cmu_g1_bridge_v051.py、tools/write_cmu_g1_report_v051.py、tests/test_cmu_g1_bridge_v051.py，报告reports/2026-11-10-v051-real-human-G1-coordination-baseline.md。另给完整一条命令workflow tools/run_cmu_g1_research_batch_v051.py --run，在Tang上验证/顺序复用v50真实数据处理、v51特征映射、可视化、报告与11个专门测试；docs/CMU_SOCCER_TO_G1_BATCH.md写明原始CMU和真实G1完整PhysX源需要本地存在，原数据绝不入Git，依赖 requirements/cmu-mocap-v050.txt pin ezc3d 1.7.2。Tang保留20×6比较NPZ/原JSON和图两张，GitHub只保存代码/冻结配置/报告/教程。全部636项主回归测试、69项子测试已通过。
 
 最终研究方向仍是从优秀人类踢球动作学全身协调，生成新的自然、连贯、有爆发力的G1正脚背抽射动作；现阶段缺乏真实专业高频足球接触标定、GRF/球旋转/真实人体功率和跨被试独立数据，不用这个描述性相对余弦接口包装成已经学得的职业爆发力策略。
+
+## v0.1.52 — 真实CMU相位指导G1全身参考，三次真实PhysX闭环物理验证与负结果
+
+从 clean `version/v0.1.51` / `d483886` 新建独立 `version/v0.1.52`。与前几版 3DSP 电视画面升维人体姿态不同，本轮使用两条已审计的真实 CMU 120Hz 光学足球动捕（10_02和10_05，**来自同一位被试**），复用上版六通道G1/人体骨段几何语义，在原已执行G1 v32 PhysX root和29DoF上实现一个数值可微六维余弦FK、固定96步相位投影优化、足部位移/时间平滑性和原关节动作安全边界。在每段固定20个50Hz前撞击窗口上取得离线6维目标代理误差改善26.63%/23.44%；各生成人体风格参考确有17个非零50Hz帧，峰值不超过0.00398rad。**CMU人体t=0只是球光学标记簇出球起点的推断事件**；未标定真实脚球接触、足背角度、肌肉功或精英足球爆发力，不能把该MSE称为人类动作自然度或职业高爆发发力链。运动轨迹仅是有界的离线29DoF IK参考，不是新训练的小脑网络。
+
+真正把两条源运动生成的700×29 G1参考分别接入**旧v41独立style门控**，完整保留原脚球碰撞、Isaac PhysX、G1自由根部、PD执行器、原关节速度限制、原v32已训练后恢复PPO、球门及全任务门禁。顺序运行两个真物理候选及单独ZERO关闭对照，不在看到结果后改参数。两组候选都在首次1.57s真实脚球力接触中以100%正脚背触球、足球进门，各真实施加5个20ms额外非零29关节目标（实际身体关节角对原对照峰值约0.00130/0.00121rad）；5ms实测qdot没有超原限。**10_02：14s完整2800个物理子步、4.6341m/s出球、最终8.715s恢复，严格任务PASS。10_05：4.6391m/s出球但5.14s由physical_nonfoot非脚接触提前终止，仅1029个物理子步/257控制步，最终恢复0秒，因此严格任务FAIL。** 不能因10_05已经把球踢进球门、目标代理MSE略好就抹掉物理失败。全部样本只有已开发中心球位、同人两个CMU片段、每段一次物理控制，绝无统计验证或未见人体自然度/大力抽射泛化结论。
+
+ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物理trace字段及所有接触、joint kinematics、结果、跑动、连续射门、恢复等结构逐值一致；原历史档案另有7项辅助传感遥测新纪录器未保存，不宣称全JSON字节相同。真实首次G1接触、非足部触地、射后平衡与实际关节速度均由独立只读审计器检查；保存了10_05原失败轨迹/不可补齐的257个真实控制步，后续作为失败回归，不晋升任何旧/新候选为默认控制器。
+
+文件：冻结19项输入SHA的 `configs/cmu_g1_phase_projection_v052.json`，三个独立候选/ZERO物理配置 `configs/cmu_real_120hz_*_physx*_v052.json`；可微人体相位到G1关节参考生成 `tools/build_cmu_g1_candidate_v052.py`；真实物理审计 `tools/audit_real_cmu_physx_v052.py`；文字报告生成 `tools/write_cmu_real_physics_report_v052.py`；新单元测试 `tests/test_real_cmu_phase_v052.py` 和 `tests/test_real_cmu_physx_v052.py`。完整科研结论见 `reports/2026-11-11-v052-real-CMU-phase-controlled-G1-PhysX.md`，完整复现见 `docs/CMU_REAL_PHASE_TO_G1_V052.md`。所有原始CMU C3D/AMC、30MB级完整原PhysX回合、NPZ参考、实验模型保持 Tang/.gitignore，不入GitHub。**全项目647 passed，69 subtests passed**。
+
+下一批的核心科学瓶颈不再是这1mrad量级的腕/髋/膝局部修正，而是真实人体动作的专业正脚背/接触标定、足端速度/球旋转/支撑/躯干手臂相位与射后随挥落脚的统一可执行全身策略，以及匹配球位、多被试/多动作、任务合格前提下的独立自然度盲评。**当前证据只有“真实CMU→G1有界参考→一正一负物理闭环链”，没有证明最终类人强力抽射。**
