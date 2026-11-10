@@ -1,0 +1,128 @@
+{
+  "version": "0.1.47",
+  "source_parent": "version/v0.1.46",
+  "parent_commit": "a0eb01e",
+  "question": "Does 5ms actual-qdot safety-margin PPO finetuning of an already learned G1 fullbody postshot recovery policy improve original full instep shot safety under brand-new exact ball/velocity triples?",
+  "frozen_recovery_actor_start_SHA256": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+  "original_PPO_optimizer_reused": false,
+  "original_29dof_floating_G1_real_PhysX": true,
+  "original_ball_model_contact_foot_geometry_unchanged": true,
+  "original_joint_actual_velocity_and_torque_limits_unchanged": true,
+  "original_PPO_checkpoint_not_overwritten": true,
+  "original_v41_weak_human_video_pose_prior_not_part_of_training": true,
+  "original_v44_false_safe_prediction_model_not_loaded": true,
+  "training": {
+    "seed": 4701,
+    "num_envs": 64,
+    "iterations": 72,
+    "max_seconds": 300.0,
+    "warmstart": "experiments/post_shot_v032/ppo_s3201/last_model.pt",
+    "output_directory": "experiments/contact_phase_recovery_v047/seed4701_env64_iter72",
+    "objective": "Original 5ms G1 whole-body recovery reward plus preemptive actual qdot ratio>.70 squared penalty, fixed weight 2.5",
+    "learning_rate": 0.0001,
+    "selection": "single final finite checkpoint only",
+    "independent_test_reserve": true
+  },
+  "training_config": "configs/state_conditioned_strike_v18_train.json",
+  "trainer": "tools/train_contact_phase_rl_v047.py",
+  "final_evaluation_config": "configs/state_conditioned_strike_v18.json",
+  "original_v32_evaluation_config": "configs/state_conditioned_strike_v9.json",
+  "no_hyperparameter_sweep": true,
+  "no_multi_checkpoint_selection": true,
+  "predeclared_eval_exact_six_ball_conditions": [
+    {
+      "id": "recovery_holdout01",
+      "ball_offset_xy_m": [
+        -0.014,
+        0.021
+      ],
+      "velocity_y_delta_mps": 0.011,
+      "old_control_output": "reports/v047_recovery_holdout01_v32.json",
+      "trained_control_output": "reports/v047_recovery_holdout01_learned.json"
+    },
+    {
+      "id": "recovery_holdout02",
+      "ball_offset_xy_m": [
+        0.008,
+        0.004
+      ],
+      "velocity_y_delta_mps": -0.037,
+      "old_control_output": "reports/v047_recovery_holdout02_v32.json",
+      "trained_control_output": "reports/v047_recovery_holdout02_learned.json"
+    },
+    {
+      "id": "recovery_holdout03",
+      "ball_offset_xy_m": [
+        -0.007,
+        -0.019
+      ],
+      "velocity_y_delta_mps": 0.034,
+      "old_control_output": "reports/v047_recovery_holdout03_v32.json",
+      "trained_control_output": "reports/v047_recovery_holdout03_learned.json"
+    },
+    {
+      "id": "recovery_holdout04",
+      "ball_offset_xy_m": [
+        0.023,
+        0.013
+      ],
+      "velocity_y_delta_mps": -0.013,
+      "old_control_output": "reports/v047_recovery_holdout04_v32.json",
+      "trained_control_output": "reports/v047_recovery_holdout04_learned.json"
+    },
+    {
+      "id": "recovery_holdout05",
+      "ball_offset_xy_m": [
+        0.018,
+        -0.012
+      ],
+      "velocity_y_delta_mps": 0.059,
+      "old_control_output": "reports/v047_recovery_holdout05_v32.json",
+      "trained_control_output": "reports/v047_recovery_holdout05_learned.json"
+    },
+    {
+      "id": "recovery_holdout06",
+      "ball_offset_xy_m": [
+        -0.023,
+        -0.004
+      ],
+      "velocity_y_delta_mps": -0.061,
+      "old_control_output": "reports/v047_recovery_holdout06_v32.json",
+      "trained_control_output": "reports/v047_recovery_holdout06_learned.json"
+    }
+  ],
+  "no_prior_v42_v45_v46_exact_test_parameter_reuse": true,
+  "each_evaluation_episode_runs_original_14s_physx": true,
+  "physics_dt": 0.005,
+  "control_dt": 0.02,
+  "original_strict_gate": "Original real G1 full-body speed/torque limits, lawful right-instep impact, full ball crossing, ball speed >=3.5m/s, upright stance and complete14s",
+  "postshot_training_episode_duration_s": 7.0,
+  "new_independent_physical_eval_only_after_model_frozen": true,
+  "human_qualified_professional_explosive_data_used": false,
+  "machine_learning_safety_certificate_claim": false,
+  "no_controller_promotion_without_full_eval": true,
+  "source_sha256": {
+    "tools/train_contact_phase_rl_v047.py": "c32bf519b106af80a8622e01c4de17ab0e38fdc227d76873b5148c23248c314a",
+    "tools/post_shot_objective_v047.py": "7fe77b2bfe8b7a68045453bd063e634d9592b388e83de2b0b29e5fb2f4a5c4f8",
+    "tools/post_shot_recovery.py": "9df7e303f960603ea44d5bd3dd1d265ad2732799717808a545274000472f00dc",
+    "tools/post_shot_objective.py": "5b0b2abc8f21df70d2130f84edb1b2a4d6b1be3df7566415bd281e0c5c6052f1",
+    "configs/state_conditioned_strike_v8.json": "2f97ffd5adccfee9a14dec2607e5ad55d2a1a58642ad96577ab092b56a0b7edf",
+    "configs/state_conditioned_strike_v18_train.json": "1666cdb937f678d9d68895c5c8e99178b5c818da38c6711195b0de95df4a6077",
+    "experiments/post_shot_v032/ppo_s3201/last_model.pt": "ee452b4ee4359727f5984f23628683d5c444bc2e3e7143ec512a5a1a3e96c326",
+    "tools/train_post_shot_recovery.py": "68b4e82bb6ba3783e163dea96f04fe1cb9b6018b5f60dc8aba4ce7bc51b107b5",
+    "tools/strike_cases.py": "441c01468f4e8522e004759eb7cf5ea3ef04dc8d4fd327d84ad16a701dffe117"
+  },
+  "actual_final_trained_checkpoint_sha256": "7f1342837cd5332c6742c7ca5d78ab196f20b10858229635b781b5fee729a9aa",
+  "final_evaluation_config_sha256": "d0bd7edb888c88e1cfce6d17929aafcdfec3daa3c77ff529e7bc2b0b77546b8e",
+  "frozen_after_completed_training_before_any_new_physx": {
+    "training_update_count": 72,
+    "initial_registration_sha256": "0cc3d308b8b1cab7937680f2dda1b8f3e9b8cd64559ded20d17bdac7178a2fdf",
+    "trained_model_sha256": "7f1342837cd5332c6742c7ca5d78ab196f20b10858229635b781b5fee729a9aa",
+    "trained_config_sha256": "d0bd7edb888c88e1cfce6d17929aafcdfec3daa3c77ff529e7bc2b0b77546b8e",
+    "pretraining_protocol_bytes_preserved": "experiments/contact_phase_recovery_v047/study_locked_before_rl_training.json",
+    "evaluation_runtime_sha256": "b64ac5619ae49928f1772b0b086b767d4561f31cd9901aa2f8b6ccf266d9d13e",
+    "strict_original_physx_auditor_sha256": "e20c55837aabf3e221aa2615a73e36e8bc8d5f3b19fd343626f59f73ca3caa6d",
+    "test_shots_executed_before_freeze": false,
+    "no_training_case_or_hyperparameter_changes": true
+  }
+}

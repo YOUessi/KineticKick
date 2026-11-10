@@ -401,3 +401,11 @@ v44按原joint speed ratio MAE，测试持久化0.18295、训练均值0.04149、
 旧已知trial01真实改变19个控制时刻，消除了原左踝轻微超速，原成功trial03保持成功。但6组新精确球位原v41严格完整通过4/6，v46只3/6：0组从原失败变成功、1组原成功变FAIL。新球位04新v46脚触球后0.685秒右膝qdot=30.049rad/s/原上限20（原v41同一时刻5.549），原右足支撑载荷4358.646N，说明小幅全身目标可能在落脚转换时严重放大动力学风险，不能仅凭同一时刻数据证明唯一因果机制。其余失败包括脚面不合法/球速太低与偏门，严格按照原门槛判。所有6个新球位确有18–19个非零关节参考控制步。原球速与原正脚背判据不因新方法人为修改。
 
 源码 tools/contact_landing_transfer_v046.py、tools/run_contact_landing_v046.py、tools/run_landing_transfer_study_v046.py、tools/audit_contact_landing_v046.py、tools/analyze_contact_landing_v046.py、tools/plot_landing_safety_v046.py、tools/plot_landing_six_cases_v046.py、tools/write_landing_report_v046.py；报告 reports/2026-11-09-v046-anticipatory-landing-physx.md；全部实测原JSON/SHA/图留在Tang已忽略目录。全项目606 passed、69 subtests passed。**决策：不晋升v46为默认控制器，不宣称更自然或更强力人类抽射，保留安全退化负例用于下一独立动力学研究。**
+
+## v0.1.47：真实29DoF G1 PPO后训练与6组新球位完整原PhysX（功能未提升）
+
+从v0.1.46/a0eb01e分支在Tang RTX4090真实训练以原v32冻结126轮PPO恢复checkpoint为初始化的全身29DoF恢复Actor。保留原G1自由根部、原轨迹/跑动/脚球物理和原PD执行器实际qdot/扭矩上限，原接触后直立/触地/稳定/落脚等奖励不变，另外给5ms实测关节速度占原限值大于.70时的超前平方风险成本（固定2.5），原v44未来关节MLP因严重假安全不参与训练或运行。按训练前冻结seed4701、64个并行Isaac环境、72次PPO更新/300s上限执行完72次，用时202.02s；原模型和新模型各自SHA存档，原模型不覆写、不从测试选取多个checkpoint。所有G1与足球状态只在初始reset写入，任务中真实自由根部PD控制、球的PhysX冲量，不造假触球或球速。
+
+训练前固定6个新精确球位/机器人初始y速度，与此前所有v42、v45、v46真实PhysX条件均不重合；每组旧v32与新v47各跑一次完整14秒原场景，结束后独立按真实正脚背球、全部球越门线、≥3.5m/s出球、原5ms实际qdot无任何超原限制、正常助跑衔接与最后稳定站立全部门槛验收。**原v32严格通过4/6、新PPO也是4/6、0个旧失败修复、0个旧成功退化。** 6组触球前G1关节轨迹与出球速度完全相同，原后接触策略的学习只能改变恢复：例如第一组站稳从7.760s变为9.255s但仍射偏，另有一组由10.375s变为8.905s。第5组球速2.7566m/s/正脚背失败，新模型依旧无法改善。全程无qdot超限属于这6组原环境物理观测，不代表多种子鲁棒安全证书或专业人类运动美感。默认v5及冻结v32不升级。
+
+训练源 tools/train_contact_phase_rl_v047.py + tools/post_shot_objective_v047.py；原真PhysX评估 tools/run_contact_recovery_rl_v047.py + tools/audit_contact_recovery_rl_v047.py；事前协议 configs/learned_contact_recovery_study_v047.json；专用训练配置 configs/state_conditioned_strike_v18_train.json；新真实PPO动作评估配置 configs/state_conditioned_strike_v18.json。报告 reports/2026-11-09-v047-real-ppo-contact-recovery.md。真实模型权重2MB/训练日志/12个约28MB的原回合及绘图留Tang本地，不纳入GitHub。接下来不再继续只对后接触恢复做手工补丁，而是研究触球前的髋膝踝/躯干/手臂协同生成、物理合法脚面/速度和动作审美数据；尚未完成真正类人暴力抽射论文方法。
