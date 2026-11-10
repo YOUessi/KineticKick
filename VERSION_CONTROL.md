@@ -434,3 +434,13 @@ v44按原joint speed ratio MAE，测试持久化0.18295、训练均值0.04149、
 已以源SHA冻结质量协议，实际抽取19个按名称匹配的人体骨架/标记3D点、归一化骨盆身体坐标、8个腿部膝/足/肘/躯干真实3D段落余弦、足球三WEP位置/缺失mask、脚部与足球标记簇距离、AMC root分立通道，六份NPZ约1.7MB存Tang。6/6人体关键点可用于基础姿态先验探索，球三点每段都有后半段消失，只有CMU10_02和10_05通过固定≥8帧间隔原始球标记连续速度>3m/s并在±时窗足标记距离<=0.30m的间接运动证据，球标记簇中位速度14.05、13.76m/s（不是校准球心/真实冲量）。10_03仅有2帧高速球标记后掉轨，另3段没有可确认的高速出球。准确第一脚球物理接触时刻、正脚背碰撞表面和冲量、地反力/肌肉功率、职业精英资质均**没有真值（0/6）**；不捏造冲击时间、不插值缺失、不以CMU/AMC坐标直接当G1关节角。只有2被试，10的5段/11的1段按人分组仅探索性，不代表科学泛化。
 
 实现tools/fetch_cmu_soccer_v050.py、tools/audit_cmu_soccer_v050.py、tools/plot_cmu_soccer_v050.py、tools/write_cmu_report_v050.py；冻结configs/cmu_soccer_quality_v050.json；测试tests/test_cmu_soccer_v050.py；报告reports/2026-11-10-v050-real-120hz-soccer-mocap.md；质量图media/v050_human_soccer_ball_mocap_120hz_quality.png、语义协调图media/v050_human_pose_knee_ankle_arms_timing.png在Tang。全部原/处理数据Git忽略，仅源码/协议/报告/Git历史公开。全项目631 passed +69 subtests passed，默认v5/原v32不变。下一批可将真实人体姿态的共同骨段余弦和G1 URDF对照建模，但不能借口资料名称包含soccer就谎称其为专业暴力抽射力学数据。
+
+## v0.1.51：CMU真实120Hz人体动作→原G1 29DoF URDF FK语义对照，20帧×6维/4组严格源校验
+
+从clean v0.1.50/41aceb2另开v0.1.51，沿用CMU源六段原光学动捕及已有 v48原G1自由根部PhysX回合。只选CMU10_02/10_05中有持续足球标记簇离球运动的两个人体源，和先前已完成的G1 v32/v48同球位两条真物理源做2×2共4组研究基线。20个采样点覆盖各自事件前−0.40至−0.02秒；人体t=0是**观察到的高速球标记簇运动起始的推断时刻**，G1 t=0是**原Isaac PhysX实测首次力接触时刻**，二者绝不能声称正式碰撞时间精确同步。
+
+人体真实3D提取双髋膝踝/双臂肩肘腕/骨盆躯干的六种方向余弦（双膝、双肘、双腿相对于躯干），G1用原URDF/root q的独立已校验Torch FK重建自身六种同语义几何余弦；人体8维中的脚趾/脚踝两个通道没有G1对应足趾段，不假造脚背方向，强制剔除。每种BODY向量/单位长度/相位样本均被独立NumPy/SciPy G1原URDF FK核对，误差1e−12以下。两名源CMU人体的相对余弦变化RMS 0.279/0.332；G1约0.195；对CMU10_02/10_05的原v32 MSE 0.06536/0.08735，新v48 0.06538/0.08738，表明之前新PPO几乎不改变旧G1全身相对时序。RMS比0.70/0.59只是特定几何余弦的描述性比值，**不能叫“只有人体60%发力”“自然度差40%”或真正近端远端肌肉能量传递的证据**。旧v48原球位已经开发检视过，没有新实验或未见泛化。
+
+新增冻结configs/cmu_g1_cross_morph_v051.json（12个原代码/G1和真实CMU源SHA），脚本tools/cmu_g1_semantic_bridge_v051.py、tools/plot_cmu_g1_bridge_v051.py、tools/write_cmu_g1_report_v051.py、tests/test_cmu_g1_bridge_v051.py，报告reports/2026-11-10-v051-real-human-G1-coordination-baseline.md。另给完整一条命令workflow tools/run_cmu_g1_research_batch_v051.py --run，在Tang上验证/顺序复用v50真实数据处理、v51特征映射、可视化、报告与11个专门测试；docs/CMU_SOCCER_TO_G1_BATCH.md写明原始CMU和真实G1完整PhysX源需要本地存在，原数据绝不入Git，依赖 requirements/cmu-mocap-v050.txt pin ezc3d 1.7.2。Tang保留20×6比较NPZ/原JSON和图两张，GitHub只保存代码/冻结配置/报告/教程。全部636项主回归测试、69项子测试已通过。
+
+最终研究方向仍是从优秀人类踢球动作学全身协调，生成新的自然、连贯、有爆发力的G1正脚背抽射动作；现阶段缺乏真实专业高频足球接触标定、GRF/球旋转/真实人体功率和跨被试独立数据，不用这个描述性相对余弦接口包装成已经学得的职业爆发力策略。

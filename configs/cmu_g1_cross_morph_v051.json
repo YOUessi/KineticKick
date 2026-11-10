@@ -1,0 +1,83 @@
+{
+  "version": "0.1.51",
+  "parent_commit": "41aceb2",
+  "previous_branch": "version/v0.1.50",
+  "task": "Explore six defined 3D segment-angle cosine profiles for two original CMU 120Hz human soccer motions and two old G1 29DoF original real PhysX controllers. Do NOT train a retargeter or claim human kick-force transfer.",
+  "original_CMU_motion_quality_source": "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/quality_audit.json",
+  "source_human_subject_count": 1,
+  "only_CMU_human_motion_clips_with_observed_outgoing_ball_markers": 2,
+  "qualified_human_ball_marker_launch_clips": [
+    "10_02",
+    "10_05"
+  ],
+  "C3D_ball_marker_motion_onset_is_NOT_true_contact": true,
+  "original_robot_PhysX_runs": {
+    "v32_frozen": "reports/v048_preimpact_new01_original_v32.json",
+    "v48_learned": "reports/v048_preimpact_new01_learned_preimpact.json"
+  },
+  "human_120hz_optical_pose_requires_frame_valid": true,
+  "robot_source_original_50hz_URDF_FK_validated": true,
+  "six_anatomically_approximate_3D_body_feature_cosines": [
+    "left_hip_knee_ankle_cos",
+    "right_hip_knee_ankle_cos",
+    "left_shoulder_elbow_wrist_cos",
+    "right_shoulder_elbow_wrist_cos",
+    "left_femur_to_trunk_cos",
+    "right_femur_to_trunk_cos"
+  ],
+  "human_8D_source_feature_selected_indices": [
+    0,
+    1,
+    4,
+    5,
+    6,
+    7
+  ],
+  "exclude_human_ankle_toe_features_without_qualified_G1_toes": true,
+  "robot_true_PhysX_ball_contact_available": true,
+  "true_human_contact_time_qualified": false,
+  "human_instestep_or_professional_biomechanics_verified": false,
+  "distance_score_is_not_naturalness": true,
+  "normalized_feature_difference_not_retarg_or_joint_action": true,
+  "training_G1_controller_in_this_trial": false,
+  "new_G1_PhysX_runs_in_this_trial": 0,
+  "original_unmodified_G1_quaternion_root_and_29D_joints": true,
+  "study_phase_sampled_timestamps_relative_to_event_s": [
+    -0.4,
+    -0.38,
+    -0.36,
+    -0.34,
+    -0.32,
+    -0.3,
+    -0.28,
+    -0.26,
+    -0.24,
+    -0.22,
+    -0.2,
+    -0.18,
+    -0.16,
+    -0.14,
+    -0.12,
+    -0.1,
+    -0.08,
+    -0.06,
+    -0.04,
+    -0.02
+  ],
+  "output_dir": "data/research_human_kicks/cmu_g1_cross_morph_v051",
+  "expected_human_robot_comparisons": 4,
+  "source_sha256": {
+    "tools/cmu_g1_semantic_bridge_v051.py": "abf289e26121da82a45080b30806292d943222fa6e0734a7ec59892cf87dd418",
+    "tools/g1_contact_coordination_projection_v040.py": "c6d1c95bd2922223797c67ceeeeb6253e959a7c956921b0d81cbc5698f5abd56",
+    "tools/g1_coordination_bridge_v039.py": "33aae7eee199842259fab1eb191728f6d761b425688c5efebdbf04a408a9c389",
+    "tools/build_professional_shot_coordination_v039.py": "c3678c5dc74d3040fab53f1cfdbc66b9e089d665a59517a8fc13be11db22587a",
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    "configs/cmu_soccer_quality_v050.json": "2bc8a2a8a51d7d6170acc9b39aa5f8a288b4c5147d430c31d55415cbc5ce923e",
+    "reports/v048_preimpact_full_physics_audit.json": "0d386f1e249f88198539b608dcd070f185682868e259b99d805439f7f3ca812e",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/quality_audit.json": "2ebfa49b698156403d07006b6a591d67ae052bf9ef4e2ecc2fccec4de737d678",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/10_02.npz": "e4afc71537ce694afb90b8c0a93edb50e08f6fe30a10ace6f81f0f053f348f3a",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/10_05.npz": "4058261cab7dccaebaf47152c857e212c0eba1e13e0315be95548a781e0172a2",
+    "reports/v048_preimpact_new01_original_v32.json": "f7bd6536b3d647089875ed1e7e1d3facf61982634703542cde8c183feb38184d",
+    "reports/v048_preimpact_new01_learned_preimpact.json": "1e61e27b99af4dc8c30af79a32615e98e52119a0ef0d6d9e239c186f1442ab9a"
+  }
+}
