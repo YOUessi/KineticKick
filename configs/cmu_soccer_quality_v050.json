@@ -1,0 +1,72 @@
+{
+  "version": "0.1.50",
+  "parent_commit": "73ea607",
+  "study_purpose": "Real 120Hz CMU two-subject six soccer kicks: 3D marker and ball marker observability, measured ball exit quality, only inferred motion onset, 8D whole-body relative human pose features",
+  "source_URL": "https://mocap.cs.cmu.edu/search.php?maincat=4&subcat=7",
+  "source_official_license_URL": "https://mocap.cs.cmu.edu/",
+  "source_original_subject_10_five_kicks": [
+    "01",
+    "02",
+    "03",
+    "05",
+    "06"
+  ],
+  "source_original_subject_11_one_kick": [
+    "01"
+  ],
+  "source_subjects": {
+    "10": [
+      "01",
+      "02",
+      "03",
+      "05",
+      "06"
+    ],
+    "11": [
+      "01"
+    ]
+  },
+  "subject_level_pilot_split": {
+    "10": "train_exploratory",
+    "11": "heldout_exploratory_not_powered"
+  },
+  "original_source_manifest_sha256": "0035463fe3f56183b7470f452ab935f9d68cf55b9c59b16d2b40e62ac6b90fbd",
+  "original_mocap_C3D_units": "mm",
+  "processed_world_units": "m",
+  "source_file_rate_hz": 120.0,
+  "original_C3D_AMC_frame_alignment_should_match": true,
+  "original_ball_marker_count": 3,
+  "ball_marker_triad_centroid_is_not_calibrated_soccer_ball_center": true,
+  "near_foot_threshold_for_motion_proxy_m": 0.3,
+  "fast_ball_marker_velocity_threshold_mps": 3.0,
+  "minimum_consecutive_fast_ball_marker_frames_for_exit": 8,
+  "ball_speed_is_raw_3D_marker_cluster_centroid_not_calibrated_ground_truth": true,
+  "impact_truth_not_available": true,
+  "real_foot_ball_collision_measured_by_force_plate": false,
+  "human_higher_proximal_distal_energy_transfer_not_calibrated": true,
+  "no_professional_elite_athlete_identity_verified": true,
+  "no_new_PhysX_or_learned_robot_controller_in_this_study": true,
+  "no_training_models_from_short_ball_dropouts": true,
+  "processed_dir": "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050",
+  "original_source_CMU_terms": "Free for research; commercial integration permitted; cannot resell motion data directly; papers should acknowledge mocap.cs.cmu.edu and NSF EIA-0196217",
+  "recording_provenance_limit": "Tang saw TLS issuer-chain error; original CMU files are locally SHA-logged but not remote signed",
+  "source_sha256": {
+    "tools/audit_cmu_soccer_v050.py": "a5fb0e6d5b3cda44259a247e4bbc20113dcdf793d4ac7e309f514b584829b911",
+    "tools/fetch_cmu_soccer_v050.py": "450b5aa7a1afc60fe4946898c3334ca0f2dea306b11b9391956f0ac40bf8e1bb",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/original_source_manifest.json": "0035463fe3f56183b7470f452ab935f9d68cf55b9c59b16d2b40e62ac6b90fbd",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10.asf": "d4e604fd582403e9f4bca3382e74dd0cc01e15cd712255e7bd34863b922b6200",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_01.amc": "4277e748947e8703825f340f94582f48997ca01b308f2447075eab4c42029e84",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_01.c3d": "ae454c3e8c621076d01a00b510c48e4daf8efdf5b4e19e8d80d76d062ef415f1",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_02.amc": "68d08f7b47bca54e1fd9ca1739533f8dc973e1200a93c1f4471891a266769d53",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_02.c3d": "41a98640d0eab3391b2d98fa7f1a04b22f5646b785003967377b527d21f27299",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_03.amc": "ffc0f091c8eeb3392797933e23612540a711a07f9a7a49d62c7d1c6d0128a290",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_03.c3d": "6147e764f80209a9d5dc70130f346c2daddf3d8edd7c858fa23555a5ae2cf462",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_05.amc": "e0d9f9c3fd5856325f4ac3aed71d24886ffad27adeed03887b006dfac49b7c38",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_05.c3d": "1389f02ff7e20a9bb1d536cf4a2351abca887810f13ab6d113ff4f9272bf7337",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_06.amc": "f1d5332d88cf419d3edae357886f59eb6345a577da1fc2846a04fb6afcd20e75",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/10/10_06.c3d": "e967b4f33cb7d8cdb580a762af1e3392ff7de5d2cf4971ac211cca88820efded",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/11/11.asf": "9ef0d3fbc731fe4baa376d50ab22f3c2c29486aa30eb3d0ec1764654aa879a6f",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/11/11_01.amc": "326e635daf89bc8e33511f0b3768d9864da9e51d1bfab1ff97ad01993a5b25fd",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/raw/11/11_01.c3d": "2898d167b7dcc03e782626c8ab34decee26e87d8ba8a3c94b152e26ea9345343"
+  }
+}

@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+"""Generate CMU 120Hz human soccer 3D source eligibility report from actual data."""
+from pathlib import Path
+import hashlib,json
+ROOT=Path(__file__).resolve().parents[1]
+SRC="data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/quality_audit.json"
+CONF="configs/cmu_soccer_quality_v050.json"
+DEST="reports/2026-11-10-v050-real-120hz-soccer-mocap.md"
+def sha(p):return hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
+def main():
+ out=ROOT/DEST
+ if out.exists():raise FileExistsError("Do not overwrite existing research report")
+ record=json.loads((ROOT/SRC).read_text())
+ cfg=json.loads((ROOT/CONF).read_text())
+ if record["frozen_study_sha256"]!=sha(CONF):raise ValueError("Original v50 registration changed")
+ for p,h in cfg["source_sha256"].items():
+  if sha(p)!=h:raise ValueError("Original CMU source changed "+p)
+ rows=record["motions"]
+ assert len(rows)==6
+ lines=[
+ "# KineticKick v0.1.50 | 真实人体120Hz足球动捕、球轨迹可观测性与训练资格",
+ "",
+ "**已实际完成：** 从CMU官方获取2位被试、6段足球踢球、共14个原始文件（6 C3D、6 AMC、2 ASF），包含3358个120Hz原始三维人体姿态帧。解析、逐文件SHA冻结和资格审查在Tang完成。当前数据不等于职业球员真实暴力抽射力学真值。",
+ "",
+ "## 1. 官方来源及使用说明",
+ "",
+ "原始数据库 https://mocap.cs.cmu.edu/ ，官方足球动作分类 https://mocap.cs.cmu.edu/search.php?maincat=4&subcat=7 ，动作属于subject10的01、02、03、05、06和subject11的01。CMU网站说明数据可用于研究、可包含在商业产品中，但不得直接转售原动捕本身，公开论文建议致谢CMU Motion Capture Database和NSF EIA-0196217。",
+ "",
+ "下载脚本按清单保存14份本地SHA256，合计约20.7MB；Tang与CMU原站TLS证书链验证失败，下载使用了--insecure，因此本地SHA只证明这批文件后续没有漂移，**不是CMU上游签署的真实性证明**。所有原始CMU数据与原来第三方视频一样保留在Tang，不上传GitHub。",
+ "",
+ "## 2. 原始六段人体3D与足球标记资格审查",
+ "",
+ "| 真实试验 | 120Hz人体帧 | 3个足球WEP标记同时有效的帧 | 球跟踪完整率 | 出球证据 | 可信高速标记簇速度 |",
+ "| --- | ---: | ---: | ---: | --- | ---: |"]
+ labels={
+ "ball_motion_unobserved_before_marker_dropout":"无可靠出球运动，球标记提前丢失",
+ "continuous_fast_outgoing_ball_marker_motion_no_true_contact_truth":"连续高速球标记簇轨迹（非真触球标签）",
+ "very_short_ball_speed_burst_near_dropout_not_reliable_exit_speed":"仅2帧间隔高速运动，证据不足",
+ "fast_ball_motion_but_no_foot_proximity_within_300mm":"高速球标记但足部距离缺乏支持"}
+ for r in rows:
+  key=r["observed_ball_kinematics_quality"]
+  e=r["inferred_event"]
+  speed=(f"{e['ball_marker_cluster_exit_speed_mps']:.2f}m/s (未校准)" if key=="continuous_fast_outgoing_ball_marker_motion_no_true_contact_truth" else "不予报告")
+  lines.append(f"| {r['id']} | {r['original_C3D_frames']} | {r['original_three_ball_markers_valid_frames']} | {r['original_three_ball_markers_all_valid_fraction']:.1%} | {labels[key]} | {speed} |")
+ lines+=["",
+ "实证结果：全部6段人体主要姿态关键点有效率≥99%，适合研究人体全身运动姿态先验；只有10_02、10_05具有足够连续高速足球标记运动（≥8个120Hz相邻帧间隔），10_03靠近数据中断仅有2个高速帧间隔，剩余3段无法证实完整出球。即使这两条也只是3个WEP标记位置的簇质心速度近似值，不是经校准的足球球心和真实碰撞速度。",
+ "",
+ "**精确脚球冲击真值：0/6。专业运动员身份认证：0/6。足背法向冲量、地面反力/肌肉功率真值：0/6。** 不允许使用球标记丢失时刻作真接触时刻，也不跨NaN间隔虚构球速。"]
+ for r in rows:
+  e=r["inferred_event"]
+  if e and r["observed_ball_kinematics_quality"]=="continuous_fast_outgoing_ball_marker_motion_no_true_contact_truth":
+   lines.append(f"- {r['id']}：候选球运动起始时间{e['inferred_ball_launch_onset_s']:.4f}s，连续高速帧间隔{e['high_speed_contiguous_raw_120hz_intervals']}，粗略速度中位数{e['ball_marker_cluster_exit_speed_mps']:.3f}m/s，足部原标记与未校准球簇中心最近{e['nearest_foot_to_uncalibrated_ball_marker_cluster_m']:.3f}m。这些是间接运动学证据，不是正式脚球接触标签。")
+ lines+=["",
+ "## 3. 真实三维人体动作特征的可复用输出",
+ "",
+ "六份NPZ处理文件均存Tang data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050。每个时间步保存19个按实际名字匹配的左右髋、膝、踝、脚尖、脚跟、足外侧、躯干和双臂肩肘腕三维点（原C3D毫米→米），其相对于骨盆的归一化坐标和8个全身三维方向余弦特征。另保存三足球标记、逐帧原始缺失掩码、原标记簇速度、左右脚与簇距离及AMC root通道。C3D和AMC每段帧数严格匹配，但两者标尺和根姿态标定不同，没有强行混入同一个世界坐标。",
+ "",
+ "标签如LHJ0、RHJ0可能来自人体骨架的推算点，不保证每个点都是光学硬标记直接测得的解剖关节中心。三个足球WEP标记只是球面局部的标记簇，非真实球心，球标记均有后段消失。",
+ "",
+ "## 4. 与G1 v0.1.49发力链结果如何衔接",
+ "",
+ "已有v49在真实PhysX中量化G1正脚背足端速度的根部、髋、膝、踝运动学分解。新光学动捕比旧3DSP从电视视频估计的姿态更可信，但还不能直接把人体8维方向余弦当作G1同名关节角；必须先建立跨形态的相对段落与足部任务物理约束，并只把**真实可观察的人体动作时序**当作动作先验。",
+ "",
+ "按被试10（5段）/被试11（1段）做探索性分组可避免同一个人的动作同时出现在两组，但样本量太小，且被试11没有可连续观察的高速出球轨迹，不能形成可信的职业抽射泛化基准。",
+ "",
+ "下一阶段要获取准确的高速人体脚球接触、正脚背方向、足球球心/出球自旋、支撑地反力和肢体力矩，并用真实盲评检查自然度；在此之前不允许把CMU原动作误称为高质量职业暴力抽射真值。",
+ "",
+ "## 5. 可运行源、校验和图片",
+ "",
+ "原文件下载/校验：tools/fetch_cmu_soccer_v050.py；光学人体3D/球标记资格审计与8维姿态计算：tools/audit_cmu_soccer_v050.py；冻结配置：configs/cmu_soccer_quality_v050.json；单测：tests/test_cmu_soccer_v050.py。",
+ "质量图：tools/plot_cmu_soccer_v050.py，Tang图片media/v050_human_soccer_ball_mocap_120hz_quality.png和media/v050_human_pose_knee_ankle_arms_timing.png。所有原始14个CMU文件和6份NPZ/质量JSON均在Tang，GitHub只提交源码、冻结SHA、测试和这份文字报告。",
+ "",
+ "**v50阶段结论：真实人体足球动作120Hz三维数据已接入，且明确区分人体姿态先验（6段）、有较强球出射证据的标记簇运动（2段）、真实触球与发力真值（0段）。不能从这六段直接训练并宣称获得职业球员式爆发抽射的完整协调策略。**"]
+ out.write_text("\n".join(lines)+"\n")
+ print("V050_CMU_REAL_MOCAP_REPORT_WRITTEN",DEST,"lines",len(lines),"strong",record["original_fast_ball_marker_motion_sample_count"])
+
+if __name__=="__main__":main()

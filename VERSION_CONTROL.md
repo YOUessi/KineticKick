@@ -426,3 +426,11 @@ v44按原joint speed ratio MAE，测试持久化0.18295、训练均值0.04149、
 全部六原v32球位首次触球朝球门足端速度均值4.77307m/s，v48新PPO为4.77480m/s；六组配对脚速平均绝对差0.00697m/s。原六组雅可比足端速度分解中髋部朝门分量均正、膝踝均负；新六组同样。右髋pitch/右膝/右踝pitch的触球前绝对qdot峰值时间以t_hip<=t_knee<=t_ankle作示例的简单非递减顺序，两控制均0/6，但该机器人关节峰值次序**绝不等同专业人类真正的近端到远端骨段动量/机械能传递规律，也不代表自然度真值**。原G1 PD估计tau*qdot和足球50ms质量0.43kg平动能仅是模拟物理代理，不能冒充人类肌肉功/冲量分配；人类3DSP仅是职业比赛视频估计3D、没有专业高速真实接触真值。
 
 本版的科学价值是明确排除“之前v48已学到明显人体爆发发力链”的未经验证主张，实测当前全身PPO仅有极微小脚端速度变化。这些素材是此前已经看过的开发数据，不能声称新的未知分布验证。主报告 reports/2026-11-10-v049-true-kinetic-chain-observability.md，源码 tools/extract_kinetic_chain_v049.py、tools/compare_kinetic_chain_v049.py、tools/plot_kinetic_chain_timing_v049.py、tools/write_kinetic_chain_report_v049.py，冻结 configs/kinetic_chain_observability_v049.json，回归 tests/test_kinetic_chain_v049.py。Tang本地大体积派生数据/全PhysX/运动曲线不上传GitHub。全项目625项主测试、69项子测试通过，默认v5/旧v32/v48控制器均不升级。下一阶段重点必须取得质量合格的职业正脚背高速3D动作/接触/支撑力/自然度数据，并建立能够按真实物理支撑/触球规律生成多全身新动作的条件模型。
+
+## v0.1.50 — 官方120Hz真实人体足球光学动捕接入、6段全批解析、真实球标记与职业冲量资格审计
+
+从clean v0.1.49/73ea607在Tang新建v0.1.50研究分支，实际从CMU原站下载两被试6条kick ball原C3D/AMC和两份标定ASF共14个原始文件，20.7MB，逐份本地SHA冻结，保存原源站地址及许可（研究、商业集成允许，原动捕不能直接转售，论文建议致谢CMU/NSF EIA-0196217）。Tang原CMU证书链CA验证失败，下载仅在已授权设备用curl --insecure，不能把本地SHA当源站签名，原文件保留Tang、不上传GitHub。原标记C3D均为120Hz和毫米世界坐标，AMC运动帧数匹配，合计3358个真实人体动作帧（非3DSP从电视影像预测的3D）。
+
+已以源SHA冻结质量协议，实际抽取19个按名称匹配的人体骨架/标记3D点、归一化骨盆身体坐标、8个腿部膝/足/肘/躯干真实3D段落余弦、足球三WEP位置/缺失mask、脚部与足球标记簇距离、AMC root分立通道，六份NPZ约1.7MB存Tang。6/6人体关键点可用于基础姿态先验探索，球三点每段都有后半段消失，只有CMU10_02和10_05通过固定≥8帧间隔原始球标记连续速度>3m/s并在±时窗足标记距离<=0.30m的间接运动证据，球标记簇中位速度14.05、13.76m/s（不是校准球心/真实冲量）。10_03仅有2帧高速球标记后掉轨，另3段没有可确认的高速出球。准确第一脚球物理接触时刻、正脚背碰撞表面和冲量、地反力/肌肉功率、职业精英资质均**没有真值（0/6）**；不捏造冲击时间、不插值缺失、不以CMU/AMC坐标直接当G1关节角。只有2被试，10的5段/11的1段按人分组仅探索性，不代表科学泛化。
+
+实现tools/fetch_cmu_soccer_v050.py、tools/audit_cmu_soccer_v050.py、tools/plot_cmu_soccer_v050.py、tools/write_cmu_report_v050.py；冻结configs/cmu_soccer_quality_v050.json；测试tests/test_cmu_soccer_v050.py；报告reports/2026-11-10-v050-real-120hz-soccer-mocap.md；质量图media/v050_human_soccer_ball_mocap_120hz_quality.png、语义协调图media/v050_human_pose_knee_ankle_arms_timing.png在Tang。全部原/处理数据Git忽略，仅源码/协议/报告/Git历史公开。全项目631 passed +69 subtests passed，默认v5/原v32不变。下一批可将真实人体姿态的共同骨段余弦和G1 URDF对照建模，但不能借口资料名称包含soccer就谎称其为专业暴力抽射力学数据。
