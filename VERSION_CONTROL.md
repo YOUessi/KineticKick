@@ -474,3 +474,13 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 独立命名contact采集在5.144999885s检测到G1 `left_hip_roll_link` 和 `left_wrist_yaw_link` 两个不同非脚碰撞体分别承受 `[-21.220844,-14.821829,-0.537769] N` 和 `[21.220844,14.821829,0.537769] N`，每个力模长25.890153N，方向余弦-1.0，合力和严格0N，原连杆原点相隔0.113883m。符合**左腕-左髋自碰撞的强候选机制**，但原ContactSensor提供的是每个body的净力而不是接触manifold/pair collider paths，故不能将“这两个刚体真的互相接触”称作认证真值；该发现可指导下轮只读接触对验证。根高度约0.786m、根倾约3.07°，无法从原物理确定整体摔倒，也不改变原失败结论。
 
 冻结配置 `configs/cmu_named_nonfoot_diagnostics_v054.json`、真实三联物理复跑 `tools/run_named_nonfoot_diagnostics_v054.py`、整段原物理逐字段严格审计 `tools/audit_named_nonfoot_diagnostics_v054.py`、净力配对原始SHA分析 `tools/infer_nonfoot_pair_v054.py`、报告生成 `tools/write_named_nonfoot_report_v054.py`，报告`reports/2026-11-11-v054-original-PhysX-named-nonfoot-contact.md`，回归 `tests/test_named_nonfoot_v054.py`。原物理/模型/CMU与附加分析JSON保留Tang的ignored目录，源码/报告/协议/测试放GitHub。**655 passed+69 subtests passed**。已确认了一个具体恢复安全风险的可观测通道，但没有发明更自然的全身足球动作，也不宣称高爆发力或人类真值成立；默认策略保持冻结。
+
+## v0.1.55 — 真实15回合200Hz全身动力学、非脚接触候选与种子不独立性审计
+
+基于原 `v0.1.54/3cac173` 的独立 v55，预冻结15回合原 IsaacLab/G1/PhysX：中心原三策略3次精确复跑及未见的两组不同球位/横向速度×三策略×两seed共12次。真实物理报告按SHA全部只留Tang，原控制器/29DoF/PD/碰撞/非脚阈值/球体/恢复小脑未变。原中心3回合所有共有物理字段逐值相同。**本轮没有成功取得原生PhysX自碰撞 pair manifold 或 collider paths**：新增 contact view 的前置3次试验未产生可评分物理输出，15个真正计分回合不得假称新观察器有非侵入 parity。仅从原净力观察到左腕-左髋、以及新 holdoutB pelvis-右髋连杆的相反力候选；不足以证明接触双方或肌肉/力学因果。
+
+真实 holdout 严格全任务门禁 **原v32 0/4、CMU10_02 0/4、CMU10_05 0/4**。其中场景A 6/6 14s/合法脚背/足速/恢复，但6/6未进门；场景B 6/6在1.64s由非脚接触提前终止且无完整后恢复，不能补造缺失的1.25s或14s数据；12/12原全部qdot安全且脚背冲量与速度达到原门槛。新增逐字段 seed 审计证明1201/1509的6对轨迹/contacts/termination完全相同：**4次每策略不是4个独立样本，只覆盖两种不同足球工况；旧Wilson CI不能作独立泛化推断**。未对任何已见负例调参，也未训练新人体协调策略。
+
+新增接触可观测性脚本、15次物理+SHA互斥执行/重启与严格审计、种子非独立审计、跨场景净力候选鉴别、真实200Hz全身/COM/双足支撑与原全部关节速度归因、两幅新物理失败图。提出需要实际可观测PhysX pair及固定原29DoF顺序才准放行的**fail-closed**多关节相位动作接口（≥20DoF、合成最大≤0.075rad，**仅接口测试，不是经过训练/实际验证的全身运动或本体安全证明**）。原CMU两段同一被试120Hz弱相位代理不能充当职业正脚背接触/GRF真值。全部原始JSON/失败日志/媒体保持本地，不入Git。严格全项目 **676 passed +69 subtests passed**（`/home/you/conda_env/env_isaaclab/bin/python -m pytest -q tests/`）。详见 `reports/2026-11-11-v055-physx-dynamics-and-pair-evidence-boundary.md` 和 `docs/REPRO_V055_PAIR_DYNAMICS.md`。
+
+下一轮先隔离验证本机真实native contact filter/report形状级路径，带真实正负碰撞参考与原三中心回合parity；随后再以新的预注册多人/多球位样本优化有强全身时序协调与稳定支撑的新策略，不得在已见holdout调参后说未见。

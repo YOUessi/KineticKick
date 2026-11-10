@@ -581,3 +581,7 @@ This supersedes the earlier single-style show_g1_bare_forward_pass.py view.
 
 ### 下一关卡
 把29DoF URDF变成物理可控的Isaac Sim/Isaac Lab本体，检查质量惯量、关节轴、碰撞、脚底和PD配置；继而用BeyondMimic跟踪人类动作参考，训练能够维持自由根部平衡、脚底低滑移、自然躯干与臂腿协调的控制策略。当前系统没有找到标准URDF importer插件，本体物理转换还没有完成，不能把运动学回放作为物理成功。
+
+## 2026-11-11 最新研究审计 v0.1.55
+
+原 G1 / PhysX **15 次新真实物理回合**（中心3个、两球位×三冻结控制×两 seed 共12个）和原 200Hz 29DoF、COM/双足支撑、非脚净力、全安全门禁独立核查已完成：全部 holdout 控制严格 `0/4`，其中球位 A 进球 `0/6`、球位 B `6/6` 因非脚碰撞在约1.64s提前终止。**6对不同seed原物理轨迹逐字段完全一致，因此不可声称4个独立随机试验。** 原生PhysX contact pair/manifold/collider paths仍无真值；左腕-左髋和 pelvis-右髋都只能称相反净力候选。新增fail-closed 29DoF全身协调动作接口仍未在PhysX启用，也未训练出专业射门；全测试676 passed +69 subtests passed。详情见 `reports/2026-11-11-v055-physx-dynamics-and-pair-evidence-boundary.md`、`docs/REPRO_V055_PAIR_DYNAMICS.md`。
