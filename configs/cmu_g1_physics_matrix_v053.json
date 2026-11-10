@@ -1,0 +1,106 @@
+{
+  "version": "0.1.53",
+  "parent": "aa9dab2",
+  "source": "real CMU 120Hz launch-proxy, not verified human impact",
+  "robot": "original free-root G1 29DoF PhysX",
+  "goal": "one batch of controlled real physics across 4 precommitted tasks and 3 identical frozen policies, plus v52 failure mechanism analysis",
+  "n_conditions": 4,
+  "policies": {
+    "frozen_v32": {
+      "config": "configs/cmu_real_120hz_10_02_physx_zero_v052.json"
+    },
+    "cmu_10_02": {
+      "config": "configs/cmu_real_120hz_10_02_physx_v052.json"
+    },
+    "cmu_10_05": {
+      "config": "configs/cmu_real_120hz_10_05_physx_v052.json"
+    }
+  },
+  "trials": [
+    {
+      "id": "trial01",
+      "ball_offset_xy_m": [
+        0.0118,
+        -0.0512
+      ],
+      "velocity_y_delta_mps": 0.0878,
+      "outputs": {
+        "frozen_v32": "reports/v053_01_frozen_v32.json",
+        "cmu_10_02": "reports/v053_01_cmu_10_02.json",
+        "cmu_10_05": "reports/v053_01_cmu_10_05.json"
+      }
+    },
+    {
+      "id": "trial02",
+      "ball_offset_xy_m": [
+        0.0778,
+        0.0595
+      ],
+      "velocity_y_delta_mps": 0.1168,
+      "outputs": {
+        "frozen_v32": "reports/v053_02_frozen_v32.json",
+        "cmu_10_02": "reports/v053_02_cmu_10_02.json",
+        "cmu_10_05": "reports/v053_02_cmu_10_05.json"
+      }
+    },
+    {
+      "id": "trial03",
+      "ball_offset_xy_m": [
+        0.0381,
+        0.1071
+      ],
+      "velocity_y_delta_mps": -0.1333,
+      "outputs": {
+        "frozen_v32": "reports/v053_03_frozen_v32.json",
+        "cmu_10_02": "reports/v053_03_cmu_10_02.json",
+        "cmu_10_05": "reports/v053_03_cmu_10_05.json"
+      }
+    },
+    {
+      "id": "trial04",
+      "ball_offset_xy_m": [
+        0.0864,
+        0.1131
+      ],
+      "velocity_y_delta_mps": -0.082,
+      "outputs": {
+        "frozen_v32": "reports/v053_04_frozen_v32.json",
+        "cmu_10_02": "reports/v053_04_cmu_10_02.json",
+        "cmu_10_05": "reports/v053_04_cmu_10_05.json"
+      }
+    }
+  ],
+  "seed": 5301,
+  "no_policy_retraining": true,
+  "no_adaptive_tuning": true,
+  "do_not_upgrade_default_control": true,
+  "required_physics_seconds": 14.0,
+  "physical_dt_s": 0.005,
+  "control_dt_s": 0.02,
+  "minimum_ball_outgoing_xy_mps": 3.5,
+  "full_recovery_required": true,
+  "positive_criteria": "correct instep + whole ball goal + original free-root 14s + original 29DoF qdot limit + after-shot recovery + runup + physical contact + generated reference actually applied in style policies",
+  "failure_mechanism_note": "Nonfoot termination alone cannot be called a fall without additional root/COM proof",
+  "original_CMUs_same_subject": true,
+  "human_impact_verified": false,
+  "professional_explosive_instep_proven": false,
+  "source_sha256": {
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_02_physx_v052.json": "aaf097a6f4aacb225820313ca50738cd45a5b9d0f1e2b30019de309cb85c74bf",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18",
+    "configs/cmu_g1_phase_projection_v052.json": "7d32fb3a51c66ed41ed4d1980c8829d6e03fa89d9a42ada575906d3e67415c52",
+    "tools/run_placement_strike.py": "7c5cfb0e32cecb6ea877858bc8e6e473b74f4ca6d8a3cae790069d8e3b1043e4",
+    "tools/coordination_style_v041.py": "04db612299bdb4a093d1c71efae6478ff4a18f973ccbfa4686f5353631209b15",
+    "tools/coordination_reference_v040.py": "a21cc7c915a22a220bbb010af06dfdeee0769cb439fbb9edbaeed4b70cd7f177",
+    "tools/build_cmu_g1_candidate_v052.py": "103217291c4adc15e18e65cdf9c8d245f9c471ed3d90e2684120cbb0685a018b",
+    "tools/audit_real_cmu_physx_v052.py": "9f2f5379596e758b8fcf23606fbd35a8904ae62e8ebbccd354a1a801700b8afd",
+    "tools/audit_novel_ball_v042.py": "c023e183ff4dcd662011ed51fcc66c710169ea2ea7d2973f0879f7717d3c8850",
+    "tools/strike_baseline_metrics.py": "22a86d021cf358f9f6c3a18b13166fd8dea81b31b535b28b5870ee51146fb1e5",
+    "tools/audit_p0_dynamic_strike.py": "f2dfa4ad64991c2be26275fb231e31ee938730d46b286e95046e82d79d361bcf",
+    "reports/v052_cmu_10_02_center_physx.json": "00b7b7ac54d1a3c5ff5eb603eb2588adda3c18268da28fa6b070c167fb844718",
+    "reports/v052_cmu_10_05_center_physx.json": "e9d238a81bf7f68b7a2002edfc6fe875f3765a744fcc0ced24850d7bac00219f",
+    "reports/v052_cmu_10_02_center_zero_physx.json": "fea926daeb26fd7de97c6f9b3e77d2e1cd3b45b1bb69dff5164ea3b6fafa15cc",
+    "experiments/cmu_real_120hz_phase_v052/10_02/g1_joint_delta_50hz.npz": "d7822b6e448c7139bb3c202cbb2994eb9e490687e3d8f5cc1b9f176cc2b70b89",
+    "experiments/cmu_real_120hz_phase_v052/10_05/g1_joint_delta_50hz.npz": "66314b200b4fc65b26d2b929f01b9d415b24fd079379c6cc6cee1a41535b1f1d"
+  }
+}

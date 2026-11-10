@@ -456,3 +456,13 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 文件：冻结19项输入SHA的 `configs/cmu_g1_phase_projection_v052.json`，三个独立候选/ZERO物理配置 `configs/cmu_real_120hz_*_physx*_v052.json`；可微人体相位到G1关节参考生成 `tools/build_cmu_g1_candidate_v052.py`；真实物理审计 `tools/audit_real_cmu_physx_v052.py`；文字报告生成 `tools/write_cmu_real_physics_report_v052.py`；新单元测试 `tests/test_real_cmu_phase_v052.py` 和 `tests/test_real_cmu_physx_v052.py`。完整科研结论见 `reports/2026-11-11-v052-real-CMU-phase-controlled-G1-PhysX.md`，完整复现见 `docs/CMU_REAL_PHASE_TO_G1_V052.md`。所有原始CMU C3D/AMC、30MB级完整原PhysX回合、NPZ参考、实验模型保持 Tang/.gitignore，不入GitHub。**全项目647 passed，69 subtests passed**。
 
 下一批的核心科学瓶颈不再是这1mrad量级的腕/髋/膝局部修正，而是真实人体动作的专业正脚背/接触标定、足端速度/球旋转/支撑/躯干手臂相位与射后随挥落脚的统一可执行全身策略，以及匹配球位、多被试/多动作、任务合格前提下的独立自然度盲评。**当前证据只有“真实CMU→G1有界参考→一正一负物理闭环链”，没有证明最终类人强力抽射。**
+
+## v0.1.53 — 一次冻结12回合真实PhysX配对批次与原5ms失稳证据重新归因
+
+从clean v0.1.52/aa9dab2建立独立版本分支，在原控制前固定随机种子5301和四组球位xy偏移、G1机器人横向初始速度，冻结共17份源码、原v52零策略/两条CMU参考/11日首次物理证据SHA。沿用原G1自由根部29DoF、原PD/关节限速、原球面碰撞与恢复PPO，不训练新模型、不事后调参、不允许重写/丢弃任何失败回合。一次完整链通过GPU互斥的12次原Isaac PhysX回合（4个球位×3个冻结策略），每次原真实物理报告约10MB–32MB留Tang本地，所有结果SHA在ignored的reports/v053_physics_progress.json中逐项核验，并由独立脚本读取全200Hz原物理端到端审计，而不是从日志中挑选漂亮进球。
+
+严格合法正脚背/全球入门/≥3.5m/s球速/完整14s/原实际关节qdot安全/跑动连续性及射后站立全部必须通过：**原v32 0/4，CMU10_02 0/4，CMU10_05 0/4。** 两套真实人体相位参考每组实测有4–5个20ms原G1关节控制时刻非零，但原本失败的球位未修复；CMU10_02在trial03出现1组原关节超速，v32和CMU10_05均在trial04触发非脚部接触提前终止。trial01虽然原三者均以>4.2m/s触球，却只有约0.717–0.797的正脚背冲量比例，不满足0.95的安全脚面门槛；trial02–04原3.5m/s球速不达标、脚面偏差亦存在。不得以“12次全均有球速”“CMU生效”声称人类高爆发动作改进。
+
+另以v52实际真实200Hz三条中心球位轨迹SHA复核失败“倒地”说法：原10_05源在5.140001s物理终止，第一共1028个5ms物理行、额外1µs终止快照，根高度约0.786m/倾角3.07°并未触及根部跌倒阈值，**能证实的是nonfoot终止，不是根倾倒**；已有原记录只有总非脚力，不提供具体身段，下一批按原位置/机器人策略仅开启只读contact-diagnostics重新定位。相比正常原v32，人体先验影响2.77s左右才把根位置推离超过5mm，表明微小前触球关节改动可能通过长时恢复造成显著轨迹分叉，现有两个先验并无安全验证。
+
+新增12回合顺序互斥并可用原hash断点续跑工具 tools/run_cmu_physics_matrix_v053.py，完整严格分场景门禁 tools/audit_cmu_physics_matrix_v053.py，200Hz原失败归因 tools/inspect_cmu_recovery_mechanism_v053.py，文字+本地媒体输出 tools/write_cmu_batch_report_v053.py，测试 tests/test_cmu_batch_v053.py，报告 reports/2026-11-11-v053-real-CMU-12-physx-ablation-and-recovery.md；完整研究分批契约 docs/RESEARCH_BATCH_SERIES_2026-11-11.md。全部原权重、C3D、NPZ、12次JSON、图像保持Tang忽略目录。全项目651 passed +69 subtests passed，原默认v5/v32不升级。
