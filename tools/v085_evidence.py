@@ -117,7 +117,7 @@ def summarize():
              "strict_hard_gate_pass":r["gates"]["hard_gate_pass"],
              "failed_gates":r["gates"]["failed_gates"],**row})
     result={
-        "version":"v0.1.84","frozen_commit":batch["frozen_commit"],
+        "version":"v0.1.85","frozen_commit":batch["frozen_commit"],
         "protocol_sha256":batch["protocol_sha256"],
         "new_certified_true_PhysX_episodes":len(episodes),
         "strict_pass_count":sum(x["strict_hard_gate_pass"] for x in episodes),

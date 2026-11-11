@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""v84 write-once 7 original-G1 CUDA/PhysX episodes. No new policy activation."""
+"""v85 write-once 6 original-G1 CUDA/PhysX episodes. No new policy activation."""
 from __future__ import annotations
 import fcntl, hashlib, json, os, subprocess, signal, time, shutil
 from pathlib import Path
@@ -58,7 +58,7 @@ def run_child(c,stem,args,timeout):
         "log_sha256":sha(log),"last_log_lines":log.read_text(errors="replace").splitlines()[-8:]},
         out,log,side)
 def preflight():
-    if git("branch","--show-current")!="version/v0.1.84":
+    if git("branch","--show-current")!="version/v0.1.85":
         raise RuntimeError("WRONG_VERSION_BRANCH")
     if git("status","--porcelain","--untracked-files=no"):
         raise RuntimeError("TRACKED_DIRTY")
@@ -69,7 +69,7 @@ def preflight():
             raise RuntimeError("UNFROZEN_PROTOCOL_OR_EXECUTOR:"+f)
     if OUTPUT.exists():raise FileExistsError(OUTPUT)
     c=json.loads(CFG.read_text())
-    if c["version"]!="v0.1.84" or c["parent_commit"] not in git("log","--format=%H"):
+    if c["version"]!="v0.1.85" or c["parent_commit"] not in git("log","--format=%H"):
         raise RuntimeError("PARENT_OR_VERSION_DRIFT")
     if len(c["cases"])!=6 or not c["actual_reset_perturbation"] is False:
         raise RuntimeError("TRIAL_MATRIX_CHANGED")
@@ -166,7 +166,7 @@ def main():
                    for x in rows) for name in (off,on)):
             pair[control]=parity(ROOT,off=off,on=on)
     report={
-        "version":"v0.1.84","frozen_commit":c["_frozen_commit"],
+        "version":"v0.1.85","frozen_commit":c["_frozen_commit"],
         "protocol_sha256":c["_protocol_sha256"],
         "real_original_G1_CUDA_PhysX_episodes":sum(
             x["true_original_200Hz_G1_CUDA_PhysX"] for x in rows),
