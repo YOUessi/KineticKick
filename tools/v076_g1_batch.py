@@ -60,9 +60,9 @@ def parity(off,on):
     bad=[k for k in left if left[k]!=right[k]]
     return not bad,bad
 
-def single(case,mode,c,free):
+def single(case,mode,c,free,run_id):
     label=case["name"]
-    pre=ROOT/("reports/v076_g1_"+label+"_"+mode)
+    pre=ROOT/("reports/v076_g1_"+label+"_"+mode+"_"+run_id)
     logfile=Path(str(pre)+".log")
     dest=Path(str(pre)+".json")
     sidecar=Path(str(pre)+"_audit.json")
@@ -120,6 +120,7 @@ def single(case,mode,c,free):
 def main():
     args=argparse.ArgumentParser()
     args.add_argument("--cases",default="all",help="all or one frozen case name")
+    args.add_argument("--run-id",default="r1",choices=("r1",),help="write-once namespace for repairing missing local source link")
     opts=args.parse_args()
     c=json.loads(CONF.read_text())
     requested=c["physical_trials_order"] if opts.cases=="all" else [
@@ -129,14 +130,14 @@ def main():
     with lock.open("r+") as fp:
         fcntl.flock(fp,fcntl.LOCK_EX|fcntl.LOCK_NB)
         for case in requested:
-            first,off=single(case,"off",c,preflight(c))
+            first,off=single(case,"off",c,preflight(c),opts.run_id)
             if not first["real_G1_episode"] or not first["guard_marker_present"]:
                 raise RuntimeError("ORIGINAL_G1_INCOMPLETE_STOP_BEFORE_ON:"+case["name"])
-            second,on=single(case,"on",c,preflight(c))
+            second,on=single(case,"on",c,preflight(c),opts.run_id)
             if not second["real_G1_episode"] or not second["guard_marker_present"]:
                 raise RuntimeError("NATIVE_G1_INCOMPLETE_STOP:"+case["name"])
             match,keys=parity(off,on)
-            marker=ROOT/("reports/v076_g1_"+case["name"]+"_parity.json")
+            marker=ROOT/("reports/v076_g1_"+case["name"]+"_parity_"+opts.run_id+".json")
             with marker.open("x") as out:
                 json.dump(dict(case=case["name"],full_physical_fields_equal=match,
                                differing_fields=keys,original_off_sha=first["full_raw_sha256"],
