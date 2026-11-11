@@ -1,0 +1,60 @@
+{
+  "version": "v0.1.75",
+  "parent_sha": "141046798584e7108dbab25733abba69c94a5f9e",
+  "purpose": "post-physics-only non-playing STOP callback guard and original G1 native pair parity (fail closed)",
+  "simulator_contract": "Original IsaacLab unmodified; no change to G1 controller, model, dynamics, gravity, contact/report schemas; shutdown-only guard after final integration.",
+  "source_sha256": {
+    "tools/v074_isaac_close_probe.py": "fcb56e2f8ebe1e90c78776aa1d2e1aca228d98268f4d249442ea0c311f89072f",
+    "tools/v074_gpu_lifecycle_batch.py": "c37e08e8393d860b317192835a8b107ddfd1be945dabf1de4f16188f344a39b8",
+    "tools/run_placement_strike_v056.py": "ba6fda40cf4f1f49ab34e7818110a8c15ca69305948bdadaf5322634ee52f8fc",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/wholebody_safety_interface_v055.py": "834f5e517c33b22a11109b0c076eba7e6b7e6146391fdaf086189a20d625ac38"
+  },
+  "original_v54_sha256": {
+    "reports/v054_frozen_v32_contact_diagnostics.json": "f7a130707fdb761d7f7185d6805f4887d4ca929fec8965bfd35ae13d6666e01c",
+    "reports/v054_cmu_10_02_contact_diagnostics.json": "e197cf6807709e077fa5cfd2b2582bf988dd1437f249bd61addf7835a7d2b255",
+    "reports/v054_cmu_10_05_contact_diagnostics.json": "d46a48f84dbaa7a367eac3e5dc399d4378007485c369c2b57c1c67775ccbfac1"
+  },
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "minimum_disk_gib": 20,
+  "gpu_device": "cuda:0",
+  "smoke_physics_steps": 8,
+  "variants": [
+    "post_physics_guarded_close",
+    "post_physics_guarded_stop"
+  ],
+  "smoke_timeout_s": 85,
+  "next_stage": "only if guarded_close exits normally with eight steps, no other CUDA PID, no source drift",
+  "g1_trials": [
+    {
+      "label": "frozen_v32",
+      "config": "configs/cmu_real_120hz_10_02_physx_zero_v052.json"
+    },
+    {
+      "label": "cmu_10_02",
+      "config": "configs/cmu_real_120hz_10_02_physx_v052.json"
+    },
+    {
+      "label": "cmu_10_05",
+      "config": "configs/cmu_real_120hz_10_05_physx_v052.json"
+    }
+  ],
+  "physical_max_seconds_per_run": 320,
+  "strict_acceptance": [
+    "complete 5ms original per-joint 29 qdot",
+    "instep impulse fraction >= .95",
+    "goal and minimum ball speed",
+    "no nonfoot impact",
+    "14s recovery"
+  ],
+  "rules": [
+    "immutable outputs create-x",
+    "no chmod of original CMU or PhysX",
+    "keep failures",
+    "no data/weights/media Git commits",
+    "no force push",
+    "do not alter loaded controller",
+    "abort further G1 on clean shutdown failure or native instrumentation parity error"
+  ]
+}
