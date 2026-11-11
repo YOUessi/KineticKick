@@ -1,0 +1,57 @@
+{
+  "version": "v0.1.92",
+  "parent_sha": "4ea0b5d740976428abeec3acb740e19d5a6e4bb0",
+  "purpose": "Physically positive and negative rigid-rigid contact calibration, off/on instrument parity, no original G1 controller modifications",
+  "required_free_gib": 20,
+  "steps": 180,
+  "timeout_s": 135,
+  "python": "/home/you/conda_env/env_isaaclab/bin/python",
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "stop_on_child_crash": true,
+  "stop_on_runtime_infrastructure_failure": true,
+  "do_not_treat_empty_native_reports_as_noncollision": true,
+  "matrix": [
+    {
+      "case": "cpu_colliding_off",
+      "device": "cpu",
+      "report_mode": "off",
+      "layout": "colliding"
+    },
+    {
+      "case": "cpu_colliding_on",
+      "device": "cpu",
+      "report_mode": "on",
+      "layout": "colliding"
+    },
+    {
+      "case": "gpu_colliding_off",
+      "device": "cuda:0",
+      "report_mode": "off",
+      "layout": "colliding"
+    },
+    {
+      "case": "gpu_colliding_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "layout": "colliding"
+    },
+    {
+      "case": "gpu_separated_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "layout": "separated"
+    }
+  ],
+  "human_qualification": "Read-only 6 original 120Hz C3Ds; labels not professional skill/GRF/instep impulse truth",
+  "physical_G1_actuation_new": false,
+  "original_G1_shots_scheduled": 0,
+  "original_G1_proof_required_before_new_actuation": true,
+  "strict_G1_gates": {
+    "instep_min": 0.95,
+    "goal": true,
+    "ball_speed_mps_min": 3.5,
+    "actual_all_29_qdot_ratio_max": 1.000001,
+    "nonfoot_contact_N_lt": 20,
+    "recovery_s": 14
+  }
+}
