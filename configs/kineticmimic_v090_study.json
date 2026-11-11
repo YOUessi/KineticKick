@@ -1,0 +1,117 @@
+{
+  "version": "v0.1.90",
+  "parent_commit": "c87672181f0a8224aeaece6e11dae2a06a6f5ab8",
+  "study_title": "KineticMimic: contact-conditioned temporal body coordination plus robot physics impulse; not merely pose MSE",
+  "paper_method_claim": "UNPROVEN_HYPOTHESIS_NOT_UPGRADED",
+  "train_scene": "v084_C",
+  "validation_scene": "v084_D",
+  "test_scene": "v085_center",
+  "train_on_center_scene": false,
+  "known_historical_contexts_not_new_blind_evaluation": true,
+  "human_true_impact_available": false,
+  "human_synced_GRF_available": false,
+  "elite_foot_kick_claim": false,
+  "model_is_29dof_actor": false,
+  "contact_impact_head_is_not_G1_actor": true,
+  "source_physx": {
+    "C_v32": {
+      "scene": "v084_C",
+      "path": "/home/you/projects/kinetickick-wt-v084/reports/v084_C_v32_off.json",
+      "sha256": "ce1158cf64bfcc001232ea6a5540731c0c3d6b4187268770fc518a37171afd53",
+      "bytes": 30894735
+    },
+    "C_cmu02": {
+      "scene": "v084_C",
+      "path": "/home/you/projects/kinetickick-wt-v084/reports/v084_C_cmu02.json",
+      "sha256": "f323a4e208e859dd2bceb80a60d524db8006582341978fe5e80a44e666409e66",
+      "bytes": 31646673
+    },
+    "C_cmu05": {
+      "scene": "v084_C",
+      "path": "/home/you/projects/kinetickick-wt-v084/reports/v084_C_cmu05.json",
+      "sha256": "411a7131e6d41e20e94d05cd45b74bc40e5c0fc3fb5e75a61444bf293fef5e34",
+      "bytes": 31628157
+    },
+    "D_v32": {
+      "scene": "v084_D",
+      "path": "/home/you/projects/kinetickick-wt-v084/reports/v084_D_v32.json",
+      "sha256": "26144b7190639d341ac48dbf1b2b236e31a39554498e339bc02316429a51d048",
+      "bytes": 30886714
+    },
+    "D_cmu02": {
+      "scene": "v084_D",
+      "path": "/home/you/projects/kinetickick-wt-v084/reports/v084_D_cmu02.json",
+      "sha256": "7280e34e915457adf15b0b4c15fbd78930826132de25e800fbd89783f98b3d6c",
+      "bytes": 31683076
+    },
+    "D_cmu05": {
+      "scene": "v084_D",
+      "path": "/home/you/projects/kinetickick-wt-v084/reports/v084_D_cmu05.json",
+      "sha256": "51464c8a459ac4a49abf7a6c36083808b664245b18b5384179e5364e56c88bfd",
+      "bytes": 31646227
+    },
+    "center_v32": {
+      "scene": "v085_center",
+      "path": "/home/you/projects/kinetickick-wt-v085/reports/v085_center_v32_off.json",
+      "sha256": "0cdb51149ae218f05a3ae37a9fa386528879c796a7edf90cfc11d8d410bfd2db",
+      "bytes": 30899664
+    },
+    "center_cmu02": {
+      "scene": "v085_center",
+      "path": "/home/you/projects/kinetickick-wt-v085/reports/v085_center_cmu02_off.json",
+      "sha256": "4e0a08cd70535949b69690bcc63d673f8943c888f679030dfe7a1f20b52f446b",
+      "bytes": 31653551
+    },
+    "center_cmu05": {
+      "scene": "v085_center",
+      "path": "/home/you/projects/kinetickick-wt-v085/reports/v085_center_cmu05_off.json",
+      "sha256": "9ef1bcb3289ed89ae11a8e5e1ea91f695e02e4f74ad5242f056ae6ecd13f6a04",
+      "bytes": 11736038
+    }
+  },
+  "source_sha256": {
+    "tools/kineticmimic_physics_v090.py": "dc966ff704668c04bb568d7a892296cda285d26d1cd9eace1031c2c69a85f4e1",
+    "tools/kineticmimic_loss_v090.py": "0524144a8e4e06b31422190c6287c42253775da87d5a6d44030ceed612ffc0cd",
+    "tools/train_kineticmimic_v090.py": "8f084f8845c30a6a780d54a193311ca475f6b6d6074df78a34304e1964645f32",
+    "tests/test_kineticmimic_v090.py": "8a910d36817c8d3bed36fca9aa1df01b8819fb931a807c87d8e2a3ffde611303",
+    "tests/test_kineticmimic_training_v090.py": "7fb72ca9de46d28a3d083849aa5552c7965abc0c2554f317ffbc470ac1477663",
+    "tools/wholebody_safety_interface_v055.py": "834f5e517c33b22a11109b0c076eba7e6b7e6146391fdaf086189a20d625ac38",
+    "configs/cmu_soccer_quality_v050.json": "2bc8a2a8a51d7d6170acc9b39aa5f8a288b4c5147d430c31d55415cbc5ce923e"
+  },
+  "no_new_PhysX_GPU_training": true,
+  "keep_original_G1_joint_speed_and_legal_instep_gates": true,
+  "strict_real_ball_surface_impulse_min_fraction": 0.95,
+  "strict_robot_ball_speed_mps": 3.5,
+  "strict_nonfoot_force_N": 20.0,
+  "strict_full_episode_seconds": 14.0,
+  "true_PhysX_dt_s": 0.005,
+  "history_frames": 12,
+  "prediction_horizon_physics_frames": 20,
+  "seed": 9001,
+  "hidden": 48,
+  "epochs": 80,
+  "early_stop_patience": 12,
+  "batch_size": 40,
+  "learning_rate": 0.002,
+  "weight_decay": 0.001,
+  "loss_weights": {
+    "stance_cross_entropy": 1.0,
+    "first_physical_ball_hit_focal_ratio_train_only": true,
+    "impact_ball_velocity_Huber": 0.1,
+    "impact_scalar_foot_ball_impulse_Huber": 0.08
+  },
+  "negative_baselines": [
+    "four-way support-persistence",
+    "never-ball-contact",
+    "time-shuffled same GRU",
+    "train-C-mean-ball-kick-delta-v"
+  ],
+  "output_dir": "experiments/kineticmimic_v090_contact_head",
+  "real_measured_G1_N29_200hz_correct": true,
+  "real_impact_label_robot_PhysX_only": true,
+  "robot_true_collider_pair_GPU_proven": false,
+  "study_question": "Can physical support/near-contact event predictor generalize from C training to D validation and the historically known center context without leaking contact future? Companion optical G1 geometric and impact hard gate separate.",
+  "human_6d_style_never_claim_professional_force": true,
+  "no_test_scene_model_selection": true,
+  "all_raw_G1_30MB_files_remain_Tang_gitignored": true
+}
