@@ -1,0 +1,99 @@
+{
+  "version": "v0.1.91",
+  "parent_commit": "c87672181f0a8224aeaece6e11dae2a06a6f5ab8",
+  "frozen_before_new_physics": true,
+  "original_g1_29dof_physx_hz": 200,
+  "purpose": "Prespecified untouched-controller E/F independent G1 physical observations for strictly held-out whole-body contact-conditioning study, not a novel learned kick.",
+  "settings": {
+    "min_free_gib": 20,
+    "timeout_s": 180,
+    "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+    "stop_on_uncertified_cuda": true,
+    "max_new_G1_episodes": 4,
+    "outputs_write_once": true
+  },
+  "controls": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu02": "configs/cmu_real_120hz_10_02_physx_v052.json"
+  },
+  "cases": [
+    {
+      "name": "E_v32",
+      "scene": "E",
+      "control": "v32",
+      "seed": 1319,
+      "ball_offset_xy": [
+        0.12,
+        0.02
+      ],
+      "velocity_delta": 0.02,
+      "native_poll": false
+    },
+    {
+      "name": "E_cmu02",
+      "scene": "E",
+      "control": "cmu02",
+      "seed": 1319,
+      "ball_offset_xy": [
+        0.12,
+        0.02
+      ],
+      "velocity_delta": 0.02,
+      "native_poll": false
+    },
+    {
+      "name": "F_v32",
+      "scene": "F",
+      "control": "v32",
+      "seed": 1327,
+      "ball_offset_xy": [
+        -0.1,
+        -0.04
+      ],
+      "velocity_delta": -0.02,
+      "native_poll": false
+    },
+    {
+      "name": "F_cmu02",
+      "scene": "F",
+      "control": "cmu02",
+      "seed": 1327,
+      "ball_offset_xy": [
+        -0.1,
+        -0.04
+      ],
+      "velocity_delta": -0.02,
+      "native_poll": false
+    }
+  ],
+  "gates": {
+    "instep_impulse_min": 0.95,
+    "goal": true,
+    "ball_speed_min_mps": 3.5,
+    "max_29_joint_velocity_ratio": 1.000001,
+    "max_nonfoot_contact_N_exclusive": 20,
+    "full_recovery_s": 14
+  },
+  "causal_contract": {
+    "training_scenes": [
+      "v084_C_v32_off",
+      "v084_C_cmu02",
+      "v084_D_v32",
+      "v084_D_cmu02"
+    ],
+    "train_grouped_by_scene": true,
+    "heldout_scenes": [
+      "E",
+      "F"
+    ],
+    "training_uses_test_samples": false,
+    "oracle_future_impact_as_input": false,
+    "causal_support_obs_only": true
+  },
+  "false_claim_prohibitions": [
+    "no professional human verified synchronized GRF",
+    "no native collider pair/manifold calibration yet",
+    "no model used to command new G1 in this batch",
+    "physical scene seed is not a true independent reset perturbation"
+  ]
+}
