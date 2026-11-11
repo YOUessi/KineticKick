@@ -1,0 +1,65 @@
+{
+  "version": "v0.1.76",
+  "parent_sha": "68254ee6d4b295cb2a2b072602447c02939866f4",
+  "reason": "v75 showed both variants finish all steps exit(0) without watchdog but missing post-app-close Python return; Isaac source self._app.shutdown and unload_plugins may finalize runtime before Python resumes.",
+  "new_acceptance_predeclared": "Bounded exit(0), 8 step completion, no watchdog, and no lingering GPU PID certifies process-level Kit termination; APP_CLOSE_RETURN is not a required process-level marker; remains distinct from Python-stack-clean return.",
+  "app_runtime_source": "/home/you/conda_env/env_isaaclab/lib/python3.10/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py",
+  "app_runtime_sha256": "840ad13fcb3b4d8e10457809d42180b0fd807951a3e3cc153c832363fbef0bb2",
+  "immutable_inputs_sha256": {
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/run_placement_strike_v056.py": "ba6fda40cf4f1f49ab34e7818110a8c15ca69305948bdadaf5322634ee52f8fc",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/v075_guarded_batch.py": "9ecb3ef696eb776c2231e591e6cf7e341a1f82de3f962293d66b87dd8d99dc0a",
+    "tools/v075_guard_probe.py": "5b91f071854cfd971b33ec036a2ba0784891eee137c5139ba28aa15cc4ac36e0",
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_02_physx_v052.json": "aaf097a6f4aacb225820313ca50738cd45a5b9d0f1e2b30019de309cb85c74bf",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18"
+  },
+  "base_sources_sha256": {
+    "reports/v054_frozen_v32_contact_diagnostics.json": "f7a130707fdb761d7f7185d6805f4887d4ca929fec8965bfd35ae13d6666e01c",
+    "reports/v054_cmu_10_02_contact_diagnostics.json": "e197cf6807709e077fa5cfd2b2582bf988dd1437f249bd61addf7835a7d2b255",
+    "reports/v054_cmu_10_05_contact_diagnostics.json": "d46a48f84dbaa7a367eac3e5dc399d4378007485c369c2b57c1c67775ccbfac1"
+  },
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "minimum_free_GiB": 20,
+  "physical_trials_order": [
+    {
+      "name": "frozen_v32",
+      "config": "configs/cmu_real_120hz_10_02_physx_zero_v052.json"
+    },
+    {
+      "name": "cmu_10_02",
+      "config": "configs/cmu_real_120hz_10_02_physx_v052.json"
+    },
+    {
+      "name": "cmu_10_05",
+      "config": "configs/cmu_real_120hz_10_05_physx_v052.json"
+    }
+  ],
+  "per_trial": [
+    "original_no_native_subscription",
+    "same_native_readonly_subscription"
+  ],
+  "gpu_max_seconds_per_g1_trial": 320,
+  "only_shutdown_change": "guard simulator STOP callback flag only in finally AFTER all simulation integration and BEFORE env.close; never change controller dynamics/USD/collider/report API/contact sensor.",
+  "scoring": [
+    "all source 29 measured qdot",
+    "instep impulse >=95%",
+    "goal and velocity",
+    "recovery through 14s",
+    "no nonfoot collision"
+  ],
+  "pari": "for all shared physical recorded fields compare numerical exact and report mismatches without erasure",
+  "stop_if": [
+    "guarded v75 process test did not exit0",
+    "source drift",
+    "gpu occupied",
+    "disk <20GiB",
+    "missing dependencies",
+    "G1 first run fails to produce valid report",
+    "native-on/off shared physics drift"
+  ],
+  "no_force_push": true,
+  "all_outputs_create_exclusive": true,
+  "no_human_GRF_truth": true
+}
