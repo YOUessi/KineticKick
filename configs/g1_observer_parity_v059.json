@@ -1,0 +1,135 @@
+{
+  "version": "v0.1.59",
+  "parent_sha": "3eaa84e45b7eb7bc64a51f7e8a289e6602833f12",
+  "original_G1_29DoF": true,
+  "dt_physics_s": 0.005,
+  "dt_control_s": 0.02,
+  "minimum_free_GiB": 20,
+  "learned_policy_unchanged": true,
+  "no_human_contact_ground_truth": true,
+  "cpu_vs_gpu_parity_is_not_assumed": true,
+  "diagnostic_only_not_model_selection": true,
+  "objective": "same-backend CPU read-only observer physics parity and GPU startup/output anomaly; no controller tuning",
+  "source_hashes": {
+    "tools/run_backend_batch_v059.py": "e2158ab09d8c37389d5a2807c6a41eaaf31febb676caf348e3a4c16a277fc9ff",
+    "tools/run_placement_strike_v058.py": "a11024c6b757bae11f56f7e64121e56c3bffa53d17eab7c37f1f6a1fb93250b3",
+    "tools/eval_free_shooting_backend_v057.py": "cb9431449ec39b6f3c5b923cae4341692502456ddb0550572452906843cd6d5b",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/physx_pair_dynamics_v055.py": "1eed09a34dae5ebed12d6978036d4e8b749173739db7ca917a5ea49412201394",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/closed_loop_acceptance.py": "184ff84e8e78d3a864d5d4342df40f9ed15002b706eb26192ecff8ca506e6c54"
+  },
+  "policies": {
+    "frozen_v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu_10_02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu_10_05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "policy_hashes": {
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_02_physx_v052.json": "aaf097a6f4aacb225820313ca50738cd45a5b9d0f1e2b30019de309cb85c74bf",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18"
+  },
+  "cases": [
+    {
+      "id": "cpu_v32_off_s1201",
+      "backend": "cpu",
+      "policy": "frozen_v32",
+      "observer": "none",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v059_cpu_v32_off_s1201.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    },
+    {
+      "id": "cpu_v32_full_s1201",
+      "backend": "cpu",
+      "policy": "frozen_v32",
+      "observer": "full",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v059_cpu_v32_full_s1201.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    },
+    {
+      "id": "cpu_cmu02_full_s1201",
+      "backend": "cpu",
+      "policy": "cmu_10_02",
+      "observer": "full",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v059_cpu_cmu02_full_s1201.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    },
+    {
+      "id": "cpu_cmu05_off_s1201",
+      "backend": "cpu",
+      "policy": "cmu_10_05",
+      "observer": "none",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v059_cpu_cmu05_off_s1201.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    },
+    {
+      "id": "cpu_cmu05_full_s1201",
+      "backend": "cpu",
+      "policy": "cmu_10_05",
+      "observer": "full",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v059_cpu_cmu05_full_s1201.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    },
+    {
+      "id": "cuda_v32_off_s1201",
+      "backend": "cuda:0",
+      "policy": "frozen_v32",
+      "observer": "none",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v059_cuda_v32_off_s1201.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    },
+    {
+      "id": "cuda_v32_full_s1201",
+      "backend": "cuda:0",
+      "policy": "frozen_v32",
+      "observer": "full",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v059_cuda_v32_full_s1201.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    },
+    {
+      "id": "cuda_cmu05_off_s1201",
+      "backend": "cuda:0",
+      "policy": "cmu_10_05",
+      "observer": "none",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v059_cuda_cmu05_off_s1201.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    },
+    {
+      "id": "cpu_v32_full_s2333_perturb",
+      "backend": "cpu",
+      "policy": "frozen_v32",
+      "observer": "full",
+      "seed": 2333,
+      "perturb_reset": true,
+      "output": "reports/v059_cpu_v32_full_s2333_perturb.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    },
+    {
+      "id": "cpu_cmu05_full_s2333_perturb",
+      "backend": "cpu",
+      "policy": "cmu_10_05",
+      "observer": "full",
+      "seed": 2333,
+      "perturb_reset": true,
+      "output": "reports/v059_cpu_cmu05_full_s2333_perturb.json",
+      "phase": "backend_observer_qualification_not_training_not_unseen_test"
+    }
+  ]
+}
