@@ -1,0 +1,100 @@
+{
+  "version": "v0.1.95",
+  "parent_sha": "76ed1b1ce2d747471a5a700771a5d224027248bf",
+  "purpose": "Independent 200Hz native report timing vs calibrated CUDA tensor positive/negative; historical G1 safety analysis and executable offline fullbody generation; original motors forbidden",
+  "steps": 180,
+  "timeout_s": 135,
+  "required_free_gib": 20,
+  "python": "/home/you/conda_env/env_isaaclab/bin/python",
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "stop_on_child_crash": true,
+  "stop_on_runtime_infrastructure_failure": true,
+  "do_not_treat_zero_native_reports_as_no_contact": true,
+  "original_G1_shots_scheduled": 0,
+  "physical_G1_actuation_new": false,
+  "matrix": [
+    {
+      "case": "cpu_pose_off",
+      "device": "cpu",
+      "report_mode": "off",
+      "capture": "pose",
+      "layout": "colliding",
+      "subscribe_phase": "pre_reset"
+    },
+    {
+      "case": "cpu_native_on",
+      "device": "cpu",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding",
+      "subscribe_phase": "pre_reset"
+    },
+    {
+      "case": "cpu_native_after_on",
+      "device": "cpu",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding",
+      "subscribe_phase": "post_reset"
+    },
+    {
+      "case": "gpu_pose_off",
+      "device": "cuda:0",
+      "report_mode": "off",
+      "capture": "pose",
+      "layout": "colliding",
+      "subscribe_phase": "pre_reset"
+    },
+    {
+      "case": "gpu_native_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding",
+      "subscribe_phase": "pre_reset"
+    },
+    {
+      "case": "gpu_native_after_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding",
+      "subscribe_phase": "post_reset"
+    },
+    {
+      "case": "gpu_tensor_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "tensor",
+      "layout": "colliding",
+      "subscribe_phase": "pre_reset"
+    },
+    {
+      "case": "gpu_both_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "both",
+      "layout": "colliding",
+      "subscribe_phase": "pre_reset"
+    },
+    {
+      "case": "gpu_separated_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "tensor",
+      "layout": "separated",
+      "subscribe_phase": "pre_reset"
+    }
+  ],
+  "strict_acceptance": {
+    "tensor_positive_cuda_min": 1,
+    "negative_separated_tensor_must_be_zero": true,
+    "off_on_state_exactly_equal": true,
+    "native_collider_truth_requires": [
+      "native actor0/actor1 and collider0/collider1",
+      "valid contact position/normal",
+      "positive impulse",
+      "CPU-or-GPU calibrated positive control"
+    ]
+  }
+}
