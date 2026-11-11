@@ -1,0 +1,75 @@
+{
+  "version": "v0.1.73",
+  "parent_git_sha": "ca2e3f51a7d30467bb6416b9abc0e7468cac2155",
+  "original_human_rel_dir": "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050",
+  "original_human_source": {
+    "10_01": {
+      "sha256": "9b9a6088359f5c8aa388f04db0c12f02d570ef9cfe9876650c786f994cd6c36d",
+      "subject": "10"
+    },
+    "10_02": {
+      "sha256": "e4afc71537ce694afb90b8c0a93edb50e08f6fe30a10ace6f81f0f053f348f3a",
+      "subject": "10"
+    },
+    "10_03": {
+      "sha256": "98344b48433eb1fa1592b6f06eccb1ce000625486960a42690dbb2ac8c6f44e4",
+      "subject": "10"
+    },
+    "10_05": {
+      "sha256": "4058261cab7dccaebaf47152c857e212c0eba1e13e0315be95548a781e0172a2",
+      "subject": "10"
+    },
+    "10_06": {
+      "sha256": "22edbbe8bd7e38e2da85de469ab5f61a2c6dcff2a95f51ce26cd9d44d21dbdd9",
+      "subject": "10"
+    },
+    "11_01": {
+      "sha256": "0d874615240577cee93532c1d151d2b79eadc0e9e9dba47fcef826c8b48e322a",
+      "subject": "11"
+    }
+  },
+  "train_clips": [
+    "10_01",
+    "10_02",
+    "10_03",
+    "10_05"
+  ],
+  "validation_clips": [
+    "10_06"
+  ],
+  "test_clips": [
+    "11_01"
+  ],
+  "test_subject_seen_in_training": false,
+  "professional_instestep_contact_groundtruth": false,
+  "no_CUDA_no_robot_policy_no_PhysX": true,
+  "human_GRF_truth": false,
+  "elite_player_verified": false,
+  "seed": 7301,
+  "history_frames": 24,
+  "forecast_frames": 12,
+  "train_stride_frames": 6,
+  "eval_stride_frames": 12,
+  "gru_hidden": 80,
+  "epochs": 100,
+  "early_stop_patience": 18,
+  "batch_size": 48,
+  "learning_rate": 0.0015,
+  "weight_decay": 0.001,
+  "negative_controls": [
+    "persistence",
+    "fixed4frame_velocity",
+    "same_capacity_GRU_history_shuffled"
+  ],
+  "model_selection": "subject10_clip10_06_only",
+  "heldout_test": "subject11_clip11_01_only_after_both_validation_selection",
+  "metric_unit": "original pelvis-relative scale-normalized 3D joint proxy and 8 angle cosines, NOT meters",
+  "input_shape": "19x3 full landmark 3D plus 8 segment cosines from original 120Hz C3D",
+  "test_untouched_before_selection": true,
+  "posthoc_parameter_tuning_disallowed": true,
+  "source_code_sha256": {
+    "tools/train_human_temporal_brain_v073.py": "cbe564c219544553bc7450a88dddcb42388cdc00acf026edf70b8d7be0159ee0",
+    "tests/test_v073_human_temporal_brain.py": "355b028848057f3346c0f66b264fd691134886f7d33003c209b3696b88357df9",
+    "configs/cmu_soccer_quality_v050.json": "2bc8a2a8a51d7d6170acc9b39aa5f8a288b4c5147d430c31d55415cbc5ce923e"
+  }
+}
