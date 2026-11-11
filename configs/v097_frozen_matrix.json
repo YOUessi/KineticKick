@@ -1,0 +1,145 @@
+{
+  "version": "v0.1.97",
+  "parent_commit": "f143a1cc70f5e5c92c6ed2c803c16b1a1934faea",
+  "frozen_before_new_physics": true,
+  "original_g1_29dof_physx_hz": 200,
+  "purpose": "Independent never-used G/H ball placements; three unchanged original 29DoF G1 controllers each, actual CUDA PhysX 200Hz strict hard gates; pre-frozen causal negative control, no human elite contact truth",
+  "settings": {
+    "min_free_gib": 20,
+    "timeout_s": 180,
+    "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+    "stop_on_uncertified_cuda": true,
+    "max_new_G1_episodes": 6,
+    "outputs_write_once": true
+  },
+  "controls": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "cases": [
+    {
+      "name": "G_v32",
+      "scene": "G",
+      "control": "v32",
+      "seed": 1409,
+      "ball_offset_xy": [
+        0.035,
+        -0.095
+      ],
+      "velocity_delta": 0.015,
+      "native_poll": false
+    },
+    {
+      "name": "G_cmu02",
+      "scene": "G",
+      "control": "cmu02",
+      "seed": 1409,
+      "ball_offset_xy": [
+        0.035,
+        -0.095
+      ],
+      "velocity_delta": 0.015,
+      "native_poll": false
+    },
+    {
+      "name": "G_cmu05",
+      "scene": "G",
+      "control": "cmu05",
+      "seed": 1409,
+      "ball_offset_xy": [
+        0.035,
+        -0.095
+      ],
+      "velocity_delta": 0.015,
+      "native_poll": false
+    },
+    {
+      "name": "H_v32",
+      "scene": "H",
+      "control": "v32",
+      "seed": 1423,
+      "ball_offset_xy": [
+        -0.045,
+        0.095
+      ],
+      "velocity_delta": -0.015,
+      "native_poll": false
+    },
+    {
+      "name": "H_cmu02",
+      "scene": "H",
+      "control": "cmu02",
+      "seed": 1423,
+      "ball_offset_xy": [
+        -0.045,
+        0.095
+      ],
+      "velocity_delta": -0.015,
+      "native_poll": false
+    },
+    {
+      "name": "H_cmu05",
+      "scene": "H",
+      "control": "cmu05",
+      "seed": 1423,
+      "ball_offset_xy": [
+        -0.045,
+        0.095
+      ],
+      "velocity_delta": -0.015,
+      "native_poll": false
+    }
+  ],
+  "gates": {
+    "instep_impulse_min": 0.95,
+    "goal": true,
+    "ball_speed_min_mps": 3.5,
+    "max_29_joint_velocity_ratio": 1.000001,
+    "max_nonfoot_contact_N_exclusive": 20,
+    "full_recovery_s": 14
+  },
+  "causal_contract": {
+    "previous_scenes_are_not_blind_training": [
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "new_pre_registered_scenes": [
+      "G",
+      "H"
+    ],
+    "full_three_way_controls": [
+      "v32",
+      "cmu02",
+      "cmu05"
+    ],
+    "unknown_professional_human_contact_truth": true,
+    "no_test_result_used_to_tune_actions": true,
+    "scenes_holdout_only_within_this_version": true,
+    "physical_seed_is_not_random_reset_perturbation": true
+  },
+  "false_claim_prohibitions": [
+    "cannot infer professional learned human biomechanics",
+    "cannot infer native collider manifold from net force",
+    "cannot infer causality from two ball placements",
+    "never count terminated/missing recovery as success",
+    "not a new learned controller"
+  ],
+  "comparison_labels": {
+    "v32": "unchanged baseline",
+    "cmu02": "old single-subject optical prior",
+    "cmu05": "known historically risky single-subject negative control"
+  },
+  "gate_protocol": {
+    "min_instep_fraction": 0.95,
+    "min_ball_speed_mps": 3.5,
+    "max_qdot_ratio": 1.000001,
+    "max_nonfoot_net_N_exclusive": 20,
+    "min_full_s": 13.995,
+    "requires_goal": true,
+    "requires_recovery": true,
+    "zero_native_callback_means": "UNKNOWN"
+  }
+}
