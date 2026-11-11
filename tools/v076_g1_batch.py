@@ -120,7 +120,7 @@ def single(case,mode,c,free,run_id):
 def main():
     args=argparse.ArgumentParser()
     args.add_argument("--cases",default="all",help="all or one frozen case name")
-    args.add_argument("--run-id",default="r1",choices=("r1",),help="write-once namespace for repairing missing local source link")
+    args.add_argument("--run-id",default="r1",choices=("r1","r2",),help="write-once namespace for repairing missing local source link")
     opts=args.parse_args()
     c=json.loads(CONF.read_text())
     requested=c["physical_trials_order"] if opts.cases=="all" else [
