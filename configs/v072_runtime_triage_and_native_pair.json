@@ -1,0 +1,58 @@
+{
+  "version": "v0.1.72",
+  "parent_sha": "ca2e3f51a7d30467bb6416b9abc0e7468cac2155",
+  "created_utc": "2026-11-11",
+  "classification": "postregistered launch isolation; original three episodes only if green",
+  "sources_sha256": {
+    "tools/isaac_smoke.py": "ac827914922ebc133c50b60804d217c19596023494afe44cf7c165a3cf446b99",
+    "tools/run_placement_strike_v067.py": "5482adab5e9ce0bdfdaa059f1712384c92d609355f3bd263b3ba3a24c8a86fc7",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/wholebody_safety_interface_v055.py": "834f5e517c33b22a11109b0c076eba7e6b7e6146391fdaf086189a20d625ac38",
+    "tools/audit_v071_native_event_ledger.py": "65a3d9be2085ab922ecc5ca8006eefb4bcfe61a0a4db21e840fb736fefa0bcb9",
+    "configs/cmu_named_nonfoot_diagnostics_v054.json": "add8693911cdd2489f3fb944adb77698238ddca50f14867a2a388b31eaeeeefa",
+    "configs/g1_physx_readonly_evidence_ledger_v071.json": "b1e54c1b0880e0e80c08481c13f127397bf569a20300b4e65294bdea32672e94"
+  },
+  "stages": [
+    {
+      "id": "kit_empty_headless",
+      "max_wall_s": 65,
+      "requires": "GPU free, disk >=20GiB, exclusive flock",
+      "script": "tools/isaac_smoke.py"
+    },
+    {
+      "id": "original_v054_three",
+      "requires": "kit_empty_headless success + frozen 3 source policies + 29DOF physical baseline; stage-gated",
+      "count": 3,
+      "headless": true
+    }
+  ],
+  "observability": [
+    "KIT_APP_ARRIVAL",
+    "SIM_CONTEXT_INIT",
+    "SCENE_G1_29DOF",
+    "NATIVE_RETURN"
+  ],
+  "never_interpret_as_physical_failure": [
+    "KIT_BOOT_TIMEOUT",
+    "NO_G1_OUTPUT",
+    "NO_NATIVE_RETURN"
+  ],
+  "physical_comparator_fields": "exact original shared 25-column original G1 recorder; no falsified tolerance",
+  "direct_contact_qualification": "native GPU original collider0/collider1 exact left_wrist_yaw_link vs left_hip_roll_link with contact normal and manifold; negative/empty logs inconclusive",
+  "no_edit_original_controller": true,
+  "no_modify_original_usd_or_physx": true,
+  "no_changes_to_legacy_runs": true,
+  "no_unfrozen_hyperparameter_search": true,
+  "stop_on_boot_failure": true,
+  "heldout_metric_gates": [
+    "instep_impulse>=0.95",
+    "ball_goal",
+    "ball_speed",
+    "29dof_qdot",
+    "nonfoot_no_collision",
+    "14s_recovery"
+  ],
+  "data_qualification": "CMU optical 120Hz has no independently measured impact impulse or synced GRF; no professional kick claim",
+  "negative_control": "native pair observer off versus on; scientific equality comparator must be exact after GPU G1 is healthy",
+  "runner_protocol": "one GPU process at a time, no replays over preexisting file, budget 65s for stage zero, strict no mutation of old logs"
+}
