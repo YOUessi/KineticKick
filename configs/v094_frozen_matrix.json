@@ -1,0 +1,67 @@
+{
+  "version": "v0.1.94",
+  "parent_sha": "d69904df2bd2c0f833eb384520a63f4867334623",
+  "purpose": "Repair RigidContactView.sensor_count; 6 independent CPU/CUDA controls; no G1 actuation",
+  "steps": 180,
+  "timeout_s": 135,
+  "required_free_gib": 20,
+  "python": "/home/you/conda_env/env_isaaclab/bin/python",
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "stop_on_child_crash": true,
+  "stop_on_runtime_infrastructure_failure": true,
+  "do_not_treat_zero_native_reports_as_no_contact": true,
+  "original_G1_shots_scheduled": 0,
+  "physical_G1_actuation_new": false,
+  "matrix": [
+    {
+      "case": "cpu_pose_off",
+      "device": "cpu",
+      "report_mode": "off",
+      "capture": "pose",
+      "layout": "colliding"
+    },
+    {
+      "case": "cpu_tensor_on",
+      "device": "cpu",
+      "report_mode": "on",
+      "capture": "tensor",
+      "layout": "colliding"
+    },
+    {
+      "case": "gpu_pose_off",
+      "device": "cuda:0",
+      "report_mode": "off",
+      "capture": "pose",
+      "layout": "colliding"
+    },
+    {
+      "case": "gpu_tensor_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "tensor",
+      "layout": "colliding"
+    },
+    {
+      "case": "gpu_native_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding"
+    },
+    {
+      "case": "gpu_separated_on",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "tensor",
+      "layout": "separated"
+    }
+  ],
+  "explicit_source_version_4_5": true,
+  "stage_shape_descendant_collision_check": true,
+  "off_requires_absent_PhysxContactReportAPI": true,
+  "no_kinematic_velocity_write": true,
+  "compare_exact_runtime_z_vz_across_instrumentation": true,
+  "fixed_contact_view_api": "sensor_count",
+  "g1_actuation_requires_calibrated_native_manifold": true,
+  "new_original_G1_experiments": 0
+}
