@@ -1,0 +1,158 @@
+{
+  "version": "v0.1.67",
+  "parent_sha": "d80785015174884246daf6a73b4bb61f7492b236",
+  "experiment": "preimpact_temporal_directionality_falsification_not_human_naturalness",
+  "human_training_clip_count": 0,
+  "professional_instep_contact_truth": false,
+  "all_G1_29DoF_joint_qdot_and_95pct_instep_and_14s_recovery_gate_unchanged": true,
+  "preregistered_before_GPU": true,
+  "physical_dt": 0.005,
+  "policy_dt": 0.02,
+  "policies": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "synth": "configs/g1_phase_synthetic_candidate_v063.json",
+    "reverse": "configs/g1_phase_reversed_negative_v067.json"
+  },
+  "source_sha256": {
+    "tools/run_placement_strike_v067.py": "5482adab5e9ce0bdfdaa059f1712384c92d609355f3bd263b3ba3a24c8a86fc7",
+    "tools/run_v067_directionality_batch.py": "fa7ef1e4c3fad3f4ef2fda8259c4b7bb5e6a1eade94f4030297a86904e61d817",
+    "tools/phase_reversal_v067.py": "1f3a637a35eb268c8cb884fc5fc2d67ab59d3ae80f83bf0db1e2e4cd669a5163",
+    "tools/phase_coordinated_v063.py": "99e02d8952840c1019298f3342799eab6dec15b040160808aef38864174acdbf",
+    "tools/wholebody_safety_interface_v055.py": "834f5e517c33b22a11109b0c076eba7e6b7e6146391fdaf086189a20d625ac38",
+    "tools/massfree_body_observer_v062.py": "f89f6ff9ee2506a99fac5495ccab69b5dd9b0aa5e5969d9a8cd3c8f72371ab2c",
+    "tools/audit_v060_observer_factorial.py": "c9a1ab7cc6120c31042dfc82078548ca81f0af6b2b005d71e9902f8f0de733bc"
+  },
+  "policy_sha256": {
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/g1_phase_synthetic_candidate_v063.json": "219547befbccb300690c4c452b385fc843bfd5f0d84627aa49e9cf83737ffd6b",
+    "configs/g1_phase_reversed_negative_v067.json": "6d48ef29aaa5934bdf661a1ca01f64afa92c9293cd21f8fc9ee165340ed2c338"
+  },
+  "cases": [
+    {
+      "id": "new_stance_a_v32",
+      "ball_case": "new_stance_a",
+      "seed": 6707,
+      "offset_xy": [
+        0.011,
+        -0.012
+      ],
+      "velocity_delta_mps": -0.025,
+      "perturb_reset": true,
+      "policy": "v32",
+      "output": "reports/v067_new_stance_a_v32.json",
+      "qualifier": "NEW_SAMPLED_CONTEXT_NO_PARAMETER_TUNING"
+    },
+    {
+      "id": "new_stance_a_synth",
+      "ball_case": "new_stance_a",
+      "seed": 6707,
+      "offset_xy": [
+        0.011,
+        -0.012
+      ],
+      "velocity_delta_mps": -0.025,
+      "perturb_reset": true,
+      "policy": "synth",
+      "output": "reports/v067_new_stance_a_synth.json",
+      "qualifier": "NEW_SAMPLED_CONTEXT_NO_PARAMETER_TUNING"
+    },
+    {
+      "id": "new_stance_a_reverse",
+      "ball_case": "new_stance_a",
+      "seed": 6707,
+      "offset_xy": [
+        0.011,
+        -0.012
+      ],
+      "velocity_delta_mps": -0.025,
+      "perturb_reset": true,
+      "policy": "reverse",
+      "output": "reports/v067_new_stance_a_reverse.json",
+      "qualifier": "NEW_SAMPLED_CONTEXT_NO_PARAMETER_TUNING"
+    },
+    {
+      "id": "new_stance_b_v32",
+      "ball_case": "new_stance_b",
+      "seed": 6719,
+      "offset_xy": [
+        -0.014,
+        0.011
+      ],
+      "velocity_delta_mps": 0.032,
+      "perturb_reset": true,
+      "policy": "v32",
+      "output": "reports/v067_new_stance_b_v32.json",
+      "qualifier": "NEW_SAMPLED_CONTEXT_NO_PARAMETER_TUNING"
+    },
+    {
+      "id": "new_stance_b_synth",
+      "ball_case": "new_stance_b",
+      "seed": 6719,
+      "offset_xy": [
+        -0.014,
+        0.011
+      ],
+      "velocity_delta_mps": 0.032,
+      "perturb_reset": true,
+      "policy": "synth",
+      "output": "reports/v067_new_stance_b_synth.json",
+      "qualifier": "NEW_SAMPLED_CONTEXT_NO_PARAMETER_TUNING"
+    },
+    {
+      "id": "new_stance_b_reverse",
+      "ball_case": "new_stance_b",
+      "seed": 6719,
+      "offset_xy": [
+        -0.014,
+        0.011
+      ],
+      "velocity_delta_mps": 0.032,
+      "perturb_reset": true,
+      "policy": "reverse",
+      "output": "reports/v067_new_stance_b_reverse.json",
+      "qualifier": "NEW_SAMPLED_CONTEXT_NO_PARAMETER_TUNING"
+    },
+    {
+      "id": "new_stance_c_v32",
+      "ball_case": "new_stance_c",
+      "seed": 6731,
+      "offset_xy": [
+        0.02,
+        -0.007
+      ],
+      "velocity_delta_mps": 0.012,
+      "perturb_reset": true,
+      "policy": "v32",
+      "output": "reports/v067_new_stance_c_v32.json",
+      "qualifier": "NEW_SAMPLED_CONTEXT_NO_PARAMETER_TUNING"
+    },
+    {
+      "id": "new_stance_c_synth",
+      "ball_case": "new_stance_c",
+      "seed": 6731,
+      "offset_xy": [
+        0.02,
+        -0.007
+      ],
+      "velocity_delta_mps": 0.012,
+      "perturb_reset": true,
+      "policy": "synth",
+      "output": "reports/v067_new_stance_c_synth.json",
+      "qualifier": "NEW_SAMPLED_CONTEXT_NO_PARAMETER_TUNING"
+    },
+    {
+      "id": "new_stance_c_reverse",
+      "ball_case": "new_stance_c",
+      "seed": 6731,
+      "offset_xy": [
+        0.02,
+        -0.007
+      ],
+      "velocity_delta_mps": 0.012,
+      "perturb_reset": true,
+      "policy": "reverse",
+      "output": "reports/v067_new_stance_c_reverse.json",
+      "qualifier": "NEW_SAMPLED_CONTEXT_NO_PARAMETER_TUNING"
+    }
+  ]
+}
