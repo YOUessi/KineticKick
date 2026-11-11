@@ -1,0 +1,131 @@
+{
+  "version": "v0.1.60",
+  "parent_sha": "4107bebb4ee4604d2316acf3a2bfad86a49ac339",
+  "physics_dt_s": 0.005,
+  "policy_dt_s": 0.02,
+  "original_29DoF": true,
+  "minimum_free_gib": 20,
+  "controller_tuning": false,
+  "hypothesis": "cuda G1 READY but no original physics is attributable to native subscriber, v055 observer, their interaction or GPU backend; factorial one-at-a-time instrumentation",
+  "no_cpu_gpu_physics_equivalence_assumed": true,
+  "source_hashes": {
+    "tools/run_backend_batch_v060.py": "f57bb09ae966f2f9f94dcc2a47cc78cccfd884f2eb2636d29f448b02a7954785",
+    "tools/run_placement_strike_v058.py": "a11024c6b757bae11f56f7e64121e56c3bffa53d17eab7c37f1f6a1fb93250b3",
+    "tools/eval_free_shooting_backend_v057.py": "cb9431449ec39b6f3c5b923cae4341692502456ddb0550572452906843cd6d5b",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/physx_pair_dynamics_v055.py": "1eed09a34dae5ebed12d6978036d4e8b749173739db7ca917a5ea49412201394",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/closed_loop_acceptance.py": "184ff84e8e78d3a864d5d4342df40f9ed15002b706eb26192ecff8ca506e6c54"
+  },
+  "policies": {
+    "frozen_v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu_10_05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "policy_hashes": {
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18"
+  },
+  "cases": [
+    {
+      "id": "cuda_v32_none",
+      "backend": "cuda:0",
+      "policy": "frozen_v32",
+      "observer": "none",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cuda_v32_none.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    },
+    {
+      "id": "cuda_v32_native_only",
+      "backend": "cuda:0",
+      "policy": "frozen_v32",
+      "observer": "native_only",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cuda_v32_native_only.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    },
+    {
+      "id": "cuda_v32_dynamics_only",
+      "backend": "cuda:0",
+      "policy": "frozen_v32",
+      "observer": "dynamics_only",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cuda_v32_dynamics_only.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    },
+    {
+      "id": "cuda_v32_full",
+      "backend": "cuda:0",
+      "policy": "frozen_v32",
+      "observer": "full",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cuda_v32_full.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    },
+    {
+      "id": "cpu_v32_none",
+      "backend": "cpu",
+      "policy": "frozen_v32",
+      "observer": "none",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cpu_v32_none.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    },
+    {
+      "id": "cpu_v32_native_only",
+      "backend": "cpu",
+      "policy": "frozen_v32",
+      "observer": "native_only",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cpu_v32_native_only.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    },
+    {
+      "id": "cpu_v32_dynamics_only",
+      "backend": "cpu",
+      "policy": "frozen_v32",
+      "observer": "dynamics_only",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cpu_v32_dynamics_only.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    },
+    {
+      "id": "cuda_cmu05_native_only",
+      "backend": "cuda:0",
+      "policy": "cmu_10_05",
+      "observer": "native_only",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cuda_cmu05_native_only.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    },
+    {
+      "id": "cuda_cmu05_dynamics_only",
+      "backend": "cuda:0",
+      "policy": "cmu_10_05",
+      "observer": "dynamics_only",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cuda_cmu05_dynamics_only.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    },
+    {
+      "id": "cpu_cmu05_native_only",
+      "backend": "cpu",
+      "policy": "cmu_10_05",
+      "observer": "native_only",
+      "seed": 1201,
+      "perturb_reset": false,
+      "output": "reports/v060_cpu_cmu05_native_only.json",
+      "phase": "diagnostic_only_not_training_not_generalization"
+    }
+  ]
+}
