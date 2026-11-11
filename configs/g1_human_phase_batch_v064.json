@@ -1,0 +1,270 @@
+{
+  "version": "v0.1.64",
+  "parent_sha": "d18ea81964a9a6b4e276c029b2bddd4e323268d4",
+  "registered_before_PhysX": true,
+  "human_training_clips": [
+    "10_02"
+  ],
+  "human_training_subjects": 1,
+  "human_foot_ball_contact_truth": false,
+  "G1_URDF_and_original_PhysX_fully_free_root": true,
+  "original_goal_and_instep_torque_qdot_limits_unchanged": true,
+  "intervention_description": "20ms 29DoF fitted geometric phase coordination (support left hip/waist/knee/arm, original right leg IK protected), NOT proven elite-power biomechanics",
+  "negative_control": "Same human fit reference in reversed temporal order, no new training",
+  "experiments_with_unseen_human_subjects": 0,
+  "valid_human_instep_force_groundtruth": 0,
+  "original_G1_physics_dt_s": 0.005,
+  "original_controller_dt_s": 0.02,
+  "full_duration_s": 14.0,
+  "goal_speed_gate_mps": 3.5,
+  "instep_impulse_gate": 0.95,
+  "policy_recovery_controller": "unchanged original v32",
+  "human_reference_ordered_max_delta_rad": 0.01685807667672634,
+  "source_sha256": {
+    "tools/run_placement_strike_v064.py": "8815358d134a9af5ff22ba21072b6d8556bbe71a4ca387b52ef4c1cd4ac9c59d",
+    "tools/run_v064_human_phase_batch.py": "f009b1452e43392633afab26c6cf656b77fd902e52d51c1b98fcbe59edc8e118",
+    "tools/train_cmu_phase_generator_v064.py": "cad96d60e4432239a9af2a254eba3567c85f836f598fab9d80e5d4cc54b13553",
+    "tools/human_phase_controller_v064.py": "b6453e4dc67d0ff3d2fabb122217aa1c65ed5b2cef3438db5fc88c6032273a2b",
+    "tools/phase_coordinated_v063.py": "99e02d8952840c1019298f3342799eab6dec15b040160808aef38864174acdbf",
+    "tools/wholebody_safety_interface_v055.py": "834f5e517c33b22a11109b0c076eba7e6b7e6146391fdaf086189a20d625ac38",
+    "tools/g1_contact_coordination_projection_v040.py": "c6d1c95bd2922223797c67ceeeeb6253e959a7c956921b0d81cbc5698f5abd56",
+    "tools/massfree_body_observer_v062.py": "f89f6ff9ee2506a99fac5495ccab69b5dd9b0aa5e5969d9a8cd3c8f72371ab2c",
+    "tools/audit_v060_observer_factorial.py": "c9a1ab7cc6120c31042dfc82078548ca81f0af6b2b005d71e9902f8f0de733bc",
+    "configs/cmu_phase_model_v064.json": "4677fb2ab59675bf2f88a4f3b53de92df66e43088c3ba321a2e1c83f00af8ccd",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/10_02.npz": "e4afc71537ce694afb90b8c0a93edb50e08f6fe30a10ace6f81f0f053f348f3a",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/10_05.npz": "4058261cab7dccaebaf47152c857e212c0eba1e13e0315be95548a781e0172a2",
+    "experiments/cmu_phase_fit_v064/human_ordered.npz": "a0a415bc8624ae2940aca1dfafffc4771460ff6763facef196602f692ee4efa2",
+    "experiments/cmu_phase_fit_v064/human_reversed.npz": "5129991b6f7e6677e392ef9d6df829e17a3b685d292b5c2347dd4a488c46f60f",
+    "experiments/cmu_phase_fit_v064/audit.json": "02732f9781e3fec222220add807d2177cd80eb1b7c70c6d12ec7f08d86c0c008"
+  },
+  "policy_sha256": {
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/g1_human_phase_human_ordered_v064.json": "9120186b8b5fc940d1478e49725fccadf0a797d380878f1e68fe268865e37da9",
+    "configs/g1_human_phase_human_reversed_v064.json": "e1e07f65da27cea22adab1cb23b9d144ae1df64666248b095e877ff2f88371cb"
+  },
+  "policies": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "human_ordered": "configs/g1_human_phase_human_ordered_v064.json",
+    "human_reversed": "configs/g1_human_phase_human_reversed_v064.json"
+  },
+  "groups": [
+    {
+      "name": "center_seen",
+      "seed": 1201,
+      "xy": [
+        0.0,
+        0.0
+      ],
+      "vel": 0.0,
+      "perturb": false,
+      "qualifier": "SEEN_DEV_ONLY"
+    },
+    {
+      "name": "unseen_6407",
+      "seed": 6407,
+      "xy": [
+        0.018,
+        -0.016
+      ],
+      "vel": -0.035,
+      "perturb": true,
+      "qualifier": "NEW_FROZEN_CONTEXT"
+    },
+    {
+      "name": "unseen_6419",
+      "seed": 6419,
+      "xy": [
+        -0.018,
+        0.012
+      ],
+      "vel": 0.03,
+      "perturb": true,
+      "qualifier": "NEW_FROZEN_CONTEXT"
+    },
+    {
+      "name": "unseen_6431",
+      "seed": 6431,
+      "xy": [
+        0.025,
+        0.01
+      ],
+      "vel": 0.055,
+      "perturb": true,
+      "qualifier": "NEW_FROZEN_CONTEXT"
+    }
+  ],
+  "cases": [
+    {
+      "id": "center_seen_v32",
+      "seed": 1201,
+      "ball_context": "center_seen",
+      "offset_xy": [
+        0.0,
+        0.0
+      ],
+      "velocity_delta_mps": 0.0,
+      "perturb_reset": false,
+      "qualifier": "SEEN_DEV_ONLY",
+      "policy": "v32",
+      "output": "reports/v064_center_seen_v32.json"
+    },
+    {
+      "id": "center_seen_human_ordered",
+      "seed": 1201,
+      "ball_context": "center_seen",
+      "offset_xy": [
+        0.0,
+        0.0
+      ],
+      "velocity_delta_mps": 0.0,
+      "perturb_reset": false,
+      "qualifier": "SEEN_DEV_ONLY",
+      "policy": "human_ordered",
+      "output": "reports/v064_center_seen_human_ordered.json"
+    },
+    {
+      "id": "center_seen_human_reversed",
+      "seed": 1201,
+      "ball_context": "center_seen",
+      "offset_xy": [
+        0.0,
+        0.0
+      ],
+      "velocity_delta_mps": 0.0,
+      "perturb_reset": false,
+      "qualifier": "SEEN_DEV_ONLY",
+      "policy": "human_reversed",
+      "output": "reports/v064_center_seen_human_reversed.json"
+    },
+    {
+      "id": "unseen_6407_v32",
+      "seed": 6407,
+      "ball_context": "unseen_6407",
+      "offset_xy": [
+        0.018,
+        -0.016
+      ],
+      "velocity_delta_mps": -0.035,
+      "perturb_reset": true,
+      "qualifier": "NEW_FROZEN_CONTEXT",
+      "policy": "v32",
+      "output": "reports/v064_unseen_6407_v32.json"
+    },
+    {
+      "id": "unseen_6407_human_ordered",
+      "seed": 6407,
+      "ball_context": "unseen_6407",
+      "offset_xy": [
+        0.018,
+        -0.016
+      ],
+      "velocity_delta_mps": -0.035,
+      "perturb_reset": true,
+      "qualifier": "NEW_FROZEN_CONTEXT",
+      "policy": "human_ordered",
+      "output": "reports/v064_unseen_6407_human_ordered.json"
+    },
+    {
+      "id": "unseen_6407_human_reversed",
+      "seed": 6407,
+      "ball_context": "unseen_6407",
+      "offset_xy": [
+        0.018,
+        -0.016
+      ],
+      "velocity_delta_mps": -0.035,
+      "perturb_reset": true,
+      "qualifier": "NEW_FROZEN_CONTEXT",
+      "policy": "human_reversed",
+      "output": "reports/v064_unseen_6407_human_reversed.json"
+    },
+    {
+      "id": "unseen_6419_v32",
+      "seed": 6419,
+      "ball_context": "unseen_6419",
+      "offset_xy": [
+        -0.018,
+        0.012
+      ],
+      "velocity_delta_mps": 0.03,
+      "perturb_reset": true,
+      "qualifier": "NEW_FROZEN_CONTEXT",
+      "policy": "v32",
+      "output": "reports/v064_unseen_6419_v32.json"
+    },
+    {
+      "id": "unseen_6419_human_ordered",
+      "seed": 6419,
+      "ball_context": "unseen_6419",
+      "offset_xy": [
+        -0.018,
+        0.012
+      ],
+      "velocity_delta_mps": 0.03,
+      "perturb_reset": true,
+      "qualifier": "NEW_FROZEN_CONTEXT",
+      "policy": "human_ordered",
+      "output": "reports/v064_unseen_6419_human_ordered.json"
+    },
+    {
+      "id": "unseen_6419_human_reversed",
+      "seed": 6419,
+      "ball_context": "unseen_6419",
+      "offset_xy": [
+        -0.018,
+        0.012
+      ],
+      "velocity_delta_mps": 0.03,
+      "perturb_reset": true,
+      "qualifier": "NEW_FROZEN_CONTEXT",
+      "policy": "human_reversed",
+      "output": "reports/v064_unseen_6419_human_reversed.json"
+    },
+    {
+      "id": "unseen_6431_v32",
+      "seed": 6431,
+      "ball_context": "unseen_6431",
+      "offset_xy": [
+        0.025,
+        0.01
+      ],
+      "velocity_delta_mps": 0.055,
+      "perturb_reset": true,
+      "qualifier": "NEW_FROZEN_CONTEXT",
+      "policy": "v32",
+      "output": "reports/v064_unseen_6431_v32.json"
+    },
+    {
+      "id": "unseen_6431_human_ordered",
+      "seed": 6431,
+      "ball_context": "unseen_6431",
+      "offset_xy": [
+        0.025,
+        0.01
+      ],
+      "velocity_delta_mps": 0.055,
+      "perturb_reset": true,
+      "qualifier": "NEW_FROZEN_CONTEXT",
+      "policy": "human_ordered",
+      "output": "reports/v064_unseen_6431_human_ordered.json"
+    },
+    {
+      "id": "unseen_6431_human_reversed",
+      "seed": 6431,
+      "ball_context": "unseen_6431",
+      "offset_xy": [
+        0.025,
+        0.01
+      ],
+      "velocity_delta_mps": 0.055,
+      "perturb_reset": true,
+      "qualifier": "NEW_FROZEN_CONTEXT",
+      "policy": "human_reversed",
+      "output": "reports/v064_unseen_6431_human_reversed.json"
+    }
+  ],
+  "success_comparison": "STRICT all original gates; full 14s after-contact recovery; actual all29 qdot; nonfoot; no post-hoc subgroup tuning",
+  "no_look_at_outcome_before_freeze": true,
+  "no_new_default_policy_without_out_of_sample_improvement": true,
+  "pre_physics_preflight_correction": "Corrected batch runner bracket SyntaxError before any physical G1 trial, no experimental protocol/candidate/test set change"
+}
