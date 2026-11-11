@@ -516,3 +516,14 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 ## v0.1.64 — CMU单人120Hz几何相位拟合→原29DoF 12回合物理，全候选零激活（负结论）
 
 冻结源 SHA `161eaa5`，继承v63 `d18ea81`，协议SHA256 `c42ea865e27b4d29ffb428c29e453e5870a6540a3795943cd1974d43dee91da8`。本地训练`10_02`单人120Hz光学几何、受限29DoF IK生成50Hz顺序及逆序时序（非专业正脚背接触或GRF监督）。冻结4状态×原v32/两候选，12回合原G1 CUDA PhysX完成、每回合14s/2800帧；原任务严格12/12 PASS，但人体候选8/8**零实际动作**，与基准25类原全物理逐值等价，科学效果证据0/8。严格把batch日志中的`INVALID_G1`解释为人类控制未激活的研究资格拒绝，独立审计仅恢复原物理可评分资格，绝不调整原射门、安全、速度与恢复门禁。历史接触path未证，已见开发中心发现真实安全窗口1.40–1.54s与拟合参考1.06–1.38s互不相交。CPU新科学声明闸门强制拒绝“原任务PASS但候选零动作”的伪增益。原始~569.5MB JSON、CMU/C3D、NPZ、图片、训练权重只在Tang忽略目录；新代码和说明推送本版本新commit。报告 `reports/2026-11-11-v064-cmu-geometry-physx-null-effect.md`；全项目**786 passed +69 subtests passed**。绝不在已见新球位调参，也不晋升默认控制。
+
+
+## v0.1.73 — 原CMU两被试全身120Hz时序神经网络、人级隔离对照与原G1保守IK（CPU-only负结果）
+
+以v0.1.71/ca2e3f5为干净父版本，独立 worktree version/v0.1.73，不干预并发v72 Isaac Kit原GPU启动诊断。先将6份原CMU120Hz光学人体数据和原源码SHA预注册，preflight测试通过后冻结Git SHA fd70f04。首次训练纯配置字段 future_frames 与 forecast_frames 不一致提前停止，保留失败日志/旧SHA和固定人级划分，用第二提交6368246修复字段与源码完整性比对，此时原独立被试11测试尚未读取，未改变超参或选择来源。另一次训练完成但相对输出路径触发checkpoint元数据保存错误，保留已生成模型及日志；以同原训练源码/固定种子/超参/两组训练模型在新绝对路径完整重放，不覆盖任何原产物。
+
+真实训练4条被试10（10_01/02/03/05），验证被试10_06；唯一跨被试盲测11_01在全部模型经验证集早停选择完毕后才读。6段总3358原始120Hz帧、65维（19点三维+8骨段余弦），24帧输入/12帧未来监督，训练343/验证45/被试11测试47个重叠滑窗。CPU训练两个等容量2层GRU（时序与shuffle负控制），另测静止姿态与4帧速度外推。GRU同人验证3D误差0.056799优于外推0.058800，但新被试11真评估GRU0.103993，外推0.052509；GRU误差近翻倍，不能称为有用的跨人动作自然度学习。预训练没有GRF、精确脚球接触、优秀职业运动员标签，所有人体数据/模型权重留Tang。
+
+真正复用原G1冻结v63 14秒200Hz物理轨迹的几何参考、原URDF可微IK，把训练被试10_02的GRU未来48帧变成20个50Hz人体相位六方向余弦，再映射为原G1两套700x29离线关节命令，顺序模型峰值0.016749rad、shuffle负控制0.006489rad，各有18个非零50Hz参考步，保留原右腿6个正脚背击球关节零改动。独立审计整个模型checkpoint/test重算、原CMU六份 SHA/原G1实际物理参考 SHA、URDF静态关节余量、原步进上限0.004rad/20ms、1.42s前提前释放；**只有几何静态门禁，并没有G1真实动作、球碰撞、后恢复、自然度或安全证明**。实际v73新PhysX=0，不能把原v63/v71历史真实物理算为新模型实验。
+
+新工具 tools/train_human_temporal_brain_v073.py、retarget_v073_human_brain_to_g1.py、audit_v073_human_brain_g1.py、write_v073_report.py；测试 tests/test_v073_human_temporal_brain.py、test_v073_cpu_g1_morphology.py；冻结 configs/v073_human_temporal_learning.json；完整报告 reports/2026-11-11-v073-subject-isolated-CMU-human-temporal-negative.md，复现文档 docs/V073_HUMAN_TEMPORAL_BRAIN_CPU_REPRO.md。所有模型PT、原CMU/C3D/NPZ和G1参考、诊断图及忽略物理记录留Tang本地。原isolated worktree第一次完整CPU 25个FAIL是缺原ignored资产；严格从前一成功worktree只读链接53份原件，重测**776通过、69跳过、51 subtests通过、0失败**，结束后52个文件SHA及6个源NPZ SHA再次核验不变。下一阶段增加多位真正优秀球员及专业击球接触、足底GRF，再到新被试测试/真实安全完整PhysX；未见被试11此后不能再充当未见模型调参集，默认v32/v5不升级。
