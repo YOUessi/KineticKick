@@ -1,0 +1,147 @@
+{
+  "version": "v0.1.57",
+  "parent_branch": "version/v0.1.56",
+  "parent_commit": "4714393ed447ef569bc1ebe757f6665929e24a32",
+  "claim": "CPU-GPU separate-backend G1 qualification; no CPU-to-GPU physical equivalence assumed",
+  "preregistered": "6 G1 episodes (3 frozen controllers x 2 backends), read-only subscriber and whole-body observer; 4 toy controls (positive/negative x CPU/GPU). Original 200Hz, 14s capped at early termination. No training or tuning.",
+  "python": "/home/you/conda_env/env_isaaclab/bin/python",
+  "minimum_free_gib": 20,
+  "source_hashes": {
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/eval_free_shooting_backend_v057.py": "cb9431449ec39b6f3c5b923cae4341692502456ddb0550572452906843cd6d5b",
+    "tools/run_placement_strike_v056.py": "ba6fda40cf4f1f49ab34e7818110a8c15ca69305948bdadaf5322634ee52f8fc",
+    "tools/run_placement_strike_v057.py": "b91ac87eb5dbd840d3063ad724eb2af0aed8e72ae1f9a7ec94f4af9e39986bf9",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/physx_pair_dynamics_v055.py": "1eed09a34dae5ebed12d6978036d4e8b749173739db7ca917a5ea49412201394",
+    "tools/probe_physx_pair_isolated_v056.py": "593c8b1d8999cc3206e838b8dc81cd0c450aff279fae10cda797501ded69c69a",
+    "tools/closed_loop_acceptance.py": "184ff84e8e78d3a864d5d4342df40f9ed15002b706eb26192ecff8ca506e6c54",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/audit_real_batch_v056.py": "9d27f8884a8791bb60d4ec8d3401b4c8da4be36feee145a399c518d1010257f2",
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_02_physx_v052.json": "aaf097a6f4aacb225820313ca50738cd45a5b9d0f1e2b30019de309cb85c74bf",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18"
+  },
+  "policies": {
+    "frozen_v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu_10_02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu_10_05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "cases": [
+    {
+      "id": "center_cpu_frozen_v32",
+      "backend": "cpu",
+      "policy": "frozen_v32",
+      "seed": 1201,
+      "ball_offset_xy_m": [
+        0,
+        0
+      ],
+      "velocity_y_delta_mps": 0,
+      "perturb_reset": false,
+      "output": "reports/v057_center_cpu_frozen_v32.json",
+      "gpu_reference": "reports/v056_center_native_frozen_v32.json",
+      "group": "backend_qualification_not_training"
+    },
+    {
+      "id": "center_cpu_cmu_10_02",
+      "backend": "cpu",
+      "policy": "cmu_10_02",
+      "seed": 1201,
+      "ball_offset_xy_m": [
+        0,
+        0
+      ],
+      "velocity_y_delta_mps": 0,
+      "perturb_reset": false,
+      "output": "reports/v057_center_cpu_cmu_10_02.json",
+      "gpu_reference": "reports/v056_center_native_cmu_10_02.json",
+      "group": "backend_qualification_not_training"
+    },
+    {
+      "id": "center_cpu_cmu_10_05",
+      "backend": "cpu",
+      "policy": "cmu_10_05",
+      "seed": 1201,
+      "ball_offset_xy_m": [
+        0,
+        0
+      ],
+      "velocity_y_delta_mps": 0,
+      "perturb_reset": false,
+      "output": "reports/v057_center_cpu_cmu_10_05.json",
+      "gpu_reference": "reports/v056_center_native_cmu_10_05.json",
+      "group": "backend_qualification_not_training"
+    },
+    {
+      "id": "center_cuda_0_frozen_v32",
+      "backend": "cuda:0",
+      "policy": "frozen_v32",
+      "seed": 1201,
+      "ball_offset_xy_m": [
+        0,
+        0
+      ],
+      "velocity_y_delta_mps": 0,
+      "perturb_reset": false,
+      "output": "reports/v057_center_cuda_0_frozen_v32.json",
+      "gpu_reference": "reports/v056_center_native_frozen_v32.json",
+      "group": "backend_qualification_not_training"
+    },
+    {
+      "id": "center_cuda_0_cmu_10_02",
+      "backend": "cuda:0",
+      "policy": "cmu_10_02",
+      "seed": 1201,
+      "ball_offset_xy_m": [
+        0,
+        0
+      ],
+      "velocity_y_delta_mps": 0,
+      "perturb_reset": false,
+      "output": "reports/v057_center_cuda_0_cmu_10_02.json",
+      "gpu_reference": "reports/v056_center_native_cmu_10_02.json",
+      "group": "backend_qualification_not_training"
+    },
+    {
+      "id": "center_cuda_0_cmu_10_05",
+      "backend": "cuda:0",
+      "policy": "cmu_10_05",
+      "seed": 1201,
+      "ball_offset_xy_m": [
+        0,
+        0
+      ],
+      "velocity_y_delta_mps": 0,
+      "perturb_reset": false,
+      "output": "reports/v057_center_cuda_0_cmu_10_05.json",
+      "gpu_reference": "reports/v056_center_native_cmu_10_05.json",
+      "group": "backend_qualification_not_training"
+    }
+  ],
+  "toy_cases": [
+    {
+      "id": "toy_cpu_collide",
+      "backend": "cpu",
+      "control": "collide",
+      "output": "reports/v057_toy_cpu_collide.json"
+    },
+    {
+      "id": "toy_cpu_separated",
+      "backend": "cpu",
+      "control": "separated",
+      "output": "reports/v057_toy_cpu_separated.json"
+    },
+    {
+      "id": "toy_cuda_0_collide",
+      "backend": "cuda:0",
+      "control": "collide",
+      "output": "reports/v057_toy_cuda_0_collide.json"
+    },
+    {
+      "id": "toy_cuda_0_separated",
+      "backend": "cuda:0",
+      "control": "separated",
+      "output": "reports/v057_toy_cuda_0_separated.json"
+    }
+  ]
+}
