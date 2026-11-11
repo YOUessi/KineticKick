@@ -1,0 +1,36 @@
+{
+  "version": "v0.1.71",
+  "mode": "CPU_ONLY_POSTREGISTERED_READ_ONLY",
+  "parent_git_sha": "0ae40fb395797eebb5d4b6ab6d570950bc116fa2",
+  "v67_raw_sha256": {
+    "v067_new_stance_a_v32.json": "9e4bcb017149c2f2cf0a4dbb70b0c59fba69c7c12c4d1b0d7887c50ac2e765d8",
+    "v067_new_stance_a_synth.json": "a5db88fc1aa4791f3d6480b9baaa7aa2afc560301497287c57622f6a2c6daa01",
+    "v067_new_stance_a_reverse.json": "92682498ea3c7d45d0aba4110eb4e1857ce0d2fadd21a699901be9af282ac229",
+    "v067_new_stance_b_v32.json": "7e16c1caea85e227e6cdd1d3a8fd7173a53f8e0a5aa55cda2af2ed6e14d7cd0c",
+    "v067_new_stance_b_synth.json": "c73718c0b90173070a1763654a35f4a00fee9096b4ddf35f2fcafff086db0f30",
+    "v067_new_stance_b_reverse.json": "88e7b6530b05449525e678e30be5388777fb6dbb6f31f1c42d0f5e190f14aa2f",
+    "v067_new_stance_c_v32.json": "47cf0928322f3635f7acbcbce665b214d4e62b662727675bff5363335b537269",
+    "v067_new_stance_c_synth.json": "1fe445b030f7a7e8685bbad81f50ac098196f6d0ed7d2e7005c37af57f5e35fc",
+    "v067_new_stance_c_reverse.json": "5732615948e5b0a05d80cf7ee4ac55bfc3223871688965a5d13a955cfbe1382f"
+  },
+  "source_progress_sha256": "52fb98c2383f82f7d8d1ad8f0caec8c52af01f12f3da009e930b5ef7e1fc73b3",
+  "dt_s": 0.005,
+  "contact_pre_s": 0.4,
+  "contact_post_s": 1.25,
+  "full_recovery_s": 14.0,
+  "instep_fraction_min": 0.95,
+  "speed_proxy_min_mps": 3.5,
+  "minimum_gpu_manifold_proof_fields": [
+    "body0_collider_path",
+    "body1_collider_path",
+    "contact_point_world",
+    "normal_world",
+    "normal_impulse_Ns",
+    "backend_physx_cuda_original_g1"
+  ],
+  "source_data_is_already_seen": true,
+  "holdout_or_generalization_claim": false,
+  "new_isaac_gpu_simulations": 0,
+  "preserve_original_data": true,
+  "allow_cpu_only_on_busy_gpu": true
+}
