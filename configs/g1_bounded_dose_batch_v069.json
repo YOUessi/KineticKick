@@ -1,0 +1,210 @@
+{
+  "version": "v0.1.69",
+  "parent_sha": "ae25bb053e2f672a57cc1ce950d1c91161b0081c",
+  "experiment": "bounded_1p25x_synthetic_dose_29dof_real_PhysX_falsification",
+  "no_human_soccer_foot_ball_impulse_or_sync_GRF_truth": true,
+  "actual_original_GPU_29DoF_200Hz_unchanged": true,
+  "no_real_GPU_mesh_pair_manifold_certification": true,
+  "strict_all_29_qdot_instep95_goal_ball3p5_nonfoot_14s_recovery_and_post1p25_gate": true,
+  "preregistered_before_GPU": true,
+  "physical_dt": 0.005,
+  "policy_dt": 0.02,
+  "dose_multiplier": 1.25,
+  "original_reference_peak_rad": 0.0562073514,
+  "maximum_admissible_dose_rad": 0.075,
+  "unchanged_actuator_delta_slew_rad_per_20ms": 0.006,
+  "policies": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "low": "configs/g1_phase_synthetic_candidate_v063.json",
+    "dose": "configs/g1_phase_dose_forward_v069.json",
+    "dose_reverse": "configs/g1_phase_dose_reversed_v069.json"
+  },
+  "source_sha256": {
+    "tools/run_placement_strike_v069.py": "639d52aaaefdc963f4781a0f6824d674ef11eebb1abe766bd4b6547889a05eee",
+    "tools/run_v069_dose_batch.py": "e453fbd7056781c9795c4dfb7ab31bcd33b1ec7638cba0f3333f167d405e3eb5",
+    "tools/phase_dose_v069.py": "333079dc76bc7dfbf209b1ce1ddb2719b18755738645033102e1b16ae4c5387e",
+    "tools/phase_coordinated_v063.py": "99e02d8952840c1019298f3342799eab6dec15b040160808aef38864174acdbf",
+    "tools/stance_safe_temporal_policy_v067.py": "2bc814e8911aa8a13738c62ec871e54adf593bb4835b3c46f8ee2b9b8cbe04fc",
+    "tools/wholebody_safety_interface_v055.py": "834f5e517c33b22a11109b0c076eba7e6b7e6146391fdaf086189a20d625ac38",
+    "tools/massfree_body_observer_v062.py": "f89f6ff9ee2506a99fac5495ccab69b5dd9b0aa5e5969d9a8cd3c8f72371ab2c",
+    "tools/audit_v060_observer_factorial.py": "c9a1ab7cc6120c31042dfc82078548ca81f0af6b2b005d71e9902f8f0de733bc",
+    "tools/audit_v069_dose_and_hard_gates.py": "a3e09278e7a5d53462eccc80cbaf261dbbb0bb0f36fa5900c8cc4bed5168b3f7",
+    "tests/test_v069_dose_route.py": "48e0ebff59f8b6fd64b0567900be2234495fbe6453e74b9f89ecd9d642d66abd"
+  },
+  "policy_sha256": {
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/g1_phase_synthetic_candidate_v063.json": "219547befbccb300690c4c452b385fc843bfd5f0d84627aa49e9cf83737ffd6b",
+    "configs/g1_phase_dose_forward_v069.json": "fec6fc2e2317c6af114c851d55258ea63d81bd812f0ab92bf645d861127f6484",
+    "configs/g1_phase_dose_reversed_v069.json": "9f6d523efdbc56c48763d6d50dceba0dc023903575368bb11ff91ed1b5baa0c7"
+  },
+  "cases": [
+    {
+      "id": "trial_a_v32",
+      "ball_case": "trial_a",
+      "seed": 6907,
+      "offset_xy": [
+        0.009,
+        0.004
+      ],
+      "velocity_delta_mps": -0.018,
+      "perturb_reset": true,
+      "policy": "v32",
+      "output": "reports/v069_trial_a_v32.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_a_low",
+      "ball_case": "trial_a",
+      "seed": 6907,
+      "offset_xy": [
+        0.009,
+        0.004
+      ],
+      "velocity_delta_mps": -0.018,
+      "perturb_reset": true,
+      "policy": "low",
+      "output": "reports/v069_trial_a_low.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_a_dose",
+      "ball_case": "trial_a",
+      "seed": 6907,
+      "offset_xy": [
+        0.009,
+        0.004
+      ],
+      "velocity_delta_mps": -0.018,
+      "perturb_reset": true,
+      "policy": "dose",
+      "output": "reports/v069_trial_a_dose.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_a_dose_reverse",
+      "ball_case": "trial_a",
+      "seed": 6907,
+      "offset_xy": [
+        0.009,
+        0.004
+      ],
+      "velocity_delta_mps": -0.018,
+      "perturb_reset": true,
+      "policy": "dose_reverse",
+      "output": "reports/v069_trial_a_dose_reverse.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_b_v32",
+      "ball_case": "trial_b",
+      "seed": 6923,
+      "offset_xy": [
+        -0.023,
+        0.019
+      ],
+      "velocity_delta_mps": 0.021,
+      "perturb_reset": true,
+      "policy": "v32",
+      "output": "reports/v069_trial_b_v32.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_b_low",
+      "ball_case": "trial_b",
+      "seed": 6923,
+      "offset_xy": [
+        -0.023,
+        0.019
+      ],
+      "velocity_delta_mps": 0.021,
+      "perturb_reset": true,
+      "policy": "low",
+      "output": "reports/v069_trial_b_low.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_b_dose",
+      "ball_case": "trial_b",
+      "seed": 6923,
+      "offset_xy": [
+        -0.023,
+        0.019
+      ],
+      "velocity_delta_mps": 0.021,
+      "perturb_reset": true,
+      "policy": "dose",
+      "output": "reports/v069_trial_b_dose.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_b_dose_reverse",
+      "ball_case": "trial_b",
+      "seed": 6923,
+      "offset_xy": [
+        -0.023,
+        0.019
+      ],
+      "velocity_delta_mps": 0.021,
+      "perturb_reset": true,
+      "policy": "dose_reverse",
+      "output": "reports/v069_trial_b_dose_reverse.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_c_v32",
+      "ball_case": "trial_c",
+      "seed": 6949,
+      "offset_xy": [
+        0.025,
+        -0.016
+      ],
+      "velocity_delta_mps": 0.008,
+      "perturb_reset": true,
+      "policy": "v32",
+      "output": "reports/v069_trial_c_v32.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_c_low",
+      "ball_case": "trial_c",
+      "seed": 6949,
+      "offset_xy": [
+        0.025,
+        -0.016
+      ],
+      "velocity_delta_mps": 0.008,
+      "perturb_reset": true,
+      "policy": "low",
+      "output": "reports/v069_trial_c_low.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_c_dose",
+      "ball_case": "trial_c",
+      "seed": 6949,
+      "offset_xy": [
+        0.025,
+        -0.016
+      ],
+      "velocity_delta_mps": 0.008,
+      "perturb_reset": true,
+      "policy": "dose",
+      "output": "reports/v069_trial_c_dose.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    },
+    {
+      "id": "trial_c_dose_reverse",
+      "ball_case": "trial_c",
+      "seed": 6949,
+      "offset_xy": [
+        0.025,
+        -0.016
+      ],
+      "velocity_delta_mps": 0.008,
+      "perturb_reset": true,
+      "policy": "dose_reverse",
+      "output": "reports/v069_trial_c_dose_reverse.json",
+      "qualifier": "HELDOUT_NEW_SEED_BALL_SITUATION_PRE_REGISTERED_NO_POSTHOC_TUNING"
+    }
+  ]
+}
