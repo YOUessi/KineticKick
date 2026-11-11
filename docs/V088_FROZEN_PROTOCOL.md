@@ -1,0 +1,11 @@
+# v0.1.88 — PhysX-tensor-grounded native contact positive-control preregistration
+
+Parent: public v86 cb1e63932bafc2b3105cc2552382a9e75a689400. In separate local v87 protocol (not claimed as GitHub evidence), an isolated USD sphere reported an unchanged authored USD z=0.85: **USD transforms are not a validated PhysX runtime pose sensor**. Original-v85 G1 source and physics traces unchanged.
+
+**Question A:** can a genuine falling 1kg sphere / static ground, with independent PhysX tensor evidence of collision, produce native actor/collider/contact-points on this hardware? Build an isolated scene through an existing IsaacLab RigidObject and GroundPlaneCfg, using 200Hz SimulationContext. Sample RigidObject tensor root_pos_w and root_lin_vel_w, a ground-filtered PhysX rigid-contact tensor view, native callback and native poststep polling.
+
+**Freeze matrix:** cpu/wildcard, cuda/wildcard, cpu/authored_empty, cuda/authored_empty, each 180 frames and fresh process, 130s watchdog. Exact order in configs/v088_frozen_matrix.json. Physics success requires clean process exit with V088_APP_CLOSED, ball z initial >0.6m and min <0.35m, tensor force >10N, >0 collision frames, 180 sampled native polls and unmodified independent G1. Native success additionally requires actual two actor/collider paths and a finite contact point, normal and nonzero impulse. Missing event ≠ no collision.
+
+**Abort rules:** any lifecycle/physical witness failure stops subsequent experiments and leaves prior evidence write-once. GPU mutually exclusive via existing global fcntl lock; check GPU compute process before each trial; free disk ≥20GiB. Only watchdog-owned child process may be terminated; no workspace cleanup or alteration of CMU/C3D/weight/PhysX originals. No original-G1 trial planned prior to successful isolated reporting calibration, so this batch must not claim any G1 success rate or wrist–hip pair truth.
+
+**B/C/D/E:** independently audit prior original G1 200Hz evidence and explicitly separate runtime pose from authored USD, physical contact from uncalibrated reporting, group-joint timing from actual power transfer; preserve frozen 95% instep/goal/speed/qdot/nonfoot/recovery gates and same-subject CMU limitations. A report following data acquisition must not mutate this preregistration or source code.

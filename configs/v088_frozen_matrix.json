@@ -1,0 +1,18 @@
+{
+  "version":"v0.1.88",
+  "parent_sha":"cb1e63932bafc2b3105cc2552382a9e75a689400",
+  "python":"/home/you/conda_env/env_isaaclab/bin/python",
+  "global_gpu_lock":"/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "min_free_gib":20,
+  "timeout_s":130,
+  "steps":180,
+  "matrix":[
+    {"case":"cpu_wildcard","device":"cpu","mode":"wildcard"},
+    {"case":"gpu_wildcard","device":"cuda:0","mode":"wildcard"},
+    {"case":"cpu_authored_empty","device":"cpu","mode":"authored_empty"},
+    {"case":"gpu_authored_empty","device":"cuda:0","mode":"authored_empty"}
+  ],
+  "stop_on_infrastructure_error":true,
+  "original_G1_gpu_shots_scheduled":0,
+  "reason":"v86/v87 had no certified falling-body physics witness; use IsaacLab RigidObject PhysX tensor pose and rigid contact view, not static USD transform, to test native event reporter without touching original G1"
+}
