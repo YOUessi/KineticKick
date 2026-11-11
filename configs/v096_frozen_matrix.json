@@ -1,0 +1,132 @@
+{
+  "version": "v0.1.96",
+  "parent_sha": "ee7095fe4fc0ec2d121a5f38c485236c8e6e604f",
+  "purpose": "pre-frozen GPU/CPU native-positive calibration: spawn-time report schemas, both root/shape, dynamic counterpart, known tensor positive/negative; no G1 actuation",
+  "steps": 180,
+  "timeout_s": 135,
+  "required_free_gib": 20,
+  "python": "/home/you/conda_env/env_isaaclab/bin/python",
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "stop_on_child_crash": true,
+  "stop_on_runtime_infrastructure_failure": true,
+  "do_not_treat_zero_native_reports_as_no_contact": true,
+  "original_G1_shots_scheduled": 0,
+  "physical_G1_actuation_new": false,
+  "matrix": [
+    {
+      "case": "cuda_off",
+      "device": "cuda:0",
+      "report_mode": "off",
+      "capture": "pose",
+      "layout": "colliding",
+      "sensor_mode": "manual",
+      "box_mode": "kinematic"
+    },
+    {
+      "case": "cuda_manual_native",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding",
+      "sensor_mode": "manual",
+      "box_mode": "kinematic"
+    },
+    {
+      "case": "cuda_spawn_native",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding",
+      "sensor_mode": "spawn",
+      "box_mode": "kinematic"
+    },
+    {
+      "case": "cuda_both_native",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding",
+      "sensor_mode": "both",
+      "box_mode": "kinematic"
+    },
+    {
+      "case": "cuda_spawn_dual",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "both",
+      "layout": "colliding",
+      "sensor_mode": "spawn",
+      "box_mode": "kinematic"
+    },
+    {
+      "case": "cuda_separated_dual",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "both",
+      "layout": "separated",
+      "sensor_mode": "spawn",
+      "box_mode": "kinematic"
+    },
+    {
+      "case": "cpu_dynamic_off",
+      "device": "cpu",
+      "report_mode": "off",
+      "capture": "pose",
+      "layout": "colliding",
+      "sensor_mode": "manual",
+      "box_mode": "dynamic"
+    },
+    {
+      "case": "cpu_dynamic_native",
+      "device": "cpu",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding",
+      "sensor_mode": "spawn",
+      "box_mode": "dynamic"
+    },
+    {
+      "case": "cuda_dynamic_native",
+      "device": "cuda:0",
+      "report_mode": "on",
+      "capture": "native",
+      "layout": "colliding",
+      "sensor_mode": "spawn",
+      "box_mode": "dynamic"
+    }
+  ],
+  "parity_pairs": [
+    [
+      "cuda_off",
+      "cuda_manual_native"
+    ],
+    [
+      "cuda_off",
+      "cuda_spawn_native"
+    ],
+    [
+      "cuda_off",
+      "cuda_both_native"
+    ],
+    [
+      "cuda_off",
+      "cuda_spawn_dual"
+    ],
+    [
+      "cpu_dynamic_off",
+      "cpu_dynamic_native"
+    ]
+  ],
+  "strict_acceptance": {
+    "native_requires": [
+      "two actual actor IDs",
+      "two actual collider IDs",
+      "finite position + normal",
+      "positive impulse",
+      "colliding tensor/pose control"
+    ],
+    "separated_tensor_must_be_zero": true,
+    "physical_state_parity_exact": true,
+    "new_G1_shooting_requires_certified_native_pair": true
+  }
+}
