@@ -1,0 +1,93 @@
+{
+  "version": "v0.1.67",
+  "evaluated_date": "2026-11-11",
+  "decision_rule": "a dataset may supervise professional human instep impact only if professional provenance, measured 3D human motion, synchronized ball-foot contact time, measured actual ball impulse or force and synchronized GRF all TRUE; unknown is NOT true",
+  "required_true_fields": [
+    "professional_human_provenance_verified",
+    "measured_real_human_3D_kinematics",
+    "verified_synchronized_foot_ball_contact_truth",
+    "measured_ball_impact_force_or_impulse",
+    "measured_synchronized_GRF"
+  ],
+  "sources": [
+    {
+      "id": "local_cmu10_02_10_05",
+      "url": "https://mocap.cs.cmu.edu/search.php?subjectnumber=10",
+      "kind": "human_marker_mocap_120hz",
+      "local_asset_verified": true,
+      "local_training_subject_count": 1,
+      "professional_human_provenance_verified": null,
+      "measured_real_human_3D_kinematics": true,
+      "verified_synchronized_foot_ball_contact_truth": false,
+      "measured_ball_impact_force_or_impulse": false,
+      "measured_synchronized_GRF": false,
+      "qualification": "GEOMETRY_ONLY_2_CLIPS",
+      "notes": "Local processed 10_02/10_05; inferred ball-marked event is not a measured physical foot-ball contact; same CMU subject #10."
+    },
+    {
+      "id": "cmu_subject11_01",
+      "url": "https://mocap.cs.cmu.edu/search.php?subjectnumber=11",
+      "kind": "human_marker_mocap_120hz",
+      "local_asset_verified": false,
+      "professional_human_provenance_verified": null,
+      "measured_real_human_3D_kinematics": true,
+      "verified_synchronized_foot_ball_contact_truth": null,
+      "measured_ball_impact_force_or_impulse": null,
+      "measured_synchronized_GRF": null,
+      "qualification": "CANDIDATE_UNINSPECTED",
+      "notes": "New skeleton subject does not guarantee distinct individual; actual C3D/metadata must be inspected."
+    },
+    {
+      "id": "groundlink",
+      "url": "https://csr.bu.edu/groundlink/",
+      "kind": "human_mocap_real_forceplates_non_soccer_reference",
+      "local_asset_verified": false,
+      "professional_human_provenance_verified": false,
+      "measured_real_human_3D_kinematics": true,
+      "verified_synchronized_foot_ball_contact_truth": false,
+      "measured_ball_impact_force_or_impulse": false,
+      "measured_synchronized_GRF": true,
+      "qualification": "NON_SOCCER_GRF_AUXILIARY_ONLY",
+      "notes": "Measured GRF and CoP paired with movement; its tennis and locomotion trials do not give soccer ball impact true labels."
+    },
+    {
+      "id": "soccerkicks",
+      "url": "https://github.com/nayariml/SoccerKicks",
+      "kind": "estimated_video_3d_38_kicks",
+      "local_asset_verified": false,
+      "professional_human_provenance_verified": null,
+      "measured_real_human_3D_kinematics": false,
+      "verified_synchronized_foot_ball_contact_truth": null,
+      "measured_ball_impact_force_or_impulse": false,
+      "measured_synchronized_GRF": false,
+      "qualification": "VIDEO_ESTIMATED_POSE_NOT_MOCAP_GT",
+      "notes": "38 monocular-video 3D guide kick motions estimated with HMMR, not force/true optical kinematic ground truth."
+    },
+    {
+      "id": "epl_penalty_pose_2026",
+      "url": "https://data.mendeley.com/datasets/brx9bsxnpx/1",
+      "kind": "broadcast_2d_25fps",
+      "local_asset_verified": false,
+      "professional_human_provenance_verified": true,
+      "measured_real_human_3D_kinematics": false,
+      "verified_synchronized_foot_ball_contact_truth": false,
+      "measured_ball_impact_force_or_impulse": false,
+      "measured_synchronized_GRF": false,
+      "qualification": "ELITE_2D_VIDEO_CONTACT_ANNOTATION_PROXY_ONLY",
+      "notes": "25fps YOLOv8 2D pose, last_touch marks final frame in clip; no forceplate, real 3D mocap or foot collider manifold."
+    },
+    {
+      "id": "booster_soccer_robot",
+      "url": "https://huggingface.co/datasets/SaiResearch/booster_dataset",
+      "kind": "robot_soccer_motion",
+      "local_asset_verified": false,
+      "professional_human_provenance_verified": false,
+      "measured_real_human_3D_kinematics": false,
+      "verified_synchronized_foot_ball_contact_truth": false,
+      "measured_ball_impact_force_or_impulse": null,
+      "measured_synchronized_GRF": null,
+      "qualification": "ROBOT_MOTION_NOT_HUMAN",
+      "notes": "A humanoid robot soccer dataset, never a professional human motion reference."
+    }
+  ]
+}

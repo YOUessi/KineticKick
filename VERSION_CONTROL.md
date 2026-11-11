@@ -3,6 +3,26 @@
 远程仓库：[YOUessi/KineticKick](https://github.com/YOUessi/KineticKick)。
 Tang 本地目录：`/home/you/projects/kinetickick`。
 
+## v0.1.67：九次原 CUDA G1物理＋独立95%脚背与恢复硬门禁（2026-11-11）
+
+**独立分支** `version/v0.1.67`，从清洁`v0.1.64`的
+`d80785015174884246daf6a73b4bb61f7492b236`新建；
+物理前协议提交`14c554844ac51ddd12c5558ff90d2683466263c4`，独立协议哈希
+`c72074b7306275e394f80ecc68bc720f2b16e31bc703581d1dcee5f3d730480e`。
+原v0.1.65、v0.1.66其他工作树和历史证据不改变。
+
+9/9真实original free-root 29DoF G1 CUDA PhysX尝试，5回合完整wrapper自报PASS；
+4回合原生物理nonfoot提前终止，冻结runner缺完成后wrapper认证而拒绝当有效PASS。
+另做**独立事后全门禁审计仅4/9 PASS**，因为`new_stance_b_synth`
+虽自报PASS却只有72.98%脚背冲量，不能因进球/球速和完成14s掩盖95%非法触球。
+每组原前100个5ms原物理25字段成对等价；新合成策略完整且有效的4回合
+各施加7步真实关节动作，但不是由真实专业人体动能链训练的自然强射。
+200Hz 29DoF、左右脚支撑与非脚真实力/早终止明示，GPU wrist-hip碰撞
+collider manifold仍缺。新全身接口在缺真实GPU contact mesh与支撑边缘时fail-closed。
+数据资格六源0/6专业脚背force/GRF证据；799 passed＋69 subtests passed。
+原数据JSON/NPZ/PNG仍Tang本地，GitHub只存可复现实验代码与报告。
+[完整报告](reports/2026-11-11-v067-physx-directionality-hard-gates.md) 。
+
 ## 分支约定
 
 - `main`：集成基线，首次导入的代码快照保存在这里。

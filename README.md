@@ -1,5 +1,27 @@
 # KineticKick
 
+## v0.1.67｜9次原G1 CUDA物理，独立脚背95%硬门禁揭露旧PASS漏判
+
+新建干净独立 `version/v0.1.67`，实验前SHA锁定3种真实重置物理条件×原v32、
+v63合成全身相位/同幅值时间反序负控制＝**9次真实 CUDA PhysX、29DoF/200Hz 原G1物理回合**。
+**5回合原wrapper完整有效并自报PASS，4回合真实 `physical_nonfoot` 提前终止、wrapper未完成；
+独立同时核查≥95%合法正脚背、≥3.5m/s、球门、全部真实qdot、14s真实恢复后，
+只有4/9符合要求。**其中原wrapper自报PASS的 `new_stance_b_synth` 仅72.98%正脚背冲量，
+即使已经进门也必须FAIL。三个物理条件均验证原25类前100帧起点一致；
+4个完整合成相位候选各实际作用7个控制步，**这些是合成时序对照，不是人类自然爆发力学习**。
+
+新增29DoF全身时序安全接口，缺原GPU mesh/collider直接碰撞证据时拒绝激活；
+六类人体运动来源资格初筛**0/6**满足职业、球触冲量、GRF同步真值全部条件；
+真实GPU左腕—左髋碰撞manifold仍未证实，旧CMU和原物理数据均未覆盖。
+**全项目799 passed +69 subtests passed**（在Tang启用1895个历史报告只读路径供回归用例读取）。
+复现实验与全部正负逐回合证据见
+[2026-11-11-v067完整原G1 PhysX/严格门禁研究报告](reports/2026-11-11-v067-physx-directionality-hard-gates.md)、
+[预冻结协议](docs/V067_DIRECTIONALITY_PREREGISTRATION.md)、
+[全身协同方法与阻塞](docs/V067_NEXT_GENERATION_WHOLEBODY_METHOD.md)和
+[人体数据资格](docs/V067_SOCCER_DATA_QUALIFICATION.md)。
+原大JSON与PNG只留Tang的gitignored目录，GitHub只存脚本、协议、测试、文字结论。
+
+
 
 ## v0.1.63：8次原29DoF G1 PhysX，真实合成相位全身动作负结果（不冒充人体学习）
 
