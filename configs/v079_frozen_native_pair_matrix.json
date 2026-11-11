@@ -1,0 +1,91 @@
+{
+  "version": "v0.1.79",
+  "parent_git_sha": "96840df7fd94f7003850dfe419f61a95e4f99e20",
+  "original_controller_unchanged": true,
+  "physx_step_hz": 200,
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "minimum_free_gib": 20,
+  "stop_on_first_incomplete": true,
+  "stop_on_first_parity_mismatch": true,
+  "trial_order": [
+    {
+      "case": "original_v32",
+      "source_config": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+      "seed": 1201
+    },
+    {
+      "case": "cmu_10_02",
+      "source_config": "configs/cmu_real_120hz_10_02_physx_v052.json",
+      "seed": 1201
+    },
+    {
+      "case": "cmu_10_05",
+      "source_config": "configs/cmu_real_120hz_10_05_physx_v052.json",
+      "seed": 1201
+    }
+  ],
+  "observer_modes_order": [
+    "off",
+    "on"
+  ],
+  "native_on_arg": "--native-readonly-pair-v056",
+  "always_contact_diagnostics": true,
+  "run_namespace": "v079_original_g1_native_pair",
+  "source_sha256": {
+    "tools/v076_run_placement_strike.py": "864aaad3e112ff4650042b33e32faf348626dbbcba9edd655e524f5cc1c3f89f",
+    "tools/v076_eval_guarded.py": "0130a2af28d775c025b66c4f698dce87d51d1f5b0a460215c3bf150c4fd9eebc",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/v076_g1_batch.py": "ecf97d15b9d13602ad3a4bd07e3870014dc5d037b1408bb34a1bc54aaaee51db",
+    "tools/audit_v067_hard_gates.py": "6b6e0d3a32e38c64daf9519ebea40f39beba8c4385b6051471930fefc8c494df",
+    "tools/v078_g1_liveness_batch.py": "ecad37692f8984d3bf3d26b774aad16fb070e296c0f90cf1974bfdd20bbc2bfb",
+    "configs/v078_frozen_boot_diagnostics.json": "ca187cb83f57dfefc5396851cdcde61b8009a93e8c9d1585c059f65a44001efd",
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_02_physx_v052.json": "aaf097a6f4aacb225820313ca50738cd45a5b9d0f1e2b30019de309cb85c74bf",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18"
+  },
+  "original_v054_sha256": {
+    "reports/v054_frozen_v32_contact_diagnostics.json": "f7a130707fdb761d7f7185d6805f4887d4ca929fec8965bfd35ae13d6666e01c",
+    "reports/v054_cmu_10_02_contact_diagnostics.json": "e197cf6807709e077fa5cfd2b2582bf988dd1437f249bd61addf7835a7d2b255",
+    "reports/v054_cmu_10_05_contact_diagnostics.json": "d46a48f84dbaa7a367eac3e5dc399d4378007485c369c2b57c1c67775ccbfac1"
+  },
+  "existing_v078_real_episode_sha256": "a60fc25f8b1672008298e951119a39d56dc37e51d58e46fe21149baaa5c66700",
+  "original_g1_contact_pair_rigid_cert_requires": [
+    "native_report_api_exists_before_subscription",
+    "native_two_collider_paths",
+    "actual_contact_point",
+    "normal_w",
+    "positive_impulse_or_separation_with_measured_force",
+    "complete_event_capture",
+    "off_on_physics_parity"
+  ],
+  "parity_keys": [
+    "seed",
+    "root_fixed",
+    "traces",
+    "records",
+    "sequence_records",
+    "contacts",
+    "termination_reasons",
+    "initial_robot_state",
+    "joint_velocity_limits",
+    "joint_names",
+    "joint_effort_limits",
+    "automatic_resets_suppressed",
+    "post_initialization_state_writes",
+    "torque_evidence"
+  ],
+  "hard_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_proxy_min": 3.5,
+    "qdot_ratio_max": 1.000001,
+    "nonfoot_force_max_N": 20,
+    "full_duration_min_s": 13.995,
+    "goal_required": true,
+    "recovery_required": true
+  },
+  "gpu_timeout_seconds_per_trial": 180,
+  "gpu_new_trial_count_max": 6,
+  "negative_control_scope": "off/on contact-only instrumentation; no controller tuning",
+  "no_human_professional_GRF_truth": true,
+  "unreadable_native_events_means": "UNKNOWN_NOT_NO_COLLISION"
+}
