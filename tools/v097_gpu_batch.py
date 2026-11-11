@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""v97 frozen untouched-controller original G1 GPU batch: 4 write-once scenes."""
+"""v97 frozen untouched-controller original G1 GPU batch: 6 preregistered original G1 shots."""
 from __future__ import annotations
 import fcntl,hashlib,json,os,subprocess,signal,time,shutil
 from pathlib import Path
@@ -20,16 +20,16 @@ def resources(settings):
  if gpu:raise RuntimeError("GPU_BUSY:"+gpu)
  return round(free,3)
 def preflight():
- if git("branch","--show-current")!="version/v0.1.91":raise RuntimeError("WRONG_VERSION_BRANCH")
+ if git("branch","--show-current")!="version/v0.1.97":raise RuntimeError("WRONG_VERSION_BRANCH")
  if git("status","--porcelain","--untracked-files=no"):raise RuntimeError("TRACKED_DIRTY")
  for f in FROZEN:
   if (ROOT/f).read_bytes()!=subprocess.check_output(["git","show","HEAD:"+f],cwd=ROOT):
    raise RuntimeError("UNFROZEN_EXECUTOR_OR_PROTOCOL:"+f)
  if OUTPUT.exists():raise FileExistsError("WRITE_ONCE_MAIN_AUDIT")
  c=json.loads(CFG.read_text())
- if c["version"]!="v0.1.91" or c["parent_commit"] not in git("log","--format=%H"):
+ if c["version"]!="v0.1.97" or c["parent_commit"] not in git("log","--format=%H"):
   raise RuntimeError("VERSION_SOURCE_DRIFT")
- if len(c["cases"])!=6 or len(set(t["name"] for t in c["cases"]))!=4:raise RuntimeError("MATRIX_CHANGED")
+ if len(c["cases"])!=6 or len(set(t["name"] for t in c["cases"]))!=6:raise RuntimeError("MATRIX_CHANGED")
  if c["causal_contract"]["new_pre_registered_scenes"]!=["G","H"]:raise RuntimeError("PRE_REGISTERED_HOLDOUT_CHANGED")
  for specfile in c["controls"].values():
   conf=json.loads((ROOT/specfile).read_text())
@@ -101,7 +101,7 @@ def main():
    row=trial(c,t)
    rows.append(row)
    if not row["true_original_200Hz_G1_CUDA_PhysX"]:break
- report={"version":"v0.1.91","frozen_commit":c["_frozen_commit"],
+ report={"version":"v0.1.97","frozen_commit":c["_frozen_commit"],
          "protocol_sha256":c["_protocol_sha256"],
          "real_original_G1_PhysX_episodes":sum(z["true_original_200Hz_G1_CUDA_PhysX"] for z in rows),
          "strict_pass":sum(z["true_original_200Hz_G1_CUDA_PhysX"] and z["gates"]["hard_gate_pass"] for z in rows),
