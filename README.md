@@ -585,3 +585,7 @@ This supersedes the earlier single-style show_g1_bare_forward_pass.py view.
 ## 2026-11-11 最新研究审计 v0.1.55
 
 原 G1 / PhysX **15 次新真实物理回合**（中心3个、两球位×三冻结控制×两 seed 共12个）和原 200Hz 29DoF、COM/双足支撑、非脚净力、全安全门禁独立核查已完成：全部 holdout 控制严格 `0/4`，其中球位 A 进球 `0/6`、球位 B `6/6` 因非脚碰撞在约1.64s提前终止。**6对不同seed原物理轨迹逐字段完全一致，因此不可声称4个独立随机试验。** 原生PhysX contact pair/manifold/collider paths仍无真值；左腕-左髋和 pelvis-右髋都只能称相反净力候选。新增fail-closed 29DoF全身协调动作接口仍未在PhysX启用，也未训练出专业射门；全测试676 passed +69 subtests passed。详情见 `reports/2026-11-11-v055-physx-dynamics-and-pair-evidence-boundary.md`、`docs/REPRO_V055_PAIR_DYNAMICS.md`。
+
+## 2026-11-11 研究进展 v0.1.56
+
+在冻结原控制器/原G1自由根部/原PhysX后，完成 **12次独立初始随机种子探索物理回合+3次中心只读parity**。新探索v32/CMU10_02/CMU10_05各自严格任务**1/4**，通过的是同一工况，不表明人类运动先验改善。6对两seed初始状态与200Hz实际trace均不同；三组中心原共同物理字段逐值完全一致。原接触回调在G1/GPU上仍0个，左腕—左髋接触manifold**没有被证明**。另以独立盒子隔离实验找到本机GPU接触filter有626N真实力却无法获取原生report，而CPU toy同样接触可得到239个原生报告并包含actor、collider与原生接触点；这些不是G1真值。29DoF时序/双足支持/截尾审计与691项回归+69 subtests已完成；没有训练成功高爆发自然正脚背全身射门。研究全文：`reports/2026-11-11-v056-g1-physx-seeded-backend-evidence.md`。

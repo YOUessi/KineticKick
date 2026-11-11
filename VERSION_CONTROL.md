@@ -484,3 +484,11 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 新增接触可观测性脚本、15次物理+SHA互斥执行/重启与严格审计、种子非独立审计、跨场景净力候选鉴别、真实200Hz全身/COM/双足支撑与原全部关节速度归因、两幅新物理失败图。提出需要实际可观测PhysX pair及固定原29DoF顺序才准放行的**fail-closed**多关节相位动作接口（≥20DoF、合成最大≤0.075rad，**仅接口测试，不是经过训练/实际验证的全身运动或本体安全证明**）。原CMU两段同一被试120Hz弱相位代理不能充当职业正脚背接触/GRF真值。全部原始JSON/失败日志/媒体保持本地，不入Git。严格全项目 **676 passed +69 subtests passed**（`/home/you/conda_env/env_isaaclab/bin/python -m pytest -q tests/`）。详见 `reports/2026-11-11-v055-physx-dynamics-and-pair-evidence-boundary.md` 和 `docs/REPRO_V055_PAIR_DYNAMICS.md`。
 
 下一轮先隔离验证本机真实native contact filter/report形状级路径，带真实正负碰撞参考与原三中心回合parity；随后再以新的预注册多人/多球位样本优化有强全身时序协调与稳定支撑的新策略，不得在已见holdout调参后说未见。
+
+## v0.1.56 — 真正独立种子12组原G1物理 + 三中心reporter只读parity + CPU/GPU接触原生报告资格对照
+
+从clean v0.1.55/052925e创建新分支，执行预冻结源文件SHA、球位/随机种子和三种控制策略，真实原G1自由根部200Hz PhysX顺序完成**12次2球位×2种子×3冻结原控制器**，并重跑3次原中心观测器parity；15/15物理报告完整保留Tang并独立验收。12个新探索工况严格任务**v32 1/4、CMU10_02 1/4、CMU10_05 1/4**（总体3/12），三者全部通过同一球位C种子2333，失败的C种子2111全部偏离球门（v32还有真实qdot超速1.021×），D的两个种子有不同程度真实nonfoot提前终止、漏触球/错误脚面和球速不够；**不能推断CMU先验产生增益**。这次每组原G1初始条件和实际5ms trace在两种子间都不同，修复了v55的种子无效缺陷，但这里只是已见探索数据、不是新未见泛化。
+
+3次中心旧v55原`traces/contacts/kinematics/records/sequence_records/running_evidence/stride_shot_evidence/stride_shot_success/termination_reasons`全部精确一致：只读订阅不改变物理。但原G1虽已有PhysxContactReportAPI，3/3均**0 callbacks、0 native headers**，无法直接认证左腕—左髋真实接触对或collider/manifold。另完成四组隔离真实PhysX toy盒子阳性/阴性实验（GPU碰撞filtered peak626.34N但原生头0；CPU碰撞peak627.06N产生239原生callback、明确两个actor/两个collider以及4点manifold；CPU和GPU分离负例均0）：证明本机CPU toy API可用、GPU native report此配置缺失，**完全不能将toy对真值当作G1接触真值**。CPU toy均跑完300×5ms且保存完整原始证据，但Isaac结束阶段卡住，只对本轮自己已完成的toy进程SIGINT清理，不称正常关闭。
+
+完成200Hz全身29DoF/双足承重/五组关节相位与滞后、后窗截尾分析：13/15有真实接触前0.4s窗口、10/15有真实接触后≥1.25s窗口，没接触或提前终止时绝不补造。新增GPU串行原物理批次、read-only contact subscriber、两种backend toy复现、独立严格审计、真实时序分析、跨CPU/GPU资格评估以及CPU单测，**691 passed+69 subtests passed**。原模型/CMU/30MB JSON/NPZ/媒体不入库，只提交协议/config、源码、测试、Markdown报告。详见`reports/2026-11-11-v056-g1-physx-seeded-backend-evidence.md`。全身相位+支持/碰撞耦合生成仍是待验证方法假设，未经真实人体专业脚球接触、GRF和G1碰撞对认证不启用训练或控制器升级。

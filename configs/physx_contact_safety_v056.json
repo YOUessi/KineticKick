@@ -1,0 +1,258 @@
+{
+  "version": "v0.1.56",
+  "parent_branch": "version/v0.1.55",
+  "parent_commit": "052925e14031917f5bfad33705116d2429fecfab",
+  "protocol_status": "FROZEN_BEFORE_REAL_PHYSX",
+  "purpose": "Original three policy physical evaluation with genuinely randomized seeded initial pose and separate native reporter parity; NO training",
+  "decision": "No controller tuning to previously inspected v53/v55 or v56 cases, all v56 novel cases exploratory, no new claim of independent held-out test.",
+  "python": "/home/you/conda_env/env_isaaclab/bin/python",
+  "immutable_sha256": {
+    "tools/run_placement_strike_v056.py": "ba6fda40cf4f1f49ab34e7818110a8c15ca69305948bdadaf5322634ee52f8fc",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/run_placement_strike_v055.py": "25453cde88adb8fc421ba26de0653c3df395e4cc5730ea46b7476da035a2b5d8",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/closed_loop_acceptance.py": "184ff84e8e78d3a864d5d4342df40f9ed15002b706eb26192ecff8ca506e6c54",
+    "tools/wholebody_safety_interface_v055.py": "834f5e517c33b22a11109b0c076eba7e6b7e6146391fdaf086189a20d625ac38",
+    "tools/audit_pair_dynamics_v055.py": "2135e97eb0a2816d24605d7770b86b1ab4c5713b16d81c80557eb5cf29d1d3c0",
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_02_physx_v052.json": "aaf097a6f4aacb225820313ca50738cd45a5b9d0f1e2b30019de309cb85c74bf",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18"
+  },
+  "policies": {
+    "frozen_v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu_10_02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu_10_05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "cases": [
+    {
+      "id": "unseenC_s2111_frozen_v32",
+      "policy": "frozen_v32",
+      "seed": 2111,
+      "ball_offset_xy_m": [
+        -0.042,
+        -0.018
+      ],
+      "velocity_y_delta_mps": -0.061,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenC_s2111_frozen_v32.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenC_s2111_cmu_10_02",
+      "policy": "cmu_10_02",
+      "seed": 2111,
+      "ball_offset_xy_m": [
+        -0.042,
+        -0.018
+      ],
+      "velocity_y_delta_mps": -0.061,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenC_s2111_cmu_10_02.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenC_s2111_cmu_10_05",
+      "policy": "cmu_10_05",
+      "seed": 2111,
+      "ball_offset_xy_m": [
+        -0.042,
+        -0.018
+      ],
+      "velocity_y_delta_mps": -0.061,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenC_s2111_cmu_10_05.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenC_s2333_frozen_v32",
+      "policy": "frozen_v32",
+      "seed": 2333,
+      "ball_offset_xy_m": [
+        -0.042,
+        -0.018
+      ],
+      "velocity_y_delta_mps": -0.061,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenC_s2333_frozen_v32.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenC_s2333_cmu_10_02",
+      "policy": "cmu_10_02",
+      "seed": 2333,
+      "ball_offset_xy_m": [
+        -0.042,
+        -0.018
+      ],
+      "velocity_y_delta_mps": -0.061,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenC_s2333_cmu_10_02.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenC_s2333_cmu_10_05",
+      "policy": "cmu_10_05",
+      "seed": 2333,
+      "ball_offset_xy_m": [
+        -0.042,
+        -0.018
+      ],
+      "velocity_y_delta_mps": -0.061,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenC_s2333_cmu_10_05.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenD_s2111_frozen_v32",
+      "policy": "frozen_v32",
+      "seed": 2111,
+      "ball_offset_xy_m": [
+        0.084,
+        -0.038
+      ],
+      "velocity_y_delta_mps": 0.087,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenD_s2111_frozen_v32.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenD_s2111_cmu_10_02",
+      "policy": "cmu_10_02",
+      "seed": 2111,
+      "ball_offset_xy_m": [
+        0.084,
+        -0.038
+      ],
+      "velocity_y_delta_mps": 0.087,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenD_s2111_cmu_10_02.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenD_s2111_cmu_10_05",
+      "policy": "cmu_10_05",
+      "seed": 2111,
+      "ball_offset_xy_m": [
+        0.084,
+        -0.038
+      ],
+      "velocity_y_delta_mps": 0.087,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenD_s2111_cmu_10_05.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenD_s2333_frozen_v32",
+      "policy": "frozen_v32",
+      "seed": 2333,
+      "ball_offset_xy_m": [
+        0.084,
+        -0.038
+      ],
+      "velocity_y_delta_mps": 0.087,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenD_s2333_frozen_v32.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenD_s2333_cmu_10_02",
+      "policy": "cmu_10_02",
+      "seed": 2333,
+      "ball_offset_xy_m": [
+        0.084,
+        -0.038
+      ],
+      "velocity_y_delta_mps": 0.087,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenD_s2333_cmu_10_02.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "unseenD_s2333_cmu_10_05",
+      "policy": "cmu_10_05",
+      "seed": 2333,
+      "ball_offset_xy_m": [
+        0.084,
+        -0.038
+      ],
+      "velocity_y_delta_mps": 0.087,
+      "perturb_reset": true,
+      "native_report": false,
+      "output": "reports/v056_unseenD_s2333_cmu_10_05.json",
+      "cohort": "new_seeded_exploration_not_clean_holdout"
+    },
+    {
+      "id": "center_native_frozen_v32",
+      "policy": "frozen_v32",
+      "seed": 1201,
+      "ball_offset_xy_m": [
+        0.0,
+        0.0
+      ],
+      "velocity_y_delta_mps": 0.0,
+      "perturb_reset": false,
+      "native_report": true,
+      "prior": "reports/v055_diag_center_frozen_v32.json",
+      "output": "reports/v056_center_native_frozen_v32.json",
+      "cohort": "frozen_3x_readonly_parity"
+    },
+    {
+      "id": "center_native_cmu_10_02",
+      "policy": "cmu_10_02",
+      "seed": 1201,
+      "ball_offset_xy_m": [
+        0.0,
+        0.0
+      ],
+      "velocity_y_delta_mps": 0.0,
+      "perturb_reset": false,
+      "native_report": true,
+      "prior": "reports/v055_diag_center_cmu_10_02.json",
+      "output": "reports/v056_center_native_cmu_10_02.json",
+      "cohort": "frozen_3x_readonly_parity"
+    },
+    {
+      "id": "center_native_cmu_10_05",
+      "policy": "cmu_10_05",
+      "seed": 1201,
+      "ball_offset_xy_m": [
+        0.0,
+        0.0
+      ],
+      "velocity_y_delta_mps": 0.0,
+      "perturb_reset": false,
+      "native_report": true,
+      "prior": "reports/v055_diag_center_cmu_10_05.json",
+      "output": "reports/v056_center_native_cmu_10_05.json",
+      "cohort": "frozen_3x_readonly_parity"
+    }
+  ],
+  "locked_scoring": {
+    "dt_s": 0.005,
+    "policy_dt_s": 0.02,
+    "steps": 700,
+    "legal_instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "actual_29dof_qdot_no_overrun": true,
+    "goal_entire_ball": true,
+    "recovered_until_s": 14.0,
+    "nonfoot_illegal_termination": true,
+    "observed_contact_post_window_s": 1.25
+  },
+  "human_professional_impact_truth_available": false,
+  "pair_direct_proof_required": "Native actor and collider paths for two actual G1 rigid bodies, >=1 finite contact point/normal; empty callback=UNKNOWN",
+  "negative_control_isolation": "Discrete isolated positive collide vs spatially separated without G1 contact evidence.",
+  "weak_motion_not_promoted_to_professional": true
+}
