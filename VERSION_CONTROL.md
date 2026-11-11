@@ -527,3 +527,7 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 真正复用原G1冻结v63 14秒200Hz物理轨迹的几何参考、原URDF可微IK，把训练被试10_02的GRU未来48帧变成20个50Hz人体相位六方向余弦，再映射为原G1两套700x29离线关节命令，顺序模型峰值0.016749rad、shuffle负控制0.006489rad，各有18个非零50Hz参考步，保留原右腿6个正脚背击球关节零改动。独立审计整个模型checkpoint/test重算、原CMU六份 SHA/原G1实际物理参考 SHA、URDF静态关节余量、原步进上限0.004rad/20ms、1.42s前提前释放；**只有几何静态门禁，并没有G1真实动作、球碰撞、后恢复、自然度或安全证明**。实际v73新PhysX=0，不能把原v63/v71历史真实物理算为新模型实验。
 
 新工具 tools/train_human_temporal_brain_v073.py、retarget_v073_human_brain_to_g1.py、audit_v073_human_brain_g1.py、write_v073_report.py；测试 tests/test_v073_human_temporal_brain.py、test_v073_cpu_g1_morphology.py；冻结 configs/v073_human_temporal_learning.json；完整报告 reports/2026-11-11-v073-subject-isolated-CMU-human-temporal-negative.md，复现文档 docs/V073_HUMAN_TEMPORAL_BRAIN_CPU_REPRO.md。所有模型PT、原CMU/C3D/NPZ和G1参考、诊断图及忽略物理记录留Tang本地。原isolated worktree第一次完整CPU 25个FAIL是缺原ignored资产；严格从前一成功worktree只读链接53份原件，重测**776通过、69跳过、51 subtests通过、0失败**，结束后52个文件SHA及6个源NPZ SHA再次核验不变。下一阶段增加多位真正优秀球员及专业击球接触、足底GRF，再到新被试测试/真实安全完整PhysX；未见被试11此后不能再充当未见模型调参集，默认v32/v5不升级。
+
+## v0.1.90 — KineticMimic 方法研究
+
+基于v88 c876721验证已发布源码的独立分支，先SHA冻结9条历史真G1/200Hz物理和真实原CMU光学，开发软DTW几何、全身关节组相位协调假设、实测G1支撑和100ms真球首次接触预测、G1出球速度变化和力模长积分代理。已在v84场景C训练、D验证、历史v85中心事后测试两套同容量GRU有序/乱序负控制；约96%支撑状态准确率但原首次触球15/15漏报、F1=0，预测冲量/出球未显著优于极简训练场景均值。历史9个原物理样本8次严全门禁成功、非脚失败的CMU10_05虽然真人几何MSE略低仍然必须FAIL，不能将几何拟合看作自然有力抽射。真实G1新物理=0、真人冲量与GRF标注=0、原生GPU腕髋collider witness=0、新29DoF动作Actor=0。冻结源先于训练提交9a177a8；后仅独立CPU审计、源码/tests/图、科研报告；最终1006通过、12跳过、69 subtests通过、0失败，原9/9物理SHA未变。完整见reports/2026-11-12-v090-kineticmimic-contact-coordination-impact.md。

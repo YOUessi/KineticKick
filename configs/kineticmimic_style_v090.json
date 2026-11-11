@@ -1,0 +1,47 @@
+{
+  "version": "v0.1.90-style",
+  "parent_v090_protocol_SHA256": "75db127da0d061324a1449b75ce841314ad87117a3f645786e37439fc61fd233",
+  "quality_path": "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/quality_audit.json",
+  "quality_sha256": "2ebfa49b698156403d07006b6a591d67ae052bf9ef4e2ecc2fccec4de737d678",
+  "human_impact_truth_available": false,
+  "human_GRf_truth_available": false,
+  "human_subjects": 1,
+  "humans": {
+    "10_02": {
+      "clip": "10_02",
+      "file": "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/10_02.npz",
+      "sha256": "e4afc71537ce694afb90b8c0a93edb50e08f6fe30a10ace6f81f0f053f348f3a",
+      "source_subject": 10,
+      "true_human_impact": false
+    },
+    "10_05": {
+      "clip": "10_05",
+      "file": "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/10_05.npz",
+      "sha256": "4058261cab7dccaebaf47152c857e212c0eba1e13e0315be95548a781e0172a2",
+      "source_subject": 10,
+      "true_human_impact": false
+    }
+  },
+  "robots": {
+    "center_v32": {
+      "path": "/home/you/projects/kinetickick-wt-v085/reports/v085_center_v32_off.json",
+      "sha256": "0cdb51149ae218f05a3ae37a9fa386528879c796a7edf90cfc11d8d410bfd2db",
+      "source_independent_physics": true
+    },
+    "center_cmu02": {
+      "path": "/home/you/projects/kinetickick-wt-v085/reports/v085_center_cmu02_off.json",
+      "sha256": "4e0a08cd70535949b69690bcc63d673f8943c888f679030dfe7a1f20b52f446b",
+      "source_independent_physics": true
+    },
+    "center_cmu05": {
+      "path": "/home/you/projects/kinetickick-wt-v085/reports/v085_center_cmu05_off.json",
+      "sha256": "9ef1bcb3289ed89ae11a8e5e1ea91f695e02e4f74ad5242f056ae6ecd13f6a04",
+      "source_independent_physics": true
+    }
+  },
+  "G1_original_URDF_SHA256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "original_G1_physics_contact_true": true,
+  "style_metric": "robot 6D relative body segment cosines vs human 6D C3D optic motion onset, monotone soft-DTW + explicit reverse negative; not naturalness metric",
+  "stiff_joint_MSE_not_primary_objective": true,
+  "protocol_requires_no_G1_GPU": true
+}
