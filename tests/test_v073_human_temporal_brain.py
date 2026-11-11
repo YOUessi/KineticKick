@@ -115,7 +115,7 @@ def test_train_micro_two_models_no_GPU_no_test_subject_use():
  rng=np.random.default_rng(6)
  x=rng.standard_normal((24,24,65)).astype("float32")*.1
  y=np.tile(x[:,-1:,:],(1,12,1))
- cfg=dict(seed=7301,history_frames=24,future_frames=12,gru_hidden=24,
+ cfg=dict(seed=7301,history_frames=24,forecast_frames=12,gru_hidden=24,
    learning_rate=.002,weight_decay=.001,epochs=3,early_stop_patience=2,batch_size=8)
  for shuffled in (False,True):
   m,meta=train_net(x,y,x[:8],y[:8],cfg,shuffled)

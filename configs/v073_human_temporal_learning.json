@@ -68,8 +68,21 @@
   "test_untouched_before_selection": true,
   "posthoc_parameter_tuning_disallowed": true,
   "source_code_sha256": {
-    "tools/train_human_temporal_brain_v073.py": "cbe564c219544553bc7450a88dddcb42388cdc00acf026edf70b8d7be0159ee0",
-    "tests/test_v073_human_temporal_brain.py": "355b028848057f3346c0f66b264fd691134886f7d33003c209b3696b88357df9",
+    "tools/train_human_temporal_brain_v073.py": "0dc6aff1efbab2f610c5e4d3ead854a2f40e411d38bda49d1cc8f27f685b980a",
+    "tests/test_v073_human_temporal_brain.py": "08b04a60fd489195cbffd75650209717bd6886c7e5e74e4e2bef86e63840a3fb",
     "configs/cmu_soccer_quality_v050.json": "2bc8a2a8a51d7d6170acc9b39aa5f8a288b4c5147d430c31d55415cbc5ce923e"
+  },
+  "pretrain_schema_fix": {
+    "previous_protocol_sha256": "3063b29154741730f8fa09bcd3010a341d4d01edce0fc04e74d501088128e68a",
+    "pretrain_failure_log_sha256": "12e1c92331e821dfba5a59e2277d0b9c257fb4bc5d810ce1d07cd241e359dec6",
+    "failure": "Before any model fitting: undefined future_frames; protocol correctly registered forecast_frames.",
+    "source_sha_previous": {
+      "tools/train_human_temporal_brain_v073.py": "cbe564c219544553bc7450a88dddcb42388cdc00acf026edf70b8d7be0159ee0",
+      "tests/test_v073_human_temporal_brain.py": "355b028848057f3346c0f66b264fd691134886f7d33003c209b3696b88357df9"
+    },
+    "correction": "Align three runtime key lookups to forecast_frames, add runtime code source hash validation, update test fixture name only.",
+    "occurred_before_model_checkpoint": true,
+    "occurred_before_subject11_test_source_loaded": true,
+    "subject_split_horizon_hyperparameters_unchanged": true
   }
 }

@@ -147,7 +147,7 @@ def train_net(x,y,vx,vy,cfg,shuffled):
  torch.manual_seed(seed)
  np.random.seed(seed)
  random.seed(seed)
- model=TemporalBrain(cfg["history_frames"],cfg["future_frames"],
+ model=TemporalBrain(cfg["history_frames"],cfg["forecast_frames"],
                      hidden=cfg["gru_hidden"])
  opt=torch.optim.AdamW(model.parameters(),lr=cfg["learning_rate"],
                        weight_decay=cfg["weight_decay"])
@@ -216,6 +216,9 @@ def run(protocol_path,source_root,output):
   raise ValueError("No changed human subject isolation / training protocol")
  if protocol["forecast_frames"]!=12 or protocol["history_frames"]!=24:
   raise ValueError("Whole-body 120Hz history/forecast scientific horizon changed")
+ for rel, expected in protocol["source_code_sha256"].items():
+  if sha(ROOT/rel)!=expected:
+   raise ValueError("Original pretraining source code/protocol SHA drift: "+rel)
  if output.exists():
   raise FileExistsError("No replacement of original training logs/checkpoints")
  source_dir=source_root/protocol["original_human_rel_dir"]
@@ -270,8 +273,8 @@ def run(protocol_path,source_root,output):
    original_ground_reaction_force_verified=False,
    target_clips_test_untouched_until_both_validation_selections=True)
  testx,testy=allwindows["11_01"][:2]
- baselines={"persistence":persistence(testx,protocol["future_frames"]),
-            "linear_extrapolation":linear_velocity(testx,protocol["future_frames"])}
+ baselines={"persistence":persistence(testx,protocol["forecast_frames"]),
+            "linear_extrapolation":linear_velocity(testx,protocol["forecast_frames"])}
  for name,m in models.items():baselines[name]=infer(m,testx)
  summary["test_subject_11_per_method"]={
   name:human_metrics(arr,testy,mean,std) for name,arr in baselines.items()}
