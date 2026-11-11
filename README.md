@@ -599,3 +599,7 @@ This supersedes the earlier single-style show_g1_bare_forward_pass.py view.
 ## 2026-11-11 研究进展 v0.1.56
 
 在冻结原控制器/原G1自由根部/原PhysX后，完成 **12次独立初始随机种子探索物理回合+3次中心只读parity**。新探索v32/CMU10_02/CMU10_05各自严格任务**1/4**，通过的是同一工况，不表明人类运动先验改善。6对两seed初始状态与200Hz实际trace均不同；三组中心原共同物理字段逐值完全一致。原接触回调在G1/GPU上仍0个，左腕—左髋接触manifold**没有被证明**。另以独立盒子隔离实验找到本机GPU接触filter有626N真实力却无法获取原生report，而CPU toy同样接触可得到239个原生报告并包含actor、collider与原生接触点；这些不是G1真值。29DoF时序/双足支持/截尾审计与691项回归+69 subtests已完成；没有训练成功高爆发自然正脚背全身射门。研究全文：`reports/2026-11-11-v056-g1-physx-seeded-backend-evidence.md`。
+
+## 2026-11-11 最新原物理人体相位负结果 v0.1.64（不晋升）
+
+v64在一段真实120Hz CMU光学足球动作上拟合六维相位几何先验，转为原G1 29DoF可微FK/IK全身姿态时序，并对v32、顺序相位与反序负例冻结4工况×3控制。**12次原G1/CUDA PhysX的严格任务均PASS，但8个人体候选全部0步实际动作**；八对2800帧/25类测量逐值等价，因此是**8次新方法未激活的负结果**而非新方法8次成功。真实数据源只有单人光学几何，无专业正脚背撞击/真人GRF/专业人体发力或自然度真值；GPU左腕—左髋原生collision pair仍未知。冻结协议 SHA `161eaa5`、原物理本地SHA、独立诊断、科学声明拒绝闸门与回归记录见 `reports/2026-11-11-v064-cmu-geometry-physx-null-effect.md`。默认策略不改。全量回归 **786 passed + 69 subtests passed**。
