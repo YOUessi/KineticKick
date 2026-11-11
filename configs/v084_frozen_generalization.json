@@ -1,0 +1,124 @@
+{
+  "version": "v0.1.84",
+  "parent_commit": "9f51c09f2cbf6c87ca4ffe882d440c639046490d",
+  "hypothesis": "Across two new pre-registered ball placements, original G1 policies retain instep/goal/velocity/qdot/recovery/nonfoot gates; readonly native-contact report poll on paired v32 has EXACT state parity and may yield actor/collider contact truth. No human-learned power claim.",
+  "frozen_before_new_physics": true,
+  "real_dt_s": 0.005,
+  "joint_count": 29,
+  "actual_reset_perturbation": false,
+  "seed_influences_physics_not_independent_reset": true,
+  "settings": {
+    "min_free_gib": 20,
+    "timeout_s": 175,
+    "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+    "output_write_once": true,
+    "no_controller_edits": true,
+    "stop_on_uncertified_cuda": true,
+    "max_new_G1_episodes": 7
+  },
+  "controls": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "cases": [
+    {
+      "name": "C_v32_off",
+      "scene": "C",
+      "control": "v32",
+      "seed": 1219,
+      "ball_offset_xy": [
+        0.085,
+        -0.04
+      ],
+      "velocity_delta": 0.035,
+      "native_poll": false
+    },
+    {
+      "name": "C_v32_on",
+      "scene": "C",
+      "control": "v32",
+      "seed": 1219,
+      "ball_offset_xy": [
+        0.085,
+        -0.04
+      ],
+      "velocity_delta": 0.035,
+      "native_poll": true
+    },
+    {
+      "name": "C_cmu02",
+      "scene": "C",
+      "control": "cmu02",
+      "seed": 1219,
+      "ball_offset_xy": [
+        0.085,
+        -0.04
+      ],
+      "velocity_delta": 0.035,
+      "native_poll": false
+    },
+    {
+      "name": "C_cmu05",
+      "scene": "C",
+      "control": "cmu05",
+      "seed": 1219,
+      "ball_offset_xy": [
+        0.085,
+        -0.04
+      ],
+      "velocity_delta": 0.035,
+      "native_poll": false
+    },
+    {
+      "name": "D_v32",
+      "scene": "D",
+      "control": "v32",
+      "seed": 1223,
+      "ball_offset_xy": [
+        -0.075,
+        0.055
+      ],
+      "velocity_delta": -0.035,
+      "native_poll": false
+    },
+    {
+      "name": "D_cmu02",
+      "scene": "D",
+      "control": "cmu02",
+      "seed": 1223,
+      "ball_offset_xy": [
+        -0.075,
+        0.055
+      ],
+      "velocity_delta": -0.035,
+      "native_poll": false
+    },
+    {
+      "name": "D_cmu05",
+      "scene": "D",
+      "control": "cmu05",
+      "seed": 1223,
+      "ball_offset_xy": [
+        -0.075,
+        0.055
+      ],
+      "velocity_delta": -0.035,
+      "native_poll": false
+    }
+  ],
+  "gates": {
+    "instep_fraction_min": 0.95,
+    "goal_required": true,
+    "ball_speed_min_mps": 3.5,
+    "original_all_joint_qdot_ratio_max": 1.000001,
+    "nonfoot_peak_force_max_N": 20,
+    "full_recovery_s": 14
+  },
+  "truth_limits": {
+    "net_opposite_force_is_direct_pair": false,
+    "zero_native_headers_excludes_collision": false,
+    "cmu_human_contact_impulse_known": false,
+    "training_or_holdout_adaptation": false
+  }
+}
