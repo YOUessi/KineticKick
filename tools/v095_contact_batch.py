@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 CONFIG=ROOT/"configs/v095_frozen_matrix.json"
 REPORT=ROOT/"reports/v095_frozen_contact_batch.audit.json"
 FROZEN=("configs/v095_frozen_matrix.json","docs/V095_FROZEN_PROTOCOL.md",
-        "tools/v095_box_pair_probe.py","tools/v095_box_batch.py",
+        "tools/v095_contact_probe.py","tools/v095_contact_batch.py",
         "tests/test_v095_contact_contract.py")
 def sha(p):
     h=hashlib.sha256()
@@ -22,7 +22,7 @@ def preflight():
     if git("status","--porcelain","--untracked-files=no"):raise RuntimeError("DIRTY_TRACKED")
     if c["version"]!="v0.1.95" or c["parent_sha"] not in git("log","--format=%H"):
         raise RuntimeError("INVALID_PARENT_SHA")
-    if len(c["matrix"])!=6 or len({r["case"] for r in c["matrix"]})!=6:
+    if len(c["matrix"])!=9 or len({r["case"] for r in c["matrix"]})!=9:
         raise RuntimeError("MATRIX_DRIFT")
     if c["original_G1_shots_scheduled"]!=0 or c["physical_G1_actuation_new"]:
         raise RuntimeError("UNREGISTERED_G1_ACTUATION")
@@ -50,7 +50,7 @@ def launch(c,row,commit,protocol):
     if any(p.exists() or p.is_symlink() for p in (out,log,audit)):
         raise FileExistsError("WRITE_ONCE_TRIAL:"+stem)
     free=guard(c)
-    args=[c["python"],str(ROOT/"tools/v095_box_pair_probe.py"),
+    args=[c["python"],str(ROOT/"tools/v095_contact_probe.py"),
           "--device",row["device"],"--report-mode",row["report_mode"],
           "--layout",row["layout"],"--capture",row["capture"],
           "--steps",str(c["steps"]),"--subscribe-phase",row.get("subscribe_phase","pre_reset"),"--output",str(out)]
