@@ -1,0 +1,98 @@
+{
+  "version": "v0.1.62",
+  "parent_sha": "1b9a69063b68a04d41ea64223c30d198f68b08f6",
+  "hypotheses": [
+    "G1 mass-free combined 200Hz observer is CUDA stable and physics-neutral",
+    "Mass acquisition then COM read, mass tensor clone and operation order distinguish v061 failure"
+  ],
+  "original_29DoF": true,
+  "control_tuning": false,
+  "diagnostic_existing_seen_seed_only": true,
+  "physics_dt_s": 0.005,
+  "minimum_disk_gib": 20,
+  "source_hashes": {
+    "tools/massfree_body_observer_v062.py": "f89f6ff9ee2506a99fac5495ccab69b5dd9b0aa5e5969d9a8cd3c8f72371ab2c",
+    "tools/run_massfree_batch_v062.py": "6043b65692eeddb59ba2a24e9db53bbb79cfb541e756cbf64ef0e9ec0b6b0e7f",
+    "tools/run_placement_strike_v062.py": "6e1bd74b6b7a243a222d5d8f6f39d4d369514f8ed3e39633d7ebb08f2ce09b25",
+    "tools/run_placement_strike_v058.py": "a11024c6b757bae11f56f7e64121e56c3bffa53d17eab7c37f1f6a1fb93250b3",
+    "tools/eval_free_shooting_backend_v057.py": "cb9431449ec39b6f3c5b923cae4341692502456ddb0550572452906843cd6d5b",
+    "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+    "tools/closed_loop_acceptance.py": "184ff84e8e78d3a864d5d4342df40f9ed15002b706eb26192ecff8ca506e6c54",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/audit_v060_observer_factorial.py": "c9a1ab7cc6120c31042dfc82078548ca81f0af6b2b005d71e9902f8f0de733bc"
+  },
+  "policies": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "policy_hashes": {
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18"
+  },
+  "cases": [
+    {
+      "id": "cuda_v32_safe_full",
+      "backend": "cuda:0",
+      "policy": "v32",
+      "probe": "safe_full",
+      "seed": 1201,
+      "output": "reports/v062_cuda_v32_safe_full.json"
+    },
+    {
+      "id": "cpu_v32_safe_full",
+      "backend": "cpu",
+      "policy": "v32",
+      "probe": "safe_full",
+      "seed": 1201,
+      "output": "reports/v062_cpu_v32_safe_full.json"
+    },
+    {
+      "id": "cuda_cmu05_safe_full",
+      "backend": "cuda:0",
+      "policy": "cmu05",
+      "probe": "safe_full",
+      "seed": 1201,
+      "output": "reports/v062_cuda_cmu05_safe_full.json"
+    },
+    {
+      "id": "cpu_cmu05_safe_full",
+      "backend": "cpu",
+      "policy": "cmu05",
+      "probe": "safe_full",
+      "seed": 1201,
+      "output": "reports/v062_cpu_cmu05_safe_full.json"
+    },
+    {
+      "id": "cuda_v32_mass_no_mul",
+      "backend": "cuda:0",
+      "policy": "v32",
+      "probe": "mass_no_mul",
+      "seed": 1201,
+      "output": "reports/v062_cuda_v32_mass_no_mul.json"
+    },
+    {
+      "id": "cuda_v32_mass_clone",
+      "backend": "cuda:0",
+      "policy": "v32",
+      "probe": "mass_clone",
+      "seed": 1201,
+      "output": "reports/v062_cuda_v32_mass_clone.json"
+    },
+    {
+      "id": "cuda_v32_mass_after",
+      "backend": "cuda:0",
+      "policy": "v32",
+      "probe": "mass_after",
+      "seed": 1201,
+      "output": "reports/v062_cuda_v32_mass_after.json"
+    },
+    {
+      "id": "cuda_cmu05_mass_clone",
+      "backend": "cuda:0",
+      "policy": "cmu05",
+      "probe": "mass_clone",
+      "seed": 1201,
+      "output": "reports/v062_cuda_cmu05_mass_clone.json"
+    }
+  ]
+}
