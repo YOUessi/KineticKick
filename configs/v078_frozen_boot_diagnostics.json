@@ -1,0 +1,67 @@
+{
+  "version": "v0.1.78",
+  "base_worktree_sha": "ffc808652ee93cd13820b95a91d5d770477c52f8",
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "minimum_free_gib": 20,
+  "run_namespace": "v078_g1_original_v32_liveness_1",
+  "case_config": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+  "child_timeout_s": 150,
+  "stack_signal_s": [
+    25,
+    65,
+    110,
+    140
+  ],
+  "output_is_write_once": true,
+  "preregistered_stop_after_first_uncertified": true,
+  "g1_original_controller_unchanged": true,
+  "diagnostic_may_not_certify_physx_parity": true,
+  "no_legacy_files_edited": true,
+  "source_sha256": {
+    "tools/v076_run_placement_strike.py": "864aaad3e112ff4650042b33e32faf348626dbbcba9edd655e524f5cc1c3f89f",
+    "tools/v076_eval_guarded.py": "0130a2af28d775c025b66c4f698dce87d51d1f5b0a460215c3bf150c4fd9eebc",
+    "tools/v076_g1_batch.py": "ecf97d15b9d13602ad3a4bd07e3870014dc5d037b1408bb34a1bc54aaaee51db",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "configs/v076_frozen_g1_native_shutdown.json": "b3d7e70d7089b4e48929c140d19ad404f3662ad02158e9ae30f6bdcb459f7da0",
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_02_physx_v052.json": "aaf097a6f4aacb225820313ca50738cd45a5b9d0f1e2b30019de309cb85c74bf",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18"
+  },
+  "original_physics_sha256": {
+    "reports/v054_frozen_v32_contact_diagnostics.json": "f7a130707fdb761d7f7185d6805f4887d4ca929fec8965bfd35ae13d6666e01c",
+    "reports/v054_cmu_10_02_contact_diagnostics.json": "e197cf6807709e077fa5cfd2b2582bf988dd1437f249bd61addf7835a7d2b255",
+    "reports/v054_cmu_10_05_contact_diagnostics.json": "d46a48f84dbaa7a367eac3e5dc399d4378007485c369c2b57c1c67775ccbfac1"
+  },
+  "prior_v076_failure_audits": {
+    "v076_g1_frozen_v32_off_r1_audit.json": "f6c43317d57219eaa1402a3849c1d451bee7a7eb8c5cdd39fca6d1e2ec74f75e",
+    "v076_g1_frozen_v32_off_r2_audit.json": "6e27579f7fc4187c491949f2df7efbb8c696f1f5c78015df656c8ff2baba7d14"
+  },
+  "scoring_requires": [
+    "full_29_source_qdot",
+    "instep_impulse_at_least_95pct",
+    "goal_crossed",
+    "ball_speed",
+    "nonfoot_safety",
+    "14s_recovery"
+  ],
+  "full_controller_provenance": {
+    "motion_file": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz",
+    "motion_sha256": "183c0a2c3bd3ef2e15ac3e0b5766f76015dec2bcf400bf83a1dc961bb370d19a",
+    "controller_sources_sha256": {
+      "tools/eval_free_shooting.py": "ce9d608dac3ddc413d1580bfbdf6e944dbc651570bd58bdceb8adbd63669667b",
+      "tools/targeted_shooting.py": "b9fb207076a928090f90e2f4ec8d1d2958700317a67a56deb4114d0e772ffd17",
+      "tools/shooting_control.py": "c39d6cde0daae2fe9d0358af42377e32fa36660683336f0f1f3e4cae1405cf4f",
+      "tools/cartesian_strike.py": "fd42fad26ae38a118e1502d5704129dde0afc00042b6b2ac2c1cc35402e0d26e",
+      "tools/soccer_onnx_policy.py": "48a00de64bc6691688a905a0d7d1b12759416ff2496c6bb86d821c1bc1e6018c",
+      "tools/free_shooting_metrics.py": "23446ed52f307bcebfeee837636ea821ca9768b28db4cf940ad983a0a015884e",
+      "third_party/HumanoidSoccer/source/whole_body_tracking/soccer": "10ea009ed41d89e9df26a224c6601c8e49f177566d336966aab834390fef05d9"
+    }
+  },
+  "prior_v077_diagnostic_audit_sha256": "234a5be019cdf02aa6ca82e27888f4a103997a42c6349f6f4ad518ff88121342",
+  "dependency_directories_required": [
+    "third_party/HumanoidSoccer/source/whole_body_tracking/soccer",
+    "experiments/runtime/onnxruntime/onnxruntime"
+  ],
+  "preflight_before_GPU_required": true,
+  "stop_if_first_uncertified": true
+}
