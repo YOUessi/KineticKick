@@ -1,0 +1,13 @@
+# v0.1.93 — Frozen diagnostic recovery after v92 bootstrap failure
+
+Parent v92 released SHA `3d72be3534547f9e3254f4f8d23cab3bcf955b32`. Source control and physics protocol MUST be committed before any CPU/CUDA PhysX trial. Write-once 180 real 5ms steps; 7 independently launched children. No original G1 shots, no new actuation.
+
+The v92 frozen CPU/off case **failed before first step** (OS0 but no raw trace), and had already applied `PhysxContactReportAPI` even in nominal OFF due to `activate_contact_sensors=True`. It also attempted velocity writes on a kinematic box. This is a **new protocol**, never overwrite, resume or relabel v92 output.
+
+Changes frozen for v93: (1) BOTH shapes spawn `activate_contact_sensors=False`; only ON applies PhysX native contact report API. Pre-report USD inventory must enforce OFF=absent and ON=present; (2) no kinematic root velocity write; (3) per-stage prints and original exception traceback before app.close; (4) actual source collider descendant paths are listed, not root API guessed; (5) physical trajectory run in **pose-only** mode first on CPU and CUDA, then native-only and tensor-only counterparts; (6) shifted box separated negative control on CUDA. No automatic retry/relaunch if a case is uncertified.
+
+Pre-registered matrix in configs/v093_frozen_matrix.json. Order: CPU pose, GPU pose, CPU native, GPU native, CPU tensor, GPU tensor, GPU separated. Require original genuine runtime trajectory and real settling or separated free fall before counting physical evidence; native collider-pair witness requires both specified real actors/colliders plus finite position/normal and positive impulse. Check saved z/vz parity against pose-only baseline per device to detect observer perturbation. Tensor evidence is a separate, weaker witness; neither an empty callback nor a failed filtered sensor rules out collision.
+
+Safety: min 20GiB disk, no other CUDA compute processes, acquire the existing global KineticKick flock, watchdog kills only new child process group, zero source mutation; original all-29 qdot, >95% instep, >3.5m/s ball speed, goal, <20N nonfoot and 14s recovery all remain mandatory for any future original G1. Existing six 120Hz CMU optical clips do NOT contain verified expert human instep impulse/GRF, so this version must not pass the learning/actuation gate. No G1 episodes scheduled (0), do not present isolated rigid-body events as new football scores.
+
+Once real positive control returns certified native contact pair, next protocol may investigate original G1 left wrist–left hip/other body pair, with parity. If not calibrated, preserve a precise root-cause classification, negative evidence, no new controller actuation.
