@@ -6,8 +6,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 CFG=ROOT/"configs/v083_frozen_independent_batch.json"
 # These constants are patched BEFORE frozen protocol commit, and never at runtime.
-FROZEN_CFG_SHA="SET_BEFORE_FREEZE"
-FREEZE_COMMIT="SET_AFTER_PROTOCOL_COMMIT"
+FROZEN_CFG_SHA="629b8cd8940a8469c1aa81dc62bf33cea2049542aab1a1263449feea9a69c647"
+FREEZE_COMMIT="b74cca51a20bfe31b8e2a09bf22ea42a15ef73dd"
 PYTHON="/home/you/conda_env/env_isaaclab/bin/python"
 REQUIRED_CUDA_LOG="Environment device    : cuda:0"
 def sha(path):
