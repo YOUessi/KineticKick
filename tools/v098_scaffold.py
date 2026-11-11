@@ -27,7 +27,7 @@ old["causal_contract"]["scenes_holdout_only_within_this_version"]=True
 old["comparison_labels"]["v32"]="unchanged v32 baseline"
 new("configs/v098_frozen_matrix.json",json.dumps(old,indent=2)+"\n")
 p=(ROOT/"tools/v097_gpu_batch.py").read_text().replace("v097","v098").replace("v0.1.97","v0.1.98")
-p=p.replace('len(c["cases"])!=6','len(c["cases"])!=9')
+p=p.replace('len(c["cases"])!=6','len(c["cases"])!=9').replace('len(set(t["name"] for t in c["cases"]))!=6','len(set(t["name"] for t in c["cases"]))!=9')
 p=p.replace('["G","H"]','["I","J","K"]')
 p=p.replace('6 preregistered original G1 shots','9 preregistered original G1 shots')
 new("tools/v098_gpu_batch.py",p)

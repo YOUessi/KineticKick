@@ -29,7 +29,7 @@ def preflight():
  c=json.loads(CFG.read_text())
  if c["version"]!="v0.1.98" or c["parent_commit"] not in git("log","--format=%H"):
   raise RuntimeError("VERSION_SOURCE_DRIFT")
- if len(c["cases"])!=9 or len(set(t["name"] for t in c["cases"]))!=6:raise RuntimeError("MATRIX_CHANGED")
+ if len(c["cases"])!=9 or len(set(t["name"] for t in c["cases"]))!=9:raise RuntimeError("MATRIX_CHANGED")
  if c["causal_contract"]["new_pre_registered_scenes"]!=["I","J","K"]:raise RuntimeError("PRE_REGISTERED_HOLDOUT_CHANGED")
  for specfile in c["controls"].values():
   conf=json.loads((ROOT/specfile).read_text())
