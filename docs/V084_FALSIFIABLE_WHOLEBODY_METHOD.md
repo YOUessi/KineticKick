@@ -1,0 +1,23 @@
+# v0.1.84 research-method gate: transferable whole-body football coordination
+
+## Falsifiable hypothesis
+A genuinely learned **support-conditioned full-body kinetic-chain** prior from independently verified high-quality human 3D kick trajectories should improve **unseen** 29DoF G1 physical kicking naturalness, support stability, and full-episode strict success, relative to original v32 and a kick-leg-only residual. A goal without ≥95% measured instep impulse, ball speed, every measured qdot, nonfoot safety and full recovery is a FAIL. The current v83 phase-chain interface is **synthetic, untrained, and physically blocked**, therefore not evidence for this hypothesis.
+
+## Data qualification and anti-leakage
+Existing six CMU 120Hz C3D recordings are suitable only for **optical geometry/time-sequence exploratory study**: zero force-platforms, zero analog GRF, professional status unverified. Their 5:1 subject-directory split is inadequate for professional kinetic-power generalization. No inferred human impact impulse or calibrated CoP. Seek independently licensed/consented multi-view human sport clips with: (i) named unique subjects and full-body 3D joints, (ii) verified planted-foot contacts and high-speed foot/ball location, (iii) ideally synchronized instrumented GRF/CoP plus ball impulse. Document clock alignment uncertainty and missing labels, separate human *pose quality* from *kinetic strength*.
+
+## Candidate representation (not yet activated)
+- At 200Hz, normalize each human sequence to a planting-foot SE(2) frame. Input history: body root pose/twist; *all 29* G1 joint q, qdot, contact-bit confidence for each foot, support load, COM and support polygon, ball relative pose and motion, per-body collision-clearance estimates, target run-up direction and kick leg.
+- Predict 8-phase event distributions (run-up → approach → plant → pelvis drive → torso transfer → proximal/distal swing → instep contact → follow-through/landing), horizon-dependent joint targets and joint velocity feedforward plus root-pelvis momentum intent. State-driven phase progression is not a fixed wall-clock sinusoid.
+- Optimize whole-body dynamics in real PhysX with imitation *only for qualified kinematics*, support-foot slip and yaw/roll limits, COM support margin, self/ground collision-clearance, all original joint speed/torque bounds, two-foot contact transfer, ball energy and contact fraction, follow-through and 14s standing. Use constrained PPO/SAC or a feasibility-projected diffusion policy, where constraints are hard safety filters, not arbitrarily weighted success bonuses.
+- Counter-swing arms must be causally tested against frozen arms and deliberately inverted timing, not justified by a cosine-similarity or offline MSE alone. Human sample train/test split must be **by subject and capture session**; no phase-tuning on physical final holdout.
+
+## Required actual evidence chain
+A. Obtain **native PhysX actor/collider path pair, 3D point/normal and positive impulse** for wrist–hip (and a positive foot–ball control) without perturbing physics, or explicitly mark UNKNOWN. If the API lacks native headers, compare scene collision topology only as *hypothesis*, not truth. Never relax nonfoot safety.
+B. Original-G1 real 200Hz pre-contact 0.4s → post-contact ≥1.25s → optional complete 14s episodes, all qdot/COM/support/body distances, measured collision contacts. Early-stop recovery stays censored.
+C. Pre-register model and all ablations, lock source/config/asset SHA before training. Quantify (1) whole-body coordination naturalness (blinded human ratings + kinematic jerk and phase timing), (2) strict shooting pass, (3) safety gate violations, (4) seeded/unseen generalization.
+D. Compare **existing baseline**, kinematics-only imitation, full-body policy, leg-only policy, arms-frozen policy, phase-reversed policy and no-support constraint. Same seeds/ball positions and identical original G1 assets with GPU exclusivity; do not label seed-only experiments as independent initial-state perturbations when reset perturbation is off.
+E. External human verification and real-robot safety validation are required before any claim of natural high-speed real-world shooting.
+
+## Outcomes interpretable today
+v84's new real physical runs evaluate **unchanged prior G1 controllers only**. v84 on/off native polling is read-only; zero PhysX native headers is a negative for the observer's ability to certify collider pairs, not proof of no collision. v84 cannot resolve the primary learned-human-shot research hypothesis and will not promote synthetic 0.15rad offsets into a learned soccer policy.
