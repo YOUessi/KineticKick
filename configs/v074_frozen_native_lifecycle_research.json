@@ -1,0 +1,87 @@
+{
+  "version": "v0.1.74",
+  "parent_sha": "f206d1a8a65c641acb5f7ef8b65cfa32bcd16e55",
+  "motivation": "resolve Isaac close hang and native G1 contact pair without data or controller mutation",
+  "source_sha256": {
+    "tools/isaac_smoke.py": "ac827914922ebc133c50b60804d217c19596023494afe44cf7c165a3cf446b99",
+    "tools/run_placement_strike_v056.py": "ba6fda40cf4f1f49ab34e7818110a8c15ca69305948bdadaf5322634ee52f8fc",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/wholebody_safety_interface_v055.py": "834f5e517c33b22a11109b0c076eba7e6b7e6146391fdaf086189a20d625ac38",
+    "configs/cmu_named_nonfoot_diagnostics_v054.json": "add8693911cdd2489f3fb944adb77698238ddca50f14867a2a388b31eaeeeefa",
+    "tools/train_human_temporal_brain_v073.py": "0dc6aff1efbab2f610c5e4d3ead854a2f40e411d38bda49d1cc8f27f685b980a",
+    "tools/retarget_v073_human_brain_to_g1.py": "b8ff08181fcea450969f453a79cf4662835e530c903ddad3df37a40435be32bd",
+    "tools/audit_v071_native_event_ledger.py": "65a3d9be2085ab922ecc5ca8006eefb4bcfe61a0a4db21e840fb736fefa0bcb9"
+  },
+  "external_v72_sha256": {
+    "tools/v072_isolated_runtime_probe.py": "38de8b354da2c17929ba9d99794c8b728d2e00a96c5994650b6f5dd7187e6caf",
+    "tools/v072_measured_support_coupling.py": "451d184532cb952c4f5be8f70cdba41186788a291fc04002fb0da36687c4185a",
+    "tools/v072_stage_qualification.py": "4dedfa6c6496f17db256f9c5b24498d1e4003c62966b11a04efd18c2d402b83f"
+  },
+  "original_physx_sha256": {
+    "reports/v054_cmu_10_02_contact_diagnostics.json": "e197cf6807709e077fa5cfd2b2582bf988dd1437f249bd61addf7835a7d2b255",
+    "reports/v054_cmu_10_05_contact_diagnostics.json": "d46a48f84dbaa7a367eac3e5dc399d4378007485c369c2b57c1c67775ccbfac1",
+    "reports/v054_frozen_v32_contact_diagnostics.json": "f7a130707fdb761d7f7185d6805f4887d4ca929fec8965bfd35ae13d6666e01c"
+  },
+  "sim_dt": 0.005,
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "free_disk_gib_minimum": 20,
+  "stages": [
+    {
+      "id": "no_change_app_close_trace",
+      "duration_max_s": 48,
+      "probe": "baseline",
+      "headless": true
+    },
+    {
+      "id": "cleanup_before_app_close_trace",
+      "duration_max_s": 48,
+      "probe": "cleanup",
+      "headless": true,
+      "requires": "no_other_cuda_user_and_first_result_written"
+    },
+    {
+      "id": "original_3_G1_native_contact_pair",
+      "max_gpu_s_each": 240,
+      "requires": "smoke_shutdown_exit_code_zero_and_G1_runtime_preflight",
+      "cases": {
+        "frozen_v32": {
+          "config": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+          "original": "reports/v052_cmu_10_02_center_zero_physx.json",
+          "instrumented_output": "reports/v054_frozen_v32_contact_diagnostics.json"
+        },
+        "cmu_10_02": {
+          "config": "configs/cmu_real_120hz_10_02_physx_v052.json",
+          "original": "reports/v052_cmu_10_02_center_physx.json",
+          "instrumented_output": "reports/v054_cmu_10_02_contact_diagnostics.json"
+        },
+        "cmu_10_05": {
+          "config": "configs/cmu_real_120hz_10_05_physx_v052.json",
+          "original": "reports/v052_cmu_10_05_center_physx.json",
+          "instrumented_output": "reports/v054_cmu_10_05_contact_diagnostics.json"
+        }
+      },
+      "read_only_manifold": true,
+      "parity_exact_all_original_physical_fields": true
+    }
+  ],
+  "cpu_audits": [
+    "legacy-G1-200Hz 29DoF observed early-termination source matching",
+    "human 120Hz cross-subject result leakage and no GRF",
+    "G1 nominal stance-support-retarget coupling safe geometry contract"
+  ],
+  "scope": "diagnose unchanged G1 with read-only native subscriber; do not author contact API/modify physics; no tuning on seen holdout; no model performance upgrade claims",
+  "fixed_success_gates": [
+    "instep_impulse_fraction>=0.95",
+    "ball_goal",
+    "ball_speed",
+    "all29_measured_qdot",
+    "14s_recovery",
+    "nonfoot_physics_safety"
+  ],
+  "immutable_write_once": true,
+  "kit_watchdog_signal": "SIGUSR1 faulthandler",
+  "max_new_gpu_smoke": 2,
+  "stop_on_gpu_conflict_or_below20GiB": true,
+  "no_delete": true,
+  "no_force_push": true
+}
