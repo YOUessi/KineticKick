@@ -1,0 +1,150 @@
+{
+  "version": "v0.1.63",
+  "parent_sha": "ea492310e9a88cf2a43909c464472ce09ec87805",
+  "hypothesis": "Hypothesis: synthetic phase-coupled 29DoF preimpact action (not learned human) may change G1 gait/strike but is not presumed to improve",
+  "registered_before_experiments": true,
+  "human_motion_training_completed": false,
+  "naturalness_ground_truth_available": false,
+  "physical_limits_identical": true,
+  "original_G1_joint_order": true,
+  "physics_dt_s": 0.005,
+  "controller_dt_s": 0.02,
+  "full_episode_s": 14.0,
+  "original_strict_joint_speed_and_nonfoot_gate": true,
+  "phase_max_joint_rad": 0.075,
+  "max_step_per_control": 0.006,
+  "seen_development_group": "center",
+  "frozen_unseen_groups": [
+    "hold_a",
+    "hold_b",
+    "hold_c"
+  ],
+  "seed_perturbation_required_for_unseen_groups": true,
+  "source_sha256": {
+    "tools/phase_coordinated_v063.py": "99e02d8952840c1019298f3342799eab6dec15b040160808aef38864174acdbf",
+    "tools/run_placement_strike_v063.py": "ec51d3eecc0a68019fc6c6e97767abdb8074f6176b375f16550489e4ed029635",
+    "tools/run_v063_phase_batch.py": "8e73d0ab2bec4d46a460a5147c095bee60296478c2f87cf535dfb0209c5811d6",
+    "tools/audit_v063_phase_batch.py": "88b7f15235032b467ae75aa2c6baba8fbbcc3e6bd51a52cdf0916adae6574e8d",
+    "tools/massfree_body_observer_v062.py": "f89f6ff9ee2506a99fac5495ccab69b5dd9b0aa5e5969d9a8cd3c8f72371ab2c",
+    "tools/wholebody_safety_interface_v055.py": "834f5e517c33b22a11109b0c076eba7e6b7e6146391fdaf086189a20d625ac38",
+    "tools/run_placement_strike_v062.py": "6e1bd74b6b7a243a222d5d8f6f39d4d369514f8ed3e39633d7ebb08f2ce09b25",
+    "tools/eval_free_shooting_backend_v057.py": "cb9431449ec39b6f3c5b923cae4341692502456ddb0550572452906843cd6d5b",
+    "tools/closed_loop_acceptance.py": "184ff84e8e78d3a864d5d4342df40f9ed15002b706eb26192ecff8ca506e6c54",
+    "tools/running_balance.py": "61527f080596bdd39317f946331757ef680d00e84125e8c42013be5ec73fe572",
+    "tools/audit_v060_observer_factorial.py": "c9a1ab7cc6120c31042dfc82078548ca81f0af6b2b005d71e9902f8f0de733bc"
+  },
+  "policy_sha256": {
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/g1_phase_synthetic_candidate_v063.json": "219547befbccb300690c4c452b385fc843bfd5f0d84627aa49e9cf83737ffd6b"
+  },
+  "policies": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "synth": "configs/g1_phase_synthetic_candidate_v063.json"
+  },
+  "cases": [
+    {
+      "id": "center_v32",
+      "seed": 1201,
+      "ball_case": "center",
+      "offset_xy": [
+        0.0,
+        0.0
+      ],
+      "velocity_delta_mps": 0.0,
+      "perturb_reset": false,
+      "policy": "v32",
+      "output": "reports/v063_center_v32.json"
+    },
+    {
+      "id": "center_synth",
+      "seed": 1201,
+      "ball_case": "center",
+      "offset_xy": [
+        0.0,
+        0.0
+      ],
+      "velocity_delta_mps": 0.0,
+      "perturb_reset": false,
+      "policy": "synth",
+      "output": "reports/v063_center_synth.json"
+    },
+    {
+      "id": "hold_a_v32",
+      "seed": 3107,
+      "ball_case": "hold_a",
+      "offset_xy": [
+        0.013,
+        -0.021
+      ],
+      "velocity_delta_mps": -0.04,
+      "perturb_reset": true,
+      "policy": "v32",
+      "output": "reports/v063_hold_a_v32.json"
+    },
+    {
+      "id": "hold_a_synth",
+      "seed": 3107,
+      "ball_case": "hold_a",
+      "offset_xy": [
+        0.013,
+        -0.021
+      ],
+      "velocity_delta_mps": -0.04,
+      "perturb_reset": true,
+      "policy": "synth",
+      "output": "reports/v063_hold_a_synth.json"
+    },
+    {
+      "id": "hold_b_v32",
+      "seed": 3119,
+      "ball_case": "hold_b",
+      "offset_xy": [
+        -0.021,
+        0.014
+      ],
+      "velocity_delta_mps": 0.045,
+      "perturb_reset": true,
+      "policy": "v32",
+      "output": "reports/v063_hold_b_v32.json"
+    },
+    {
+      "id": "hold_b_synth",
+      "seed": 3119,
+      "ball_case": "hold_b",
+      "offset_xy": [
+        -0.021,
+        0.014
+      ],
+      "velocity_delta_mps": 0.045,
+      "perturb_reset": true,
+      "policy": "synth",
+      "output": "reports/v063_hold_b_synth.json"
+    },
+    {
+      "id": "hold_c_v32",
+      "seed": 3137,
+      "ball_case": "hold_c",
+      "offset_xy": [
+        0.023,
+        -0.012
+      ],
+      "velocity_delta_mps": 0.0,
+      "perturb_reset": true,
+      "policy": "v32",
+      "output": "reports/v063_hold_c_v32.json"
+    },
+    {
+      "id": "hold_c_synth",
+      "seed": 3137,
+      "ball_case": "hold_c",
+      "offset_xy": [
+        0.023,
+        -0.012
+      ],
+      "velocity_delta_mps": 0.0,
+      "perturb_reset": true,
+      "policy": "synth",
+      "output": "reports/v063_hold_c_synth.json"
+    }
+  ]
+}
