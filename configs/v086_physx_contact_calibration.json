@@ -1,0 +1,33 @@
+{
+  "version": "v0.1.86",
+  "parent_sha": "3822151c8b86850bce2ca40daef3b56c932c5e4e",
+  "python": "/home/you/conda_env/env_isaaclab/bin/python",
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "min_free_gib": 20,
+  "timeout_s": 185,
+  "steps": 180,
+  "cases": [
+    {
+      "name": "cpu_wildcard",
+      "device": "cpu",
+      "mode": "wildcard"
+    },
+    {
+      "name": "gpu_wildcard",
+      "device": "cuda:0",
+      "mode": "wildcard"
+    },
+    {
+      "name": "cpu_authored_empty",
+      "device": "cpu",
+      "mode": "authored_empty"
+    },
+    {
+      "name": "gpu_authored_empty",
+      "device": "cuda:0",
+      "mode": "authored_empty"
+    }
+  ],
+  "empirical_criterion": "Native pair witness must contain both actor paths, both collider paths, contact point, normal and nonzero 3-vector impulse.",
+  "note": "Isolated scene only. No G1 policy or original physics mutation. Not a calibrated Original-G1 reporter even if positive."
+}
