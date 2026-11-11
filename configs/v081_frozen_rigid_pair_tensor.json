@@ -1,0 +1,111 @@
+{
+  "version": "v0.1.81",
+  "parent_sha": "d5e1bd944206dc7c10262dacaee39392fe94827d",
+  "scientific_question": "Can existing original G1 PhysX tensor contact views supply independent left-wrist-to-left-hip direct filtered pair geometry while reproducing all original physical states?",
+  "trial_order": [
+    {
+      "case": "original_v32",
+      "source_config": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+      "seed": 1201
+    },
+    {
+      "case": "cmu_10_02",
+      "source_config": "configs/cmu_real_120hz_10_02_physx_v052.json",
+      "seed": 1201
+    },
+    {
+      "case": "cmu_10_05",
+      "source_config": "configs/cmu_real_120hz_10_05_physx_v052.json",
+      "seed": 1201
+    }
+  ],
+  "mode_order": [
+    "off",
+    "tensor"
+  ],
+  "fixed_seed": 1201,
+  "physical_dt_s": 0.005,
+  "required_g1_joints": 29,
+  "observer_window_s": [
+    4.7,
+    5.5
+  ],
+  "positive_control_window_s": [
+    1.35,
+    1.9
+  ],
+  "target_pair": [
+    "left_wrist_yaw_link",
+    "left_hip_roll_link"
+  ],
+  "positive_control_pair": [
+    "right_ankle_roll_link",
+    "SoccerBall"
+  ],
+  "two_direction_filtered_pair_views": true,
+  "store_contact_position_normal_separation": true,
+  "native_collider_manifold_certification": "UNKNOWN unless native distinct actor/collider paths + normal point and positive impulse; Tensor filter paths alone are insufficient",
+  "report_no_contact_as": "UNKNOWN",
+  "compare_physical_fields_exact": [
+    "seed",
+    "root_fixed",
+    "traces",
+    "records",
+    "sequence_records",
+    "contacts",
+    "termination_reasons",
+    "initial_robot_state",
+    "joint_velocity_limits",
+    "joint_names",
+    "joint_effort_limits",
+    "automatic_resets_suppressed",
+    "post_initialization_state_writes",
+    "torque_evidence"
+  ],
+  "hard_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_proxy_min": 3.5,
+    "qdot_ratio_max": 1.000001,
+    "nonfoot_force_max_N": 20,
+    "full_duration_min_s": 13.995,
+    "goal_required": true,
+    "recovery_required": true
+  },
+  "do_not_tune_controllers": true,
+  "include_early_termination_as_genuine_physics_not_pass": true,
+  "all_negative_results_retained": true,
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "minimum_free_gib": 20,
+  "gpu_trial_timeout_seconds": 180,
+  "max_physics_episodes": 6,
+  "run_namespace": "v081_original_g1_tensor_selfpair",
+  "source_unchanged_sha256": {
+    "tools/v076_run_placement_strike.py": "864aaad3e112ff4650042b33e32faf348626dbbcba9edd655e524f5cc1c3f89f",
+    "tools/v076_eval_guarded.py": "0130a2af28d775c025b66c4f698dce87d51d1f5b0a460215c3bf150c4fd9eebc",
+    "tools/native_contact_reader_v056.py": "4c063e47ab12f09e7ceede92ca8d2c4f2035b2480d66df6b8069308458c8520a",
+    "tools/v076_g1_batch.py": "ecf97d15b9d13602ad3a4bd07e3870014dc5d037b1408bb34a1bc54aaaee51db",
+    "tools/audit_v067_hard_gates.py": "6b6e0d3a32e38c64daf9519ebea40f39beba8c4385b6051471930fefc8c494df",
+    "tools/v078_g1_liveness_batch.py": "ecad37692f8984d3bf3d26b774aad16fb070e296c0f90cf1974bfdd20bbc2bfb",
+    "configs/v078_frozen_boot_diagnostics.json": "ca187cb83f57dfefc5396851cdcde61b8009a93e8c9d1585c059f65a44001efd",
+    "configs/cmu_real_120hz_10_02_physx_zero_v052.json": "526ea3ee80c7cb2628757a1cfcbd7c6e5d4eb2c706eb1f8a354d149ae5e517d7",
+    "configs/cmu_real_120hz_10_02_physx_v052.json": "aaf097a6f4aacb225820313ca50738cd45a5b9d0f1e2b30019de309cb85c74bf",
+    "configs/cmu_real_120hz_10_05_physx_v052.json": "4dbd341215fb49859db37a3c45234b77c38ee4ea0b485407145afa85d6b0dc18"
+  },
+  "original_v054_sha256": {
+    "reports/v054_frozen_v32_contact_diagnostics.json": "f7a130707fdb761d7f7185d6805f4887d4ca929fec8965bfd35ae13d6666e01c",
+    "reports/v054_cmu_10_02_contact_diagnostics.json": "e197cf6807709e077fa5cfd2b2582bf988dd1437f249bd61addf7835a7d2b255",
+    "reports/v054_cmu_10_05_contact_diagnostics.json": "d46a48f84dbaa7a367eac3e5dc399d4378007485c369c2b57c1c67775ccbfac1"
+  },
+  "real_v079_episode_off_sha256": {
+    "original_v32": "040c6b154d1c5851a0f07af6ad230e5fb7faf6267a688e325cd593a5b885cade",
+    "cmu_10_02": "ae3b44ce4aed914d5cb56885956978b75c7a95c2346de31d35a51666bf7962d9",
+    "cmu_10_05": "f7e92925e55e7e17814c930f191cb5282e09214eafdd6717409741c6faccdb2e"
+  },
+  "v079_frozen_config_sha256": "8ca3de101c8df85bbd505ae8ee6f5a2ba75d78d5814619fac10d18c6088fe793",
+  "new_source_baseline_sha256": {
+    "tools/v080_run_poll_strike.py": "8ddbc841aca6a58669061203bc2bad6aff43037e98f8d7f5cf0c718f9f9e8038",
+    "tools/v080_contact_poll.py": "38c5ace70bf295b9a3380d92fe472f8bd94dd0be116b3ed5772fda23526ba4d8",
+    "tools/v080_native_poll_batch.py": "6480e0cc288c4ed79f983a39a5505b30f578c350a1574aeff249b9f9cc2bc85c"
+  },
+  "robustness_policy": "Any tensor contact error, GPU contention, disk<20GiB, source drift, mismatch in physical keys, or probe failure -> stop; no mutation of original USD; no claim of native manifold absent hard witness."
+}
