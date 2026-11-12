@@ -1,0 +1,9 @@
+# KineticKick v0.1.114 — separate frozen Isaac Sim 4.5 raw contact sensor body-pair calibration
+
+**Goal:** attempt installed `isaacsim.sensors.physics._sensor.acquire_contact_sensor_interface().get_rigid_body_raw_data(body_path)` rather than the previously unsuccessful `omni.physx.get_contact_report()`. NVIDIA's installed Isaac Sim 4.5 source tests decode `body0/body1`, normal, position and impulse. These are **body** contact reports, not verified actor/collider shape pairs or a G1 wrist–hip manifold.
+
+**Frozen after G1 trial source freeze, before GPU:** isolated rigid ball on kinematic box at 200Hz for 180 steps: positive OFF `pose`, positive ON `tensor+native`, separated ON negative. Compare exact position/velocity traces OFF/ON for physical nonperturbation; negative case must not have a positive ball-box report. Each source/output/log has unique name; no existing original raw report touched. Child-only 120s watchdog, 20GiB disk floor, global nonblocking GPU flock, no foreign compute process; stop on simulator noncertification. No G1 policy change or learned-policy activation.
+
+**Qualified report requires** both decoded `ProbeBall` and `ProbeBox` body identities, finite nonzero contact point normal and impulse, and contact position. The interface's body IDs are *not* collision shape paths, so results cannot certify full collider manifold; if low-level raw is empty, this is an inconclusive instrumentation negative, not proof of absence. No automatic retrial of a watchdog timeout.
+
+**Installed runtime evidence:** local `isaacsim==4.5.0.0` includes source test `isaacsim.sensors.physics/tests/test_contact_sensor.py`; newer 6.x `isaacsim.sensors.experimental.physics` API is not available and must not be assumed. Keep device environment unchanged. Original free-root G1 is a separate gate.
