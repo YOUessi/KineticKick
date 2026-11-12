@@ -116,7 +116,7 @@ def main():
         m=analyze(json.loads(rawfile.read_text()))
         runs.append({"name":e["name"],"sha256":e["raw_sha256"],"actual_real_dynamics":m,
            "all_original_hard_gates":e["hard_gates"]})
-    result={"version":"v0.1.112","source_batch_sha256":sha(master),
+    result={"version":"v0.1.113","source_batch_sha256":sha(master),
       "true_scored_original_G1":len(runs),
       "real_200hz_rows":sum(x["actual_real_dynamics"]["count_real_200hz"] for x in runs),
       "terminal_event_sentinels_not_counted_as_steps":sum(x["actual_real_dynamics"]["duplicate_terminal_sentinel_markers"] for x in runs),
