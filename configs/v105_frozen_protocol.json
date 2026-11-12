@@ -1,0 +1,43 @@
+{
+  "version": "v0.1.105",
+  "parent_commit": "8d149cb8693ef19cbd42e8b4d9cc3d4358e11e00",
+  "study_type": "environmental_root_exception_plus_200Hz_causal_sensitivity",
+  "original_g1_unchanged": true,
+  "gpu_attempt_limit": 1,
+  "gpu_child_timeout_s": 75,
+  "allow_gpu_if_disk_free_gib_ge": 20,
+  "global_gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "gpu_control_config": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+  "gpu_scene": "L",
+  "gpu_ball_offset_xy": [
+    -0.095,
+    -0.035
+  ],
+  "gpu_seed": 1601,
+  "gpu_control": "v32",
+  "gpu_instrumentation": "Python line trace before original v076 main.app.close; never trusted as nonperturbation test",
+  "post_failure_gpu_stop": true,
+  "mandatory_matched_sites": [
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+  ],
+  "mandatory_controls": [
+    "v32",
+    "cmu02",
+    "cmu05"
+  ],
+  "full29_threshold_sweep": [
+    1e-7,
+    0.000001,
+    0.00001,
+    0.0001,
+    0.001,
+    0.01
+  ],
+  "time_step_s": 0.005,
+  "truth_policy": "historical original measured traces + SHA; no synthetic recovery or expert-human GRF",
+  "safe_policy_actuation_allowed": false
+}
