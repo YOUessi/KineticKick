@@ -1,0 +1,12 @@
+# v0.1.119 Frozen CPU / CUDA Native PhysX Collider-Pair Causal Test
+
+**Pre-execution freeze**, based on v118 clean SHA b2ff2fc4254d41f1e871928a27fc8200b40ebec4. Native report was unobservable in GPU-positive v118 despite real Tensor collision. This test determines whether **backend** (CPU or CUDA) changes report availability; not a new G1 policy, not a proof of wrist–hip non-contact.
+
+## Pre-registered six physical cases
+Same frozen original `tools/v118_native_full_probe.py` 200 Hz positive dynamic sphere / kinematic box, and deliberately separated negative. Ordered CPU OFF/ON/negative, then CUDA OFF/ON/negative. 180 actual simulation steps/case; CPU and CUDA may differ physically so parity comparisons are **within each backend only**; never equate cross-backend traces. Scene must show real physical dynamics and Tensor contact on positive, no contact on separated. Native collider-pair certification must include both actor/collider paths, finite contact position/normal/nonzero impulse, not merely a callback invocation or Tensor force. Zero headers on Tensor-positive case means **not certified**, not proven absence of collision.
+
+Frozen `configs/v119_native_backend_frozen.json` specifies matrix and limits. Batch uses a nonblocking shared GPU lock, verifies exact git-pinned sources and asset paths, >=20GiB free disk, no competing GPU compute job, and checks all six child runs under 120s watchdog. Files use unique write-once local ignored JSON/logs and sha manifests. No model weights, URDF, prior evidence or controller source modified. If any run invalid or lock occupied, stop safely and report unexecuted. Preserve all failed cases.
+
+Decision gate: if CPU is native-positive and CUDA native-negative, diagnose backend-specific reporting before instrumenting G1; if both fail, examine USD authoring and simulation stepping. Only a real G1 OFF/ON parity experiment with native actor/collider path+impulse could certify the original left wrist–left hip pair; **do not fabricate it**. Existing v118 G1 8-rollout physics remains valid, no retuning on its observed AM/AN outcomes.
+
+The user-facing project thesis remains KineticChain-29: genuinely human whole-body coordination over approach/stance/pelvis/torso/kicking leg/counter-arm/follow-through/recovery with robot safety, not isolated ball touching or 1mrad reference perturbations. Without expert measured soccer force/contact ground truth, label evidence K1/K2/K3 honestly.

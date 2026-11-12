@@ -1,0 +1,22 @@
+{
+  "version": "v0.1.119",
+  "parent_sha": "b2ff2fc4254d41f1e871928a27fc8200b40ebec4",
+  "hypothesis": "PhysX native collider pair report may depend on CPU versus CUDA tensor backend; compare authored same USD physics, same 200Hz steps, OFF/ON and truly separated negative controls before original G1 contact certification",
+  "source_probe": "tools/v118_native_full_probe.py",
+  "output_prefix": "v119_native_",
+  "steps": 180,
+  "dt_seconds": 0.005,
+  "timeout_seconds": 120,
+  "min_free_gib": 20,
+  "global_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "original_G1_motor_changed": false,
+  "normal_contact_native_truth_required": true,
+  "matrix": [
+    {"name":"cpu_positive_off","device":"cpu","report":"off","capture":"pose","layout":"colliding"},
+    {"name":"cpu_positive_on","device":"cpu","report":"on","capture":"both","layout":"colliding"},
+    {"name":"cpu_separated_on","device":"cpu","report":"on","capture":"both","layout":"separated"},
+    {"name":"cuda_positive_off","device":"cuda:0","report":"off","capture":"pose","layout":"colliding"},
+    {"name":"cuda_positive_on","device":"cuda:0","report":"on","capture":"both","layout":"colliding"},
+    {"name":"cuda_separated_on","device":"cuda:0","report":"on","capture":"both","layout":"separated"}
+  ]
+}
