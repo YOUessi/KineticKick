@@ -1,0 +1,11 @@
+# v0.1.128 — Frozen v54 wrist–hip event geometry and missing-state falsification
+
+**Frozen before outcome computation.** Base: v127 e435616866c7285d0e745f23cfaf6ebe62b9a811. Scope: SHA256-certified original v54 center-ball G1 episodes (baseline, CMU10_02, CMU10_05) and original PAID G1 URDF; use v127 finite-cylinder-overbounding-capsule geometry, 29DoF state at original 200Hz frames. No new PhysX rollouts or interventions while the preexisting v120 GPU pytest process is running.
+
+1. Verify complete source SHA256, original joint names/order, free root, physical dt grid, episode frame counts (2800/2800/1029), original sensor result 25.890153N at 5.144999885s, and OFF/ON original parity recorded by v54. Reject conflicting data; preserve every original file.
+2. For each observed physical step, compute the four predeclared URDF cylinder-pair surface-clearance *lower bounds*. Only a **positive** lower bound excludes an overlap of those **URDF cylinders at that measured posture**; nonpositive values do not certify a collision.
+3. Report whole observed trajectory, real foot-ball contact ±0.4s/1.25s when complete, and special final 0.1s before the failed v54 5.145s net-force event. Report whether the event is actually covered by q sampling; do not extrapolate missing event state or equate logged force link-origin position with a contact point.
+4. Audit full observed 29 original qdot limits, root/COM/left+right support proxies, nonfoot peaks and premature termination. Compare frozen failed episode with both matched baselines, without tuning policy.
+5. Read-only zero-effect is established only by v54 original strict fieldwise OFF/ON audit, not by this offline geometry replay. Native PhysX actor/collider/manifold truth remains **UNKNOWN** even with positive static separation in a previous frame.
+6. Use predetermined 0m and 0.02m geometry thresholds without optimizing on the failure. Report negative and uncertainty results, synthetic tests, and exact actual CPU tests. Do not upload original 30MB JSON, images, C3D, or model weights.
+7. No motor execution is authorized; no high-performance football-human motion, impact time or GRF truth is claimed. End only with verified GitHub remote SHA.

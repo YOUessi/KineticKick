@@ -1,0 +1,44 @@
+{
+  "version": "v0.1.128",
+  "parent_version": "version/v0.1.127",
+  "parent_commit": "e435616866c7285d0e745f23cfaf6ebe62b9a811",
+  "focus": "Exact legacy-v54 G1 collision-geometry reconstruction; not new physical rollout",
+  "data_root": "/home/you/projects/kinetickick/reports",
+  "input_sha256": {
+    "v054_frozen_v32_contact_diagnostics.json": "f7a130707fdb761d7f7185d6805f4887d4ca929fec8965bfd35ae13d6666e01c",
+    "v054_cmu_10_02_contact_diagnostics.json": "e197cf6807709e077fa5cfd2b2582bf988dd1437f249bd61addf7835a7d2b255",
+    "v054_cmu_10_05_contact_diagnostics.json": "d46a48f84dbaa7a367eac3e5dc399d4378007485c369c2b57c1c67775ccbfac1",
+    "v054_original_named_nonfoot_audit.json": "f17566e126fe3eb69e8ce49adc608dc0a8d1fd431dbe0d51e24a0039d823fbfa",
+    "v054_opposite_nonfoot_link_forces.json": "2cce10d054c7969badecddd43b6224e849a144af7868869ffd12474c221966a1"
+  },
+  "original_G1_urdf": "/home/you/projects/kinetickick-wt-v116/configs/paid_original/paid_main_resolved.urdf",
+  "original_G1_urdf_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "original_v54_cases": [
+    {"case": "frozen_v32", "expected_trace_rows": 2800, "failure": false},
+    {"case": "cmu_10_02", "expected_trace_rows": 2800, "failure": false},
+    {"case": "cmu_10_05", "expected_trace_rows": 1029, "failure": true}
+  ],
+  "true_nonfoot_event_t_s": 5.1449998850002885,
+  "true_nonfoot_force_N": 25.89015328949694,
+  "failure_pair_names": ["left_wrist_yaw_link", "left_hip_roll_link"],
+  "all_geometry_pairs": [
+    ["left_wrist_yaw_link", "left_hip_roll_link"],
+    ["right_wrist_yaw_link", "right_hip_roll_link"],
+    ["left_wrist_yaw_link", "right_hip_roll_link"],
+    ["right_wrist_yaw_link", "left_hip_roll_link"]
+  ],
+  "capsule_clearance_thresholds_m": [0.0, 0.02],
+  "dt_s": 0.005,
+  "impact_pre_s": 0.4,
+  "impact_post_s": 1.25,
+  "failure_event_pre_s": 0.1,
+  "no_unobserved_event_extrapolation": true,
+  "no_runtime_USD_collider_inference": true,
+  "native_contact_pair_certified": false,
+  "force_pair_not_manifold_proof": true,
+  "source_of_human_impact_truth": false,
+  "no_training_tuning_or_motor_actuation": true,
+  "no_gpu_launch_while_other_task_uses_gpu": true,
+  "output_audit_create_exclusive": true,
+  "separate_native_positive_control_pending": true
+}
