@@ -1,0 +1,43 @@
+{
+  "version": "v0.1.122",
+  "parent_sha": "9362c0df6e624c76168e3704f4a80e4a7ef42907",
+  "baseline_protocol": "configs/v121_frozen_cpu_cohort.json",
+  "cohort": [
+    {
+      "version": 116,
+      "commit": "402b87f019dd7cd31f9d5af980ad38a2b63a7e3f"
+    },
+    {
+      "version": 117,
+      "commit": "24857ba8e5544dcf72ce904d38b2d5699e6426fb"
+    },
+    {
+      "version": 118,
+      "commit": "b2ff2fc4254d41f1e871928a27fc8200b40ebec4"
+    }
+  ],
+  "dt_s": 0.005,
+  "preimpact_start_s": 0.005,
+  "pre400_s": 0.4,
+  "activation_floor_W": 0.5,
+  "activation_fraction_primary": 0.2,
+  "activation_fraction_sensitivity": 0.4,
+  "sustained_steps": 3,
+  "support_threshold_N": 50,
+  "initial_samples_to_flag": 3,
+  "independent_controller_keys": [
+    "v32",
+    "cmu02",
+    "cmu05"
+  ],
+  "no_gpu": true,
+  "include_observer_repeats_as_independent": false,
+  "claims_forbidden": [
+    "elite_human_ground_reaction_forces",
+    "true_human_foot_ball_impulse",
+    "native_colliding_actor_pair",
+    "causal_power_transfer",
+    "certified_learned_G1_policy",
+    "new_PhysX_rollout"
+  ]
+}
