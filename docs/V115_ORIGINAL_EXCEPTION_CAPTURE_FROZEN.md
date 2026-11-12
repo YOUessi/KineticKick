@@ -1,0 +1,5 @@
+# Original G1 pre-physics exception capture — diagnostic-only
+
+Exactly one isolated original AG/v32 200Hz CUDA shot *startup diagnostic*, not a scored policy comparison. Freeze source and config hashes before launch. The original evaluation guard's try block receives only one added except BaseException clause, which prints the pending original exception and traceback and re-raises *before* its unchanged SimulationApp.close() finally block. The v080 wrapper is a literal copy except import target path. PhysX, controllers, source ONNX, assets, terminations, seed and ball offset are unchanged. No generated learned model is actuated.
+
+This is explicitly not certified as an unmodified original-G1 shooting experiment; its physical trace, if any, must only be graded after independent original runner parity. No data overwrite, existing failed AG/v32 OFF logs are write-once and never rerun with the same basename. New names: v115_error_capture_AG_v32_off.{json,log,audit.json}. 20GiB free, no CUDA owner, shared nonblocking global lock, child-only 125s watchdog. No native collider certification is inferred.
