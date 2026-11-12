@@ -1,0 +1,7 @@
+# KineticKick v0.1.114 — frozen historical tensor-positive calibration replication
+
+Isaac Sim 4.5 native-low-level v2 isolated runs completed real physical simulations yet unexpectedly returned no native body records **and no Tensor contact records** in a physically colliding ball-on-box scenario. Earlier immutable v094 CUDA PhysX calibration recorded 113 Tensor contacts and peak 667.0803N on the same basic ball/box. This could be a new sensor initialization/configuration confound, not a claim of absent physical collision.
+
+Re-run only the **unaltered, pinned, committed** `tools/v094_box_pair_probe.py` with a new write-once v114 3-case matrix: GPU colliding pose OFF, GPU colliding Tensor ON, GPU separated Tensor ON. Three 180-step 200Hz physical calibrations, exact OFF/ON position and velocity parity, sensor-positive must be physically verified and separated negative must stay zero. Never run a new G1 motor policy or change dynamics/controller/source. Raw/figures stay untracked; submit scripts/contract/tests and numerical report only.
+
+Minimum >20GiB free disk; foreign GPU process check; global nonblocking `kinetickick_physics_gpu.lock`; serial GPU; child-only 120s timeout; if unqualified stop matrix; separate source/protocol commit before any launch; preserve historical v094 originals and earlier v114 negatives. Native collision path/shape manifold remains unqualified even for a Tensor-positive result.

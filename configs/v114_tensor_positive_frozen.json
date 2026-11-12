@@ -1,0 +1,28 @@
+{
+  "version": "v0.1.114",
+  "source_parent": "07a256cb7b61fcc64bcab1b9bd23f4731b84b451",
+  "steps": 180,
+  "watchdog": 120,
+  "min_free_gib": 20,
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "calibration_cases": [
+    {
+      "name": "old_off",
+      "report_mode": "off",
+      "layout": "colliding",
+      "capture": "pose"
+    },
+    {
+      "name": "old_tensor_positive",
+      "report_mode": "on",
+      "layout": "colliding",
+      "capture": "tensor"
+    },
+    {
+      "name": "old_tensor_separated",
+      "report_mode": "on",
+      "layout": "separated",
+      "capture": "tensor"
+    }
+  ]
+}
