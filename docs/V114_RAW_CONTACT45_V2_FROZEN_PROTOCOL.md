@@ -1,0 +1,7 @@
+# KineticKick v114 Isaac Sim 4.5 native sensor compatibility v2 (freeze before GPU)
+
+First v114 native test is a **negative startup/import result**, not physical evidence: G1 batch timed out before any physics, and `isaacsim.sensors.physics` was not enabled by the minimal Isaac Lab headless experience. The exact first raw-contact positive-off probe returned ModuleNotFoundError before physical simulation, archived at reports/v114_raw_positive_off.log. Never overwrite/reclassify that trial.
+
+Correct one isolated instrumentation dependency only: after AppLauncher, explicitly call Kit extension manager `set_extension_enabled_immediate("isaacsim.sensors.physics", True)`, check it is enabled, then acquire native `_sensor`. Do **not** modify G1 control, PhysX parameters, body shapes, existing evidence, or install/upgrade software. Do not assume newer experimental API exists (installed Isaac Sim is 4.5.0.0). Frozen v2 trials: colliding OFF pose, colliding ON native+tensor, separated ON native+tensor, 180 physical steps each, exact trace parity, child 120s watchdog, >=20GiB disk, global nonblocking GPU lock. Stop on noncertification; zero raw contacts means instrumentation inconclusive. Body0/body1 alone do not certify two collider shape paths.
+
+Only new unique v2 names are eligible: reports/v114_raw_v2_*.json/.log/.audit.json and reports/v114_raw_sensor_v2_batch.audit.json. No reusing first attempt outputs.
