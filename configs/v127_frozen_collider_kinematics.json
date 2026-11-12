@@ -1,0 +1,33 @@
+{
+  "version": "v0.1.127",
+  "parent_sha": "336d731c374243e8ecce9aeaefabc780ab3064f3",
+  "source_v125_commit": "e1b67700ca922bf37116d1c8a8527c15c11e2aff",
+  "source_v125_audit_sha256": "2a4348cd0c5bfe3878c255f23d181d1cf224a32d5a4df5cc83a2008eac9fc8a3",
+  "source_urdf_commit": "402b87f019dd7cd31f9d5af980ad38a2b63a7e3f",
+  "source_urdf_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "source_episodes": [116, 117, 118],
+  "expected_episode_count": 29,
+  "expected_independent_episode_count": 24,
+  "expected_observer_repeat_count": 5,
+  "expected_traced_frames": 81200,
+  "sampling_dt_s": 0.005,
+  "joint_count": 29,
+  "focus_collision_pairs": [
+    ["left_wrist_yaw_link", "left_hip_roll_link"],
+    ["right_wrist_yaw_link", "right_hip_roll_link"],
+    ["left_wrist_yaw_link", "right_hip_roll_link"],
+    ["right_wrist_yaw_link", "left_hip_roll_link"]
+  ],
+  "capsule_lower_bound_thresholds_m": [0.0, 0.02],
+  "pre_contact_s": 0.4,
+  "post_contact_s": 1.25,
+  "full_recovery_s": 14.0,
+  "method": "per_frame_original_URDF_forward_kinematics_and_segment_to_segment_capsule_lower_bound",
+  "crossed_pair_controls_are_not_true_collision_negatives": true,
+  "native_physx_pair_certification_permitted": false,
+  "urdf_capsule_overlap_not_a_collision_proof": true,
+  "zero_contact_report_not_no_collision": true,
+  "no_parameter_fitting": true,
+  "no_unsafe_physics_concurrent_with_other_GPU_work": true,
+  "offline_read_only_no_actuation": true
+}
