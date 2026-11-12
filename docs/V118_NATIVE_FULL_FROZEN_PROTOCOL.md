@@ -1,0 +1,7 @@
+# v0.1.118 native PhysX full-contact positive/negative probe — source frozen
+
+Preregistered isolated original-v094 dynamic ball/kinematic box source: 180 genuine PhysX 200Hz steps each. This changes **only diagnostics**, not the G1 or controller. Three sequential GPU-locked tests: colliding source with report OFF (pose); colliding source with report ON (native regular + full subscription/poll + existing Tensor); separated source with report ON (native+full+Tensor negative). Original v094 rigid body spawn, offsets, physics configuration and update sequence stay fixed. The API-availability probe is bounded and error-reported, no forced fabrication.
+
+Write-once local raw JSON/log/audit for every run. Require full OFF/ON recorded z/vz parity; actual positive and separate negative physics; validate actor0/actor1 and collider0/collider1 names from **native** headers plus real contact point, normal and impulse. Tensor contact, zero native callback or equal-and-opposite forces do NOT authorize original G1 self-collision clearance. A future G1 OFF/ON experiment on frozen original control is still required before any learned policy actuation.
+
+This probe must be committed to GitHub *before execution*. Global GPU mutex required, >=20GiB disk, no other GPU job, 120s per-child watchdog and fail-closed. No deletion or modification of historical measurements. Original physically scored G1 shots run separately and serially under the same lock.
