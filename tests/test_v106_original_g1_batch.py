@@ -82,5 +82,7 @@ def test_unqualified_pair_is_never_positive():
 def test_preflight_rejects_write_once_existing_master(monkeypatch,tmp_path):
     p=tmp_path/"already.json";p.write_text("{}")
     monkeypatch.setattr(batch,"MASTER",p)
+    # This inherited version-specific test must not depend on the current later version branch.
+    monkeypatch.setattr(batch,"git",lambda *args: "version/v0.1.106" if args==("branch","--show-current") else "")
     with pytest.raises(FileExistsError):
         batch.preflight()
