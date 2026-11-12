@@ -38,7 +38,7 @@ def preflight():
  if [(z["scene"],z["control"],z["observer"]) for z in c["cases"]]!=expected:raise RuntimeError("CHANGED_MATRIX")
  if len(c["cases"])!=12 or len({z["name"] for z in c["cases"]})!=12:raise RuntimeError("CASE_COUNT_OR_NAMES_CHANGED")
  if not c["safety"]["heldout_not_for_tuning"] or not c["safety"]["original_controllers_unchanged"]:raise RuntimeError("SAFETY_DRIFT")
- for path in c["original_control_configs"].values():
+ for path in c["controls"].values():
   conf=json.loads((ROOT/path).read_text())
   for name,expected_sha in conf["frozen_files_sha256"].items():
    if sha(ROOT/name)!=expected_sha:raise RuntimeError("UPSTREAM_SHA_DRIFT:"+name)
@@ -59,7 +59,7 @@ def run(c,trial):
   raise FileExistsError("WRITE_ONCE:"+name)
  free=resources(c)
  args=[PYTHON,str(ROOT/"tools/v098_run_pair_strike.py"),
-       "--config",str(ROOT/c["original_control_configs"][trial["control"]]),
+       "--config",str(ROOT/c["controls"][trial["control"]]),
        "--output",str(rawpath),"--ball-offset",*[str(x) for x in trial["ball_offset_xy"]],
        "--velocity-delta",str(trial["velocity_delta"]),"--eval-seed",str(trial["seed"]),"--contact-diagnostics"]
  if trial["observer"]:args.append("--tensor-pair-v098")
