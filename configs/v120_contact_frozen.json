@@ -1,0 +1,86 @@
+{
+  "version": "v0.1.120",
+  "parent_sha": "b57b855433b3fa6f6f266ee565f7e959b333c288",
+  "hypothesis": "Pre-reset vs post-reset subscription, API authoring on root/spawner/collider, and render-event delivery may explain native zero-header report on known physical collision; no original G1 claims",
+  "source_probe": "tools/v120_contact_phase_probe.py",
+  "output_prefix": "v120_native_",
+  "steps": 180,
+  "dt_seconds": 0.005,
+  "timeout_seconds": 150,
+  "min_free_gib": 20,
+  "global_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "original_G1_motor_changed": false,
+  "normal_contact_native_truth_required": true,
+  "matrix": [
+    {
+      "name": "cuda_positive_off",
+      "device": "cuda:0",
+      "report": "off",
+      "capture": "pose",
+      "layout": "colliding",
+      "authoring": "root",
+      "step_mode": "plain",
+      "subscribe_phase": "before_reset"
+    },
+    {
+      "name": "cuda_positive_on",
+      "device": "cuda:0",
+      "report": "on",
+      "capture": "both",
+      "layout": "colliding",
+      "authoring": "root",
+      "step_mode": "plain",
+      "subscribe_phase": "before_reset"
+    },
+    {
+      "name": "cuda_spawner_on",
+      "device": "cuda:0",
+      "report": "on",
+      "capture": "both",
+      "layout": "colliding",
+      "authoring": "spawner",
+      "step_mode": "plain",
+      "subscribe_phase": "before_reset"
+    },
+    {
+      "name": "cuda_rootshape_on",
+      "device": "cuda:0",
+      "report": "on",
+      "capture": "both",
+      "layout": "colliding",
+      "authoring": "root_shape",
+      "step_mode": "plain",
+      "subscribe_phase": "before_reset"
+    },
+    {
+      "name": "cuda_postreset_on",
+      "device": "cuda:0",
+      "report": "on",
+      "capture": "both",
+      "layout": "colliding",
+      "authoring": "root",
+      "step_mode": "plain",
+      "subscribe_phase": "after_reset"
+    },
+    {
+      "name": "cuda_render_on",
+      "device": "cuda:0",
+      "report": "on",
+      "capture": "both",
+      "layout": "colliding",
+      "authoring": "root",
+      "step_mode": "render",
+      "subscribe_phase": "before_reset"
+    },
+    {
+      "name": "cuda_separated_on",
+      "device": "cuda:0",
+      "report": "on",
+      "capture": "both",
+      "layout": "separated",
+      "authoring": "root",
+      "step_mode": "plain",
+      "subscribe_phase": "before_reset"
+    }
+  ]
+}

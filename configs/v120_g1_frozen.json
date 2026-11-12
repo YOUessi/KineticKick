@@ -1,0 +1,115 @@
+{
+  "version": "v0.1.120",
+  "parent_commit": "b57b855433b3fa6f6f266ee565f7e959b333c288",
+  "purpose": "Pre-registered AO/AP previously unseen ball offsets and independent seeds; original baseline and CMU proxies; one original G1 read-only Tensor OFF/ON exact replay; no learned policy, no native collider claims.",
+  "min_free_gib": 20,
+  "global_gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "per_child_watchdog_s": 140,
+  "control_configs": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "off_original_runner": "tools/v080_run_poll_strike.py",
+  "on_original_runner": "tools/v098_run_pair_strike.py",
+  "on_only_flag": "--tensor-pair-v098",
+  "matrix": [
+    {
+      "name": "AO_v32_off",
+      "scene": "AO",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        0.041,
+        -0.038
+      ],
+      "velocity_delta": 0.004,
+      "seed": 3119
+    },
+    {
+      "name": "AO_v32_on",
+      "scene": "AO",
+      "control": "v32",
+      "observer": true,
+      "ball_offset_xy": [
+        0.041,
+        -0.038
+      ],
+      "velocity_delta": 0.004,
+      "seed": 3119
+    },
+    {
+      "name": "AO_cmu02_off",
+      "scene": "AO",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        0.041,
+        -0.038
+      ],
+      "velocity_delta": 0.004,
+      "seed": 3119
+    },
+    {
+      "name": "AO_cmu05_off",
+      "scene": "AO",
+      "control": "cmu05",
+      "observer": false,
+      "ball_offset_xy": [
+        0.041,
+        -0.038
+      ],
+      "velocity_delta": 0.004,
+      "seed": 3119
+    },
+    {
+      "name": "AP_v32_off",
+      "scene": "AP",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.036,
+        0.073
+      ],
+      "velocity_delta": -0.004,
+      "seed": 3167
+    },
+    {
+      "name": "AP_cmu02_off",
+      "scene": "AP",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.036,
+        0.073
+      ],
+      "velocity_delta": -0.004,
+      "seed": 3167
+    },
+    {
+      "name": "AP_cmu05_off",
+      "scene": "AP",
+      "control": "cmu05",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.036,
+        0.073
+      ],
+      "velocity_delta": -0.004,
+      "seed": 3167
+    }
+  ],
+  "hard_gates": {
+    "instep_fraction_min": 0.95,
+    "ball_speed_min_mps": 3.5,
+    "all_source29_qdot": true,
+    "goal": true,
+    "nonfoot_threshold_N": 20,
+    "complete_recovery_s": 14
+  },
+  "observer_not_native_manifold": true,
+  "stop_after_first_unverified_or_parity_fail": true,
+  "learned_policy_actuation": false,
+  "no_tuning_after_frozen_protocol": true,
+  "asset_remediation": "symlink_only_from_original_gitignored_sha_verified_roots"
+}
