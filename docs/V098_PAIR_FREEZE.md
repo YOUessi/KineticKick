@@ -1,0 +1,11 @@
+# v0.1.98 / Stage-2 frozen read-only left/right wrist–hip pairing
+
+Source: frozen v97 ff6dfd194141f5089285c8ec1babe991eaa36829, v98 I/J/K protocol 99c84dfc82d2bea78744a8eb9081f008119eb6c2. This Stage-2 subprotocol is frozen in its own SHA BEFORE center-shot execution. Tang original 29DoF G1 at 200Hz, center ball, seed1201, original three controllers v32, CMU10_02, CMU10_05. Six contiguous OFF/ON episodes, controller-by-controller pair ordering. Unchanged original collision geometry, gains, environment and contact termination.
+
+Read-only design: OFF and ON both use the same copied v80 motor/ball runner, with only optional post-physics G1PairDiagnostic that attempts two filtered tensor views: left_wrist_yaw_link to left_hip_roll_link, right_wrist_yaw_link to right_hip_roll_link. Resolve exact existing rigid-body USD prim paths; record filtered one-to-one tensor pair, sensor counts, contact points/normals, force, failures. No USD collision API edits, collision mask edits, dynamics parameter edits, force injection or motor controller edits.
+
+Proof standard: source-G1 whole-trace and original shot-record off/on fields must have ZERO difference (not a mere selected summary); on mismatch stop later episodes. Positive filtered tensor contact is configured rigid-body partner witness, NOT native actor0/1, collider0/1 manifold truth. Zero reports, ambiguous paths and tensor failure all mean UNKNOWN. Isolated GPU ball-box tensor positive controls do not certify G1 wrist/hip observation path. Native collider manifold is separate and unresolved.
+
+Safety: shared global GPU flock, no active CUDA jobs, >=20GiB, 180s child-only watchdog, local write-once JSON/log/audit. Strict physical scoring never relaxed: instep >=95%, true goal, >=3.5m/s proxy, all original 29 qdot, nonfoot net <20N, full 14s and recovery. Known CMU05 failures are not retuned. New velocity generator is OFFLINE ONLY, never motor dispatched.
+
+Pre-registration negative result acceptable: unresolved G1 contact paths or tensor API error means diagnostic failure, not proof of no self-collision. No post-hoc hypothesis adaptation. CPU tests and GPU execution only after all stage-two frozen files are committed and match HEAD.

@@ -1,0 +1,66 @@
+{
+  "version": "v0.1.98",
+  "phase": "pair_observer_readonly_stage2",
+  "parent_frozen_physics_sha": "99c84dfc82d2bea78744a8eb9081f008119eb6c2",
+  "original_G1_29dof_physics_hz": 200,
+  "observation": "optional filtered tensor wrist/hip observations, NOT native actor/collider manifolds",
+  "center_ball_offset_xy": [
+    0,
+    0
+  ],
+  "velocity_delta": 0,
+  "seed": 1201,
+  "pair_matrix": [
+    {
+      "name": "center_v32_off",
+      "control": "v32",
+      "observer": false
+    },
+    {
+      "name": "center_v32_on",
+      "control": "v32",
+      "observer": true
+    },
+    {
+      "name": "center_cmu02_off",
+      "control": "cmu02",
+      "observer": false
+    },
+    {
+      "name": "center_cmu02_on",
+      "control": "cmu02",
+      "observer": true
+    },
+    {
+      "name": "center_cmu05_off",
+      "control": "cmu05",
+      "observer": false
+    },
+    {
+      "name": "center_cmu05_on",
+      "control": "cmu05",
+      "observer": true
+    }
+  ],
+  "original_control_configs": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "resources": {
+    "min_free_gib": 20,
+    "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+    "per_child_timeout_s": 180
+  },
+  "safety": {
+    "no_change_to_original_controller": true,
+    "no_change_to_original_physx_scene": true,
+    "no_native_manifold_claim": true,
+    "failed_tensor_instrumentation_is_unknown": true,
+    "paired_state_parity_mandatory": true,
+    "refuse_all_motor_policy_changes": true,
+    "stop_on_drift": true,
+    "output_write_once": true
+  },
+  "baseline_notes": "Pre-frozen center seed1201 physically observed v79/v85 known positives and nonfoot-failure; no tuning on this diagnosis"
+}
