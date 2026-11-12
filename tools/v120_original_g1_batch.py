@@ -32,7 +32,7 @@ def resources(c):
     return round(free,3)
 def preflight():
     c=json.loads(CFG.read_text())
-    if git("branch","--show-current")!="version/v0.1.118":raise RuntimeError("WRONG_BRANCH")
+    if git("branch","--show-current")!="version/v0.1.120":raise RuntimeError("WRONG_BRANCH")
     if git("status","--porcelain","--untracked-files=no"):raise RuntimeError("TRACKED_SOURCE_DIRTY")
     if MASTER.exists() or MASTER.is_symlink():raise FileExistsError("EXISTING_MASTER_AUDIT")
     if c["parent_commit"] not in git("log","--format=%H"):raise ValueError("WRONG_PARENT_SHA")
@@ -165,7 +165,7 @@ def main():
                 compare=parity(runs[-2],runs[-1]);pairs.append(compare)
                 print("V120_PARITY",compare,flush=True)
                 if not compare["passed"]:break
-    result=dict(version="v0.1.118",source_commit=git("rev-parse","HEAD"),
+    result=dict(version="v0.1.120",source_commit=git("rev-parse","HEAD"),
        protocol_sha256=sha(CFG),true_completed_scored_original_G1_runs=sum(x["certified_original_G1_cuda_200Hz"] for x in runs),
        new_strict_pass=sum(x["certified_original_G1_cuda_200Hz"] and x["hard_gates"]["hard_gate_pass"] for x in runs),
        completed_200hz_original_G1_physics_steps=sum(x["actual_traced_200hz_rows"] for x in runs),
