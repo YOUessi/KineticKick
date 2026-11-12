@@ -1,0 +1,14 @@
+{
+  "version": "v0.1.104",
+  "parent_commit": "7a11c6c6ef86041c08e62cf23738922817b28cfd",
+  "sites": {"G":"v097","H":"v097","I":"v098","J":"v098","K":"v098"},
+  "controllers": ["v32","cmu02","cmu05"],
+  "pairing": [["v32","cmu02"],["v32","cmu05"]],
+  "source_roots": {"v097":"/home/you/projects/kinetickick-wt-v097","v098":"/home/you/projects/kinetickick-wt-v098"},
+  "divergence_absolute_tolerance": 0.00001,
+  "physical_dt_s": 0.005,
+  "minimum_free_gib": 20,
+  "historical_only": true,
+  "gpu_allowed": false,
+  "never_extrapolate_terminated_episode": true
+}
