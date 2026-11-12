@@ -1,0 +1,22 @@
+{
+  "version": "v0.1.124",
+  "parent_sha": "b4da3f1a153a487962b68ddb5e8286a46e100538",
+  "human_source_commit": "402b87f019dd7cd31f9d5af980ad38a2b63a7e3f",
+  "human_source_worktree": "/home/you/projects/kinetickick-wt-v116",
+  "human_source_rel": "data/research_human_kicks/cmu_soccer_120hz_v050/raw",
+  "human_trials": ["10/10_01", "10/10_02", "10/10_03", "10/10_05", "10/10_06", "11/11_01"],
+  "human_marker_rate_hz": 120,
+  "marker_unit": "mm",
+  "min_valid_frame_fraction": 0.9,
+  "min_required_frames": 120,
+  "min_body_width_m": 0.05,
+  "max_lag_s": 0.35,
+  "min_overlap_intervals": 45,
+  "zero_variance_tol": 1e-8,
+  "required_subject_partition_count": 3,
+  "require_original_sha256": true,
+  "contact_required_fields": ["actor0", "actor1", "collider0", "collider1", "points"],
+  "original_G1_motor_changed": false,
+  "new_physics_permitted_while_GPU_busy": false,
+  "no_train_or_motor_actuation": true
+}
