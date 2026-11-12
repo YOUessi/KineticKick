@@ -1,0 +1,35 @@
+{
+  "version": "v0.1.121",
+  "base_branch": "version/v0.1.119",
+  "base_sha": "b57b855433b3fa6f6f266ee565f7e959b333c288",
+  "cohort": [
+    {
+      "version": 116,
+      "commit": "402b87f019dd7cd31f9d5af980ad38a2b63a7e3f"
+    },
+    {
+      "version": 117,
+      "commit": "24857ba8e5544dcf72ce904d38b2d5699e6426fb"
+    },
+    {
+      "version": 118,
+      "commit": "b2ff2fc4254d41f1e871928a27fc8200b40ebec4"
+    }
+  ],
+  "dt_s": 0.005,
+  "pre_s": 0.4,
+  "post_s": 1.25,
+  "onset_peak_fraction": 0.2,
+  "onset_floor_W": 0.5,
+  "onset_frames": 3,
+  "support_threshold_N": 50,
+  "zero_claims": [
+    "human_true_GRF",
+    "human_instep_contact",
+    "native_wrist_hip_collider_manifold",
+    "trained_wholebody_G1_policy",
+    "new_GPU_physics_rollouts"
+  ],
+  "strict_sha": true,
+  "skip_observer_for_independent_cells": true
+}
