@@ -1,5 +1,7 @@
-import json
+import json,sys
 from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'tools'))
 from tools.v111_original_g1_batch import parity, _max_abs
 from tools.v111_200hz_coupled_audit import group_indices, strip_terminal_event_only
 ROOT=Path(__file__).resolve().parents[1]
