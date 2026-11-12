@@ -1,0 +1,200 @@
+{
+  "version": "v0.1.100",
+  "base_committed_sha": "70e3f2a7b743c7c6c04df54c981b4313726bb603",
+  "purpose": "Frozen diagnostic recovery of failed v99 L/M/N: established v080 physical OFF versus v098 read-only G1 Tensor ON, plus independent analysis; prior L failed watchdog without physics evidence, so NONE are blind to method design",
+  "controls": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "cases": [
+    {
+      "name": "L_v32_off",
+      "scene": "L",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_v32_on",
+      "scene": "L",
+      "control": "v32",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu02_off",
+      "scene": "L",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu02_on",
+      "scene": "L",
+      "control": "cmu02",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu05_off",
+      "scene": "L",
+      "control": "cmu05",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu05_on",
+      "scene": "L",
+      "control": "cmu05",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "M_v32_off",
+      "scene": "M",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        0.035,
+        -0.105
+      ],
+      "velocity_delta": -0.015,
+      "seed": 1607
+    },
+    {
+      "name": "M_cmu02_off",
+      "scene": "M",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        0.035,
+        -0.105
+      ],
+      "velocity_delta": -0.015,
+      "seed": 1607
+    },
+    {
+      "name": "M_cmu05_off",
+      "scene": "M",
+      "control": "cmu05",
+      "observer": false,
+      "ball_offset_xy": [
+        0.035,
+        -0.105
+      ],
+      "velocity_delta": -0.015,
+      "seed": 1607
+    },
+    {
+      "name": "N_v32_off",
+      "scene": "N",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.025,
+        0.105
+      ],
+      "velocity_delta": 0.015,
+      "seed": 1613
+    },
+    {
+      "name": "N_cmu02_off",
+      "scene": "N",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.025,
+        0.105
+      ],
+      "velocity_delta": 0.015,
+      "seed": 1613
+    },
+    {
+      "name": "N_cmu05_off",
+      "scene": "N",
+      "control": "cmu05",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.025,
+        0.105
+      ],
+      "velocity_delta": 0.015,
+      "seed": 1613
+    }
+  ],
+  "resources": {
+    "min_free_gib": 20,
+    "per_child_timeout_s": 110,
+    "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock"
+  },
+  "gates": {
+    "instep_impulse_min": 0.95,
+    "goal": true,
+    "ball_speed_min_mps": 3.5,
+    "max_nonfoot_N_exclusive": 20,
+    "full_recovery_s": 14,
+    "all29_speed_bounds": true
+  },
+  "hypotheses": {
+    "H1": "L OFF/ON must be identical in every original G1 physical field and goal/contact outcome",
+    "H2": "New L/M/N can exhibit strict failures under old controllers with fixed independent protocol",
+    "H3": "Tensor filtered actor-body observation is not native collider manifold",
+    "H4": "Coupled trunk/stance/arm/leg timing may explain failure but descriptive only"
+  },
+  "safety": {
+    "frozen_before_gpu": true,
+    "write_once": true,
+    "stop_on_uncertified_GPU_or_pair_drift": true,
+    "original_controllers_unchanged": true,
+    "heldout_not_for_tuning": true,
+    "no_instrumentation_actuation": true,
+    "no_native_manifold_claim": true,
+    "no_human_impulse_claim": true
+  },
+  "previous_v099_unscored_attempt": {
+    "name": "L_v32_off",
+    "time_limit_s": 180,
+    "raw_physics_episode_certified": false,
+    "failure": "completed actor init, stalled before recording physics, process watchdog; retained write-once original v99 log",
+    "must_not_count_as_physx_episode": true
+  },
+  "method_hypotheses": {
+    "H0": "Original v080 OFF on L either succeeds or is bounded and classified as environment/runner failure",
+    "H1": "v098 G1 filtered tensor ON does not alter any original 200Hz state/shot record",
+    "H2": "Original frozen 29DoF controls exhibit cross-ball variation; no tuning on L/M/N",
+    "H3": "If native collider manifold remains unavailable, report unresolved and do not grant new policy motor authority"
+  },
+  "control_wrapper_off": "tools/v080_run_poll_strike.py",
+  "control_wrapper_on": "tools/v098_run_pair_strike.py"
+}
