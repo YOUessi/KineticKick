@@ -1,0 +1,87 @@
+{
+  "version": "v0.1.101",
+  "parent_sha": "b9a1ab1731bdf3f6f2beb1db638d4cf2d0f66a0b",
+  "frozen_legacy_matrix_sha256": "2b2e49b48f5153718b5c810c674a62c7406c7cb92b935f8f77374c492120ebe3",
+  "min_free_gib": 20,
+  "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "max_child_s": 120,
+  "controls": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "g1_cases": [
+    {
+      "name": "L_v32_off",
+      "scene": "L",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0,
+      "seed": 1601
+    },
+    {
+      "name": "L_v32_on",
+      "scene": "L",
+      "control": "v32",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu02_off",
+      "scene": "L",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu02_on",
+      "scene": "L",
+      "control": "cmu02",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu05_off",
+      "scene": "L",
+      "control": "cmu05",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu05_on",
+      "scene": "L",
+      "control": "cmu05",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0,
+      "seed": 1601
+    }
+  ]
+}
