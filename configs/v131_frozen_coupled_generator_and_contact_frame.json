@@ -1,0 +1,41 @@
+{
+  "version": "v0.1.131",
+  "parent_sha": "7f3c0e7880ba68743787d29224c1ea679ef70e04",
+  "dt_s": 0.005,
+  "horizon_s": 14.0,
+  "original_dof": 29,
+  "phases": [
+    {"name": "approach", "duration_s": 1.0},
+    {"name": "stance", "duration_s": 0.8},
+    {"name": "backswing", "duration_s": 0.6},
+    {"name": "hip_trunk_accel", "duration_s": 0.5},
+    {"name": "instep_contact", "duration_s": 0.1},
+    {"name": "follow_through", "duration_s": 1.0},
+    {"name": "landing_recovery", "duration_s": 10.0}
+  ],
+  "synthetic_engineering_coupled_latent_channels": [
+    "lead_leg_load_transfer", "pelvis_trunk_unwind", "contralateral_arm_swing", "strike_leg_and_followthrough"
+  ],
+  "amplitudes_rad": [0.075, 0.060, 0.055, 0.070],
+  "amplitude_stress_multipliers": [0.0, 1.0, 2.0, 4.0, -1.0],
+  "evaluation_origin": "OFFLINE_SYNTHETIC_NOT_HUMAN_TRAINED",
+  "data_qualification_required": ["verified_independent_subjects", "true_instep_contact_time", "no_test_tuning"],
+  "native_contact_frame": {
+    "require_nonempty_actor_and_collider_sdf_paths": true,
+    "require_valid_contact_data_offset_and_count": true,
+    "require_exact_runtime_step_index": true,
+    "require_finite_position_normal_impulse": true,
+    "require_runtime_calibration_before_contact_certification": true,
+    "unknown_native_pair_is_unsafe": true
+  },
+  "frozen_hard_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "nonfoot_force_N_max": 20.0,
+    "all29_joint_speed_limit": true,
+    "full_recovery_s": 14.0,
+    "motor_authorized_without_runtime_witness": false
+  },
+  "physical_rollouts_allowed_when_foreign_gpu_busy": 0,
+  "explicitly_no_legacy_evidence_mutation": true
+}
