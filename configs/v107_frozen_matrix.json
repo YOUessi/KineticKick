@@ -1,0 +1,101 @@
+{
+  "version": "v0.1.107",
+  "parent_commit": "ae2117a4cf1719286d1dcd2f943628562677f21e",
+  "purpose": "Independent N/O 2-seed original G1 200Hz observer parity; no learning claims; all hard gates",
+  "min_free_gib": 20,
+  "global_gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock",
+  "per_child_watchdog_s": 140,
+  "control_configs": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "off_original_runner": "tools/v080_run_poll_strike.py",
+  "on_original_runner": "tools/v098_run_pair_strike.py",
+  "on_only_flag": "--tensor-pair-v098",
+  "matrix": [
+    {
+      "name": "N_v32_off",
+      "scene": "N",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.065,
+        0.065
+      ],
+      "velocity_delta": 0.012,
+      "seed": 1703
+    },
+    {
+      "name": "N_v32_on",
+      "scene": "N",
+      "control": "v32",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.065,
+        0.065
+      ],
+      "velocity_delta": 0.012,
+      "seed": 1703
+    },
+    {
+      "name": "N_cmu02_off",
+      "scene": "N",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.065,
+        0.065
+      ],
+      "velocity_delta": 0.012,
+      "seed": 1703
+    },
+    {
+      "name": "N_cmu02_on",
+      "scene": "N",
+      "control": "cmu02",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.065,
+        0.065
+      ],
+      "velocity_delta": 0.012,
+      "seed": 1703
+    },
+    {
+      "name": "O_v32_off",
+      "scene": "O",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        0.055,
+        -0.05
+      ],
+      "velocity_delta": 0.02,
+      "seed": 1709
+    },
+    {
+      "name": "O_v32_on",
+      "scene": "O",
+      "control": "v32",
+      "observer": true,
+      "ball_offset_xy": [
+        0.055,
+        -0.05
+      ],
+      "velocity_delta": 0.02,
+      "seed": 1709
+    }
+  ],
+  "hard_gates": {
+    "instep_fraction_min": 0.95,
+    "ball_speed_min_mps": 3.5,
+    "all_source29_qdot": true,
+    "goal": true,
+    "nonfoot_threshold_N": 20,
+    "complete_recovery_s": 14
+  },
+  "observer_not_native_manifold": true,
+  "stop_after_first_unverified_or_parity_fail": true,
+  "learned_policy_actuation": false
+}
