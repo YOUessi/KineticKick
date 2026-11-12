@@ -1,0 +1,43 @@
+{
+  "version": "v0.1.129",
+  "parent_branch": "version/v0.1.128",
+  "parent_sha": "9eb0123a4f5a86383db0fe23d3a48dba40816f72",
+  "focus": "Convex finite URDF cylinder separating-plane certificate vs overbounding capsule near v54 self-contact incident",
+  "frozen_v128_config_sha256": "f652d5f6c1cbf845b7216b3d55856562e7616cd811252087b80401812b401441",
+  "source_v128_protocol_commit": "8ce2aa190847ed60e480811e59a05fd05ab7430f",
+  "primary_pair": [
+    "left_wrist_yaw_link",
+    "left_hip_roll_link"
+  ],
+  "real_cases": [
+    "frozen_v32",
+    "cmu_10_02",
+    "cmu_10_05"
+  ],
+  "analyze_sample_policy": "primary pair: all original observed 200Hz frames for 3 v54 cases (2800+2800+1028); report 5.125,5.130,5.135,5.140 and full late-period near event. No future q extrapolation.",
+  "methods": [
+    "exact convex cylinder support function along arbitrary unit direction",
+    "SLSQP deterministic unit-ball separating-plane search, strictly positive certificate for no overlap",
+    "independent conservative capsule bound from v127",
+    "synthetic separated, touching, overlapping, rotated-cylinder negative controls and SciPy direct constrained witness cross-check"
+  ],
+  "strict_positive_plane_certificate_epsilon_m": 1e-06,
+  "minimum_witness_search_directions": [
+    "center delta",
+    "center delta axis-orthogonal projections",
+    "cross axes",
+    "segment closest-point candidate",
+    "principal Cartesian axes both signs"
+  ],
+  "failure_event_s": 5.1449998850002885,
+  "physical_dt_s": 0.005,
+  "native_physx_pair_certified": false,
+  "no_extrapolation_to_unsampled_sensor_event": true,
+  "observation_read_only_only": true,
+  "no_gpu_or_actuation_during_gpu_mutex": true,
+  "no_human_contact_or_professional_kick_truth": true,
+  "no_tuning_on_holdout": true,
+  "retain_negative_results": true,
+  "no_existing_evidence_overwrite": true,
+  "new_outputs_exclusive": true
+}

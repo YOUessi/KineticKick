@@ -1,0 +1,7 @@
+# v129 frozen research protocol (2026-11-13, before outcome computation)
+
+Source: verified v128 SHA `9eb0123a4f5a86383db0fe23d3a48dba40816f72`. The v128 capsule gap is a **lower bound**, not an exact cylinder separation. A nearly zero capsule gap may be a bounding-shape artifact.
+
+Using v128 SHA-qualified three original v54 full 200Hz 29DoF episodes and exact original URDF, reconstruct finite cylinder centers/axes. For every observed frame on the primary left wrist–left hip pair, maximize positive directional projection separation via convex support functions. A strictly positive, independently recomputed directional gap above 1 micrometer **certifies that these two finite URDF cylinders are disjoint at that frame**. A failed search, zero or negative directional gap **must not certify contact**. Never confuse URDF with live USD/PhysX collision ownership. No claim for unsampled 5.145s.
+
+Predefine all original 2800+2800+1028 physical frames, explicit 5.125/5.130/5.135/5.140s event neighborhood, all full-episode minima and 0.02m alerts. Compare with v127 capsule lower bounds; test synthetic separated/overlap/rotation/tangency and an independent constrained closest-point numerical witness. Do not fit solver thresholds to outcome, do not run GPU or train while v120 process owns GPU, do not overwrite data. Output separate create-exclusive audit, reproducibility commands, unit tests, plots and negative result discussion. Contact-pair manifold status always UNKNOWN; 29DoF limits and strict failure labels unchanged.
