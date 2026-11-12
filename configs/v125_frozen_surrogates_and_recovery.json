@@ -1,0 +1,68 @@
+{
+  "version": "v0.1.125",
+  "parent_sha": "04fa7d89d5bb988dfecea0d20f899dd96652243d",
+  "human_source_sha": "402b87f019dd7cd31f9d5af980ad38a2b63a7e3f",
+  "human_qualification_sha256": "b1c2116948a227ba4341c1d7aa6a93f0c5eebce3288f999a86457d7c6b19a62b",
+  "human_trials": [
+    "10/10_01",
+    "10/10_02",
+    "10/10_03",
+    "10/10_05",
+    "10/10_06",
+    "11/11_01"
+  ],
+  "kinematic_rate_hz": 120,
+  "relative_pairs": [
+    "LWRA_LSHO__RTOE_PELVIS",
+    "RWRA_RSHO__LTOE_PELVIS"
+  ],
+  "max_lag_s": 0.35,
+  "min_overlap_intervals": 45,
+  "min_shift_separation_s": 0.5,
+  "max_circular_shift_surrogates": 127,
+  "descriptive_exceedance_requires": "null_max_abs_corr_ge_observed",
+  "lag_stability_max_disagreement_s": 0.1,
+  "split_count": 2,
+  "edge_lag_is_unqualified": true,
+  "descriptive_surrogate_exceedance_threshold": 0.05,
+  "robot_sources": [
+    {
+      "version": 116,
+      "commit": "402b87f019dd7cd31f9d5af980ad38a2b63a7e3f",
+      "master_sha256": "9080ae466ece92603c24b85e00f1424f211693580d2b0ec8fe9a6833ad3a88bc"
+    },
+    {
+      "version": 117,
+      "commit": "24857ba8e5544dcf72ce904d38b2d5699e6426fb",
+      "master_sha256": "76e5782e62df6cd47c571c100b720a56484024fa02398d6946548bc1838081da"
+    },
+    {
+      "version": 118,
+      "commit": "b2ff2fc4254d41f1e871928a27fc8200b40ebec4",
+      "master_sha256": "800fb091cdf44b61be8bc1674e2930d4138c03be7d1118e2392c7cd7368716d5"
+    }
+  ],
+  "robot_dt_s": 0.005,
+  "precontact_window_s": 0.4,
+  "postcontact_window_s": 1.25,
+  "recovery_end_s": 14,
+  "initial_state_is_left_censored": true,
+  "nonfoot_net_force_N": 20,
+  "instep_share_threshold": 0.95,
+  "ball_speed_proxy_min_mps": 3.5,
+  "original_qdot_limit_ratio_max": 1,
+  "require_independent_seed_scene_count": 24,
+  "observer_repeats_excluded": 5,
+  "no_gpu_while_foreign_gpu_process": true,
+  "no_motor_command": true,
+  "no_new_real_physics_if_gpu_busy": true,
+  "forbidden_claims": [
+    "elite_or_professional_athlete",
+    "human_ground_reaction_forces",
+    "human_instability_from_robot_tilt",
+    "certified_contact_manifold",
+    "causal_dynamics_from_correlation",
+    "trained_fullbody_controller",
+    "new_real_g1_physics_if_gpu_busy"
+  ]
+}
