@@ -1,0 +1,8 @@
+# KineticKick v0.1.101 — frozen instrumented startup: CLI negative, no PhysX
+2026-11-12. Parent `b9a1ab1731bdf3f6f2beb1db638d4cf2d0f66a0b`; frozen commit `a36fb1e1d230adc2a1f4addbf7880518555c7a20` (version/v0.1.101). Prior G1 physical data, logs, model, GPU lock and all other worktrees unchanged.
+
+Preflight confirmed Tang online, 35.4GiB free, GPU had no foreign compute process, and clean tracked Git state. New write-once CPU official ONNX session loaded successfully in 0.0172s, 29 original G1 joints, 9 observation terms, model SHA256 `489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1`. This is ONLY CPU parser/session readiness; it does not certify ONNX interaction with Kit/Isaac or correct motor control.
+
+The second *planned* calibration `v094_box_pair_probe.py` was invoked with frozen `--device cuda`; its immutable argparse accepts only `cpu` or `cuda:0`. Exit code 2 occurred in 0.068s, BEFORE AppLauncher and BEFORE ANY PhysX frame. The batch stopped by frozen dependency gate. Therefore **new actual PhysX=0, new original 29DoF G1 physical rollouts=0, shooting success denominator undefined**; six L G1 comparisons were NOT RUN. Failure provenance preserved in local `reports/v101_box_tensor_positive.log` SHA256 `43f9b4b3f82af6b17a66d3ea14348b451f4fdbd1b315aa57ab740e1442e9fdde`, paired audit and write-once master, never silently retried.
+
+Next separate **new version** must freeze corrected exact `cuda:0` argument and test that CLI signature before GPU. Do not edit the frozen v101 protocol or relabel the failed command as physics. Explicitly retain the historical v99/v100 startup hangs as unresolved, with need for native positive control and true G1 actuation safety certification.
