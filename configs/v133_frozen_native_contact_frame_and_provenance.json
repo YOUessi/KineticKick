@@ -1,0 +1,66 @@
+{
+  "version": "v0.1.133",
+  "parent_sha": "f6fab3682f9da3c3bfc4bb7d1e283656c5dbbf07",
+  "physical_dt_s": 0.005,
+  "original_g1_dof": 29,
+  "original_seed": 1201,
+  "original_v54_cases": {
+    "frozen_v32": 2800,
+    "cmu_10_02": 2800,
+    "cmu_10_05": 1028
+  },
+  "original_named_event_s": 5.145,
+  "original_last_real_state_s": 5.14,
+  "original_nonfoot_max_N": 25.890153,
+  "candidate_pairs": [
+    [
+      "left_wrist_yaw_link",
+      "left_hip_roll_link"
+    ],
+    [
+      "left_shoulder_yaw_link",
+      "torso_link"
+    ]
+  ],
+  "reporting": [
+    "actor0",
+    "actor1",
+    "collider0",
+    "collider1",
+    "stage_id",
+    "contact_data_offset",
+    "num_contact_data",
+    "position",
+    "normal",
+    "impulse",
+    "separation"
+  ],
+  "mandatory_controls": [
+    "native_true_contact_positive",
+    "native_true_separation_negative",
+    "callback_OFF_ON_identical_physical_state",
+    "original_G1_three_case_replay"
+  ],
+  "prohibit_inference_from": [
+    "net_force_equal_opposite",
+    "URDF_capsule_proximity",
+    "empty_callback",
+    "synthetic_callback_unit_test",
+    "unsampled_5.145s_joint_pose"
+  ],
+  "clock_requires_callback_timing_calibration": true,
+  "source_identity_sha256_required": true,
+  "prohibit_runtime_actuation_without_verified_owner_and_same_step": true,
+  "unknown_pair_blocks_motor": true,
+  "no_edit_existing_provenance": true,
+  "no_gpu_parallel_with_existing_process": true,
+  "zero_new_physics_when_gpu_reserved": true,
+  "locked_evaluation_before_implementation": true,
+  "frozen_success_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "nonfoot_force_N_max": 20,
+    "all29_original_qdot": true,
+    "full_recovery_s": 14
+  }
+}
