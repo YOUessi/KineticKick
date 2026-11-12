@@ -1,0 +1,185 @@
+{
+  "version": "v0.1.99",
+  "base_committed_sha": "f7eec1b57e79590aaf61f279d365ffecc13cc00d",
+  "purpose": "New L/M/N preregistered unchanged-original-G1 200Hz PhysX with L matched read-only sensor OFF/ON; not new learned policy",
+  "controls": {
+    "v32": "configs/cmu_real_120hz_10_02_physx_zero_v052.json",
+    "cmu02": "configs/cmu_real_120hz_10_02_physx_v052.json",
+    "cmu05": "configs/cmu_real_120hz_10_05_physx_v052.json"
+  },
+  "cases": [
+    {
+      "name": "L_v32_off",
+      "scene": "L",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_v32_on",
+      "scene": "L",
+      "control": "v32",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu02_off",
+      "scene": "L",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu02_on",
+      "scene": "L",
+      "control": "cmu02",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu05_off",
+      "scene": "L",
+      "control": "cmu05",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "L_cmu05_on",
+      "scene": "L",
+      "control": "cmu05",
+      "observer": true,
+      "ball_offset_xy": [
+        -0.095,
+        -0.035
+      ],
+      "velocity_delta": 0.0,
+      "seed": 1601
+    },
+    {
+      "name": "M_v32_off",
+      "scene": "M",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        0.035,
+        -0.105
+      ],
+      "velocity_delta": -0.015,
+      "seed": 1607
+    },
+    {
+      "name": "M_cmu02_off",
+      "scene": "M",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        0.035,
+        -0.105
+      ],
+      "velocity_delta": -0.015,
+      "seed": 1607
+    },
+    {
+      "name": "M_cmu05_off",
+      "scene": "M",
+      "control": "cmu05",
+      "observer": false,
+      "ball_offset_xy": [
+        0.035,
+        -0.105
+      ],
+      "velocity_delta": -0.015,
+      "seed": 1607
+    },
+    {
+      "name": "N_v32_off",
+      "scene": "N",
+      "control": "v32",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.025,
+        0.105
+      ],
+      "velocity_delta": 0.015,
+      "seed": 1613
+    },
+    {
+      "name": "N_cmu02_off",
+      "scene": "N",
+      "control": "cmu02",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.025,
+        0.105
+      ],
+      "velocity_delta": 0.015,
+      "seed": 1613
+    },
+    {
+      "name": "N_cmu05_off",
+      "scene": "N",
+      "control": "cmu05",
+      "observer": false,
+      "ball_offset_xy": [
+        -0.025,
+        0.105
+      ],
+      "velocity_delta": 0.015,
+      "seed": 1613
+    }
+  ],
+  "resources": {
+    "min_free_gib": 20,
+    "per_child_timeout_s": 180,
+    "gpu_lock": "/home/you/projects/kinetickick/experiments/kinetickick_physics_gpu.lock"
+  },
+  "gates": {
+    "instep_impulse_min": 0.95,
+    "goal": true,
+    "ball_speed_min_mps": 3.5,
+    "max_nonfoot_N_exclusive": 20,
+    "full_recovery_s": 14,
+    "all29_speed_bounds": true
+  },
+  "hypotheses": {
+    "H1": "L OFF/ON must be identical in every original G1 physical field and goal/contact outcome",
+    "H2": "New L/M/N can exhibit strict failures under old controllers with fixed independent protocol",
+    "H3": "Tensor filtered actor-body observation is not native collider manifold",
+    "H4": "Coupled trunk/stance/arm/leg timing may explain failure but descriptive only"
+  },
+  "safety": {
+    "frozen_before_gpu": true,
+    "write_once": true,
+    "stop_on_uncertified_GPU_or_pair_drift": true,
+    "original_controllers_unchanged": true,
+    "heldout_not_for_tuning": true,
+    "no_instrumentation_actuation": true,
+    "no_native_manifold_claim": true,
+    "no_human_impulse_claim": true
+  }
+}
