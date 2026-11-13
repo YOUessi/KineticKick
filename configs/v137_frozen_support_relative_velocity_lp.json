@@ -1,0 +1,68 @@
+{
+  "version": "v0.1.137",
+  "parent_version": "v0.1.136",
+  "parent_sha": "4cc754c1230e488b8ec81526f14b96125596fd22",
+  "urdf_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "original_dof": 29,
+  "dt_s": 0.005,
+  "horizon_s": 14,
+  "multipliers": [
+    0,
+    1,
+    2,
+    4,
+    -1
+  ],
+  "probe_times_s": [
+    2.25,
+    2.95,
+    3.6
+  ],
+  "virtual_left_anchor_link": "left_ankle_roll_link",
+  "relative_swing_link": "right_ankle_roll_link",
+  "swing_relative_link_origin_velocity_targets_x_mps": [
+    0,
+    0.5,
+    1,
+    3
+  ],
+  "com_world_relative_to_virtual_stance_velocity_cap_mps": [
+    null,
+    0.1
+  ],
+  "arm_joint_velocity_deviation_cap_rad_s": [
+    null,
+    0.25
+  ],
+  "finite_difference_step_rad": 0.000001,
+  "jacobian_crosscheck_max_abs": 0.00002,
+  "relative_yz_velocity_equality_mps": 0,
+  "linear_program_solver": "scipy.optimize.linprog(method='highs')",
+  "original29_urdf_joint_velocity_hard_bounds": true,
+  "holdout_note": "No fitting to the original v54 CMU failed scene or previous v136 soft residual measurements; frozen grid and thresholds.",
+  "physical_constraints_missing": [
+    "real floating base rotation",
+    "ground reaction force/CoP",
+    "true stance foot sole contact",
+    "center-of-pressure support polygon",
+    "motor torque/inertia",
+    "native PhysX actor/collider/manifold",
+    "contact impulse/ball speed/goal",
+    "14s real recovery",
+    "human professional motion+GRF"
+  ],
+  "strict_kick_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "original29_qdot": true,
+    "no_nonfoot_collision": true,
+    "full_14s_recovery": true
+  },
+  "report_feasibility_not_execution": true,
+  "forbid_motor_execution": true,
+  "forbid_claim_human_learning": true,
+  "forbid_claim_new_physx_success": true,
+  "gpu_policy": "Never start IsaacLab or GPU workloads while v120 pytest occupies GPU; free disk must exceed 20GiB before physics.",
+  "experiment_matrix": "5 synthetic multipliers x 3 artificial clock probes x 2 COM caps x 2 arm coordination caps = 60 envelopes, 240 target feasibility decisions.",
+  "reproducibility": "Use git-show frozen SHA exact file bytes, source URDF sha, scripts/pytest; raw numpy and figures remain local."
+}
