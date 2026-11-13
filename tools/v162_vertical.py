@@ -48,12 +48,25 @@ def make_controller(ref, schema, config):
         raise ValueError('Invalid swing, support or pre-impact coefficients')
     if params.size>=30:
         indices+=extra_axes(schema['joint_names'])
+    prior_foot=None
+    foot=schema['body_names'].index('right_ankle_roll_link')
     def control(ctx,target):
+        nonlocal prior_foot
         target=baseline(ctx,target)
         target[indices]+=correction(ctx['t'],params)
         cap=config.get('impact_ankle_pitch_cap')
         if cap is not None and 2.31 <= ctx['t'] <= 2.51:
             # Cap the commanded ankle extension while the fast impact approaches the original hard stop.
             target[indices[4]]=min(target[indices[4]],cap)
+        if 'return_control' in config:
+            ankle=ctx['body_pos'][foot]
+            first=ctx['first_contact_s']
+            if first is not None and prior_foot is not None and .18 <= ctx['t']-first <= .48 and ctx['foot_load'][1]<30.:
+                direction=ctx['goal'][:2]-config['initial_ball_xy']
+                direction=direction/np.linalg.norm(direction)
+                speed=(ankle[:2]-prior_foot[:2])@direction/ctx['dt']
+                gain=config['return_control']
+                target[indices[0]]-=np.clip((-1.25-speed)*gain,0.,.24)
+            prior_foot=ankle.copy()
         return target
     return control
