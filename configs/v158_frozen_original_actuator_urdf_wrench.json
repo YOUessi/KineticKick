@@ -1,0 +1,42 @@
+{
+  "version": "v0.1.158",
+  "parent_branch": "version/v0.1.156",
+  "parent_sha": "998c17b93619637443f883784e9daa2539348423",
+  "source_model": "original_G1_URDF_offline_Pinocchio_2.7.0",
+  "source_urdf_sha256": "dbc8471004e9b0b85c27a4ebc1f0d90a727c1cf7ca9ef507b805596f2004d64b",
+  "source_limit_fields": ["lower", "upper", "effort", "velocity"],
+  "physical_joint_count": 29,
+  "freefloating_nv": 35,
+  "dt_s": 0.005,
+  "phases": ["approach", "plant", "coil", "swing", "followthrough", "recover"],
+  "support_modes": ["left", "double"],
+  "seeds": [0, 1, 2, 3],
+  "effort_conditions": ["urdf_effort", "counterfactual_100x_effort"],
+  "expected_source_states": 48,
+  "expected_qp_solutions": 96,
+  "expected_negative_rejections": 16,
+  "negative_kinds": [
+    "wrong_joint_names", "wrong_urdf_digest", "invalid_root_quaternion",
+    "missing_support", "fake_runtime_contact", "fake_human_supervision",
+    "wrong_actuator_limit", "nonfinite_bias"
+  ],
+  "independent_dynamics_checks": 12,
+  "nominal_friction_mu_assumed_not_measured": 0.6,
+  "assumed_acceleration_limit_rad_s2": 50.0,
+  "reference_acceleration_amplitude_rad_s2": {
+    "approach": 2.0, "plant": 4.0, "coil": 6.0, "swing": 25.0,
+    "followthrough": 8.0, "recover": 3.0
+  },
+  "relaxed_effort_multiplier_for_ablation_only": 100.0,
+  "outer_wrench_envelope_from_URDF_collision_BBOX_is_only_necessary": true,
+  "flat_foot_and_no_slip_are_HYPOTHESES_not_physx_measurements": true,
+  "no_contact_pair_manifold_or_grf_cop_claim": true,
+  "historical_29dof_is_incomplete_for_35d_replay": true,
+  "no_training_on_historical_failed_cases": true,
+  "no_elite_human_training_claim": true,
+  "no_real_physics_success_claim": true,
+  "no_runtime_control_authority": true,
+  "minimum_free_disk_GiB": 20,
+  "only_cpu_if_foreign_gpu_process": true,
+  "write_once_local_reports": true
+}
