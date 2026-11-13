@@ -29,10 +29,13 @@ def coefficients(config,speed,aim):
 
 
 def make_controller(ref,schema,config):
+    ankle=schema['body_names'].index('right_ankle_roll_link')
+    hip=schema['joint_names'].index('right_hip_pitch_joint')
+    last_position=None
     command=None
     swing=None
     def control(ctx,target):
-        nonlocal command,swing
+        nonlocal command,swing,last_position
         requested=ctx['shot_speed_mps'],ctx['aim_x_m']
         if requested!=command:
             value=coefficients(config,*requested)
@@ -41,5 +44,16 @@ def make_controller(ref,schema,config):
                 params.update(swing_lead_s=value[12],swing_rate=value[13],hip_drive=value[14])
             swing=make_swing(ref,schema,params)
             command=requested
-        return swing(ctx,target)
+        out=swing(ctx,target)
+        position=ctx['body_pos'][ankle,:2]
+        if last_position is not None and config.get('return_damping') and ctx['first_contact_s'] is not None:
+            elapsed=ctx['t']-ctx['first_contact_s']
+            if .18<elapsed<.48 and ctx['foot_load'][1]<80.:
+                forward=ctx['goal'][:2]-ctx['root_pos'][:2]
+                forward=forward/max(np.linalg.norm(forward),1e-9)
+                speed=np.dot(position-last_position,forward)/ctx['dt']
+                correction=np.clip((-1.25-speed)*config['return_damping'],0.,.18)
+                out[hip]-=correction
+        last_position=position.copy()
+        return out
     return control

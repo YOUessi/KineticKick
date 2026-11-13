@@ -1,0 +1,19 @@
+{
+  "observed": "All three early held-out command outcomes satisfied speed and aim; one failed only return speed at 2.023 m/s. No old scores overridden.",
+  "method": "After 180ms and while load is below 80N, brake excess measured ankle return speed through the hip pitch drive. Compare two gains only on known failed request 3.79,.025 and require all 12+surface+aim+speed. Keep lower passing gain; if neither passes, release original r0 and report.",
+  "fresh_commands": [
+    [
+      3.74,
+      0.065
+    ],
+    [
+      3.88,
+      0.165
+    ],
+    [
+      3.81,
+      0.095
+    ]
+  ],
+  "counterfactual": "Use matched request-independent S0 measured in same environment, compare each command with original absolute tolerances and raw errors."
+}
