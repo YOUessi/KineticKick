@@ -1,0 +1,74 @@
+{
+  "version": "v0.1.146",
+  "parent_sha": "b8146bb4c6f4e06284def2bfdfd20671ebfa96f4",
+  "goal": "Integrate copy-only native contact evidence and original29 post-scene dynamics into ORIGINAL v080 runner without changing motor signals, stage or collision filters; audit CPU-source historical failure and fail-closed runtime calibration",
+  "original_runner": "tools/v080_run_poll_strike.py",
+  "physics_dt_s": 0.005,
+  "original_dof": 29,
+  "full_horizon_steps": 2800,
+  "original_v54_existing_episodes": {
+    "frozen_v32": 2800,
+    "cmu_10_02": 2800,
+    "cmu_10_05": 1028
+  },
+  "modes": [
+    "off",
+    "on"
+  ],
+  "per_episode_max_native_callback_packets": 120000,
+  "runtime_sidecar_must_be_write_once": true,
+  "runtime_contact_ownership_from_existing_stage_only": true,
+  "callback_clock_source": "POST_SCENE_UPDATE_INTERVAL_HINT_ONLY_NOT_SAME_PHYSX_TICK",
+  "off_on_require_byte_exact_unmodified_core_physics_fields": true,
+  "counterfactual_cpu_fixture_cannot_certify_runtime": true,
+  "must_abort_gpu_if_foreign_process": true,
+  "min_available_disk_gib": 20,
+  "must_not_change_original_control_or_termination": true,
+  "must_not_apply_contact_report_schema": true,
+  "human_data_synchronised_grf_or_true_instep_certified": false,
+  "physical_pass_requires": {
+    "instep_fraction_min": 0.95,
+    "goal": true,
+    "ball_speed_mps_min": 3.5,
+    "all_original29_qdot": true,
+    "no_nonfoot": true,
+    "full14s_recovery": true
+  },
+  "batch_expected_gpu_runs_when_blocked": 0,
+  "cpu_controls": [
+    "no_native_callback",
+    "synthetic_wrist_hip",
+    "orphan_callback",
+    "bad_29_joint_shape",
+    "missing_owner_map",
+    "mock_on_off_noninvasive",
+    "written_trace_no_overwrite",
+    "historical_6628_sha"
+  ],
+  "frozen_live_paired_matrix": [
+    {
+      "policy": "frozen_v32",
+      "observer": "off"
+    },
+    {
+      "policy": "frozen_v32",
+      "observer": "on"
+    },
+    {
+      "policy": "cmu_10_02",
+      "observer": "off"
+    },
+    {
+      "policy": "cmu_10_02",
+      "observer": "on"
+    },
+    {
+      "policy": "cmu_10_05",
+      "observer": "off"
+    },
+    {
+      "policy": "cmu_10_05",
+      "observer": "on"
+    }
+  ]
+}
