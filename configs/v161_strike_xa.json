@@ -1,0 +1,16 @@
+{
+  "module": "v161_strike_expert",
+  "expert_report": "/home/you/projects/kinetickick/reports/v032_learned_center.json",
+  "window_s": [
+    1.45,
+    1.82,
+    2.77,
+    3.35
+  ],
+  "contact_s": 2.35,
+  "phase_rate": 1.0,
+  "source": "target",
+  "weight": 0.78,
+  "placement": 0.0,
+  "lead_ticks": 5
+}
