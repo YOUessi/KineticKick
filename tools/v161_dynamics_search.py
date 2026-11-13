@@ -5,6 +5,7 @@ import json
 import os
 import subprocess
 import atexit
+import sys
 from pathlib import Path
 import numpy as np
 from scipy.spatial.transform import Rotation
@@ -20,6 +21,9 @@ def main():
     cli.add_argument('--seed',type=int,default=161041)
     cli.add_argument('--generations',type=int,default=12)
     cli.add_argument('--population',type=int,default=48)
+    cli.add_argument('--robust',action='store_true',help='Minimize worst loss across three fixed development ball offsets')
+    cli.add_argument('--ball-offset',type=float,nargs=2,default=[0.,0.])
+    cli.add_argument('--service',action='store_true',help=argparse.SUPPRESS)
     cli.add_argument('--pitch-cap',type=float)
     cli.add_argument('--feasible',action='store_true',help='Select around the original joint, surface and shot thresholds')
     cli.add_argument('--spread',type=float,default=1.)
@@ -28,6 +32,7 @@ def main():
     a.output.mkdir(parents=True,exist_ok=False)
     cfg=json.loads(base.PROTOCOL.read_text());assets=base.DEFAULT_ASSETS
     schema=json.loads((assets/base.SCHEMA).read_text())
+    cfg['ball_initial_xyz_m'][:2]=(np.asarray(cfg['ball_initial_xyz_m'][:2])+a.ball_offset).tolist()
     with base.cpu_policy(assets,cfg) as (meta,act):
         scene,system,robot,ball,drives,order,limits,gains,links,ids=base.make_plant(assets,cfg,meta,schema)
     live_actor=None
@@ -59,12 +64,15 @@ def main():
             pre_actions=tr['policy_commands_time_frame_action_target'][:,2:31]
             pre_obs=tr['policy_observations']
     onset=103;end=180 if a.live else 155
-    if a.live:
-        for frame,obs in enumerate(pre_obs[:onset]):request([frame,obs.tolist()])
-        request('save')
-    for target in targets[:onset]:
-        for joint,val in zip(drives,target): joint.set_drive_target(float(val))
+    previous_action=np.zeros(29)
+    for frame, target in enumerate(targets[:onset]):
+        if a.live:
+            obs=base.observation(robot.qpos[order],robot.qvel[order],robot.root_pose,robot.root_angular_velocity,ball.entity.pose.p,goal,previous_action,live_ref,frame,anchor,gains['default_joint_pos'])
+            previous_action=np.clip(request([frame,obs.tolist()]),-100.,100.)
+            target=gains['default_joint_pos']+gains['action_scale']*previous_action
+        for joint,val in zip(drives,target):joint.set_drive_target(float(val))
         for _ in range(4):scene.step()
+    if a.live:request('save')
     snapshot=system.pack()
     ix=[schema['joint_names'].index('right_'+j+'_joint') for j in LEG]
     rs=links['right_ankle_roll_link']
@@ -73,7 +81,7 @@ def main():
         system.unpack(snapshot)
         if a.live: 
             request('restore')
-            previous=pre_actions[onset-1]
+            previous=previous_action.copy()
         after_xy=None; began=False; down=0.; back=0.; was=False; late=False; pos_history=[]; last_foot=0.
         good_post=0.; outward_score=0.
         j_all=j_good=0.; aligned=0.;gap=1.;nonfoot=0.;ct=None;foot0=None;advance=0.;reladvance=0.;follow_v=0.;prev_p=None;lowest=2.;limit_ex=-np.inf
@@ -147,6 +155,21 @@ def main():
             merit=8-deficit+.25*alignment+.1*min(-sy,6)
         if ct is None:merit=-3-4*gap+near_alignment-min(1.5,nonfoot/40)
         return dict(backswing_pitch_target_cap=a.pitch_cap,merit=float(merit),instep=share,alignment=alignment,out_forward=speed,lateral=float(v[0]),nonfoot=float(nonfoot),min_z=float(lowest),advance=float(advance),relative=float(reladvance),v120=float(follow_v),excess=float(limit_ex),instep_post=good_post/max(1e-9,j_all),return_speed=float(back),late_contact=late,release_xy=None if after_xy is None else after_xy.tolist(),contact=ct)
+    if a.service:
+        print('ready',flush=True)
+        for line in sys.stdin:
+            print(json.dumps(trial(np.array(json.loads(line)))),flush=True)
+        return
+    workers=[]
+    if a.robust:
+        # Development set spans both axes. Three brand-new confirmation balls are pinned separately.
+        for i,(dx,dy) in enumerate(((.019,-.017),(-.021,.017),(.015,.020))):
+            argv=[sys.executable,str(Path(__file__).resolve()),'--live','--feasible','--service','--ball-offset',str(dx),str(dy),'--output',str(a.output/f'worker{i}')]
+            if a.pitch_cap is not None:argv+=['--pitch-cap',str(a.pitch_cap)]
+            proc=subprocess.Popen(argv,stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True,bufsize=1)
+            atexit.register(proc.terminate)
+            if proc.stdout.readline().strip()!='ready':raise RuntimeError('Physics worker startup failed')
+            workers.append(proc)
     rng=np.random.default_rng(a.seed)
     mu=np.array([-.15,-.04,.65,.53,.78,0.,-.55,0.,.35,-.22,.6,0.])
     sd=np.array([.42,.20,.60,.45,.50,.21,.40,.19,.40,.38,.45,.15])
@@ -160,7 +183,14 @@ def main():
             if g==0:xs[1]=0
             group=[]
             for i,x in enumerate(xs):
-                r=trial(x);row={'generation':g,'candidate':i,'coefficients':x.tolist(),**r}
+                for proc in workers:
+                    proc.stdin.write(json.dumps(x.tolist())+'\n');proc.stdin.flush()
+                r=trial(x)
+                if workers:
+                    cases=[r]+[json.loads(proc.stdout.readline()) for proc in workers]
+                    scores=[case['merit'] for case in cases]
+                    r={**r,'merit':.85*min(scores)+.15*np.mean(scores),'case_metrics':cases}
+                row={'generation':g,'candidate':i,'coefficients':x.tolist(),**r}
                 out.write(json.dumps(row)+'\n');group.append(row)
                 if r['merit']>best:
                     best=r['merit'];(a.output/'best.json').write_text(json.dumps({'module':'v161_strike_search',**row},indent=2)+'\n')
