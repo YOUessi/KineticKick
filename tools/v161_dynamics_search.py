@@ -20,6 +20,8 @@ def main():
     cli.add_argument('--seed',type=int,default=161041)
     cli.add_argument('--generations',type=int,default=12)
     cli.add_argument('--population',type=int,default=48)
+    cli.add_argument('--feasible',action='store_true',help='Select around the original joint, surface and shot thresholds')
+    cli.add_argument('--spread',type=float,default=1.)
     cli.add_argument('--live',action='store_true',help='Recompute PAiD recurrent actions from each perturbed state')
     a=cli.parse_args()
     a.output.mkdir(parents=True,exist_ok=False)
@@ -133,12 +135,20 @@ def main():
             sx,sy=after_xy if after_xy is not None else v[:2]
             sh=min(share,good_post/max(1e-9,j_all))
             merit=2.5*sh+1.6*alignment+min(1.,-sy/3.75)+.5*min(1,advance/.235)+.5*min(1,reladvance/.16)+.45*min(1,max(0,follow_v)/.7)-min(2.,abs(sx/max(.25,-sy))*3)-min(2.,nonfoot/30)-max(0.,.64-lowest)*13-100*limit_ex-.2*max(0,back-1.8)-.8*late
+        if a.feasible and a.live and ct is not None:
+            # Keep supplying a gradient below the direction-alignment classifier boundary.
+            sh=min(share,good_post/max(1e-9,j_all))
+            deficit=5*max(0,.975-sh)+1.3*max(0,3.8+sy)+4*max(0,abs(sx/max(.25,-sy))-.15)+.2*max(0,back-1.9)+.8*late
+            deficit+=min(6.,nonfoot/14)+min(6.,3000*limit_ex)+max(0,.68-lowest)*15
+            deficit+=1.5*max(0,.23-advance)+2*max(0,.16-reladvance)+.4*max(0,.72-follow_v)
+            merit=8-deficit+.25*alignment+.1*min(-sy,6)
         if ct is None:merit=-3-4*gap+near_alignment-min(1.5,nonfoot/40)
         return dict(merit=float(merit),instep=share,alignment=alignment,out_forward=speed,lateral=float(v[0]),nonfoot=float(nonfoot),min_z=float(lowest),advance=float(advance),relative=float(reladvance),v120=float(follow_v),excess=float(limit_ex),instep_post=good_post/max(1e-9,j_all),return_speed=float(back),late_contact=late,release_xy=None if after_xy is None else after_xy.tolist(),contact=ct)
     rng=np.random.default_rng(a.seed)
     mu=np.array([-.15,-.04,.65,.53,.78,0.,-.55,0.,.35,-.22,.6,0.])
     sd=np.array([.42,.20,.60,.45,.50,.21,.40,.19,.40,.38,.45,.15])
     if a.initial:mu=np.array(json.loads(a.initial.read_text())['coefficients']).reshape(-1)
+    sd*=a.spread
     best=-np.inf
     if not a.live and a.initial: raise ValueError('Warm start reserved for live search')
     with (a.output/'rollouts.jsonl').open('x',buffering=1) as out:
