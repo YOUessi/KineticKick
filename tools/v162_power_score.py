@@ -12,7 +12,7 @@ from v160_tracking_cpu import PROTOCOL
 
 def measure(folder, speed, aim):
     r=report(folder);surface=surface_report(folder)
-    cfg=json.loads(PROTOCOL.read_text());dt=cfg['physics_dt_s']
+    cfg=json.loads(PROTOCOL.read_text())
     with np.load(folder/'rollout.npz') as data:
         t=np.r_[0.,data['time_s']]; p=np.vstack((r['initial_ball_xyz_m'],data['ball_position_w_m']))
         center=crossing(p,t,np.array(r['goal_xyz_m']),np.array(r['goal_forward_xy']),0.,cfg['ball_radius_m'],r['goal_width_height_m'])
@@ -31,7 +31,10 @@ if __name__=='__main__':
     parser.add_argument('--speed',type=float)
     parser.add_argument('--aim',type=float)
     args=parser.parse_args();trial=json.loads((args.run/'trial.json').read_text())
-    result=measure(args.run,trial.get('shot_speed_mps') if args.speed is None else args.speed,
-                            trial.get('aim_x_m') if args.aim is None else args.aim)
+    speed=trial.get('shot_speed_mps') if args.speed is None else args.speed
+    aim=trial.get('aim_x_m') if args.aim is None else args.aim
+    if speed is None or aim is None:
+        parser.error('Provide --speed and --aim when the run has no recorded command')
+    result=measure(args.run,speed,aim)
     with args.output.open('x') as out:json.dump(result,out,indent=2,allow_nan=False);out.write('\n')
     print(result['checks'],result['speed_mps'],result['goal_plane_x_m'],flush=True)

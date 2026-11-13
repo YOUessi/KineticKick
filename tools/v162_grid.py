@@ -1,7 +1,6 @@
 """Freeze the best physically qualified development trace per anchor; keep diverse solutions explicit."""
 from pathlib import Path
 import argparse,json,hashlib
-from statistics import mean
 
 def feasible(r):
     return (min(r['instep'],r['instep_post'])>=.95 and r['excess']<=1e-6 and

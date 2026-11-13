@@ -29,6 +29,7 @@ def main():
         scales=np.array(steps)*args.radius
         rng=np.random.default_rng(args.rng)
         D=np.vstack([np.zeros(15),np.eye(15),-np.eye(15),rng.normal(size=(370,15))])
+        total_trials=len(D)
         samples=[]
         with (args.output/'calibration.jsonl').open('x') as f:
             for delta in D:
@@ -43,7 +44,7 @@ def main():
         obj={'module':'v162_strike_power','map_type':'local_inverse','base':x.tolist(),'observation_mean':beta[-1].tolist(),
              'scaled_inverse':(scales[:,None]*inv).tolist(),'absolute_delta_limit':(3.5*scales).tolist(),'domain':domain,
              'backswing_pitch_target_cap':cap,'wrist_clearance':.22,
-             'calibration_rows':len(D),'total_rows':len(origin) if not len(samples) else 401,'rms':np.sqrt(np.mean(res**2,axis=0)).tolist(),
+             'calibration_rows':len(D),'total_rows':total_trials,'rms':np.sqrt(np.mean(res**2,axis=0)).tolist(),
              'calibration_sha256':hashlib.sha256((args.output/'calibration.jsonl').read_bytes()).hexdigest()}
         (args.output/'map.json').write_text(json.dumps(obj,indent=2)+'\n');print(len(D),obj['observation_mean'],obj['rms'],np.linalg.svd(jac)[1])
     finally:
