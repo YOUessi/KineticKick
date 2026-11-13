@@ -61,6 +61,11 @@ def make_controller(ref, schema, config):
         lead = config['lead_s']
         phase = t + lead - config['target_contact_s']
         distance = .40*np.tanh(config['sweep_mps']*phase/.40)
+        if 'return_start_s' in config:
+            elapsed = max(0., phase-config['return_start_s'])
+            # Release smoothly toward a landing ahead of the body, with a finite retreat speed.
+            ramp = .045
+            distance -= config['return_mps']*(elapsed-ramp*(1.-np.exp(-elapsed/ramp)))
         desired = ball_anchor - .11*outward + forward*distance
         lateral = np.array([-forward[1],forward[0],0.])
         desired += lateral*config.get('point_lateral_shift_m',0.)
