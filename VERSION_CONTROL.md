@@ -527,3 +527,9 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 真正复用原G1冻结v63 14秒200Hz物理轨迹的几何参考、原URDF可微IK，把训练被试10_02的GRU未来48帧变成20个50Hz人体相位六方向余弦，再映射为原G1两套700x29离线关节命令，顺序模型峰值0.016749rad、shuffle负控制0.006489rad，各有18个非零50Hz参考步，保留原右腿6个正脚背击球关节零改动。独立审计整个模型checkpoint/test重算、原CMU六份 SHA/原G1实际物理参考 SHA、URDF静态关节余量、原步进上限0.004rad/20ms、1.42s前提前释放；**只有几何静态门禁，并没有G1真实动作、球碰撞、后恢复、自然度或安全证明**。实际v73新PhysX=0，不能把原v63/v71历史真实物理算为新模型实验。
 
 新工具 tools/train_human_temporal_brain_v073.py、retarget_v073_human_brain_to_g1.py、audit_v073_human_brain_g1.py、write_v073_report.py；测试 tests/test_v073_human_temporal_brain.py、test_v073_cpu_g1_morphology.py；冻结 configs/v073_human_temporal_learning.json；完整报告 reports/2026-11-11-v073-subject-isolated-CMU-human-temporal-negative.md，复现文档 docs/V073_HUMAN_TEMPORAL_BRAIN_CPU_REPRO.md。所有模型PT、原CMU/C3D/NPZ和G1参考、诊断图及忽略物理记录留Tang本地。原isolated worktree第一次完整CPU 25个FAIL是缺原ignored资产；严格从前一成功worktree只读链接53份原件，重测**776通过、69跳过、51 subtests通过、0失败**，结束后52个文件SHA及6个源NPZ SHA再次核验不变。下一阶段增加多位真正优秀球员及专业击球接触、足底GRF，再到新被试测试/真实安全完整PhysX；未见被试11此后不能再充当未见模型调参集，默认v32/v5不升级。
+
+## v0.1.159 — 更新科研目标、Mimic/Latent方法与全链路验收计划
+
+从已发布、干净的version/v0.1.158 SHA fcb8d53560e81c69a47671655b89f8a0368eb068 创建独立v0.1.159文档版本；不修改控制器、PPO权重、机器人资产或既有原始PhysX/人体数据。新增docs/RESEARCH_OBJECTIVE_AND_ROADMAP.md（主目标+RQ1–RQ5、M0–M6研发模块和完成门槛）、docs/KINETICMIMIC_METHOD_AND_EVALUATION.md（Behavior Latent+Contact+Mimic小脑机制与强基线/负控制/真实物理安全等级）、docs/NEXT_IMPLEMENTATION_BACKLOG.md（下一批分组任务和逐项验收）。README置顶引导，AGENTS.md指导后续版本按新研究合同执行，旧docs/RESEARCH_BATCH_SERIES_2026-11-11.md加归档提示但保留全部历史实验协议。
+
+**本版仅更新GitHub研发目标、方法合同与研究计划；新增实际G1 PhysX=0、新训练BFM/CVAE=0、新人类真GRF/职业力数据=0、新隐空间控制器真实合法射门=0。** 任何相关成果必须由后续独立版本和真实原始实验SHA证实；不得因文档/版本增长误报研发里程碑已完成。

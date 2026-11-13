@@ -1,5 +1,13 @@
 # KineticKick working agreement
 
+## Research goal and canonical roadmap
+
+- The canonical, forward-looking objective and module plan is [docs/RESEARCH_OBJECTIVE_AND_ROADMAP.md](docs/RESEARCH_OBJECTIVE_AND_ROADMAP.md); use it before planning new scientific work. The executable backlog is [docs/NEXT_IMPLEMENTATION_BACKLOG.md](docs/NEXT_IMPLEMENTATION_BACKLOG.md), and experimental/method boundaries are in [docs/KINETICMIMIC_METHOD_AND_EVALUATION.md](docs/KINETICMIMIC_METHOD_AND_EVALUATION.md).
+- The research goal is humanlike, novel, natural, whole-body high-impact instep soccer actions learned from qualified human motions; accuracy, legal foot/ball impact, full 29DoF safety, support, collision and recovery are hard gates. Old PAiD templates, tiny retarget residuals, joint MSE, offline QP, and old v32 successes are never sufficient to certify a new learned kick.
+- Prioritize **qualified human football data and full-body motion tracking**, then controlled latent/contact-condition learning and genuine new-model G1 PhysX, rather than repeatedly increasing version numbers with CPU-only synthetic trajectories. Preserve failures, legitimate source licenses, clean train/validation/test separation and all source hashes.
+- Existing [docs/RESEARCH_BATCH_SERIES_2026-11-11.md](docs/RESEARCH_BATCH_SERIES_2026-11-11.md) is an archived historical batch plan, NOT the current goal/priority source. This directive does not authorize terminating another agent's long-running GPU jobs.
+
+
 ## Version control
 
 - The repository is https://github.com/YOUessi/KineticKick.
