@@ -166,7 +166,7 @@ def assess(cfg, case, off, on, xml):
         if positive_points:loaded.append(i)
         if case=='ball_clear_of_right_foot':
             gap=min(abs(b[k][1])-lateral_extent-cfg['ball_radius_m'] for k in ('before','after'))
-            min_clearance=gap if min_clearance is None else min(min_clearance,gap)
+            min_clearance=float(gap if min_clearance is None else min(min_clearance,gap))
     checks={'read_parity':max_diff<=cfg['state_parity_max_abs'],
             'linear_impulse_closure':max_closure<=cfg['per_step_linear_impulse_closure_tolerance_Ns']}
     if case=='ball_clear_of_right_foot':
@@ -184,11 +184,13 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',required=True,type=Path); parser.add_argument('--urdf',type=Path,default=DEFAULT_URDF)
     parser.add_argument('--completed-soles', type=Path, help='Reuse both complete pre-amendment OFF/ON sole records under their registered SHA256s')
+    parser.add_argument('--rescore-from', type=Path, help='Only read already captured JSON records from this directory and --completed-soles')
     args=parser.parse_args()
     if args.output.exists():raise FileExistsError(args.output)
     if os.environ.get('CUDA_VISIBLE_DEVICES')!='':raise RuntimeError('Set CUDA_VISIBLE_DEVICES to empty for this CPU fixture')
-    import sapien
-    if sapien.__version__!='3.0.3':raise ValueError('Requalify the new native runtime version')
+    if not args.rescore_from:
+        import sapien
+        if sapien.__version__!='3.0.3':raise ValueError('Requalify the new native runtime version')
     cfg=json.loads(PLAN.read_text()); digest=hashlib.sha256(args.urdf.read_bytes()).hexdigest()
     if digest!=cfg['urdf_sha256']:raise ValueError('Original G1 URDF hash mismatch')
     xml=ET.parse(args.urdf).getroot(); args.output.mkdir(parents=True,exist_ok=False)
@@ -201,6 +203,9 @@ def main():
             if args.completed_soles and case.endswith('_sole_on_ground'):
                 path=args.completed_soles/filename
                 if hashlib.sha256(path.read_bytes()).hexdigest()!=locked[filename]:raise ValueError('Registered original sole record changed')
+                rows=json.loads(path.read_text())
+            elif args.rescore_from:
+                path=args.rescore_from/filename
                 rows=json.loads(path.read_text())
             else:
                 path=args.output/filename

@@ -1,0 +1,93 @@
+{
+  "version": "v0.1.160",
+  "status": "first_full_clip_offline_retarget_frozen_before_scoring",
+  "robot_urdf": "configs/paid_original/paid_main_resolved.urdf",
+  "runtime_schema": "reports/paid_physics_parity_clean_paid.json",
+  "source_license": "CMU Graphics Lab MoCap Database research reuse with acknowledgement, no resale; see preserved source FAQ and original source manifest; human privacy and upstream restrictions retained",
+  "source_index": "https://mocap.cs.cmu.edu/search.php?maincat=4&subcat=7",
+  "fixed_files": {
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    "reports/paid_physics_parity_clean_paid.json": "b86001e42f45e316593e3e538e0c4dcbf94473bbfc12362e16a1c197a0e78ff6",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/original_source_manifest.json": "0035463fe3f56183b7470f452ab935f9d68cf55b9c59b16d2b40e62ac6b90fbd",
+    "data/research_human_kicks/cmu_soccer_120hz_v050/processed_v050/quality_audit.json": "2ebfa49b698156403d07006b6a591d67ae052bf9ef4e2ecc2fccec4de737d678",
+    "data/research_human_kicks/cmu_subject10/source_faq.html": "518f04f07d7b0e0e8b605089f1033320d3ad5aa092f9d164f2c76c484a3f4f4e"
+  },
+  "processed_sha256": {
+    "10_01": "9b9a6088359f5c8aa388f04db0c12f02d570ef9cfe9876650c786f994cd6c36d",
+    "10_02": "e4afc71537ce694afb90b8c0a93edb50e08f6fe30a10ace6f81f0f053f348f3a",
+    "10_03": "98344b48433eb1fa1592b6f06eccb1ce000625486960a42690dbb2ac8c6f44e4",
+    "10_05": "4058261cab7dccaebaf47152c857e212c0eba1e13e0315be95548a781e0172a2",
+    "10_06": "22edbbe8bd7e38e2da85de469ab5f61a2c6dcff2a95f51ce26cd9d44d21dbdd9",
+    "11_01": "0d874615240577cee93532c1d151d2b79eadc0e9e9dba47fcef826c8b48e322a"
+  },
+  "splits": {
+    "train": [
+      "10_01",
+      "10_02",
+      "10_03",
+      "10_05"
+    ],
+    "validation": [
+      "10_06"
+    ],
+    "test": [
+      "11_01"
+    ]
+  },
+  "input_fps": 120,
+  "output_fps": 50,
+  "source_frame_coverage": "full first to last, round duration to nearest output interval, actual source sample time saved",
+  "task_names": [
+    "pelvis_to_shoulders",
+    "right_to_left_shoulder",
+    "left_thigh",
+    "left_shank",
+    "left_upper_arm",
+    "left_forearm",
+    "right_thigh",
+    "right_shank",
+    "right_upper_arm",
+    "right_forearm",
+    "left_foot_forward",
+    "left_foot_left",
+    "left_hand_forward",
+    "left_hand_left",
+    "right_foot_forward",
+    "right_foot_left",
+    "right_hand_forward",
+    "right_hand_left"
+  ],
+  "task_weights": [
+    1.2,
+    0.9,
+    1.2,
+    1.2,
+    0.7,
+    0.7,
+    1.2,
+    1.2,
+    0.7,
+    0.7,
+    1.0,
+    0.45,
+    0.35,
+    0.15,
+    1.0,
+    0.45,
+    0.35,
+    0.15
+  ],
+  "frame_iterations": 12,
+  "initial_iterations": 45,
+  "damping": 0.02,
+  "previous_pose_penalty": 0.015,
+  "pose_prior": 0.004,
+  "velocity_limit_fraction": 0.98,
+  "solver_step_rad": 0.22,
+  "floor_registration_frames": 5,
+  "source_quiet_foot_speed_mps": 0.2,
+  "source_low_foot_band_m": 0.035,
+  "limits": "Reference positions and interframe speeds use original URDF. No dynamic, collision-pair or true support certificate. Wrist axes and marker-derived joint/foot geometry are proxies.",
+  "baseline": "same inferred root and original neutral G1 pose for each frame scored in same body directions",
+  "stop": "one predetermined full solve for all 6 clips, no test tuning; abort on provenance, schema, gap policy, finite, position or speed violation. Publish geometry errors and sole observations even if unfavorable."
+}
