@@ -76,7 +76,7 @@ def main():
             previous=pre_actions[onset-1]
         after_xy=None; began=False; down=0.; back=0.; was=False; late=False; pos_history=[]; last_foot=0.
         good_post=0.; outward_score=0.
-        j_all=j_good=0.; aligned=0.;gap=1.;nonfoot=0.;ct=None;foot0=None;advance=0.;reladvance=0.;follow_v=0.;prev_p=None;lowest=2.;limit_ex=0.
+        j_all=j_good=0.; aligned=0.;gap=1.;nonfoot=0.;ct=None;foot0=None;advance=0.;reladvance=0.;follow_v=0.;prev_p=None;lowest=2.;limit_ex=-np.inf
         targets_now=targets[onset:end].copy()
         targets_now[:,ix]+=weights@coeff.reshape(2,6)
         for k,target in enumerate(targets_now):
@@ -133,16 +133,16 @@ def main():
         v=ball.linear_velocity
         share=j_good/max(1e-9,j_all);alignment=aligned/max(1e-9,j_all)
         speed=float(-v[1]);accuracy=abs(v[0]/max(.3,speed))
-        merit=2*share+2*alignment+min(1.,speed/3.8)+.4*min(1,advance/.22)+.4*min(1,reladvance/.15)+.3*min(1,max(0,follow_v)/.6)-min(1.5,accuracy*2)-min(1.5,nonfoot/40)-10*max(0,.65-lowest)-100*limit_ex
+        merit=2*share+2*alignment+min(1.,speed/3.8)+.4*min(1,advance/.22)+.4*min(1,reladvance/.15)+.3*min(1,max(0,follow_v)/.6)-min(1.5,accuracy*2)-min(1.5,nonfoot/40)-10*max(0,.65-lowest)-100*max(0,limit_ex)
         if a.live and ct is not None:
             sx,sy=after_xy if after_xy is not None else v[:2]
             sh=min(share,good_post/max(1e-9,j_all))
-            merit=2.5*sh+1.6*alignment+min(1.,-sy/3.75)+.5*min(1,advance/.235)+.5*min(1,reladvance/.16)+.45*min(1,max(0,follow_v)/.7)-min(2.,abs(sx/max(.25,-sy))*3)-min(2.,nonfoot/30)-max(0.,.64-lowest)*13-100*limit_ex-.2*max(0,back-1.8)-.8*late
+            merit=2.5*sh+1.6*alignment+min(1.,-sy/3.75)+.5*min(1,advance/.235)+.5*min(1,reladvance/.16)+.45*min(1,max(0,follow_v)/.7)-min(2.,abs(sx/max(.25,-sy))*3)-min(2.,nonfoot/30)-max(0.,.64-lowest)*13-100*max(0,limit_ex)-.2*max(0,back-1.8)-.8*late
         if a.feasible and a.live and ct is not None:
             # Keep supplying a gradient below the direction-alignment classifier boundary.
             sh=min(share,good_post/max(1e-9,j_all))
             deficit=5*max(0,.975-sh)+1.3*max(0,3.8+sy)+4*max(0,abs(sx/max(.25,-sy))-.15)+.2*max(0,back-1.9)+.8*late
-            deficit+=min(6.,nonfoot/14)+min(6.,3000*limit_ex)+max(0,.68-lowest)*15
+            deficit+=min(6.,nonfoot/14)+min(5.,500000*max(0.,limit_ex-5e-7))+0.4*max(0.,min(1.,(limit_ex+.015)/.015))+max(0,.68-lowest)*15
             deficit+=1.5*max(0,.23-advance)+2*max(0,.16-reladvance)+.4*max(0,.72-follow_v)
             merit=8-deficit+.25*alignment+.1*min(-sy,6)
         if ct is None:merit=-3-4*gap+near_alignment-min(1.5,nonfoot/40)
