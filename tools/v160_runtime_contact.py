@@ -48,8 +48,9 @@ def add_foot(scene, sapien, xml, side, height, material, fixed):
     if np.linalg.det(axes) < 0:
         axes[:, -1] *= -1
     inertial_frame = Rotation.from_euler('xyz', numbers(origin,'rpy')) * Rotation.from_matrix(axes)
-    builder.set_mass_and_inertia(float(inertial.find('mass').get('value')),
-                                 pose(sapien, numbers(origin, 'xyz'), inertial_frame), principal)
+    if not fixed:
+        builder.set_mass_and_inertia(float(inertial.find('mass').get('value')),
+                                     pose(sapien, numbers(origin, 'xyz'), inertial_frame), principal)
     builder.set_initial_pose(sapien.Pose([0, 0, height]))
     return builder.build_static(name) if fixed else builder.build(name)
 
@@ -182,6 +183,7 @@ def assess(cfg, case, off, on, xml):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',required=True,type=Path); parser.add_argument('--urdf',type=Path,default=DEFAULT_URDF)
+    parser.add_argument('--completed-soles', type=Path, help='Reuse both complete pre-amendment OFF/ON sole records under their registered SHA256s')
     args=parser.parse_args()
     if args.output.exists():raise FileExistsError(args.output)
     if os.environ.get('CUDA_VISIBLE_DEVICES')!='':raise RuntimeError('Set CUDA_VISIBLE_DEVICES to empty for this CPU fixture')
@@ -190,15 +192,25 @@ def main():
     cfg=json.loads(PLAN.read_text()); digest=hashlib.sha256(args.urdf.read_bytes()).hexdigest()
     if digest!=cfg['urdf_sha256']:raise ValueError('Original G1 URDF hash mismatch')
     xml=ET.parse(args.urdf).getroot(); args.output.mkdir(parents=True,exist_ok=False)
-    summary={}
+    summary={}; input_records={}
+    locked = json.loads((ROOT/'configs/v160_completed_soles.json').read_text()) if args.completed_soles else {}
     for case in cfg['cases']:
         series={}
         for mode in cfg['read_modes']:
-            rows=run_fixture(sapien,cfg,xml,case,mode=='on'); series[mode]=rows
-            (args.output/(case+'_'+mode+'.json')).write_text(json.dumps(rows,allow_nan=False)+'\n')
+            filename=f'{case}_{mode}.json'
+            if args.completed_soles and case.endswith('_sole_on_ground'):
+                path=args.completed_soles/filename
+                if hashlib.sha256(path.read_bytes()).hexdigest()!=locked[filename]:raise ValueError('Registered original sole record changed')
+                rows=json.loads(path.read_text())
+            else:
+                path=args.output/filename
+                rows=run_fixture(sapien,cfg,xml,case,mode=='on')
+                path.write_text(json.dumps(rows,allow_nan=False)+'\n')
+            series[mode]=rows
+            input_records[filename]={'path':str(path.resolve()),'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
         summary[case]=assess(cfg,case,series['off'],series['on'],xml)
     document=dict(backend='SAPIEN PhysX CPU 3.0.3, isolated rigid shapes',urdf_sha256=digest,
-                  protocol_sha256=hashlib.sha256(PLAN.read_bytes()).hexdigest(),cases=summary,
+                  protocol_sha256=hashlib.sha256(PLAN.read_bytes()).hexdigest(),cases=summary,input_records=input_records,
                   passed=all(s['passed'] for s in summary.values()),original_cuda_pair_certificate='UNKNOWN',
                   new_full_G1_rollouts=0)
     (args.output/'summary.json').write_text(json.dumps(document,indent=2,allow_nan=False)+'\n');print(json.dumps(document))
