@@ -1,0 +1,17 @@
+# V147 pre-registration: original29 live parity and real historical dynamic coupling
+
+**Base:** `version/v0.1.146` at `2b0c0cab7f42c15564b0ddd945b5f86ed1d49109`. This document and `configs/v147_frozen_physics_parity_and_coupled_dynamics.json` must be committed separately *before* writing experimental code. Any change to these after the freeze invalidates the registered batch.
+
+## Falsifiable questions
+
+1. **Read-only parity:** For truly live original G1 200Hz trajectories, does OFF/ON mode give exactly the same per-step original29 q/dq/simulator torque, root pose/twist, COM, bilateral net force, nonfoot force, and ball pose/twist, with exactly the same number of real completed states and termination outcome? A single unequal value is noninterference failure. CPU fixtures cannot certify the live claim; never compare merely counts, rounded summaries or legacy success flags.
+2. **Dynamic coupling:** Independent SHA-verified v54 real traces have 80 samples [1.170,1.565]s before the legacy 1.570s event and 250 samples [1.575,2.820]s after it. Compute group-resolved 29-DoF simulator torque×velocity proxies and integrated absolute proxy, COM finite-difference acceleration, full original qdot limit use, net foot sensor force balance, and nonfoot peaks. Compare three policies descriptively, *without changing any controller or learning from held-out failures*. Limit the failed trace to 1,028 actual frames, do not invent 5.145s root/29q values.
+3. **Native contact provenance:** Native event headers are only interval hints until stage-calibrated positive/negative controls demonstrate exact tick registration. No success or wrist-hip pair may be certified solely from equal-and-opposite named net forces, USD link-distance or CPU fixtures. Empty native callback stream means UNKNOWN, not verified non-contact.
+
+## Fixed methods and controls
+
+The full 29DoF map comes from the original ordered `G1_JOINT_ORDER`, grouped by named joint prefix (left/right leg, waist, left/right arm). For per-frame joint absolute power proxy use Σ |estimated torque_i × measured qdot_i|, for signed proxy use Σ tau_i × qdot_i. The integrated absolute proxy is a left-Riemann 5ms sum, descriptive only. COM acceleration is central difference over 10ms where both neighbors exist. `support_foot_force_N` is a net sensor magnitude and **not ground-isolated GRF**. Valid force share requires a nonzero bilateral sum. Do not infer impact causality or stability from these proxies.
+
+Independent verifier must read the original SHA-locked history afresh, use a second vectorized implementation and fail on any difference greater than numerical round-off. Adversarial CPU tests must perturb every class: q29, torque, timeline, mode, summary, native claims, nonfinite data and source SHA guard. Freeze strict gates unchanged: ≥95% legal instep impulse, goal, ball speed ≥3.5m/s, all 29 qdot limits, actuator safety, no nonfoot, natural run-up/follow-through, full14s safe recovery.
+
+**Stop conditions:** Tang device offline; <20GiB free; any other GPU process; dirty source worktree; absent native callback with no safe read-only calibration. In that case execute only genuine CPU/static analysis; do not kill old jobs or mutate collision stage. Preserved historical NPZ/C3D/JSON/weights/media stay local and ignored. Never overwrite old evidence or publish 30MB arrays. Commit tool/tests/report to isolated v147 branch and verify remote SHA.
