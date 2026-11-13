@@ -1,0 +1,76 @@
+{
+  "version": "v0.1.145",
+  "parent_sha": "51c99a9a72816a981c47cc046f38ffebaf4c0809",
+  "source_human_protocol": "v0.1.144",
+  "source_clips": [
+    "10_01",
+    "10_02",
+    "10_03",
+    "10_05",
+    "10_06",
+    "11_01"
+  ],
+  "weak_anchor_clips": [
+    "10_02",
+    "10_05"
+  ],
+  "rate_hz": 120,
+  "pre_ball_window_seconds": [
+    0.4,
+    0.6,
+    0.8
+  ],
+  "angle_halfspan_frames": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "ball_weak_anchor_shift_frames": [
+    -12,
+    -6,
+    0,
+    6,
+    12
+  ],
+  "median_rate_window_frames": [
+    1,
+    5,
+    9
+  ],
+  "chains": {
+    "right": [
+      "pelvis",
+      "right_thigh",
+      "right_shank"
+    ],
+    "left": [
+      "pelvis",
+      "left_thigh",
+      "left_shank"
+    ]
+  },
+  "strict_timing_lead_min_frames": 2,
+  "min_valid_window_fraction": 0.75,
+  "original_original29_physics_states": 6628,
+  "original_v53_physx_rollouts": 12,
+  "counts": {
+    "configurations_per_event": 180,
+    "weak_event_clips": 2,
+    "per_chain_evaluations": 360,
+    "all_chain_evaluations": 720
+  },
+  "evidence_policy": {
+    "no_new_gpu_physx": true,
+    "no_new_training": true,
+    "no_contact_truth": true,
+    "no_force_plate_truth": true,
+    "no_elite_player_certification": true,
+    "no_disjoint_event_subject_test": true,
+    "no_motor_actuation": true,
+    "no_synthetic_physx_promotion": true
+  },
+  "fail_closed_missing_markers": true,
+  "allow_original_overwrite": false,
+  "local_large_output_only": true
+}
