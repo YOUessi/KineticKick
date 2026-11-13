@@ -13,7 +13,7 @@ from scipy.spatial.transform import Rotation
 import v160_tracking_cpu as base
 from free_shooting_metrics import paid_contact_patch
 from v161_strike_search import LEG, residual_weights
-from v162_vertical import correction, layout
+from v162_vertical import correction, layout, extra_axes
 from vertical_instep import FOOT_CORNERS
 
 CORNERS=np.array(FOOT_CORNERS)
@@ -28,6 +28,8 @@ def main():
     p.add_argument('--population',type=int,default=18);p.add_argument('--spread',type=float,default=1.)
     p.add_argument('--profile',choices=['feasible','pose','bridge','strict'],default='feasible')
     p.add_argument('--speed-wave',action='store_true')
+    p.add_argument('--whole-spine',action='store_true')
+    p.add_argument('--progress-deg',type=float,default=0.)
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     cfg=json.loads(base.PROTOCOL.read_text());original=json.loads(V161.read_text())
     assets=base.DEFAULT_ASSETS;schema=json.loads((assets/base.SCHEMA).read_text());names=schema['joint_names']
@@ -62,6 +64,9 @@ def main():
         for _ in range(4):scene.step()
     snapshot=system.pack();request('save');seed_prev=prev.copy()
     base_c=np.asarray(original['coefficients']).reshape(2,6)
+    if a.whole_spine:
+        if not a.speed_wave:raise ValueError('Full-body model includes the six speed coefficients')
+        idx += extra_axes(names)
     def trial(params):
         system.unpack(snapshot);request('restore');prev=seed_prev.copy()
         impulse=good_pre=good_post=down_j=face_j=0.;loads=[];poses=[];foot_ranges=[];peak_other=0.;first=None
@@ -133,6 +138,8 @@ def main():
             deficit += max(0.,back1-1.9)*.75 + max(0.,back2-2.38)*.5 + .8*late
             deficit += 3*max(0.,.22-adv)+4*max(0.,.15-rel)+max(0.,.60-v120)
             score=12.-deficit + .011*angle + .10*min(4.4,speed)
+            if a.progress_deg:
+                score-=a.progress_deg*max(0.,75.-angle)/8.
         elif a.profile=='pose': score=pose_merit-.35*penalty
         elif a.profile=='bridge':score=pose_merit-.70*penalty
         else:score=pose_merit-1.3*penalty
@@ -148,6 +155,9 @@ def main():
     if a.speed_wave:
         if mu.size==18:mu=np.r_[mu,np.zeros(6)]
         sd=np.r_[sd,a.spread*np.array([.55,.18,.22,.55,.40,.12])]
+    if a.whole_spine:
+        if mu.size==24:mu=np.r_[mu,np.zeros(6)]
+        sd=np.r_[sd,a.spread*np.array([.22,.32,.38,.32,.38,.32])]
     def save(cfgpath,record):
         cfg={**original,'module':'v162_vertical','vertical_parameters':record['parameters'],'developed_on':'v162 fixed centre CPU only'}
         cfgpath.write_text(json.dumps(cfg,indent=2)+'\n')
