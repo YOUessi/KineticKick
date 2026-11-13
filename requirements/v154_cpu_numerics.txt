@@ -1,0 +1,7 @@
+# Versions measured on Tang Ubuntu (Python 3.10.18), CPU-only numerical study.
+# Not a requirement to install/launch IsaacLab or use GPU.
+numpy==2.2.6
+scipy==1.15.3
+osqp==0.6.7.post3
+pytest==9.1.1
+matplotlib==3.10.9
