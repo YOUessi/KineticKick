@@ -1,0 +1,6 @@
+{
+  "training_offsets_m": [[0,0],[0.019,-0.017],[-0.021,0.017],[0.015,0.020]],
+  "validation": "Full 14 second centre, identical frozen inverse-dynamics recovery. Select highest worst-case development merit among centre-pass candidates, independently measure full post-step and pre-step surface consistency.",
+  "new_holdout_offsets_m": [[0.011,-0.016],[-0.008,0.016],[-0.016,-0.008]],
+  "qualification":"These are deterministic centimetric perturbations at rest. One goal direction and one power condition. Do not use these results to claim broad generalization."
+}
