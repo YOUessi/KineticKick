@@ -1,0 +1,22 @@
+{
+  "module": "v161_recovery_stance",
+  "scope": "observed development scene, post-shot source actuator-stance capture; request no root/ball state or change to real ball cue",
+  "registration": "one full 14 s CPU run per fixed candidate, stop candidate on nonfinite. Preserve failed and passed episodes; if both pass prefer first closed-loop only after reporting ablation.",
+  "minimum_followthrough_s": 0.75,
+  "minimum_bilateral_load_N": 80.0,
+  "minimum_total_load_N": 70.0,
+  "minimum_root_height_m": 0.65,
+  "entry_speed_mps": 0.1,
+  "entry_tilt_deg": 10.0,
+  "stable_steps": 10,
+  "blend_s": 0.25,
+  "capture_gain": 1.55,
+  "max_cop_shift_m": 0.055,
+  "max_ankle_delta_rad": 0.42,
+  "ankle_slew_rad_per_s": 0.95,
+  "ankle_stiffness_Nm_per_rad": 28.501,
+  "plant_mass_kg": 33.34114740459165,
+  "source": "Pratt et al., Capture Point: A Step toward Humanoid Push Recovery, doi:10.1109/ICHR.2006.321385; local tools/support_balance.py (standing CoP feedback).",
+  "evidence": "Capture only after final reference frame and sustained bilateral stance; old target with original reference and true physical ball until then. 50 Hz captured terminal posture and optional COM+velocity ankle feedback in original implicit drives.",
+  "acceptance": "Preserve legal pre-handoff prefix and goal/unchanged strike; original CPU safety full14s, nonfoot <=20N, q/qdot within original tolerances, end bilateral support/standing under existing metrics; no biological/Isaac USD generalization claim."
+}
