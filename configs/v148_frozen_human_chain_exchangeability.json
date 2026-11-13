@@ -1,0 +1,38 @@
+{
+  "version": "v0.1.148",
+  "parent_sha": "f4761baefd1cdbcf2ae951ecc97b086139818c44",
+  "source_v145_version": "v0.1.145",
+  "clip_ids": ["10_02", "10_05"],
+  "event_labels": "uncalibrated_ball_launch_proxy_NOT_instep_contact",
+  "rate_hz": 120,
+  "grid_rows": 720,
+  "per_chain_clip": 180,
+  "per_clip_anchor_shift_rows": 36,
+  "anchor_shifts_frames": [-12, -6, 0, 6, 12],
+  "strict_minimum_lead_frames": 2,
+  "segment_label_permutations_per_clip": 6,
+  "exact_two_clip_label_assignments": 36,
+  "pass_rate_floor_each_clip": 0.80,
+  "pass_rate_floor_each_anchor_shift": 0.60,
+  "required_independent_human_subjects_for_train_eval": 3,
+  "expected_original_historical_physx_rows": 6628,
+  "expected_original_historical_physx_episodes": 3,
+  "data_status": {
+    "elite_professional_certified": false,
+    "human_exact_instep_impact": false,
+    "human_synchronized_grf_cop": false,
+    "subject_disjoint_contact_eval": false,
+    "human_motion_timing_is_weak_proxy_only": true
+  },
+  "privacy_and_provenance": {
+    "no_interpolation_of_missing_markers": true,
+    "source_sha_verification": true,
+    "no_c3d_amc_copy_to_git": true,
+    "no_training_on_test_clips": true,
+    "all_negative_outcomes_preserved": true,
+    "label_exchangeability_is_diagnostic_not_population_p_value": true,
+    "no_new_gpu_physx_when_foreign_process": true,
+    "never_promote_cpu_or_synthetic_into_physx": true,
+    "write_once_local_data_only": true
+  }
+}
