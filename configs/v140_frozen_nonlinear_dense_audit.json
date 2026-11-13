@@ -1,0 +1,60 @@
+{
+  "version": "v0.1.140",
+  "parent_sha": "a9dac3c32532745f2782e4213a51a390017f8e78",
+  "parent_version": "v0.1.139",
+  "parent_protocol_sha": "eae275db0695ad6df6ca89a98192817a58e95bcd",
+  "urdf_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "original_dof": 29,
+  "reference": "v135_analytic_7phase_synthetic_NOT_HUMAN",
+  "model": "v139_frozen_linearized_QP_replay",
+  "original_200hz_dt_s": 0.005,
+  "independent_dense_dt_s": 0.001,
+  "horizon_s": 14.0,
+  "contact_proxy_time_s": 2.95,
+  "multipliers": [
+    0,
+    1,
+    2,
+    4,
+    -1
+  ],
+  "targets_mps": [
+    0,
+    1,
+    3
+  ],
+  "halfwidths_s": [
+    0.4,
+    0.8,
+    1.2
+  ],
+  "required_cells": 45,
+  "dense_position_violation_tolerance_rad": 0.0003,
+  "dense_velocity_violation_tolerance_rad_s": 0.0003,
+  "dense_research_acceleration_violation_tolerance_rad_s2": 0.005,
+  "nonlinear_ankle_center_velocity_residual_tolerance_mps": 0.01,
+  "nonlinear_com_center_velocity_cap_mps": 0.1,
+  "nonlinear_com_cap_tolerance_mps": 0.002,
+  "strict_original_qdot": true,
+  "strict_original_joint_positions": true,
+  "research_acceleration_cap_rad_s2": 40.0,
+  "run_independent_provenance_validation": true,
+  "report_all_original_QP_failures": true,
+  "classification": "CPU_ONLY_NONLINEAR_ROOT_FIXED_ANKLE_ORIGIN_AND_VIRTUAL_STANCE",
+  "native_physx_contact_pair_certified": false,
+  "true_world_base_or_GRF_available": false,
+  "physical_motor_execution_authorized": false,
+  "elite_human_instep_kinetic_truth_available": false,
+  "new_physx_rollouts": 0,
+  "strict_physics_success_rate": null,
+  "no_gpu_if_occupied": true,
+  "disk_floor_gib": 20,
+  "strict_physics_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "all_29_qdot_legal": true,
+    "legal_goal": true,
+    "no_nonfoot_collision": true,
+    "full_14s_recovery": true
+  }
+}
