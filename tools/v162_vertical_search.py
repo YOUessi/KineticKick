@@ -31,6 +31,7 @@ def main():
     p.add_argument('--whole-spine',action='store_true')
     p.add_argument('--progress-deg',type=float,default=0.)
     p.add_argument('--polish',action='store_true')
+    p.add_argument('--fresh',action='store_true',help='Rebuild the physical scene and replay the live policy from the original frame 0 for every candidate.')
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     cfg=json.loads(base.PROTOCOL.read_text());original=json.loads(V161.read_text())
     assets=base.DEFAULT_ASSETS;schema=json.loads((assets/base.SCHEMA).read_text());names=schema['joint_names']
@@ -51,7 +52,7 @@ def main():
     robot.set_qpos(ref['joint_pos'][0,order_j]);robot.set_qvel(ref['joint_vel'][0,order_j])
     anchor=schema['body_names'].index(meta['anchor_body_name']);goal=np.array(cfg['goal_xyz_m'])
     direction=goal-np.asarray(cfg['ball_initial_xyz_m']);direction[2]=0.;direction/=np.linalg.norm(direction)
-    start,end=90,168; prev=np.zeros(29); leg_idx=[names.index('right_'+n+'_joint') for n in LEG]
+    start,end=(0 if a.fresh else 90),168; prev=np.zeros(29); leg_idx=[names.index('right_'+n+'_joint') for n in LEG]
     idx=layout(names);foot=links['right_ankle_roll_link']; shoulder=names.index('left_shoulder_roll_joint')
     wrist=links['left_wrist_yaw_link'];hip=links['left_hip_roll_link']
     def act(tick,prev):
@@ -69,7 +70,18 @@ def main():
         if not a.speed_wave:raise ValueError('Full-body model includes the six speed coefficients')
         idx += extra_axes(names)
     def trial(params):
-        system.unpack(snapshot);request('restore');prev=seed_prev.copy()
+        nonlocal scene,system,robot,ball,drives,order,links,foot,wrist,hip
+        if a.fresh:
+            # PX articulation warm-start and persistent manifolds are not fully in pack().
+            # Independent normal-entry populations avoid the checkpoint drift near saturation.
+            scene,system,robot,ball,drives,order,_,_,links,_=base.make_plant(assets,cfg,meta,schema)
+            robot.set_root_pose(sapien.Pose(ref['body_pos_w'][0,0],ref['body_quat_w'][0,0]))
+            robot.set_root_linear_velocity(ref['body_lin_vel_w'][0,0]);robot.set_root_angular_velocity(ref['body_ang_vel_w'][0,0])
+            robot.set_qpos(ref['joint_pos'][0,order_j]);robot.set_qvel(ref['joint_vel'][0,order_j])
+            foot=links['right_ankle_roll_link'];wrist=links['left_wrist_yaw_link'];hip=links['left_hip_roll_link']
+        else:
+            system.unpack(snapshot)
+        request('restore');prev=seed_prev.copy()
         impulse=good_pre=good_post=down_j=face_j=0.;loads=[];poses=[];foot_ranges=[];peak_other=0.;first=None
         first_down=first_fwd=None;exit_xy=None;last_loaded=False;q_ex=-np.inf;min_root=9.
         fast=0.;last_wrist=None;wrong=False
@@ -83,6 +95,9 @@ def main():
                 target[shoulder]+=original['wrist_clearance']*np.interp(t-first*DT,[.18,.34,1.25,1.6],[0,1,1,0],left=0.,right=0.)*np.clip((.22-gap-.08*min(0.,rate))/.07,0.,1.)
             target[idx]+=correction(t,params)
             for drive,val in zip(drives,target):drive.set_drive_target(float(val))
+            if a.fresh and t<1.80:
+                for _ in range(4):scene.step()
+                continue
             for sub in range(4):
                 tick=k*4+sub+1;before=foot.entity.pose;pre=Rotation.from_quat(before.q[[1,2,3,0]])
                 scene.step();post=foot.entity.pose;r=Rotation.from_quat(post.q[[1,2,3,0]]);mat=r.as_matrix()
