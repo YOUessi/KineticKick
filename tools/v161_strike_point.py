@@ -85,6 +85,8 @@ def make_controller(ref, schema, config):
         if 'landing_duration_s' in config:
             grounded = smooth((phase-.19)/config['landing_duration_s'])
             desired[2] += grounded*(.02-desired[2])
+            if 'landing_forward_bias_m' in config:
+                desired += forward*config['landing_forward_bias_m']*grounded
             outward = outward*(1.-grounded) + np.array([0.,0.,1.])*grounded
             outward /= np.linalg.norm(outward)
         seed = ctx['q'][idx] if previous is None else previous
@@ -120,5 +122,8 @@ def make_controller(ref, schema, config):
                 knee = idx[3]
                 blend = smooth((t-ctx['first_contact_s']-.27)/.08)
                 result[knee] += blend*max(config['landing_knee_flex_rad']-result[knee],0.)
+                if 'landing_pitch_bias_rad' in config:
+                    result[idx[0]] -= config['landing_pitch_bias_rad']*blend
+
         return result
     return control
