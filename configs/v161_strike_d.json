@@ -1,0 +1,29 @@
+{
+  "module": "v161_strike_point",
+  "urdf": "/home/you/projects/kinetickick/configs/paid_original/paid_main_resolved.urdf",
+  "window_s": [
+    2.1,
+    2.26,
+    2.48,
+    2.7
+  ],
+  "target_contact_s": 2.35,
+  "material_point_ankle_m": [
+    0.11,
+    0.01,
+    -0.015
+  ],
+  "desired_normal_ankle": [
+    0.47,
+    0.14,
+    0.872
+  ],
+  "elevation_rad": 0.22,
+  "sweep_mps": 6.1,
+  "lead_s": 0.057,
+  "backswing_lift_m": 0.06,
+  "follow_lift_m": 0.14,
+  "arm_clearance_rad": 0.42,
+  "hip_drive_rad": 0.26,
+  "point_lateral_shift_m": 0.036
+}

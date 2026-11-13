@@ -38,9 +38,15 @@ def make_controller(ref, schema, config):
     normal = normal / np.linalg.norm(normal)
     ball_anchor = None
     previous = None
+    arm = schema['joint_names'].index('left_shoulder_roll_joint')
     def control(ctx, target):
         nonlocal ball_anchor, previous
         t = ctx['t']
+        if 'arm_clearance_rad' in config and t > 2.44:
+            start = smooth((t-2.44)/.20)
+            release = smooth((4.10-t)/.28)
+            target = target.copy()
+            target[arm] += start*release*(max(target[arm],config['arm_clearance_rad'])-target[arm])
         begin, full, hold, end = config['window_s']
         if t <= begin or t >= end:
             return target
@@ -56,6 +62,8 @@ def make_controller(ref, schema, config):
         phase = t + lead - config['target_contact_s']
         distance = .40*np.tanh(config['sweep_mps']*phase/.40)
         desired = ball_anchor - .11*outward + forward*distance
+        lateral = np.array([-forward[1],forward[0],0.])
+        desired += lateral*config.get('point_lateral_shift_m',0.)
         desired[2] += config['backswing_lift_m']*max(-distance/.40,0.) + config['follow_lift_m']*max(distance/.40,0.)
         root = np.eye(4)
         root[:3,3] = ctx['root_pos'] + ctx['root_velocity'][:3]*lead
@@ -63,7 +71,11 @@ def make_controller(ref, schema, config):
         root[:3,:3] = (Rotation.from_rotvec(ctx['root_velocity'][3:]*lead)*rot).as_matrix()
         seed = ctx['q'][idx] if previous is None else previous
         q = solve_point(leg, root, seed, point, normal, desired, outward)
-        previous = q
+        previous = q.copy()
+        if 'hip_drive_rad' in config:
+            approach = smooth((phase+.115)/.075) * smooth((.125-phase)/.08)
+            if ctx['foot_load'][0] >= 80.:
+                q[0] = np.clip(q[0]-approach*config['hip_drive_rad'],*leg.limits[0])
         weight = smooth((t-begin)/(full-begin))*smooth((end-t)/(end-hold))
         result = target.copy()
         result[idx] += weight*(q-result[idx])
