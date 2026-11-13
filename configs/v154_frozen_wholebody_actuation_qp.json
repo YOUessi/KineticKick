@@ -1,0 +1,80 @@
+{
+  "version": "v0.1.154",
+  "parent_sha": "c4777d50265f90bd052b449f5fe6497c8b0f35c5",
+  "physical_q_dof": 29,
+  "floating_base_dof": 6,
+  "generalized_velocity_dim": 35,
+  "solver": "OSQP",
+  "control_dt_s": 0.005,
+  "objective_weights": {
+    "base_acceleration": 12,
+    "joint_acceleration_tracking": 4,
+    "torque_regularizer": 0.002,
+    "foot_force_regularizer": 0.002
+  },
+  "solver_controls": {
+    "eps_abs": 1e-7,
+    "eps_rel": 1e-7,
+    "max_iter": 10000
+  },
+  "strict_audit": {
+    "dynamics_inf": 0.0002,
+    "stance_inf": 0.0002,
+    "inequality_slack": 0.0002
+  },
+  "contact_friction_coefficient_fixture": 0.65,
+  "positive_ground_normal": "world_z",
+  "joint_accel_limit_fixture_rad_s2": 10,
+  "torque_limit_fixture": 30,
+  "phases": [
+    "approach",
+    "plant",
+    "coil",
+    "swing",
+    "followthrough",
+    "recover"
+  ],
+  "fixture_seeds": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "fixture_support": [
+    "left",
+    "double"
+  ],
+  "total_positive_fixture_cases": 48,
+  "adversarial_cases": [
+    "missing_runtime_mass",
+    "missing_ground_only_force",
+    "missing_collision_jacobian",
+    "wrong_dimension",
+    "nonfinite",
+    "no_ground",
+    "impossible_clearance",
+    "overdriven_base_force"
+  ],
+  "must_require": {
+    "explicit_synthetic_flag": true,
+    "verified_external_dynamics_input_for_real_use": true,
+    "verified_ground_contact_identity_for_real_use": true,
+    "exact_runtime_colliders_for_real_use": true,
+    "immutable_original29_joint_order": true,
+    "no_offline_pose_mse_as_success": true,
+    "human_elite_motion_qualified_before_training": true,
+    "freeze_before_optimization": true,
+    "no_new_real_physics_when_foreign_gpu": true,
+    "all_29_joint_safety": true,
+    "no_legacy_data_overwrite": true
+  },
+  "historical_source_reaudit": {
+    "v54_original_200hz_rows": {
+      "frozen_v32": 2800,
+      "cmu_10_02": 2800,
+      "cmu_10_05": 1028
+    },
+    "native_wrist_hip_manifold": "UNKNOWN"
+  },
+  "output_contract": "CPU synthetic QP baseline; no real G1 actuator control, no verified GRF, no genuine human training, no new IsaacLab physics"
+}
