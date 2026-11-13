@@ -1,0 +1,47 @@
+{
+  "version": "v0.1.156",
+  "parent_sha": "343d20d94ad40e32e585d0f3648f371a3ddd6960",
+  "source_urdf_sha256": "dbc8471004e9b0b85c27a4ebc1f0d90a727c1cf7ca9ef507b805596f2004d64b",
+  "source_urdf_location_env": "KINETICKICK_G1_URDF",
+  "required_pinocchio_version": "2.7.0",
+  "required_numpy_major": 1,
+  "expected_model_nq": 36,
+  "expected_model_nv": 35,
+  "expected_actuated_joints": 29,
+  "physics_dt_s": 0.005,
+  "phases": [
+    "approach",
+    "plant",
+    "coil",
+    "swing",
+    "followthrough",
+    "recover"
+  ],
+  "modes": [
+    "left",
+    "double"
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "model_checks": 48,
+  "independent_kinematic_checks": 12,
+  "history_runs": 3,
+  "history_states": 6628,
+  "history_nominal_window_states": 993,
+  "early_terminal_states": 81,
+  "require_root_quaternion_for_historical_runtime": true,
+  "require_6d_twist_for_historical_runtime": true,
+  "model_only_without_physx_authority": true,
+  "no_new_gpu_when_foreign_process": true,
+  "minimum_disk_gib": 20,
+  "do_not_use_historical_failure_as_training_labels": true,
+  "metric_reference": "LOCAL_WORLD_ALIGNED",
+  "never_claim_runtime_grf_cop_manifold": true,
+  "output_write_once": true,
+  "allow_human_elite_learned_claim": false,
+  "allow_real_physx_success_claim": false
+}
