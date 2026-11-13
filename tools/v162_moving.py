@@ -55,6 +55,69 @@ def stance_planner(ref, schema, cfg):
     return step_toward_intercept
 
 
+def support_clearance(schema, cfg):
+    """Use 20ms left toe history to forecast closest passage of the real rolling ball."""
+    leg = OrthogonalSupport(schema, cfg)
+    ankle = schema['body_names'].index('left_ankle_roll_link')
+    prior_toe = None
+    shift = 0.
+    fallback = None
+    def clear(ctx, target):
+        nonlocal prior_toe, shift, fallback
+        t, dt = ctx['t'], ctx['dt']
+        toe = ctx['body_pos'][ankle] + physical.rotation(ctx['body_quat'][ankle]).apply(cfg['toe_local_m'])
+        old = prior_toe
+        prior_toe = toe
+        start, end, release = cfg['window_s']
+        if old is None or not start <= t < release:
+            return target
+        ahead = ctx['goal'][:2] - ctx['ball_pos'][:2]
+        ahead /= np.linalg.norm(ahead)
+        side = np.array([-ahead[1], ahead[0]])
+        if t<=end and ctx['first_contact_s'] is None and ctx['foot_load'][0]<cfg['max_airborne_load_N']:
+            rel = toe[:2] - ctx['ball_pos'][:2]
+            rate = (toe[:2]-old[:2])/dt - ctx['ball_velocity'][:2]
+            horizon = np.clip(-np.dot(rel,rate)/(np.dot(rate,rate)+1e-8), 0., cfg['lookahead_s'])
+            near = rel + rate*horizon
+            gap = np.linalg.norm(near)
+            if horizon > 0. and gap < cfg['guard_m']:
+                # Keep the natural supporting side of the ball's line; do not cross it.
+                if fallback is None:
+                    fallback = side * (1. if np.dot(near,side)>=0. else -1.)
+                required = np.clip(cfg['clearance_gain']*(cfg['guard_m']-gap),0.,cfg['maximum_side_step_m'])
+                shift = max(shift,required)
+        if fallback is None:
+            return target
+        phase = np.clip((release-t)/(release-end), 0.,1.)
+        return leg.translate(ctx,target,np.r_[fallback*shift*phase,0.])
+
+    return clear
+
+
+class OrthogonalSupport:
+    """Compute the material-point Jacobian from actual left joint pivots and URDF axes."""
+    def __init__(self, schema, cfg):
+        import xml.etree.ElementTree as ET
+        xml = ET.parse(cfg['urdf']).getroot()
+        names = ['left_'+j+'_joint' for j in ('hip_pitch','hip_roll','hip_yaw','knee','ankle_pitch','ankle_roll')]
+        joints = [xml.find(f"joint[@name='{n}']") for n in names]
+        self.ids = np.array([schema['joint_names'].index(n) for n in names])
+        self.links = np.array([schema['body_names'].index(j.find('child').get('link')) for j in joints])
+        self.axes = np.array([np.fromstring(j.find('axis').get('xyz'),sep=' ') for j in joints])
+        self.cfg = cfg
+
+    def translate(self,ctx,target,delta):
+        rotations = physical.rotation(ctx['body_quat'][self.links])
+        axes = rotations.apply(self.axes)
+        pivots = ctx['body_pos'][self.links]
+        toe = pivots[-1] + rotations[-1].apply(self.cfg['toe_local_m'])
+        jac = np.vstack((np.cross(axes, toe-pivots).T, self.cfg['orientation_weight_m']*axes.T))
+        desired = np.r_[delta,0.,0.,0.]
+        joints = np.linalg.solve(jac.T@jac + np.eye(6)*.001, jac.T@desired)
+        target[self.ids] += limited(joints, self.cfg['max_joint_rad'])
+        return target
+
+
 def make_controller(ref, schema, cfg):
     parent = REPO / cfg['parent']
     if hashlib.sha256(parent.read_bytes()).hexdigest() != cfg['parent_sha256']:
@@ -67,11 +130,14 @@ def make_controller(ref, schema, cfg):
     prior = np.zeros((2,))
     close = None
     planner = stance_planner(ref,schema,cfg) if cfg.get('planned_stance') else None
+    clearance = support_clearance(schema, dict(urdf=cfg['urdf'],**cfg['left_clearance'])) if 'left_clearance' in cfg else None
 
     def control(ctx, target):
         nonlocal prior, close
         if planner is not None:
             target = planner(ctx)
+        if clearance is not None:
+            target = clearance(ctx,target)
         target = base(ctx, target)
         t = ctx['t']
         weights = cfg['time_scale_knots']
