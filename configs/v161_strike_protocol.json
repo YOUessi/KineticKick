@@ -1,0 +1,14 @@
+{
+  "scope": "Same measured CPU PhysX v160 scene and free root. Baseline 001 raw initial state and ball [0.14,-0.93,0.113], goal [0,-3.7,0.11] unchanged. First gate is the dynamics of the strike and follow-through; integrated 14s including recovery remains joint acceptance.",
+  "source_prior": {
+    "path": "reports/v032_learned_center.json",
+    "sha256": "17d294d6563b5695edb2444e768650e26b145a67d08626693e3012fa2cd981b0",
+    "scope": "Historical separate Isaac initial state, ball, goal, running actor and chain; use learned positive example only for a physically reachable dorsum orientation, local point and follow-through. A rigid copy of the full historical foot pose at the v160 strike root misses position by 0.18m with original joint limits. Point-plus-normal IK frees the unobservable twist degree of freedom."
+  },
+  "development_first_batch": ["v161_strike_a.json", "v161_strike_b.json"],
+  "duration_development_s": 4,
+  "duration_confirmation_s": 14,
+  "discovery": "Deterministic development, no artificial impulse, state writes, geometry or limit changes. Store every complete failure. Evaluate all positive right-foot normal impulses across every episode; apply legacy patch rule with pre/post poses, ball/foot witness sensitivity, and confirm >=95% on both named foot-pose conventions. Observe other ball contacts, >20N native nonfoot, original actual joint limits/velocity, goal, >=3.5m/s post final release, <=250ms continuous follow-through, and final standing independently.",
+  "followthrough": "Original engineering test: >=.22m world and >=.15m root-relative after first contact, >=.60m/s at +.12s, no >=40ms reversal before +.20s. Keep late contacts, full horizon, scientific data and caveats.",
+  "next_decision": "After measured point errors, force directions and timing, freeze a distinct candidate prior to any subsequent deterministic trials. Do not label development successes as independent/generalization; vary fixed-ball initial velocity or ball offset only in a subsequent separately frozen evaluation."
+}
