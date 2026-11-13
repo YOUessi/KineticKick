@@ -64,6 +64,8 @@ def make_controller(ref, schema, config):
         desired = ball_anchor - .11*outward + forward*distance
         lateral = np.array([-forward[1],forward[0],0.])
         desired += lateral*config.get('point_lateral_shift_m',0.)
+        # Add swing-leg clearance while the distal shank passes the ball.
+        desired[2] += config.get('clearance_lift_m',0.) * np.exp(-.5*(phase/.105)**2)
         desired[2] += config['backswing_lift_m']*max(-distance/.40,0.) + config['follow_lift_m']*max(distance/.40,0.)
         root = np.eye(4)
         root[:3,3] = ctx['root_pos'] + ctx['root_velocity'][:3]*lead
