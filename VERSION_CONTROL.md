@@ -533,3 +533,7 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 从已发布、干净的version/v0.1.158 SHA fcb8d53560e81c69a47671655b89f8a0368eb068 创建独立v0.1.159文档版本；不修改控制器、PPO权重、机器人资产或既有原始PhysX/人体数据。新增docs/RESEARCH_OBJECTIVE_AND_ROADMAP.md（主目标+RQ1–RQ5、M0–M6研发模块和完成门槛）、docs/KINETICMIMIC_METHOD_AND_EVALUATION.md（Behavior Latent+Contact+Mimic小脑机制与强基线/负控制/真实物理安全等级）、docs/NEXT_IMPLEMENTATION_BACKLOG.md（下一批分组任务和逐项验收）。README置顶引导，AGENTS.md指导后续版本按新研究合同执行，旧docs/RESEARCH_BATCH_SERIES_2026-11-11.md加归档提示但保留全部历史实验协议。
 
 **本版仅更新GitHub研发目标、方法合同与研究计划；新增实际G1 PhysX=0、新训练BFM/CVAE=0、新人类真GRF/职业力数据=0、新隐空间控制器真实合法射门=0。** 任何相关成果必须由后续独立版本和真实原始实验SHA证实；不得因文档/版本增长误报研发里程碑已完成。
+
+## v0.1.160 — 首批全身跟踪、动作重定向与隐空间比较
+
+从 `version/v0.1.159` 的 `cb31d1136ce88b98330f30f70bc2f718aeea6220` 新建分支。PAiD 上游为 `TeleHuman/HumanoidSoccer@e72e470230047dedaf66df0983f1d0ab746faeb5`。原策略 ONNX SHA-256 为 `489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1`，Tang 的 G1 URDF 为 `34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761`。SAPIEN 3.0.3 CPU 物理使用 `maniskill` 环境，原 ONNX 通过持久的 Python 3.10 CPU 子进程执行。人体处理使用 NumPy 1.26.4、Pinocchio 2.7.0、ezc3d 1.7.2，PyTorch 2.10.0 的两组训练均在 CPU 执行。Tang 的原始资产、模型、原生流形、轨迹与 14 秒 MP4 在忽略目录中。源码、冻结协议、专项测试、质量限制和结果摘要随版本提交。[首批实验报告与复现入口](reports/2026-11-14-v160-kineticmimic-first-batch.md)

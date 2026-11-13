@@ -318,7 +318,7 @@ def run(assets, output, config, schema, metadata, act):
         'new_cpu_physical_runs':1,'initialization_pose_wxyz':np.r_[ref['body_pos_w'][0,0],ref['body_quat_w'][0,0]].tolist(),
         'source_clip':config['clip'],'source_joint_names':schema['joint_names'],'source_body_names':schema['body_names'],
         'cpu_links':len(robot.links),'cpu_active_joints':robot.dof,'cpu_urdf_shape_count':int(sum(len(l.collision_shapes) for l in robot.links)),
-        'cpu_robot_mass_kg':float(sum(l.mass for l in robot.links)),'first_eligible_contact_definition':'net pair impulse magnitude / dt >2 N, includes tangential contribution',
+        'cpu_robot_mass_kg':float(sum(l.mass for l in robot.links)),'first_eligible_contact_definition':'norm of the sum of reported contact-point normal impulse vectors / dt >2 N; friction-anchor impulses are unavailable',
         'additional_state_writes_after_initialization':0,'input_digest':config['asset_hashes'],'protocol_sha256':digest(PROTOCOL),
         'code_sha256':{p.name:digest(p) for p in [Path(__file__),Path(__file__).with_name('v160_tracking_worker.py')]},
         'local_artifact_sha256':{name:digest(output/name) for name in ('rollout.npz','native_contacts.jsonl.gz')}})
