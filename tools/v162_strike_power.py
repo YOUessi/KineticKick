@@ -12,6 +12,14 @@ def bracket(grid, value):
 
 
 def coefficients(config,speed,aim):
+    if config.get('map_type')=='local_inverse':
+        if not (config['domain']['speed'][0]<=speed<=config['domain']['speed'][1]
+                and config['domain']['aim'][0]<=aim<=config['domain']['aim'][1]):
+            raise ValueError('Request outside local calibration domain')
+        error=np.array([speed,aim])-config['observation_mean']
+        delta=np.asarray(config['scaled_inverse'])@error
+        limit=np.asarray(config['absolute_delta_limit'])
+        return np.asarray(config['base'])+np.clip(delta,-limit,limit)
     i,sv=bracket(config['speeds_mps'],speed)
     j,sx=bracket(config['aims_m'],aim)
     grid=np.asarray(config['coefficient_grid'],dtype=float)
