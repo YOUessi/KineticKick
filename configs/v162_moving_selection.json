@@ -1,0 +1,15 @@
+{
+  "frozen_before_unseen_rollouts": true,
+  "development_source_commit": "653e6c6",
+  "source_protocol": "configs/v162_moving_protocol.json",
+  "candidate": "configs/v162_moving_planner.json",
+  "candidate_sha256": "7163b0f5695b9f87170881326d441bcd9c2042c382092d3777828514b8eb3046",
+  "comparator": "configs/v161_margin_s0.json",
+  "comparator_sha256": "3a98af8ad1581eb20b05a4a2e15ec36420f4875e632048d9dbb4be3159ab8b6f",
+  "development_strict_success_inward_crossing": {
+    "frozen_S0": [false,false],
+    "late_ankle_prediction": [false,false],
+    "early_stance_prediction": [true,false]
+  },
+  "selection": "Preregistered strict-success priority. On the second development ball, the early stance policy entered the goal at 3.913 m/s with 100% weighted instep and stable recovery, but recorded three original position-bound violations; it remains a failure. No tuning on independent traces. Confirm all three named holdout pairs with this same controller and report the complete denominator."
+}
