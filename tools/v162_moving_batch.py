@@ -35,6 +35,8 @@ def readout(path):
         vel = tr['ball_velocity_w_mps']
         first = score['earliest_loaded_right_foot_s']
         i = np.searchsorted(t, first) - 1 if first is not None else np.abs(t-2.395).argmin()
+        raw_touch = np.flatnonzero(tr['robot_ball_contact'])
+        prior_to_any = int(raw_touch[0]-1) if len(raw_touch) else i
         if i < 0:
             raise ValueError('No previous physical observation before first contact')
         init = np.array(trial['ball_initial_xyz_m'])
@@ -43,6 +45,10 @@ def readout(path):
             raise ValueError('Measured first-bin velocity differs from requested physical motion')
         measured = dict(first_t_s=t[0],first_velocity_world_mps=vel[0].tolist(),
                         first_spin_world_rad_s=tr['ball_angular_velocity_w_rad_s'][0].tolist(),
+                        first_any_robot_ball_s=float(t[raw_touch[0]]) if len(raw_touch) else None,
+                        pre_any_robot_ball_velocity_xy_mps=vel[prior_to_any,:2].tolist(),
+                        pre_any_robot_ball_travel_xy_m=(pos[prior_to_any,:2]-init[:2]).tolist(),
+                        pre_any_robot_ball_speed_mps=float(np.linalg.norm(vel[prior_to_any,:2])),
                         precontact_or_nominal_t_s=t[i],was_precontact=first is not None,
                         precontact_velocity_xy_mps=vel[i,:2].tolist(),
                         precontact_speed_xy_mps=float(np.linalg.norm(vel[i,:2])),

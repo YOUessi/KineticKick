@@ -1,13 +1,16 @@
 """Causal, bounded ankle material-point correction for the frozen 29-axis strike."""
 import hashlib
 import json
+import atexit
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 from scipy.spatial.transform import Rotation
 
 from cartesian_strike import LegKinematics
 from v161_strike_search import make_controller as base_controller
+import v160_tracking_cpu as physical
 
 REPO = Path(__file__).resolve().parents[1]
 
@@ -21,6 +24,37 @@ def forecast(ctx, cfg):
     return np.asarray(ctx['ball_pos'])[:2] + horizon * np.asarray(ctx['ball_velocity'])[:2]
 
 
+def stance_planner(ref, schema, cfg):
+    protocol = json.loads(physical.PROTOCOL.read_text())
+    assets = Path(cfg.get('asset_root', physical.DEFAULT_ASSETS))
+    if physical.digest(assets / '.pretrained_checkpoints/paid_official/policy_30000.onnx') != protocol['asset_hashes']['.pretrained_checkpoints/paid_official/policy_30000.onnx']:
+        raise ValueError('Unqualified gait planner')
+    context = physical.cpu_policy(assets, protocol)
+    meta, step = context.__enter__()
+    atexit.register(context.__exit__, None, None, None)
+    anchor = schema['body_names'].index(meta['anchor_body_name'])
+    scale = np.fromstring(meta['action_scale'], sep=',')
+    previous = np.zeros(29)
+    decay = cfg['rolling_decay_per_s']
+
+    def step_toward_intercept(ctx):
+        nonlocal previous
+        # Same actor and temporal reference, but the task point is explicitly a
+        # planned rendezvous, distinct from the measured soccer ball fed to the parent.
+        point = np.array(ctx['ball_pos'], dtype=float)
+        if ctx['first_contact_s'] is None:
+            horizon = max(0., cfg['nominal_contact_s']-ctx['t'])
+            flight = -np.expm1(-decay*horizon)/decay
+            point[:2] += flight*np.asarray(ctx['ball_velocity'])[:2]
+        root = SimpleNamespace(p=ctx['root_pos'],q=ctx['root_quat'])
+        obs = physical.observation(ctx['q'],ctx['dq'],root,ctx['root_velocity'][3:],
+                                   point,ctx['goal'],previous,ref,ctx['frame'],anchor,ctx['default_q'])
+        previous = np.clip(step(ctx['frame'],obs), -100., 100.)
+        return ctx['default_q']+scale*previous
+
+    return step_toward_intercept
+
+
 def make_controller(ref, schema, cfg):
     parent = REPO / cfg['parent']
     if hashlib.sha256(parent.read_bytes()).hexdigest() != cfg['parent_sha256']:
@@ -32,9 +66,12 @@ def make_controller(ref, schema, cfg):
     nominal = np.asarray(cfg['nominal_ball_xy_m'])
     prior = np.zeros((2,))
     close = None
+    planner = stance_planner(ref,schema,cfg) if cfg.get('planned_stance') else None
 
     def control(ctx, target):
         nonlocal prior, close
+        if planner is not None:
+            target = planner(ctx)
         target = base(ctx, target)
         t = ctx['t']
         weights = cfg['time_scale_knots']
