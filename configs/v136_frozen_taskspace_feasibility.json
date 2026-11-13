@@ -1,0 +1,55 @@
+{
+  "version": "v0.1.136",
+  "parent_version": "v0.1.135",
+  "parent_sha": "1e6350cb3e83d2acaecce6cebf2426de23e5b691",
+  "urdf_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "sample_period_s": 0.005,
+  "horizon_s": 14,
+  "dof": 29,
+  "variant_multipliers": [
+    0,
+    1,
+    2,
+    4,
+    -1
+  ],
+  "precontact_probe_time_s": 2.95,
+  "anchor_link": "left_ankle_roll_link",
+  "swing_link": "right_ankle_roll_link",
+  "look_at_root_frame_axis": [
+    1,
+    0,
+    0
+  ],
+  "swing_link_origin_velocity_targets_mps": [
+    0,
+    0.5,
+    1,
+    3
+  ],
+  "jacobian_fd_step_rad": 0.000001,
+  "jacobian_error_tolerance": 0.00001,
+  "stance_task_weight": 40,
+  "swingspeed_task_weight": 10,
+  "posture_tracking_weight": 0.25,
+  "arm_regularization_weight": 0.8,
+  "stance_residual_warning_mps": 0.04,
+  "swing_tracking_warning_mps": 0.2,
+  "original29_urdf_qdot_hard_box": true,
+  "policy_and_tuning": "PREDECLARED CPU TASK SPACE FEASIBILITY; NO TRAINING, no historic v54 outcome fitting",
+  "fixed_root_and_left_ankle_translation_locked_both_reported": true,
+  "com_from_original_link_inertial_mass_and_transform": true,
+  "left_ankle_origin_not_sole_pressure_or_grf": true,
+  "right_ankle_origin_not_physical_instep_contact_point": true,
+  "contact_and_ground_safety": "NATIVE PHYSX actor-collider, GRF, CoP, base state, motor torque absent; ALWAYS block motor",
+  "no_gpu_physx_while_v120_occupied": true,
+  "no_kick_success_claim": true,
+  "no_human_expert_force_truth": true,
+  "strict_kick_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "original29_qdot": true,
+    "no_nonfoot_collision": true,
+    "full_14s_recovery": true
+  }
+}
