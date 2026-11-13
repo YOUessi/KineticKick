@@ -55,9 +55,12 @@ def event_labels(score):
     # Keep the crossing legible for one second before showing the verified standing tail.
     tail = float(score.get('terminal_standing_seconds', 0.))
     if score['checks'].get('terminal_standing') and tail > 0:
-        onset = score['seconds'] - tail + .005
-        display = max(onset, crossing['interpolated_time_s'] + 1.) if crossing else onset
-        events.append((display, f'{onset:.3f} 秒起　双脚持续承重，恢复站稳', AQUA))
+        interval_start = score['seconds'] - tail
+        sample_dt = score['seconds'] / score['physics_steps']
+        first_stable_sample = interval_start + sample_dt
+        display = max(first_stable_sample, crossing['interpolated_time_s'] + 1.) if crossing else first_stable_sample
+        message = f'双脚连续站稳区间始于 {interval_start:.3f} 秒，首个合格采样为 {first_stable_sample:.3f} 秒'
+        events.append((display, message, AQUA))
     return sorted(events,key=lambda event:event[0])
 
 
@@ -110,19 +113,19 @@ def render(folder,score_path,output,assets,urdf,label):
             canvas=Image.new('RGB',(W,H),(15,26,33));canvas.paste(Image.fromarray(panels[0]),(0,117));canvas.paste(Image.fromarray(panels[1]),(640,117));draw=ImageDraw.Draw(canvas)
             write_text(draw,(26,13),label,33,bold=True);write_text(draw,(1250,25),'G1  /  CPU PhysX',21,AQUA,anchor='ra')
             draw.line((0,68,W,68),fill=(63,91,96),width=2)
-            write_text(draw,(25,80),'原始参考动作',24,bold=True)
+            write_text(draw,(25,80),'PAiD 原始参考动作 · 50 Hz',24,bold=True)
             source_label = '已到末帧 · 保持' if ri == len(rp)-1 else f'源帧 {ri} / {len(rp)-1}'
             write_text(draw,(620,85),source_label,17,MUTED,anchor='ra')
-            write_text(draw,(662,80),'实际物理轨迹',24,bold=True);write_text(draw,(1252,85),f'{t:05.2f} 秒',21,AQUA,anchor='ra')
+            write_text(draw,(662,80),'G1 与足球 · 200 Hz 仿真记录',24,bold=True);write_text(draw,(1252,85),f'{t:05.2f} 秒',21,AQUA,anchor='ra')
             stamp,msg,color=next(e for e in reversed(events) if t+1e-8>=e[0]);write_text(draw,(27,562),msg,24,color,bold=True)
             draw.line((0,606,W,606),fill=(63,91,96),width=2)
-            write_text(draw,(27,623),f'骨盆高度 {pos[idx,0,2]:.2f} 米   ·   当前球速 {np.linalg.norm(vel[idx,:2]):.2f} 米/秒',19,MUTED)
+            write_text(draw,(27,623),f'骨盆高度 {pos[idx,0,2]:.2f} 米   ·   当前水平球速 {np.linalg.norm(vel[idx,:2]):.2f} 米/秒',19,MUTED)
             if frame==count-1:write_text(draw,(1250,624),outcome,21,AQUA if score['cpu_proxy_task_pass'] else RED,True,'ra')
             tail = float(score.get('terminal_standing_seconds', 0.))
             elapsed = t - (score['seconds'] - tail)
             if score['checks'].get('terminal_standing') and elapsed > 0:
                 write_text(draw,(1250,670),f'双脚连续站稳 {min(elapsed, tail):.2f} 秒',19,AQUA,True,'ra')
-            write_text(draw,(27,668),'物理轨迹取自 200 Hz 记录，画面以 25 帧/秒播放',17,MUTED)
+            write_text(draw,(27,668),f'G1 原模型逐帧重绘 · 回合 {folder.name} · 25 帧/秒',17,MUTED)
             child.stdin.write(canvas.tobytes())
         child.stdin.close()
         if child.wait()!=0:raise RuntimeError('Video encoder failed')
