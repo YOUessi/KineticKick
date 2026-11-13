@@ -165,6 +165,14 @@ def make_plant(assets, cfg, metadata, schema):
     builder.set_mass_and_inertia(mass,sapien.Pose(),np.repeat(.4*mass*radius**2,3));builder.set_initial_pose(sapien.Pose(cfg['ball_initial_xyz_m']))
     ball_entity=builder.build(name='SoccerBall');ball=ball_entity.find_component_by_type(physx.PhysxRigidDynamicComponent)
     ball.set_linear_damping(0.);ball.set_angular_damping(.05)
+    if 'ball_initial_velocity_xy_mps' in cfg:
+        velocity=np.asarray(cfg['ball_initial_velocity_xy_mps'],dtype=float)
+        if velocity.shape!=(2,) or not np.isfinite(velocity).all():
+            raise ValueError('Expected two finite horizontal ball velocity components')
+        if np.any(velocity):
+            vx,vy=velocity
+            ball.set_linear_velocity([vx,vy,0.])
+            ball.set_angular_velocity([-vy/radius,vx/radius,0.])
     entities={link.name:link for link in robot.links}; ground_body=ground.find_component_by_type(physx.PhysxRigidStaticComponent)
     if not set(schema['body_names'])<=set(entities):raise ValueError('Missing source-mapped robot links')
     shape_ids={}

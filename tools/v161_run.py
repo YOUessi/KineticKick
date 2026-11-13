@@ -15,7 +15,7 @@ def load_controller(path, kind):
         return None
     config = json.loads(path.read_text())
     name = config['module']
-    if not name.isidentifier() or not name.startswith('v161_' + kind):
+    if not name.isidentifier() or not (name.startswith(('v161_' + kind, 'v162_' + kind)) or (kind == 'strike' and name in {'v162_vertical','v162_moving'})):
         raise ValueError(f'Unexpected {kind} controller module {name}')
     module = importlib.import_module(name)
     return module, config, {'file':str(path), 'config':config, 'sha256':base.digest(path),
