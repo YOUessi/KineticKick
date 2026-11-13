@@ -13,5 +13,9 @@ def make_controller(ref,schema,config):
     coeff=np.asarray(config['coefficients']).reshape(2,len(indices))
     def control(ctx,target):
         target[indices]+=residual_weights(ctx['t'])@coeff
+        cap=config.get('backswing_pitch_target_cap')
+        if cap is not None and 2.12<=ctx['t']<=2.30:
+            # Shape the commanded backswing while leaving the actuator limits unchanged.
+            target[indices[4]]=min(target[indices[4]],cap)
         return target
     return control

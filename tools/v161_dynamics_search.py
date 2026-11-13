@@ -20,6 +20,7 @@ def main():
     cli.add_argument('--seed',type=int,default=161041)
     cli.add_argument('--generations',type=int,default=12)
     cli.add_argument('--population',type=int,default=48)
+    cli.add_argument('--pitch-cap',type=float)
     cli.add_argument('--feasible',action='store_true',help='Select around the original joint, surface and shot thresholds')
     cli.add_argument('--spread',type=float,default=1.)
     cli.add_argument('--live',action='store_true',help='Recompute PAiD recurrent actions from each perturbed state')
@@ -85,6 +86,8 @@ def main():
                 previous=np.clip(request([frame,obs.tolist()]),-100.,100.)
                 target=gains['default_joint_pos']+gains['action_scale']*previous
                 target[ix]+=weights[k]@coeff.reshape(2,6)
+            if a.pitch_cap is not None and 2.12<=(onset+k)*.02<=2.30:
+                target[ix[4]]=min(target[ix[4]],a.pitch_cap)
             for joint,val in zip(drives,target):joint.set_drive_target(float(val))
             for d in range(4):
                 tick=(k+onset)*4+d+1
@@ -143,7 +146,7 @@ def main():
             deficit+=1.5*max(0,.23-advance)+2*max(0,.16-reladvance)+.4*max(0,.72-follow_v)
             merit=8-deficit+.25*alignment+.1*min(-sy,6)
         if ct is None:merit=-3-4*gap+near_alignment-min(1.5,nonfoot/40)
-        return dict(merit=float(merit),instep=share,alignment=alignment,out_forward=speed,lateral=float(v[0]),nonfoot=float(nonfoot),min_z=float(lowest),advance=float(advance),relative=float(reladvance),v120=float(follow_v),excess=float(limit_ex),instep_post=good_post/max(1e-9,j_all),return_speed=float(back),late_contact=late,release_xy=None if after_xy is None else after_xy.tolist(),contact=ct)
+        return dict(backswing_pitch_target_cap=a.pitch_cap,merit=float(merit),instep=share,alignment=alignment,out_forward=speed,lateral=float(v[0]),nonfoot=float(nonfoot),min_z=float(lowest),advance=float(advance),relative=float(reladvance),v120=float(follow_v),excess=float(limit_ex),instep_post=good_post/max(1e-9,j_all),return_speed=float(back),late_contact=late,release_xy=None if after_xy is None else after_xy.tolist(),contact=ct)
     rng=np.random.default_rng(a.seed)
     mu=np.array([-.15,-.04,.65,.53,.78,0.,-.55,0.,.35,-.22,.6,0.])
     sd=np.array([.42,.20,.60,.45,.50,.21,.40,.19,.40,.38,.45,.15])
