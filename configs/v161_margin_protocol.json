@@ -1,0 +1,19 @@
+{
+  "reason": "At the nominal training centre, the passing m controller approached the ankle-roll bound within one microradian. Use only the nominal scene to choose a uniform state-aware command relief. Previously scored offsets remain closed to tuning.",
+  "selection": "Among centre trials passing every unchanged evaluation, select greatest minimum measured right ankle roll margin during 2.1..2.55 seconds. Report failures.",
+  "new_evaluation_ball_offsets_m": [
+    [
+      0.013,
+      -0.009
+    ],
+    [
+      -0.012,
+      -0.015
+    ],
+    [
+      0.009,
+      0.018
+    ]
+  ],
+  "recovery": "configs/v161_recovery_support.json"
+}
