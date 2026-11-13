@@ -1,0 +1,22 @@
+{
+  "design": "One geometry-driven shoulder abduction safeguard for post-strike wrist-hip proximity. Fixed before any new episode, no shape or position-limit modifications. Include all results. Re-examine the prior failure as development regression (not a blind case). Original centre and final unseen three full episodes.",
+  "prior_failure_regression_offset_m": [
+    0.011,
+    -0.016
+  ],
+  "fresh_offsets_m": [
+    [
+      -0.01,
+      0.01
+    ],
+    [
+      0.014,
+      0.013
+    ],
+    [
+      0.007,
+      -0.012
+    ]
+  ],
+  "goal": "original centre goal, static ball, original 14s physics, same inverse-dynamics standby"
+}
