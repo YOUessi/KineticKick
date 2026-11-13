@@ -1,0 +1,97 @@
+{
+  "version": "v0.1.144",
+  "parent_sha": "a0fe4eb41ef026d89e233f4443621a7008b79bf5",
+  "parent_branch": "version/v0.1.142",
+  "source_data_sha256": {
+    "quality_audit": "2ebfa49b698156403d07006b6a591d67ae052bf9ef4e2ecc2fccec4de737d678",
+    "source_manifest": "0035463fe3f56183b7470f452ab935f9d68cf55b9c59b16d2b40e62ac6b90fbd",
+    "v053_original_strict_audit": "746370c98a65d15708f195a93b0eddf2411a26481900a7cd6a3915e88f5bad13"
+  },
+  "source_clips": [
+    "10_01",
+    "10_02",
+    "10_03",
+    "10_05",
+    "10_06",
+    "11_01"
+  ],
+  "rate_hz": 120,
+  "strong_launch_anchor_clips": [
+    "10_02",
+    "10_05"
+  ],
+  "anchor_definition": "v050 inferred contiguous fast uncalibrated ball triad marker onset, not measured impact",
+  "pre_window_s": 0.6,
+  "angle_center_halfspan_frames": 2,
+  "segment_vectors": {
+    "pelvis": [
+      "LHJ0",
+      "RHJ0"
+    ],
+    "trunk": [
+      "LHJ0",
+      "STRN"
+    ],
+    "right_thigh": [
+      "RHJ0",
+      "RKNE"
+    ],
+    "right_shank": [
+      "RKNE",
+      "RANK"
+    ],
+    "right_foot": [
+      "RHEE",
+      "RTOE"
+    ],
+    "left_thigh": [
+      "LHJ0",
+      "LKNE"
+    ],
+    "left_shank": [
+      "LKNE",
+      "LANK"
+    ],
+    "left_foot": [
+      "LHEE",
+      "LTOE"
+    ],
+    "left_upperarm": [
+      "LSHO",
+      "LELB"
+    ],
+    "right_upperarm": [
+      "RSHO",
+      "RELB"
+    ],
+    "left_forearm": [
+      "LELB",
+      "LWRA"
+    ],
+    "right_forearm": [
+      "RELB",
+      "RWRA"
+    ]
+  },
+  "min_valid_ratio_per_segment": 0.95,
+  "min_pre_event_valid_frames": 50,
+  "min_event_subjects_for_holdout": 2,
+  "max_new_gpu_physx_runs": 0,
+  "original_v53_expected_runs": 12,
+  "original_v54_expected_frames": 6628,
+  "strict_gates": {
+    "right_instep_impulse_min": 0.95,
+    "ball_speed_min_mps": 3.5,
+    "full_recovery_s": 14,
+    "original_joint_count": 29
+  },
+  "evidence_policy": {
+    "measured_human_grf": false,
+    "true_instestep_impact_label": false,
+    "elite_professional_certified": false,
+    "new_physics": false,
+    "synthetic_motion_to_motor": false
+  },
+  "local_artifacts_ignored": true,
+  "allow_output_overwrite": false
+}
