@@ -1,0 +1,55 @@
+{
+  "version": "v0.1.142",
+  "parent_sha": "4edf26fd332b3df03e4e85007d64f5056796ca38",
+  "purpose": "Contact-native real-source qualification, write-once capture and full-off/on admission; no policy change",
+  "original_g1_dof": 29,
+  "physics_dt_s": 0.005,
+  "min_free_disk_gib": 20,
+  "original_cases": {
+    "frozen_v32": 2800,
+    "cmu_10_02": 2800,
+    "cmu_10_05": 1028
+  },
+  "physical_fields": [
+    "step",
+    "q",
+    "dq",
+    "base_pose",
+    "base_twist",
+    "com_world",
+    "left_foot_net_force",
+    "right_foot_net_force",
+    "nonfoot_net_force",
+    "ball_pose",
+    "ball_twist",
+    "motor_torque"
+  ],
+  "calibration_requirements": [
+    "real_native_positive",
+    "real_native_negative",
+    "same_step_calibration",
+    "read_only_stage_ownership",
+    "paired_off_on_full_physics_exact",
+    "independent_source_sha"
+  ],
+  "exact_legacy_failure": {
+    "nonfoot_peak_s": 5.135,
+    "last_real_q_s": 5.14,
+    "named_event_s": 5.145
+  },
+  "human_training_claim_requires": [
+    "kick_semantic_annotation",
+    "human_ball_impact_measured",
+    "human_force_plate_or_grf_measured",
+    "human_pose_full_body",
+    "use_rights_verified"
+  ],
+  "immutable_no_overwrite": true,
+  "allow_sim_when_foreign_gpu_process": false,
+  "source_authorization_from_cpu_fixture": false,
+  "strict_kick_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "recovery_duration_s": 14
+  }
+}
