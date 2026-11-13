@@ -24,9 +24,13 @@ def correction(t, params):
         # A distinct pre-impact wave and its return can alter foot speed while preserving impact pose.
         wave=np.interp(t,[2.23,2.30,2.365,2.43,2.49],[0,1,-.55,-.24,0.])
         joint[:6] += wave*params[18:24]
-    if params.size == 30:
+    if params.size >= 30:
         # The stance-toe pivot and arm/trunk counter-rotation start before the final plant.
         support = np.interp(t,[1.83,1.99,2.19,2.36,2.50,2.72],[0,.65,1,1,.52,0])
+        if params.size == 33:
+            # Preserve the incoming hit while sustaining the toes-down form across the loaded tail.
+            hold=np.interp(t,[2.34,2.37,2.415,2.455,2.495],[0,.30,1,.76,0])
+            joint[[0,3,4]] += hold*params[30:33]
         return np.r_[joint, support*params[24:30]]
     return joint
 
@@ -40,9 +44,9 @@ def make_controller(ref, schema, config):
     baseline=make_baseline(ref,schema,config)
     indices=layout(schema['joint_names'])
     params=np.asarray(config['vertical_parameters'],dtype=float)
-    if params.shape not in ((18,), (24,), (30,)) or not np.all(np.isfinite(params)):
+    if params.shape not in ((18,), (24,), (30,), (33,)) or not np.all(np.isfinite(params)):
         raise ValueError('Invalid swing, support or pre-impact coefficients')
-    if params.size==30:
+    if params.size>=30:
         indices+=extra_axes(schema['joint_names'])
     def control(ctx,target):
         target=baseline(ctx,target)

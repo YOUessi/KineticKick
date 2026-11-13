@@ -31,6 +31,7 @@ def main():
     p.add_argument('--whole-spine',action='store_true')
     p.add_argument('--progress-deg',type=float,default=0.)
     p.add_argument('--polish',action='store_true')
+    p.add_argument('--hold',action='store_true')
     p.add_argument('--fresh',action='store_true',help='Rebuild the physical scene and replay the live policy from the original frame 0 for every candidate.')
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     cfg=json.loads(base.PROTOCOL.read_text());original=json.loads(V161.read_text())
@@ -177,6 +178,10 @@ def main():
     if a.whole_spine:
         if mu.size==24:mu=np.r_[mu,np.zeros(6)]
         sd=np.r_[sd,a.spread*np.array([.22,.32,.38,.32,.38,.32])]
+    if a.hold:
+        if not a.whole_spine:raise ValueError('Hold augments the full body solution')
+        if mu.size==30:mu=np.r_[mu,np.zeros(3)]
+        sd=np.r_[sd,a.spread*np.array([.48,.68,.37])]
     def save(cfgpath,record):
         cfg={**original,'module':'v162_vertical','vertical_parameters':record['parameters'],'developed_on':'v162 fixed centre CPU only'}
         cfgpath.write_text(json.dumps(cfg,indent=2)+'\n')
