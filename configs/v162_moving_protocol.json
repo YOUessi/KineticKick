@@ -1,0 +1,20 @@
+{
+  "purpose": "Rolling incoming passes and causal change in right swing targets from the v161 S0, with original whole-body recovery. CPU only.",
+  "baseline": "configs/v161_margin_s0.json",
+  "candidate": "configs/v162_moving_predict.json",
+  "recovery": "configs/v161_recovery_support.json",
+  "initialization": "Initial sphere vx,vy in world frame, vz=0. Spin (-vy/r,vx/r,0), original 0.11 m sphere, contacts/materials and free G1. No subsequent root or ball state write. Actual PAiD always observes the physical ball. The baseline retains its full recurrent feedback; frozen means unchanged v161 controller.",
+  "construction": "Start motion upstream of the kick rather than let it roll away while the original 2.395 s approach plays. Initial XY offsets relative to [0.14,-0.93] = -2.35 s * initial velocity plus the listed independent crossing offset. Identical physical initial state for each treatment pair. This evaluates a corridor of rolling interceptions at the unchanged kick location, not arbitrary navigation.",
+  "arrival_time_s": 2.35,
+  "development": [
+    {"id":"inward","velocity_xy_mps":[0,0.40],"crossing_offset_xy_m":[0.02,-0.01]},
+    {"id":"crossing","velocity_xy_mps":[-0.32,0.10],"crossing_offset_xy_m":[-0.035,0.025]}
+  ],
+  "holdout": [
+    {"id":"diagonal","velocity_xy_mps":[0.22,0.24],"crossing_offset_xy_m":[0.012,0.015]},
+    {"id":"opposite","velocity_xy_mps":[-0.28,-0.16],"crossing_offset_xy_m":[-0.016,-0.008]},
+    {"id":"fast","velocity_xy_mps":[-0.45,0.18],"crossing_offset_xy_m":[0.018,-0.012]}
+  ],
+  "selection": "Before independent outcomes, compare both full 14 s development pairs, report all. If both fail task, one revised approach specific to observed failure may use only these development conditions. Prioritize more strict development passes, then more standard passes, then minimum of four surface fractions. If not even contacting, try slower matched development 0.5x original velocity with the same crossing offsets; keep failures and disclose reduced range. Freeze once before independent outcomes. Independent failed conditions never feed back into selection.",
+  "score": "Original 12 frozen v161 checks including terminal release >=3.5 m/s, right instep >=95%, whole-ball goal, full 14 s with standing >=2.5 s. Additional strict four-way impulse-weighted SAPIEN patch fractions >=95%. Report observed first-sample and pre-impact velocities, displacement until contact, foot pose, continuous follow-through and balance plus paired denominators. A search over two known kicks cannot demonstrate generalization to arbitrary rolling passes."
+}

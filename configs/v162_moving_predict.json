@@ -1,0 +1,17 @@
+{
+  "module": "v162_moving",
+  "parent": "configs/v161_margin_s0.json",
+  "parent_sha256": "3a98af8ad1581eb20b05a4a2e15ec36420f4875e632048d9dbb4be3159ab8b6f",
+  "urdf": "/home/you/projects/kinetickick/configs/paid_original/paid_main_resolved.urdf",
+  "nominal_contact_s": 2.395,
+  "prediction_horizon_s": 0.65,
+  "nominal_ball_xy_m": [0.14, -0.93],
+  "material_point_m": [0.09, 0.012, -0.020],
+  "max_displacement_m": 0.12,
+  "rate_mps": 0.4,
+  "xy_gain": [0.4, 0.55],
+  "time_scale_knots": [[1.78, 2.12, 2.44, 2.67], [0, 1, 1, 0]],
+  "orientation_length_m": 0.15,
+  "damping_m2": 0.001,
+  "max_joint_norm_rad": 0.23
+}
