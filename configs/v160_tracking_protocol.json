@@ -1,0 +1,98 @@
+{
+  "version": "0.1.160",
+  "purpose": "W1 PAiD source qualification and one new deterministic closed-loop CPU PhysX tracking baseline. Backend is SAPIEN PhysxCpuSystem, independent of the Isaac GPU runtime.",
+  "upstream_commit": "e72e470230047dedaf66df0983f1d0ab746faeb5",
+  "upstream_license": "CC BY-NC 4.0",
+  "official_upstream_runner": "https://github.com/TeleHuman/HumanoidSoccer/blob/e72e470230047dedaf66df0983f1d0ab746faeb5/exp/README.md",
+  "asset_hashes": {
+    "configs/paid_original/paid_main_resolved.urdf": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+    "reports/paid_physics_parity_clean_paid.json": "b86001e42f45e316593e3e538e0c4dcbf94473bbfc12362e16a1c197a0e78ff6",
+    ".pretrained_checkpoints/paid_official/policy_30000.onnx": "489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1",
+    "third_party/HumanoidSoccer/source/whole_body_tracking/soccer/robots/g1.py": "8d99890be4b67a4ef6a2601f8c4fa8e8795b6d178df6209162be4f8bcb9f65b4"
+  },
+  "motion_sha256": {
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz": "183c0a2c3bd3ef2e15ac3e0b5766f76015dec2bcf400bf83a1dc961bb370d19a",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-002_left.npz": "9f016b2bdca31744d140e6e8e81643313271e70765d1930c44e1cf804f0619d3",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-003_left.npz": "8e578d728348d4cee318e93d16d2a7606c45cf43703a10a7de88e7a62bf48993",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-004_right.npz": "fd7cce073a1258f99c32fa43f78bcf5a5e748a0ae539cb54022fabef714caf1a",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-005_right.npz": "4063bbfb3ea29bec53d1b44ea630e3b11d73d573b234bfd7da0ed4ebaf0228a8",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-006_right.npz": "2da974e125de8d1f692136dcde5573cb76eda4cfb3f07fc17eabbb9aa3696433",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-007_left.npz": "256847edc5e21610651633f95619ecae6c387f8804b7971153c797c5bd223b62",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-008_left.npz": "a4a7ce9dc654f4e7ff1d772301c0833f178b28906af530cd6dabb7a49780e771",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz": "f7f4af14f11a7aa02c9cf92c2e4acfe6271dba14f31ee1335036e0344817d222",
+    "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz": "a031b43fcabd48edb3a1c9cf1f2d346e3928f50133a4d48d4024fa6d919b075b",
+    "third_party/HumanoidSoccer/motions/soccer-stylized/football_stylized-001_right.npz": "1d50e71778fdc0715b347c4d35c3459a740e8bb77519458db07c7404008eb9f4",
+    "third_party/HumanoidSoccer/motions/soccer-stylized/football_stylized-002_right.npz": "99af6d33eaacdc811a81fca57b256e43fe81a9c97d38aa3a43acf1c7555c2784",
+    "third_party/HumanoidSoccer/motions/soccer-stylized/football_stylized-003_right.npz": "5c28f80bf51caa2d0af2ec80ed6c7817190c2c155d5b8eccab8e2c3fb59240fb"
+  },
+  "clip": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz",
+  "selection": "First numbered standard reference by filename, one trial, no seed sweep or residual controls. Fixed historical scene from configs/targeted_shooting_v1.json.",
+  "ball_initial_xyz_m": [
+    0.14,
+    -0.93,
+    0.113
+  ],
+  "goal_xyz_m": [
+    0.0,
+    -3.7,
+    0.11
+  ],
+  "goal_forward_xy": [
+    0.0,
+    -1.0
+  ],
+  "goal_width_height_m": [
+    1.6,
+    1.1
+  ],
+  "ball_radius_m": 0.11,
+  "ball_mass_kg": 0.43,
+  "ball_surface": [
+    0.7,
+    0.55,
+    0.3
+  ],
+  "robot_and_ground_surface": [
+    1.0,
+    1.0,
+    0.0
+  ],
+  "gravity_w_mps2": [
+    0,
+    0,
+    -9.81
+  ],
+  "physics_dt_s": 0.005,
+  "control_dt_s": 0.02,
+  "duration_s": 14.0,
+  "post_clip_reference": "hold last available frame through 14 s with ONNX recurrent state continuous",
+  "initial_state": "Use raw frame0 root pose, body linear/angular velocity and joint q/dq once; stationary ball. Ground is infinite plane at z=0.",
+  "controller": "Released ONNX CPU only, zero initial h,c and previous action, 29 named position setpoints from exported default/scale. No fine-tuning, artificial ball impulses or mid-run state resets.",
+  "asset_conversion": "Headless URDF strips visual tags, reproduces configured cylinder->capsule conversion, retaining radius/length/origin. Fixed links are kept by SAPIEN. Explicit stiffness/damping/armature mapped from upstream G1 drive groups; the exported ONNX metadata has rounded gains. URDF physical effort and velocity bounds and q limits enforced; qdot/position excess measured independently. No posthoc projection of the original PD targets.",
+  "reference_inventory": "Validate all finite 50Hz T\u00d729/T\u00d730 fields, release asset SHA, side, named schema, FK position/orientation on every frame using original URDF and historical Isaac order; no body labels embedded in NPZ.",
+  "fk_max_position_tolerance_m": 0.0001,
+  "fk_max_angle_tolerance_rad": 0.001,
+  "numerical_stop": "Stop on nonfinite physical values; record physical threshold crossings and continue a finite trajectory for the prespecified full horizon, including post-failure states, no respawn.",
+  "tracking_metrics": "200 Hz linear interpolation of q,dq and world body position, 50 Hz endpoints exactly on source grid; report joint RMSE, source-root-aligned body geometry and world root error separately; body rotations/PX link measurements, loaded-foot contact-point material speed and ankle-origin horizontal speed distinguished.",
+  "physical_events": "State interval indexed after native CPU step; first actual >2N right/any ball link, exported ball movement/goal, q/qdot limit exceedance, nonfoot >20N, root<0.45 or tilt>60deg; record full trace even if earlier falls. CPU contact normals are used only for endpoint-native loads, no original-USD instep surface certification.",
+  "success_scope": "CPU source-tracking evidence only: report actual motion duration, fall, contact and measured tracking errors; no signed claim about USD safety, unseen motions, naturalness, or KineticMimic new actuation.",
+  "python_for_onnx": "/home/you/conda_env/env_isaaclab/bin/python",
+  "python_for_cpu_physics": "/home/you/conda_env/maniskill/bin/python",
+  "tracking_links": [
+    "pelvis",
+    "left_hip_roll_link",
+    "left_knee_link",
+    "left_ankle_roll_link",
+    "right_hip_roll_link",
+    "right_knee_link",
+    "right_ankle_roll_link",
+    "torso_link",
+    "left_shoulder_roll_link",
+    "left_elbow_link",
+    "left_wrist_yaw_link",
+    "right_shoulder_roll_link",
+    "right_elbow_link",
+    "right_wrist_yaw_link"
+  ],
+  "observer": "Native actor and shape identifiers, world contact position/normal/impulse/separation, 200Hz post-step samples. Material-point slip uses post-step measured rigid twist at manifold position."
+}
