@@ -76,6 +76,11 @@ def make_controller(ref, schema, config):
         root[:3,3] = ctx['root_pos'] + ctx['root_velocity'][:3]*lead
         rot = Rotation.from_quat(ctx['root_quat'][[1,2,3,0]])
         root[:3,:3] = (Rotation.from_rotvec(ctx['root_velocity'][3:]*lead)*rot).as_matrix()
+        if 'landing_duration_s' in config:
+            grounded = smooth((phase-.19)/config['landing_duration_s'])
+            desired[2] += grounded*(.02-desired[2])
+            outward = outward*(1.-grounded) + np.array([0.,0.,1.])*grounded
+            outward /= np.linalg.norm(outward)
         seed = ctx['q'][idx] if previous is None else previous
         q = solve_point(leg, root, seed, point, normal, desired, outward)
         previous = q.copy()
@@ -83,6 +88,12 @@ def make_controller(ref, schema, config):
             approach = smooth((phase+.115)/.075) * smooth((.125-phase)/.08)
             if ctx['foot_load'][0] >= 80.:
                 q[0] = np.clip(q[0]-approach*config['hip_drive_rad'],*leg.limits[0])
+        if config.get('hip_safety') and phase > .090:
+            # During follow-through, abduct the lifted thigh as its pitch closes on the pelvis.
+            strength = smooth((phase-.090)/.080)
+            hip_guard = -.95 if q[1] > .18 else -1.25
+            q[0] += strength * max(hip_guard-q[0], 0.)
+            q[1] -= strength * max(q[1]-.04, 0.)
         weight = smooth((t-begin)/(full-begin))*smooth((end-t)/(end-hold))
         result = target.copy()
         result[idx] += weight*(q-result[idx])
