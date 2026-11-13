@@ -1,0 +1,8 @@
+{
+  "module": "v161_recovery_lqr",
+  "feedback_file": "experiments/v161_lqr/fit1/lqr.npz",
+  "feedback_sha256": "2c4ddcc0aa12e80e14cc72ae625608b1b0d1ddb7a3c28b0024cf310db6039e79",
+  "gain": 0.5,
+  "max_delta": 0.5,
+  "start_s": 4.5
+}

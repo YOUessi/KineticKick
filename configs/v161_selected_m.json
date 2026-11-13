@@ -1,0 +1,22 @@
+{
+  "module": "v161_strike_search",
+  "selection": "highest feasible development merit in this seed, before complete run",
+  "search_file_sha256": "870dea78554b7351d0e4bf9df87a5c70904efecedacf1b54ec3d4c6aa4616f38",
+  "generation": 11,
+  "candidate": 12,
+  "coefficients": [
+    -0.49918137636225224,
+    -0.12966463050258545,
+    0.4704979920493537,
+    0.538815723173846,
+    0.18409978420318443,
+    -0.5260369798705606,
+    -0.06063615691385678,
+    0.021884173538521404,
+    0.3009130445194937,
+    -0.013064956119576941,
+    0.19756660796053666,
+    0.05126017301935667
+  ],
+  "backswing_pitch_target_cap": 1.6
+}
