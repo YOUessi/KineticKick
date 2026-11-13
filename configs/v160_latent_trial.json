@@ -1,0 +1,125 @@
+{
+  "version": "0.1.160",
+  "study": "W3-A 200 ms causal whole-body reference forecasting",
+  "past_frames": 8,
+  "future_frames": 10,
+  "reference_hz": 50,
+  "train_stride": 2,
+  "evaluation_stride": 10,
+  "training_seeds": [
+    16001,
+    16002,
+    16003
+  ],
+  "steps": 180,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "kl_weight": 0.005,
+  "latent_dim": 8,
+  "hidden_width": 64,
+  "mean_selection": "final finite checkpoint at 180 updates; separately report validation and frozen test",
+  "num_cpu_threads": 1,
+  "rollout_conditions": "Only last 8 observed reference poses in a last-observed-pelvis frame; source kick_leg left/right if recorded in PAiD, two zeros for unknown CMU. No absolute time, source ID, future measured states, force, ball, physical outcomes or inferred contact.",
+  "outputs": "Future 10 frames at 50 Hz, observed-endpoint anchored 29 joints, pelvis translation and incremental SO(3) rotvec; disjoint target intervals in evaluation.",
+  "normalization": "Unweighted per-channel training-window statistics only; float64 means/std, context std floor 0.05, target std floor 0.025 SI.",
+  "paired_budget": "Identical training sample traces, Adam updates, batch size, split and normalized MSE. Nonlatent MLP hidden width chosen deterministically by nearest total trainable parameter count incl. CVAE posterior; count inference params separately.",
+  "primary": "Mean absolute joint error (radians), mean over targets/joints, then equal weighting of complete clips, then independent model seeds. Infer from context at conditional-prior mean, no posterior.",
+  "comparisons": [
+    "matched_parameter_deterministic_mlp",
+    "last_pose_hold",
+    "constant_last_step_velocity_with_SO3_geodesic",
+    "reverse_history_order_around_last",
+    "zero_latent",
+    "permute_prior_codes_between_scored_windows_within_clip",
+    "fixed_seed_samples_and_antithetic_latent_interpolation"
+  ],
+  "latent_checks": "Effector role groups from recorded kick_leg; unknown CMU uses anatomical left/right. Report pose/velocity limit violations and any new violation relative to same ground truth; fixed 1 mrad descriptive threshold on antithetic difference per group over 3 consecutive output frames. No torques, physics approval or human contact labels.",
+  "parameter_or_outcome_hypothesis": "Only count support for a joint-forecast benefit when mean per-clip test MAE is lower than both the paired equal-parameter MLP and stronger of hold/constant-velocity for every seed. Report test clip and seed counts. Improved offline MAE and diversity alone never certify physical generalization.",
+  "assets": {
+    "runtime_joint_and_body_schema": "reports/paid_physics_parity_clean_paid.json",
+    "runtime_joint_and_body_schema_sha256": "b86001e42f45e316593e3e538e0c4dcbf94473bbfc12362e16a1c197a0e78ff6",
+    "urdf": "configs/paid_original/main.urdf",
+    "urdf_sha256": "dbc8471004e9b0b85c27a4ebc1f0d90a727c1cf7ca9ef507b805596f2004d64b"
+  },
+  "sources": {
+    "paid": {
+      "lineage": "PAiD G1 retargets in TeleHuman/HumanoidSoccer revision e72e470230047dedaf66df0983f1d0ab746faeb5; source performer IDs and contact times unavailable",
+      "kind": "robot_retarget_reference",
+      "paths": {
+        "soccer-standard-001_right": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz",
+        "soccer-standard-002_left": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-002_left.npz",
+        "soccer-standard-003_left": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-003_left.npz",
+        "soccer-standard-004_right": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-004_right.npz",
+        "soccer-standard-005_right": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-005_right.npz",
+        "soccer-standard-006_right": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-006_right.npz",
+        "soccer-standard-007_left": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-007_left.npz",
+        "soccer-standard-008_left": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-008_left.npz",
+        "soccer-standard-009_right": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-009_right.npz",
+        "soccer-standard-010_right": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-010_right.npz",
+        "football_stylized-001_right": "third_party/HumanoidSoccer/motions/soccer-stylized/football_stylized-001_right.npz",
+        "football_stylized-002_right": "third_party/HumanoidSoccer/motions/soccer-stylized/football_stylized-002_right.npz",
+        "football_stylized-003_right": "third_party/HumanoidSoccer/motions/soccer-stylized/football_stylized-003_right.npz"
+      },
+      "hashes": {
+        "soccer-standard-001_right": "183c0a2c3bd3ef2e15ac3e0b5766f76015dec2bcf400bf83a1dc961bb370d19a",
+        "soccer-standard-002_left": "9f016b2bdca31744d140e6e8e81643313271e70765d1930c44e1cf804f0619d3",
+        "soccer-standard-003_left": "8e578d728348d4cee318e93d16d2a7606c45cf43703a10a7de88e7a62bf48993",
+        "soccer-standard-004_right": "fd7cce073a1258f99c32fa43f78bcf5a5e748a0ae539cb54022fabef714caf1a",
+        "soccer-standard-005_right": "4063bbfb3ea29bec53d1b44ea630e3b11d73d573b234bfd7da0ed4ebaf0228a8",
+        "soccer-standard-006_right": "2da974e125de8d1f692136dcde5573cb76eda4cfb3f07fc17eabbb9aa3696433",
+        "soccer-standard-007_left": "256847edc5e21610651633f95619ecae6c387f8804b7971153c797c5bd223b62",
+        "soccer-standard-008_left": "a4a7ce9dc654f4e7ff1d772301c0833f178b28906af530cd6dabb7a49780e771",
+        "soccer-standard-009_right": "f7f4af14f11a7aa02c9cf92c2e4acfe6271dba14f31ee1335036e0344817d222",
+        "soccer-standard-010_right": "a031b43fcabd48edb3a1c9cf1f2d346e3928f50133a4d48d4024fa6d919b075b",
+        "football_stylized-001_right": "1d50e71778fdc0715b347c4d35c3459a740e8bb77519458db07c7404008eb9f4",
+        "football_stylized-002_right": "99af6d33eaacdc811a81fca57b256e43fe81a9c97d38aa3a43acf1c7555c2784",
+        "football_stylized-003_right": "5c28f80bf51caa2d0af2ec80ed6c7817190c2c155d5b8eccab8e2c3fb59240fb"
+      },
+      "train": [
+        "soccer-standard-001_right",
+        "soccer-standard-002_left",
+        "soccer-standard-003_left",
+        "soccer-standard-004_right",
+        "soccer-standard-005_right",
+        "soccer-standard-006_right",
+        "football_stylized-001_right",
+        "football_stylized-002_right"
+      ],
+      "validation": [
+        "soccer-standard-007_left",
+        "soccer-standard-009_right"
+      ],
+      "test": [
+        "soccer-standard-008_left",
+        "soccer-standard-010_right",
+        "football_stylized-003_right"
+      ]
+    },
+    "cmu": {
+      "lineage": "Separate W2 generated full-length 50 Hz robot reference files, derived from CMU human full-body geometry. Candidate-geometry source, independent target annotator absent; precise impact/force unavailable. Re-score no PAiD weights on CMU: fit separate models on training subject.",
+      "kind": "robot_retarget_reference_weak",
+      "relative_root": "experiments/v160_human",
+      "manifest": "manifest.json",
+      "source_subjects": {
+        "10_01": "10",
+        "10_02": "10",
+        "10_03": "10",
+        "10_05": "10",
+        "10_06": "10",
+        "11_01": "11"
+      },
+      "train": [
+        "10_01",
+        "10_02",
+        "10_03",
+        "10_05"
+      ],
+      "validation": [
+        "10_06"
+      ],
+      "test": [
+        "11_01"
+      ]
+    }
+  }
+}
