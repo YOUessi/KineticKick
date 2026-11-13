@@ -1,0 +1,13 @@
+{
+  "version":"0.1.162",
+  "source_baseline":"v0.1.161 final, commit 89f167c, original PAiD 001 + released policy and inverse-dynamics recovery",
+  "design":"Optimize the swing foot together with earlier support-knee and ankle planning, using the same freely floating PhysX CPU plant, native contact, original shapes and original actuator limits. Physics state after initialization may only be advanced by scene.step. Development search restores a fixed preintervention CPU/recurrent snapshot between candidates; confirmation starts each episode from the unmodified original reference.",
+  "primary":"Complete unaltered 14s v161 independent audit, both right-instep proxy fractions >=0.95. Historical vertical posture on first loaded right-foot sample AND normal-impulse-weighted whole shot (toe -world_z >= cos(15deg); dorsal local+z dot horizontal initial ball-to-goal direction >=0.90), and minimum 15mm-padded 8-corner clearance >=0.01m over [first-0.040,first+0.020] sampled every5ms.",
+  "strict_history":"Timestamp-primary foot orientation is measured after the 5ms contact bin, matching old event foot_quat_w. Pre-step orientation sensitivity and all right-foot positive normal impulses also reported. Independently classify the signed-gap-corrected foot-surface witness at both pre/post foot poses. Keep all episodes, other-body contacts and late touches.",
+  "development":"Centre: ball [0.14,-0.93,0.113], goal [0,-3.7,0.11]. Seed all changes from frozen v161_final; finite CPU candidates and positive/negative metrics stored. No contact/position/time hand selection. Run 14s with recovery on selected validation candidates. Evaluate whole-chain improvement separately for any partial-pose result.",
+  "held_out_offsets_m":[[-0.013,0.007],[0.009,0.015],[0.006,-0.016]],
+  "holdout_usage":"Lock one controller before evaluators inspect the three independently named offsets. These are new v162 cases, small neighbourhood, not a distributional generalization claim. Include all three in the denominator.",
+  "historical_controls":["reports/2026-11-04-vertical-instep.md","reports/2026-11-07-learned-post-shot-recovery.md"],
+  "historical_interpretation":"The old 87.7deg was in air, first real contact 14deg. The v32 centre struck with genuine dorsum in another ball/initial state, not a 75-degree proof. Distributed leg and plant geometry may permit a higher material velocity and a different posture under the same scene and real ball.",
+  "development_budget_initial":{"generations":6,"population":18,"seeds":[162481,162493,162509],"early_stop_when_fully_qualified":true}
+}
