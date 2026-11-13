@@ -107,7 +107,7 @@ def main():
                 if last_loaded and not load:exit_xy=ball.linear_velocity[:2].copy()
                 last_loaded=load
         if first is None or impulse==0 or exit_xy is None:
-            return dict(merit=-25.-5.*min(foot_ranges)-min(5.,peak_other/40),first=None,nonfoot_N=peak_other)
+            return dict(merit=float(-25.-5.*min(foot_ranges)-min(5.,peak_other/40)),first=None,nonfoot_N=peak_other)
         ae=np.asarray(poses);offs=ae[:,0]-first;i=np.where(offs==0)[0][0];ds=ae[:,1]-ae[i,1]
         relative=ds-(ae[:,2]-ae[i,2]);window=(offs>=0)&(offs<=50);adv=max(ds[window]);rel=max(relative[window])
         v=(ae[4:,1]-ae[:-4,1])/.020
