@@ -84,6 +84,7 @@ def main():
             request('restore')
             previous=previous_action.copy()
         after_xy=None; began=False; down=0.; back=0.; was=False; late=False; pos_history=[]; last_foot=0.
+        crossing_x=None
         good_post=0.; outward_score=0.
         j_all=j_good=0.; aligned=0.;gap=1.;nonfoot=0.;ct=None;foot0=None;advance=0.;reladvance=0.;follow_v=0.;prev_p=None;lowest=2.;limit_ex=-np.inf
         targets_now=targets[onset:end].copy()
@@ -107,6 +108,12 @@ def main():
                     gap=norm;near_alignment=float(np.dot(axis,dist/max(1e-6,norm)))
                 loaded=False
                 scene.step()
+                if crossing_x is None:
+                    post_ball=ball.entity.pose.p
+                    plane_y=cfg['goal_xyz_m'][1]
+                    if pre_ball[1]>=plane_y>post_ball[1]:
+                        alpha=(plane_y-pre_ball[1])/(post_ball[1]-pre_ball[1])
+                        crossing_x=float(pre_ball[0]+alpha*(post_ball[0]-pre_ball[0]))
                 q=robot.qpos[order];limit_ex=max(limit_ex,np.max(limits[:,0]-q),np.max(q-limits[:,1]))
                 lowest=min(lowest,robot.root_pose.p[2])
                 for c in system.get_contacts():
@@ -158,7 +165,7 @@ def main():
                 merit-=16*max(0,.99-sh)+min(3.,400*max(0.,.003+limit_ex))
                 merit-=min(2.,nonfoot/10)+1.2*late
         if ct is None:merit=-3-4*gap+near_alignment-min(1.5,nonfoot/40)
-        return dict(backswing_pitch_target_cap=a.pitch_cap,merit=float(merit),instep=share,alignment=alignment,out_forward=speed,lateral=float(v[0]),nonfoot=float(nonfoot),min_z=float(lowest),advance=float(advance),relative=float(reladvance),v120=float(follow_v),excess=float(limit_ex),instep_post=good_post/max(1e-9,j_all),return_speed=float(back),late_contact=late,release_xy=None if after_xy is None else after_xy.tolist(),contact=ct)
+        return dict(crossing_x=crossing_x,backswing_pitch_target_cap=a.pitch_cap,merit=float(merit),instep=share,alignment=alignment,out_forward=speed,lateral=float(v[0]),nonfoot=float(nonfoot),min_z=float(lowest),advance=float(advance),relative=float(reladvance),v120=float(follow_v),excess=float(limit_ex),instep_post=good_post/max(1e-9,j_all),return_speed=float(back),late_contact=late,release_xy=None if after_xy is None else after_xy.tolist(),contact=ct)
     if a.service:
         print('ready',flush=True)
         for line in sys.stdin:

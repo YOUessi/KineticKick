@@ -316,6 +316,8 @@ def run(assets, output, config, schema, metadata, act, *, controller_factory=Non
                     com=np.average(com_points,axis=0,weights=masses),
                     com_velocity=np.average([link.linear_velocity for link in com_links],axis=0,weights=masses),
                     default_q=gains['default_joint_pos'].copy(), limits=limits.copy())
+                if 'shot_speed_mps' in config:
+                    ctx.update(shot_speed_mps=config['shot_speed_mps'],aim_x_m=config['aim_x_m'])
                 target=np.asarray(control(ctx,target.copy()),dtype=float)
                 if target.shape!=(29,) or not np.isfinite(target).all():
                     raise ValueError('Controller must return 29 finite joint targets')

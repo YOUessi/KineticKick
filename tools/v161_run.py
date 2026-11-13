@@ -31,6 +31,8 @@ def main():
     refs=cli.add_mutually_exclusive_group()
     refs.add_argument('--clip')
     refs.add_argument('--reference-file',type=Path,help='Complete human-derived 50 Hz G1 trajectory with named axes')
+    cli.add_argument('--shot-speed',type=float,help='Requested horizontal exit speed in m/s')
+    cli.add_argument('--aim-x',type=float,help='Requested world X at the original goal plane')
     cli.add_argument('--duration', type=float, default=14.)
     cli.add_argument('--ball-offset', nargs=2, type=float, default=[0.,0.], metavar=('X','Y'))
     cli.add_argument('--ball-velocity', nargs=2, type=float, default=[0.,0.], metavar=('VX','VY'),
@@ -39,6 +41,14 @@ def main():
     cfg = json.loads(base.PROTOCOL.read_text())
     if not 0 < args.duration <= 14 or not np.isclose(args.duration*50,round(args.duration*50)):
         raise ValueError('Duration must consist of whole policy steps up to 14 seconds')
+    if (args.shot_speed is None)!=(args.aim_x is None):
+        raise ValueError('Specify both shot speed and goal-plane X')
+    request={}
+    if args.shot_speed is not None:
+        if not np.isfinite([args.shot_speed,args.aim_x]).all() or args.shot_speed<=0 or abs(args.aim_x)>cfg['goal_width_height_m'][0]/2-cfg['ball_radius_m']:
+            raise ValueError('Invalid target speed or goal-plane X')
+        request={'shot_speed_mps':args.shot_speed,'aim_x_m':args.aim_x}
+        cfg.update(request)
     cfg['duration_s'] = args.duration
     if args.clip is not None:
         if args.clip not in cfg['motion_sha256']:
@@ -77,7 +87,7 @@ def main():
     base.save_json(args.output/'trial.json',dict(
         git_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=base.REPO,text=True).strip(),
         runtime_code_sha256=base.digest(Path(base.__file__)),runner_sha256=base.digest(Path(__file__)),
-        controllers=[c[2] for c in controls], duration_s=args.duration, **external,
+        controllers=[c[2] for c in controls], duration_s=args.duration, **external, **request,
         ball_initial_velocity_xy_mps=cfg['ball_initial_velocity_xy_mps'],
         ball_initial_xyz_m=cfg['ball_initial_xyz_m'],clip=cfg['clip']))
     def factory(ref,schema):
