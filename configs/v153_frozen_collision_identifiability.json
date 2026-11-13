@@ -1,0 +1,58 @@
+{
+  "version": "v0.1.153",
+  "parent_sha": "cda3b6e62a9d99c05842d201574c83585b1f2584",
+  "source_protocol_sha256": "add8693911cdd2489f3fb944adb77698238ddca50f14867a2a388b31eaeeeefa",
+  "historical_sha256": {
+    "frozen_v32": "f7a130707fdb761d7f7185d6805f4887d4ca929fec8965bfd35ae13d6666e01c",
+    "cmu_10_02": "e197cf6807709e077fa5cfd2b2582bf988dd1437f249bd61addf7835a7d2b255",
+    "cmu_10_05": "d46a48f84dbaa7a367eac3e5dc399d4378007485c369c2b57c1c67775ccbfac1"
+  },
+  "expected_historical_rows": {
+    "frozen_v32": 2800,
+    "cmu_10_02": 2800,
+    "cmu_10_05": 1028
+  },
+  "original_g1_dof": 29,
+  "physics_dt_s": 0.005,
+  "named_body_event_time_s": 5.145,
+  "peak_nonfoot_trace_time_s": 5.135,
+  "last_real_trace_time_s": 5.14,
+  "nonfoot_body_pair": [
+    "left_wrist_yaw_link",
+    "left_hip_roll_link"
+  ],
+  "matrix": {
+    "directions": 24,
+    "scales": [
+      0.25,
+      1,
+      2
+    ],
+    "contact_graphs": [
+      "direct",
+      "two_to_third",
+      "two_to_world",
+      "split_paths"
+    ],
+    "total": 288
+  },
+  "max_net_force_residual_N": 1e-10,
+  "min_disk_free_gib_for_gpu": 20,
+  "gpu_triggers_prohibited_when_foreign_context": true,
+  "no_new_physx_claim": true,
+  "no_native_pair_or_manifold_truth_claim": true,
+  "no_inference_from_equal_opposite_net_forces": true,
+  "no_same_step_attribution_across_time_gap": true,
+  "no_use_of_post_termination_as_physical_sample": true,
+  "no_original_asset_or_evidence_modification": true,
+  "write_once_local_outputs": true,
+  "strict_kick_gate": {
+    "instep_fraction_min": 0.95,
+    "ball_speed_min_mps": 3.5,
+    "all_joint_velocity_limits": true,
+    "nonfoot_zero": true,
+    "full_recovery_seconds": 14
+  },
+  "independent_audit_required": true,
+  "data_truth_level": "HISTORICAL_PHYSX_NET_CONTACT_DIAGNOSTICS_NOT_NATIVE_COLLIDER_PAIRS"
+}
