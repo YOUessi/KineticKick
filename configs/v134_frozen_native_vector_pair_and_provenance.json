@@ -1,0 +1,49 @@
+{
+  "version": "v0.1.134",
+  "parent_sha": "521861d6edb807c71968fc640f975614ea5a10e3",
+  "physics_hz": 200,
+  "physical_dt_s": 0.005,
+  "original_dof": 29,
+  "historical_original_g1_steps": {
+    "frozen_v32": 2800,
+    "cmu_10_02": 2800,
+    "cmu_10_05": 1028
+  },
+  "nvidia_contact_doc_date": "2026-07-23",
+  "nvidia_contact_doc_url": "https://docs.omniverse.nvidia.com/kit/docs/omni_physics/latest/extensions/runtime/source/omni.physx/docs/dev_guide/contact_reports.html",
+  "schema_errors_under_test": [
+    "impulse_is_vector_not_scalar",
+    "header_num_contact_data",
+    "stage_id_int_or_single_item_array",
+    "lost_event_zero_manifold",
+    "contact_slice_nonoverlap",
+    "unknown_owner_fail_closed",
+    "exact_same_step_29dof",
+    "callback_buffer_copy",
+    "off_on_trajectory_equality"
+  ],
+  "review_pair_links": [
+    [
+      "left_wrist_yaw_link",
+      "left_hip_roll_link"
+    ],
+    [
+      "left_shoulder_roll_link",
+      "torso_link"
+    ]
+  ],
+  "strict_kick_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "nonfoot_force_N_max": 20,
+    "all_original29_joint_velocities": true,
+    "must_score": true,
+    "recovery_horizon_s": 14
+  },
+  "no_unqualified_human_motion_claim": true,
+  "never_issue_motor_command_in_offline_tool": true,
+  "never_certify_native_pair_from_fake_callback": true,
+  "native_test_rollouts_while_foreign_gpu_busy": 0,
+  "no_edit_existing_isaac_or_evidence": true,
+  "negative_results_retained": true
+}
