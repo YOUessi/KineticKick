@@ -1,0 +1,53 @@
+{
+  "version": "v0.1.162",
+  "scope": "Observed 10_02 training clip only, two completed physical baseline failures. Only right wrist capsule vs right hip capsule, measured initial overlap on both references and first 5ms native contact witness. Do not generalize to held-out subject or other self contact.",
+  "input_sha256": "f186b25a6abb7f0f52e8cb131a45cef9ea717efc652579ed58466204ac3a83f4",
+  "urdf": "configs/paid_original/paid_main_resolved.urdf",
+  "urdf_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "schema": "reports/paid_physics_parity_clean_paid.json",
+  "safe_reference": "third_party/HumanoidSoccer/motions/soccer-standard/soccer-standard-001_right.npz",
+  "safe_reference_sha256": "183c0a2c3bd3ef2e15ac3e0b5766f76015dec2bcf400bf83a1dc961bb370d19a",
+  "links": [
+    "right_wrist_yaw_link",
+    "right_hip_roll_link"
+  ],
+  "arm_joints": [
+    "right_shoulder_pitch_joint",
+    "right_shoulder_roll_joint",
+    "right_shoulder_yaw_joint",
+    "right_elbow_joint",
+    "right_wrist_roll_joint",
+    "right_wrist_pitch_joint",
+    "right_wrist_yaw_joint"
+  ],
+  "clearance_m": 0.012,
+  "direction_weights": [
+    1.2,
+    0.9,
+    1.2,
+    1.2,
+    0.7,
+    0.7,
+    1.2,
+    1.2,
+    0.7,
+    0.7,
+    1.0,
+    0.45,
+    0.35,
+    0.15,
+    1.0,
+    0.45,
+    0.35,
+    0.15
+  ],
+  "pose_weight": 0.3,
+  "diff1_weight": 1.5,
+  "diff2_weight": 3.0,
+  "damping": 0.002,
+  "max_step_rad": 0.18,
+  "velocity_fraction": 0.985,
+  "iterations": 4,
+  "registration": "Fixed one full-length seven-joint trajectory correction, clearance 12mm on all native 50Hz reference samples between original G1 right wrist/right hip capsules. Optimize anatomical direction, articulation and temporal continuity of the arm; all legs/waist/pelvis and support generation frozen. One same-scene 14s released PAiD rollout with no recovery/strike overlays. No baseline or held-out reruns. Preserve failure even if first true collision delayed but tracking worsens.",
+  "readout": "First 5 ms native wrist/hip force and any nonfoot; first subsequent >20N, fall by root<0.45 or tilt>60\u00b0, survival vs v160+v162 pair, foot-bounds unchanged, 50Hz geometric clearance and anatomical direction error. Default ball remained >20cm from feet even along the ideal references; exact hit and athletic implications untested."
+}
