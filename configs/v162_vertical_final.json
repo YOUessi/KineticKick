@@ -1,0 +1,22 @@
+{
+  "controller": "configs/v162_vertical_hold_strong.json",
+  "controller_sha256": "613fd048e6694cfa4ad3476a9e930ad673cac083832d17d884b61a865079a7d1",
+  "recovery": "configs/v161_recovery_support.json",
+  "development_centre": "experiments/v162_vertical/full_hold_strong",
+  "selection": "Freeze before any held-out trajectories. Among full 14s near-vertical candidates satisfying every v161 physical gate and both original-rule foot witness assays, this has the most passed historical posture subcriteria, including actual first-loaded toe>=75deg, and largest angle measured at first loaded sample. Weighted angle fell short. Distinguish highest all-impulse-weighted fully legal candidate hold_best (72.873deg) from hold_strong (72.748deg).",
+  "held_out_offsets_m": [
+    [
+      -0.013,
+      0.007
+    ],
+    [
+      0.009,
+      0.015
+    ],
+    [
+      0.006,
+      -0.016
+    ]
+  ],
+  "verdict": "Require original strict checks for all new balls; report misses with the same controller and score."
+}
