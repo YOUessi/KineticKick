@@ -1,0 +1,72 @@
+{
+  "version": "v0.1.155",
+  "parent_sha": "2f9a09183196c59bda3e47a527551a20a9a96c67",
+  "source": "CPU-only fixed experiment; not actual G1 GRF/CoP/human expertise or PhysX",
+  "dt_s": 0.005,
+  "original_joint_count": 29,
+  "floating_base_dim": 6,
+  "stance_jacobian_rows_per_foot": 6,
+  "patch_points_per_foot": 4,
+  "per_point_force_dim": 3,
+  "fixture_half_length_m": 0.12,
+  "fixture_half_width_m": 0.045,
+  "fixture_mu": 0.65,
+  "phase_order": [
+    "approach",
+    "plant",
+    "coil",
+    "swing",
+    "followthrough",
+    "recover"
+  ],
+  "supports": [
+    "left",
+    "double"
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "positive_cases": 48,
+  "negative_kinds": [
+    "missing_runtime_provenance",
+    "unqualified_human_training",
+    "missing_ground_identity",
+    "missing_angular_jacobian",
+    "bad_corner_geometry",
+    "bad_normal",
+    "nonfinite_dynamics",
+    "wrong_original_joint_names",
+    "invalid_collider_gap",
+    "no_support",
+    "out_of_patch_roll_moment",
+    "bad_real_report"
+  ],
+  "negative_seed_support_denominator": 8,
+  "comparison": [
+    "v154_free_angular_point_stance",
+    "v155_six_axis_four_corners"
+  ],
+  "numerical_tolerance": 0.0005,
+  "gpu_allowed": false,
+  "old_evidence_read_only": true,
+  "write_once_outputs": true,
+  "all_29_qdot_torque_contact_safety_required": true,
+  "runtime_requirements": [
+    "physx_same_step_35d_mass_bias",
+    "contact_j6_and_jdotv6",
+    "measured_ground_only_signed_contact",
+    "sole_geometry_and_frame_calibrated",
+    "native_collision_geometry",
+    "per_sample_source_sha"
+  ],
+  "falsifiers": [
+    "gapped angular stance must be rejected",
+    "unrealizable CoP moment cannot pass",
+    "point foot cannot certify stable support",
+    "native callback unknown until real PhysX"
+  ],
+  "new_physx_episodes": 0
+}
