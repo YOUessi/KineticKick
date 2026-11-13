@@ -1,0 +1,82 @@
+{
+  "version": "v0.1.139",
+  "parent_version": "v0.1.138",
+  "parent_sha": "a3a119932978be7e18b3483e06add87bb89dbd9c",
+  "urdf_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "original_dof": 29,
+  "sample_period_s": 0.005,
+  "horizon_s": 14,
+  "reference_source": "v135 fixed engineering synthetic full-body shared latents; NOT skilled human, not motor commands",
+  "multipliers": [
+    0,
+    1,
+    2,
+    4,
+    -1
+  ],
+  "contact_proxy_time_s": 2.95,
+  "relative_right_minus_left_ankle_origin_x_targets_mps": [
+    0,
+    1,
+    3
+  ],
+  "relative_yz_targets_mps": [
+    0,
+    0
+  ],
+  "compact_halfwidths_s": [
+    0.4,
+    0.8,
+    1.2
+  ],
+  "basis_odd_powers": [
+    1,
+    3,
+    5,
+    7
+  ],
+  "basis_definition": "delta_q=sum_j c_j * W*s^(2j+1)*(1-s^2)^4 for |s|<1; 0 outside; analytic time derivatives and compact C2",
+  "original29_joint_position_hard_bounds": true,
+  "original29_joint_velocity_hard_bounds": true,
+  "research_only_qddot_screen_hard_rad_s2": 40,
+  "com_relative_to_virtual_left_ankle_center_speed_cap_mps": 0.1,
+  "arm_joint_center_qdot_change_cap_rad_s": 0.25,
+  "solver": "osqp",
+  "solver_eps_abs": 0.00001,
+  "solver_eps_rel": 0.00001,
+  "solver_max_iter": 20000,
+  "solver_polishing": true,
+  "quadratic_objective": {
+    "position_delta_weight": 1,
+    "velocity_delta_weight": 0.1,
+    "acceleration_delta_weight": 0.002,
+    "coefficient_ridge": 0.000001
+  },
+  "postsolve_max_absolute_position_violation_rad": 0.0003,
+  "postsolve_max_absolute_velocity_violation_rad_s": 0.0003,
+  "postsolve_max_absolute_acceleration_violation_rad_s2": 0.005,
+  "postsolve_max_center_task_velocity_residual_mps": 0.002,
+  "postsolve_max_com_center_velocity_violation_mps": 0.002,
+  "postsolve_max_arm_center_velocity_change_violation_rad_s": 0.002,
+  "kinematic_before_s": 0.4,
+  "kinematic_after_s": 1.25,
+  "urdf_capsule_warning_m": 0.02,
+  "required_grid_cells": 45,
+  "report_all_solver_failures": true,
+  "report_unseen_physics_as_unknown": true,
+  "motor_execution_authorized": false,
+  "native_contact_pair_certified": false,
+  "real_grf_or_cop_available": false,
+  "human_professional_instep_force_truth_available": false,
+  "actual_new_physx_rollouts": 0,
+  "strict_physics_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "legal_goal": true,
+    "all_29_qdot_legal": true,
+    "no_nonfoot_contacts": true,
+    "full_14s_recovery": true
+  },
+  "gpu_exclusion": "No Isaac/PhysX while v120 GPU pytest process occupies RTX4090; disk must have >=20GiB free",
+  "falsifiable_hypothesis": "Jointly optimize bounded whole-window C2 29DoF trajectory in one convex QP (not local velocity bump); report feasibility, all 45 positive/negative attempts, and full200Hz legal bounds independently. Linearized center ankle/COM does not certify floating-base GRF, torque, native contacts, human skill or shot."
+}
