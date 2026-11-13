@@ -38,10 +38,16 @@ def make_controller(ref, schema, config):
     normal = normal / np.linalg.norm(normal)
     ball_anchor = None
     previous = None
+    foot_history = []
+    foot = schema['body_names'].index('right_ankle_roll_link')
     arm = schema['joint_names'].index('left_shoulder_roll_joint')
     def control(ctx, target):
         nonlocal ball_anchor, previous
         t = ctx['t']
+        if 'return_velocity_gain' in config:
+            foot_history.append(ctx['body_pos'][foot].copy())
+            if len(foot_history)>2:
+                foot_history.pop(0)
         if 'arm_clearance_rad' in config and t > 2.44:
             start = smooth((t-2.44)/.20)
             release = smooth((4.10-t)/.28)
@@ -97,5 +103,17 @@ def make_controller(ref, schema, config):
         weight = smooth((t-begin)/(full-begin))*smooth((end-t)/(end-hold))
         result = target.copy()
         result[idx] += weight*(q-result[idx])
+        if ('return_velocity_gain' in config and ctx['first_contact_s'] is not None and
+            t-ctx['first_contact_s'] > .18 and len(foot_history) == 2 and ctx['foot_load'][1] < 80):
+            measured_speed = (foot_history[1]-foot_history[0])@forward / ctx['dt']
+            force = min(max(-config['allow_return_mps']-measured_speed,0.)*config['return_velocity_gain'],95.)
+            measured_root = root.copy()
+            measured_root[:3,3] = ctx['root_pos']
+            measured_root[:3,:3] = rot.as_matrix()
+            _, jac = leg.forward(ctx['q'][idx], measured_root)
+            # J^T along the goal axis, converted to a PD setpoint through the released gains.
+            ks = np.array([.01017752,.025101925,.01017752,.025101925,.00721945,.00721945])*(20*np.pi)**2
+            delta = np.clip(jac[:3].T@forward*force/ks,-.36,.36)
+            result[idx] = np.clip(result[idx]+delta,leg.limits[:,0],leg.limits[:,1])
         return result
     return control
