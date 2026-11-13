@@ -80,7 +80,7 @@ def main():
     weights=np.stack([residual_weights(t*.02) for t in range(onset,end)])
     def trial(coeff):
         system.unpack(snapshot)
-        if a.live: 
+        if a.live:
             request('restore')
             previous=previous_action.copy()
         after_xy=None; began=False; down=0.; back=0.; was=False; late=False; pos_history=[]; last_foot=0.

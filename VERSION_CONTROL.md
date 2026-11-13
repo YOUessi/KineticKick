@@ -537,3 +537,7 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 ## v0.1.160 — 首批全身跟踪、动作重定向与隐空间比较
 
 从 `version/v0.1.159` 的 `cb31d1136ce88b98330f30f70bc2f718aeea6220` 新建分支。PAiD 上游为 `TeleHuman/HumanoidSoccer@e72e470230047dedaf66df0983f1d0ab746faeb5`。原策略 ONNX SHA-256 为 `489711f8654faf8aba49584a39266a33a9068a8a6bc8122e88f2bc7f06739ab1`，Tang 的 G1 URDF 为 `34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761`。SAPIEN 3.0.3 CPU 物理使用 `maniskill` 环境，原 ONNX 通过持久的 Python 3.10 CPU 子进程执行。人体处理使用 NumPy 1.26.4、Pinocchio 2.7.0、ezc3d 1.7.2，PyTorch 2.10.0 的两组训练均在 CPU 执行。Tang 的原始资产、模型、原生流形、轨迹与 14 秒 MP4 在忽略目录中。源码、冻结协议、专项测试、质量限制和结果摘要随版本提交。[首批实验报告与复现入口](reports/2026-11-14-v160-kineticmimic-first-batch.md)
+
+## v0.1.161 — 物理脚面控制和全身恢复
+
+基于 95a1b25，继续使用 v160 冻结的 PAiD e72e470、官方 ONNX、SAPIEN 3.0.3 与本地 Pinocchio。确认使用可追溯到原 G1 的自由根模型，CPU 局部动力学搜索，原 29 轴的隐式驱动器命令和双支撑逆动力学。三个独立小球位通过，原 Isaac CUDA 和硬件仍待复核。原数据、权重、媒体与录制轨迹只保留在 Tang。[实验结果与数据分母](reports/2026-11-14-v161-instep-follow-through-recovery.md)
