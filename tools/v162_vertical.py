@@ -19,15 +19,20 @@ def envelope(t):
 
 def correction(t, params):
     early, strike, plant = envelope(t)
-    return np.r_[early*params[:6]+strike*params[6:12], plant*params[12:]]
+    joint = np.r_[early*params[:6]+strike*params[6:12], plant*params[12:18]]
+    if params.size == 24:
+        # A distinct pre-impact wave and its return can alter foot speed while preserving impact pose.
+        wave=np.interp(t,[2.23,2.30,2.365,2.43,2.49],[0,1,-.55,-.24,0.])
+        joint[:6] += wave*params[18:24]
+    return joint
 
 
 def make_controller(ref, schema, config):
     baseline=make_baseline(ref,schema,config)
     indices=layout(schema['joint_names'])
     params=np.asarray(config['vertical_parameters'],dtype=float)
-    if params.shape != (18,) or not np.all(np.isfinite(params)):
-        raise ValueError('Expected eighteen finite swing/support coefficients')
+    if params.shape not in ((18,), (24,)) or not np.all(np.isfinite(params)):
+        raise ValueError('Invalid swing, support or pre-impact coefficients')
     def control(ctx,target):
         target=baseline(ctx,target)
         target[indices]+=correction(ctx['t'],params)

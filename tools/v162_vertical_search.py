@@ -26,7 +26,8 @@ def main():
     p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,required=True)
     p.add_argument('--initial',type=Path);p.add_argument('--generations',type=int,default=6)
     p.add_argument('--population',type=int,default=18);p.add_argument('--spread',type=float,default=1.)
-    p.add_argument('--profile',choices=['feasible','pose','bridge'],default='feasible')
+    p.add_argument('--profile',choices=['feasible','pose','bridge','strict'],default='feasible')
+    p.add_argument('--speed-wave',action='store_true')
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     cfg=json.loads(base.PROTOCOL.read_text());original=json.loads(V161.read_text())
     assets=base.DEFAULT_ASSETS;schema=json.loads((assets/base.SCHEMA).read_text());names=schema['joint_names']
@@ -124,7 +125,15 @@ def main():
         penalty+=min(2.,200.*max(0.,.002+q_ex))+2.*max(0.,fast-1.)+8.*max(0.,.60-min_root)
         penalty+=.35*max(0.,back1-1.8)+.2*max(0.,back2-2.3)+1.3*late+2.*max(0,.22-adv)+2.*max(0,.15-rel)+.4*max(0,.6-v120)
         pose_merit=.08*min(77.,angle)+2.*min(.92,fwd)+25.*min(.014,clear)
-        if a.profile=='pose': score=pose_merit-.35*penalty
+        if a.profile=='strict':
+            deficit = (max(0.,75.-angle)/8. + max(0.,.90-fwd)/.075 +
+                       max(0.,3.57-speed)/.27 + max(0.,.97-share)/.10 +
+                       max(0.,heading-.17)/.09 + max(0.,.011-clear)/.009)
+            deficit += min(6.,peak_other/18.) + 2*wrong + min(6.,max(0.,q_ex-1e-6)*5e5)
+            deficit += max(0.,back1-1.9)*.75 + max(0.,back2-2.38)*.5 + .8*late
+            deficit += 3*max(0.,.22-adv)+4*max(0.,.15-rel)+max(0.,.60-v120)
+            score=12.-deficit + .011*angle + .10*min(4.4,speed)
+        elif a.profile=='pose': score=pose_merit-.35*penalty
         elif a.profile=='bridge':score=pose_merit-.70*penalty
         else:score=pose_merit-1.3*penalty
         return dict(merit=float(score),first=int(first),angle_deg=float(angle),first_deg=float(np.rad2deg(np.arcsin(np.clip(first_down,-1,1)))),
@@ -136,14 +145,17 @@ def main():
     if a.initial:mu=np.array(json.loads(a.initial.read_text())['vertical_parameters'])
     if not a.initial and a.profile=='pose':mu[[0,3,4,6,9,10,12,13,14]]=[.06,.42,.17,.04,.30,.26,-.22,.45,-.19]
     sd=a.spread*np.array([.23,.12,.17,.30,.3,.10,.18,.12,.18,.26,.21,.10,.16,.22,.14,.09,.12,.12])
+    if a.speed_wave:
+        if mu.size==18:mu=np.r_[mu,np.zeros(6)]
+        sd=np.r_[sd,a.spread*np.array([.55,.18,.22,.55,.40,.12])]
     def save(cfgpath,record):
         cfg={**original,'module':'v162_vertical','vertical_parameters':record['parameters'],'developed_on':'v162 fixed centre CPU only'}
         cfgpath.write_text(json.dumps(cfg,indent=2)+'\n')
     best=-np.inf
     with (a.output/'all.jsonl').open('x',buffering=1) as stream:
         for gen in range(a.generations):
-            xs=mu+rng.normal(size=(a.population,18))*sd;xs[0]=mu
-            if gen==0:xs[1]=np.zeros(18)
+            xs=mu+rng.normal(size=(a.population,len(mu)))*sd;xs[0]=mu
+            if gen==0:xs[1]=np.zeros_like(mu)
             results=[]
             for index,x in enumerate(xs):
                 row=dict(generation=gen,index=index,parameters=x.tolist(),**trial(x))
