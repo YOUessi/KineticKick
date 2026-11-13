@@ -47,5 +47,9 @@ def make_controller(ref, schema, config):
     def control(ctx,target):
         target=baseline(ctx,target)
         target[indices]+=correction(ctx['t'],params)
+        cap=config.get('impact_ankle_pitch_cap')
+        if cap is not None and 2.31 <= ctx['t'] <= 2.51:
+            # Cap the commanded ankle extension while the fast impact approaches the original hard stop.
+            target[indices[4]]=min(target[indices[4]],cap)
         return target
     return control
