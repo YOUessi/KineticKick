@@ -1,0 +1,72 @@
+{
+  "version": "v0.1.138",
+  "parent_version": "v0.1.137",
+  "parent_sha": "aabc122da8497583a8d1322185d7c8d8c96f7d70",
+  "urdf_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "original_dof": 29,
+  "sample_period_s": 0.005,
+  "horizon_s": 14,
+  "contact_proxy_time_s": 2.95,
+  "multipliers": [
+    0,
+    1,
+    2,
+    4,
+    -1
+  ],
+  "relative_swing_ankle_origin_x_mps": [
+    0,
+    1,
+    3
+  ],
+  "relative_swing_ankle_origin_yz_mps": [
+    0,
+    0
+  ],
+  "compact_bump_halfwidth_s": [
+    0.1,
+    0.2,
+    0.4
+  ],
+  "virtual_anchor_link": "left_ankle_roll_link",
+  "swing_link": "right_ankle_roll_link",
+  "com_velocity_relative_to_virtual_anchor_xyz_cap_mps": 0.1,
+  "arm_deviation_from_baseline_qdot_cap_rad_s": 0.25,
+  "original29_qdot_hard_box": true,
+  "min_change_solver": "scipy.optimize.minimize(method='SLSQP')",
+  "opt_ftol": 1e-10,
+  "opt_maxiter": 250,
+  "constraint_tolerance": 0.00002,
+  "bump_basis": "h(s)=s*(1-s^2)^4 for |s|<1; h'(s)=(1-s^2)^3*(1-9*s^2); h''(s)=-24*s*(1-s^2)^2*(1-3*s^2); zero otherwise",
+  "descriptive_acceleration_screen_rad_s2": 40,
+  "geometry_warning_m": 0.02,
+  "kinematic_window_before_s": 0.4,
+  "kinematic_window_after_s": 1.25,
+  "mandatory_physical_evidence_missing": [
+    "real floating base rotation",
+    "ground reaction force/CoP",
+    "true stance sole and slip",
+    "motor torques and joint accelerations dynamics limits",
+    "native synchronized actor/collider/contact manifold",
+    "real ball and genuine G1 instep contact",
+    "14s genuine recovery",
+    "human professional ground-truth sequences with GRF"
+  ],
+  "strict_real_physics_gates": {
+    "instep_impulse_fraction_min": 0.95,
+    "ball_speed_mps_min": 3.5,
+    "no_nonfoot_contacts": true,
+    "original29_qdot_legal": true,
+    "full_14s_recovery": true,
+    "legal_goal": true
+  },
+  "physical_experiment_policy": "No new IsaacLab/PhysX while v120 pytest is active on GPU; available disk must remain >20GiB.",
+  "falsification_plan": "5 prior frozen 29DoF engineering reference amplitudes x 3 ankle-origin target speeds = 15 SLSQP seeds, x3 C2 compact halfwidths =45 14s candidates; report solver failures and full 200Hz joint violations separately; audit pre -0.4s/post +1.25s stance-relative geometry COM and wrists; no tuning on v54 failed trajectory.",
+  "mandatory_fail_closed": true,
+  "motor_execution_authorized": false,
+  "real_grf_available": false,
+  "native_pair_truth_available": false,
+  "professional_human_instep_learned": false,
+  "actual_new_physx_rollouts": 0,
+  "freeze_sources": "v135 generator and v137 analytic COM/Jacobian and original paid G1 URDF are SHA locked; do not alter predecessor code or source evidence."
+}
