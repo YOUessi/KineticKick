@@ -1,0 +1,70 @@
+{
+  "version": "v0.1.162",
+  "registration": "Run the same solver once on 4 design clips then one same-subject validation and one repeated subject-disjoint test clip, with frozen weights, geometry, split and anchor identification. Historical subject 11 was previously measured in v160. No new test-selected settings or clips.",
+  "splits": {
+    "train": [
+      "10_01",
+      "10_02",
+      "10_03",
+      "10_05"
+    ],
+    "validation": [
+      "10_06"
+    ],
+    "test": [
+      "11_01"
+    ]
+  },
+  "original_manifest_sha256": "6900628d49f0701159315acafbca7473016515a5942be145dcdd3d9fd6532f4f",
+  "urdf": "configs/paid_original/paid_main_resolved.urdf",
+  "urdf_sha256": "34ef7f147b91af2615ca5c88f42ad8fd5d1a00fa63ca66d8e01ec9245a2c7761",
+  "schema": "reports/paid_physics_parity_clean_paid.json",
+  "source_support": "Use frozen CMU 120->50Hz per-foot low (<3.5cm above the human clip floor) and quiet (<0.2 m/s) optical marker criterion. Infer lock by >=4 contiguous frames; never present as measured GRF. For each lock, use the median uncorrected XY of the same lowest median capsule endpoint. No ball target or guessed strike time/pruning.",
+  "representation": "Retain full marker-derived pelvis orientation and time; optimize root xyz and all 29 joint angles together for every frame on the original G1. Four sequential sparse QPs with all original sole capsule endpoint clearances, per-edge original joint limit, measured human 18 direction terms, temporal derivative preservation, and root and pose priors. No scalar per-frame height shifting.",
+  "physics_clip": "10_02",
+  "physics_selection": "First train clip with continuous fast outgoing optical ball marker (clip 10_02). Run original and newly optimized once each in same 14s PAiD and default real moving ball/goal configuration. Hit and instep not required or inferred from source. Initial source first frame and complete-clip then last-frame hold identical treatment.",
+  "fps": 50,
+  "anatomical_direction_weights": [
+    1.2,
+    0.9,
+    1.2,
+    1.2,
+    0.7,
+    0.7,
+    1.2,
+    1.2,
+    0.7,
+    0.7,
+    1.0,
+    0.45,
+    0.35,
+    0.15,
+    1.0,
+    0.45,
+    0.35,
+    0.15
+  ],
+  "direction_weight": 1.0,
+  "joint_reference_weight": 0.14,
+  "root_reference_weight": 3.5,
+  "support_xy_weight": 32.0,
+  "support_z_weight": 60.0,
+  "stance_floor_m": 0.0007,
+  "minimum_floor_m": 0.0002,
+  "minimum_support_samples": 4,
+  "root_corr_diff1_weight": 21.0,
+  "joint_corr_diff1_weight": 1.2,
+  "root_corr_diff2_weight": 80.0,
+  "joint_corr_diff2_weight": 4.0,
+  "root_max_offset_m": 0.09,
+  "root_step_m": 0.075,
+  "joint_step_rad": 0.32,
+  "step_diagonal": 0.006,
+  "velocity_limit_fraction": 0.985,
+  "sqp_iterations": 4,
+  "qp_tolerance": 2e-05,
+  "qp_max_iterations": 16000,
+  "max_qp_primal_residual": 0.0002,
+  "acceptance": "Primary: fewer >=1 cm penetration frames and reduced maximum penetration, lower median of per-clip p95 anchored material speed; no increased support >20mm hover count; mean anatomical direction error <=3 degrees and mean direction-rate cosine nondegradation <=0.05. Report support hover, ankle and material speeds, all 18 direction errors, original q/v bounds, acceleration and individual clips including all failures. Independent held-out subject not a project-first discovery.",
+  "scope": "Low/quiet support and capsule contacts are geometric proxies. Dynamic forces, true contact phase, professional player quality, physical realizability, and learned coordination remain unverified. Constant foot anchors may suppress genuine toe/heel roll and cannot replace force plates."
+}
