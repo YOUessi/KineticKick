@@ -115,5 +115,10 @@ def make_controller(ref, schema, config):
             ks = np.array([.01017752,.025101925,.01017752,.025101925,.00721945,.00721945])*(20*np.pi)**2
             delta = np.clip(jac[:3].T@forward*force/ks,-.36,.36)
             result[idx] = np.clip(result[idx]+delta,leg.limits[:,0],leg.limits[:,1])
+            if 'landing_knee_flex_rad' in config:
+                # Flex for loading and absorb the swing-foot landing during the return.
+                knee = idx[3]
+                blend = smooth((t-ctx['first_contact_s']-.27)/.08)
+                result[knee] += blend*max(config['landing_knee_flex_rad']-result[knee],0.)
         return result
     return control
