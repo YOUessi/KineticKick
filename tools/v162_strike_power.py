@@ -15,7 +15,7 @@ def coefficients(config,speed,aim):
     i,sv=bracket(config['speeds_mps'],speed)
     j,sx=bracket(config['aims_m'],aim)
     grid=np.asarray(config['coefficient_grid'],dtype=float)
-    if grid.shape!=(len(config['speeds_mps']),len(config['aims_m']),12):
+    if grid.shape not in [(len(config['speeds_mps']),len(config['aims_m']),n) for n in (12,15)]:
         raise ValueError('Expected two swing phase coefficients for each of six joints')
     return (1-sv)*((1-sx)*grid[i,j]+sx*grid[i,j+1])+sv*((1-sx)*grid[i+1,j]+sx*grid[i+1,j+1])
 
@@ -27,7 +27,11 @@ def make_controller(ref,schema,config):
         nonlocal command,swing
         requested=ctx['shot_speed_mps'],ctx['aim_x_m']
         if requested!=command:
-            swing=make_swing(ref,schema,{**config,'coefficients':coefficients(config,*requested)})
+            value=coefficients(config,*requested)
+            params={**config,'coefficients':value[:12]}
+            if len(value)==15:
+                params.update(swing_lead_s=value[12],swing_rate=value[13],hip_drive=value[14])
+            swing=make_swing(ref,schema,params)
             command=requested
         return swing(ctx,target)
     return control

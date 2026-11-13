@@ -79,6 +79,18 @@ def main():
     rs=links['right_ankle_roll_link']
     weights=np.stack([residual_weights(t*.02) for t in range(onset,end)])
     def trial(coeff):
+        coeff=np.asarray(coeff,dtype=float)
+        profile=weights
+        if len(coeff)==15:
+            # Two timing parameters alter when and how rapidly the target swings.
+            # The third is an independent withdrawal/follow-through hip-pitch pulse.
+            lead,rate,hip=coeff[12:]
+            tt=np.arange(onset,end)*.02
+            profile=np.stack([residual_weights(2.34+(t-2.34)*rate+lead) for t in tt])
+            hip_pulse=hip*np.interp(tt,[2.15,2.24,2.32,2.405,2.51,2.65],[0.,.42,.15,-1.,-.55,0.])
+        else:
+            hip_pulse=np.zeros(len(weights))
+        coeff=coeff[:12]
         system.unpack(snapshot)
         if a.live:
             request('restore')
@@ -88,14 +100,16 @@ def main():
         good_post=0.; outward_score=0.
         j_all=j_good=0.; aligned=0.;gap=1.;nonfoot=0.;ct=None;foot0=None;advance=0.;reladvance=0.;follow_v=0.;prev_p=None;lowest=2.;limit_ex=-np.inf
         targets_now=targets[onset:end].copy()
-        targets_now[:,ix]+=weights@coeff.reshape(2,6)
+        targets_now[:,ix]+=profile@coeff.reshape(2,6)
+        targets_now[:,ix[0]]+=hip_pulse
         for k,target in enumerate(targets_now):
             if a.live:
                 frame=onset+k
                 obs=base.observation(robot.qpos[order],robot.qvel[order],robot.root_pose,robot.root_angular_velocity,ball.entity.pose.p,goal,previous,live_ref,frame,anchor,gains['default_joint_pos'])
                 previous=np.clip(request([frame,obs.tolist()]),-100.,100.)
                 target=gains['default_joint_pos']+gains['action_scale']*previous
-                target[ix]+=weights[k]@coeff.reshape(2,6)
+                target[ix]+=profile[k]@coeff.reshape(2,6)
+                target[ix[0]]+=hip_pulse[k]
             if a.pitch_cap is not None and 2.12<=(onset+k)*.02<=2.30:
                 target[ix[4]]=min(target[ix[4]],a.pitch_cap)
             for joint,val in zip(drives,target):joint.set_drive_target(float(val))

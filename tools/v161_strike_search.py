@@ -17,7 +17,11 @@ def make_controller(ref,schema,config):
     prior=None
     def control(ctx,target):
         nonlocal prior
-        target[indices]+=residual_weights(ctx['t'])@coeff
+        t=ctx['t']
+        phase=2.34+(t-2.34)*config.get('swing_rate',1.)+config.get('swing_lead_s',0.)
+        target[indices]+=residual_weights(phase)@coeff
+        if config.get('hip_drive',0.):
+            target[indices[0]]+=config['hip_drive']*np.interp(t,[2.15,2.24,2.32,2.405,2.51,2.65],[0.,.42,.15,-1.,-.55,0.])
         cap=config.get('backswing_pitch_target_cap')
         if cap is not None and 2.12<=ctx['t']<=2.30:
             # Shape the commanded backswing while leaving the actuator limits unchanged.

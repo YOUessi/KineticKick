@@ -32,18 +32,25 @@ def main():
     cli.add_argument('--rounds',type=int,default=10)
     cli.add_argument('--samples',type=int,default=20)
     cli.add_argument('--spread',type=float,default=.18)
+    cli.add_argument('--timing',action='store_true')
     a=cli.parse_args();a.output.mkdir(exist_ok=False,parents=True)
     params=json.loads(a.initial.read_text()); cap=params['backswing_pitch_target_cap']
     command=[sys.executable,str(Path(__file__).with_name('v161_dynamics_search.py')),'--live','--feasible','--service',
              '--pitch-cap',str(cap),'--output',str(a.output/'worker')]
     rng=np.random.default_rng(a.seed); mean=np.array(params['coefficients']);sd=a.spread*np.tile([1,.50,1.15,1,.85,.45],2)
+    if a.timing:
+        mean=np.r_[mean[:12],params.get('swing_lead_s',.0),params.get('swing_rate',1.),params.get('hip_drive',.20)]
+        sd=np.r_[sd,.017,.12,.30]
+    sd_floor=np.full(len(mean),.014)
+    if a.timing:sd_floor[-3:]=[.002,.018,.05]
     best=np.inf
     with subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True,bufsize=1) as proc:
         if proc.stdout.readline().strip()!='ready':raise RuntimeError('Physics worker startup failed')
         try:
             with (a.output/'development.jsonl').open('x') as out:
                 for g in range(a.rounds):
-                    xs=rng.normal(mean,sd,(a.samples,12));xs[0]=mean
+                    xs=rng.normal(mean,sd,(a.samples,len(mean)));xs[0]=mean
+                    if a.timing:xs[:,12:]=np.clip(xs[:,12:],[-.055,.60,-.8],[.055,1.65,1.7])
                     values=[]
                     for x in xs:
                         proc.stdin.write(json.dumps(x.tolist())+'\n');proc.stdin.flush()
@@ -54,7 +61,7 @@ def main():
                             best=score;(a.output/'best.json').write_text(json.dumps(row,indent=2)+'\n')
                     out.flush();elites=xs[np.argsort(values)[:max(4,a.samples//5)]]
                     mean=.15*mean+.85*elites.mean(0)
-                    sd=np.maximum(.014,.20*sd+.80*elites.std(0))
+                    sd=np.maximum(sd_floor,.20*sd+.80*elites.std(0))
         finally:
             proc.stdin.close()
     if proc.returncode:raise RuntimeError('Physics worker exited with an error')
