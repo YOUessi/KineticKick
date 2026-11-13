@@ -269,7 +269,7 @@ def metrics(trace, ref, cfg, schema, limits, first_ball_step, scored, contact_co
             'measurement_scope':'SAPIEN CPU PhysX, original source URDF with fixed links retained; action clip is held only as reference time saturates. No original Isaac USD collision/manifold equivalence, no certified instep fraction, no current actuator torque observation. Loaded when normal vertical magnitude >30 N. Terminal standing uses bilateral support >30 N, root z>.55 m, tilt<=25°, horizontal root speed<.3 m/s and nonfoot net contact <=20 N.'}
 
 
-def run(assets, output, config, schema, metadata, act):
+def run(assets, output, config, schema, metadata, act, *, controller_factory=None):
     import sapien
     scene,system,robot,ball,drives,order,limits,gains,links,shape_ids=make_plant(assets,config,metadata,schema)
     with np.load(assets/config['clip'],allow_pickle=False) as source:
@@ -277,6 +277,14 @@ def run(assets, output, config, schema, metadata, act):
     link_list=[links[n] for n in schema['body_names']];anchor=schema['body_names'].index(metadata['anchor_body_name'])
     robot.set_root_pose(sapien.Pose(ref['body_pos_w'][0,0],ref['body_quat_w'][0,0]));robot.set_root_linear_velocity(ref['body_lin_vel_w'][0,0]);robot.set_root_angular_velocity(ref['body_ang_vel_w'][0,0]);
     robot.set_qpos(ref['joint_pos'][0,np.argsort(order)]);robot.set_qvel(ref['joint_vel'][0,np.argsort(order)])
+    control = None
+    if controller_factory is not None:
+        # Initialization above always uses the unedited source and original velocities.
+        ref, control = controller_factory(ref, schema)
+        com_links = list(robot.links)
+        masses = np.asarray([link.mass for link in com_links])
+        load = np.zeros(2)
+    raw_targets = []
     goal=np.asarray(config['goal_xyz_m']);previous=np.zeros(29);dt=config['physics_dt_s'];policy_dt=config['control_dt_s'];decimation=round(policy_dt/dt)
     nsteps=round(config['duration_s']/dt);step_count=0;contact_first=None;scored=False;counts={};ball_prev=ball.entity.pose.p.copy();rows={};commands=[];observations=[]
     import gzip
@@ -285,6 +293,24 @@ def run(assets, output, config, schema, metadata, act):
             frame=min(tick,len(ref['joint_pos'])-1); root=robot.root_pose
             obs=observation(robot.qpos[order],robot.qvel[order],root,robot.root_angular_velocity,ball.entity.pose.p,goal,previous,ref,frame,anchor,gains['default_joint_pos'])
             action=act(frame,obs);prev_raw=action.copy(); target=gains['default_joint_pos']+gains['action_scale']*np.clip(action,-100.,100.)
+            if control is not None:
+                raw_targets.append(target.copy())
+                com_points = [(link.entity.pose * link.cmass_local_pose).p for link in com_links]
+                ctx = dict(t=tick*policy_dt, dt=policy_dt, frame=frame,
+                    q=robot.qpos[order].copy(), dq=robot.qvel[order].copy(),
+                    root_pos=root.p.copy(), root_quat=root.q.copy(),
+                    root_velocity=np.r_[robot.root_linear_velocity, robot.root_angular_velocity],
+                    body_pos=np.array([link.entity.pose.p for link in link_list]),
+                    body_quat=np.array([link.entity.pose.q for link in link_list]),
+                    ball_pos=ball.entity.pose.p.copy(), ball_velocity=ball.linear_velocity.copy(),
+                    goal=goal.copy(), foot_load=load.copy(),
+                    first_contact_s=contact_first*dt if contact_first is not None else None,
+                    com=np.average(com_points,axis=0,weights=masses),
+                    com_velocity=np.average([link.linear_velocity for link in com_links],axis=0,weights=masses),
+                    default_q=gains['default_joint_pos'].copy(), limits=limits.copy())
+                target=np.asarray(control(ctx,target.copy()),dtype=float)
+                if target.shape!=(29,) or not np.isfinite(target).all():
+                    raise ValueError('Controller must return 29 finite joint targets')
             for joint,value in zip(drives,target):joint.set_drive_target(float(value))
             previous=np.clip(prev_raw,-100.,100.);commands.append(np.r_[tick*policy_dt,frame,action,target]);observations.append(obs)
             for _ in range(decimation):
@@ -312,6 +338,8 @@ def run(assets, output, config, schema, metadata, act):
                     if not np.isfinite(array).all():raise FloatingPointError(f'Nonfinite value at step {step_count}: {key}')
                     rows.setdefault(key,[]).append(array.copy())
     trace={k:np.asarray(v) for k,v in rows.items()};trace['policy_commands_time_frame_action_target']=np.asarray(commands);trace['policy_observations']=np.asarray(observations)
+    if raw_targets:
+        trace['paid_targets_before_controller']=np.asarray(raw_targets)
     np.savez_compressed(output/'rollout.npz',**trace)
     report=metrics(trace,ref,config,schema,limits,contact_first,scored,counts)
     report.update({'runtime':'SAPIEN '+sapien.__version__+' / PhysxCpuSystem, CPU ONNX Runtime', 'actions':len(commands),'original_physx_gpu_runs':0,
