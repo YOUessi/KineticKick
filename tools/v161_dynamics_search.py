@@ -21,6 +21,7 @@ def main():
     cli.add_argument('--seed',type=int,default=161041)
     cli.add_argument('--generations',type=int,default=12)
     cli.add_argument('--population',type=int,default=48)
+    cli.add_argument('--margin',action='store_true',help='Require interior position and both contact frame conventions in development ranking')
     cli.add_argument('--robust',action='store_true',help='Minimize worst loss across three fixed development ball offsets')
     cli.add_argument('--ball-offset',type=float,nargs=2,default=[0.,0.])
     cli.add_argument('--service',action='store_true',help=argparse.SUPPRESS)
@@ -153,6 +154,9 @@ def main():
             deficit+=min(6.,nonfoot/14)+min(5.,500000*max(0.,limit_ex-5e-7))+0.4*max(0.,min(1.,(limit_ex+.015)/.015))+max(0,.68-lowest)*15
             deficit+=1.5*max(0,.23-advance)+2*max(0,.16-reladvance)+.4*max(0,.72-follow_v)
             merit=8-deficit+.25*alignment+.1*min(-sy,6)
+            if a.margin:
+                merit-=16*max(0,.99-sh)+min(3.,400*max(0.,.003+limit_ex))
+                merit-=min(2.,nonfoot/10)+1.2*late
         if ct is None:merit=-3-4*gap+near_alignment-min(1.5,nonfoot/40)
         return dict(backswing_pitch_target_cap=a.pitch_cap,merit=float(merit),instep=share,alignment=alignment,out_forward=speed,lateral=float(v[0]),nonfoot=float(nonfoot),min_z=float(lowest),advance=float(advance),relative=float(reladvance),v120=float(follow_v),excess=float(limit_ex),instep_post=good_post/max(1e-9,j_all),return_speed=float(back),late_contact=late,release_xy=None if after_xy is None else after_xy.tolist(),contact=ct)
     if a.service:
@@ -165,6 +169,7 @@ def main():
         # Development set spans both axes. Three brand-new confirmation balls are pinned separately.
         for i,(dx,dy) in enumerate(((.019,-.017),(-.021,.017),(.015,.020))):
             argv=[sys.executable,str(Path(__file__).resolve()),'--live','--feasible','--service','--ball-offset',str(dx),str(dy),'--output',str(a.output/f'worker{i}')]
+            if a.margin:argv+=['--margin']
             if a.pitch_cap is not None:argv+=['--pitch-cap',str(a.pitch_cap)]
             proc=subprocess.Popen(argv,stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True,bufsize=1)
             atexit.register(proc.terminate)
