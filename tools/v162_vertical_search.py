@@ -30,6 +30,7 @@ def main():
     p.add_argument('--speed-wave',action='store_true')
     p.add_argument('--whole-spine',action='store_true')
     p.add_argument('--progress-deg',type=float,default=0.)
+    p.add_argument('--polish',action='store_true')
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     cfg=json.loads(base.PROTOCOL.read_text());original=json.loads(V161.read_text())
     assets=base.DEFAULT_ASSETS;schema=json.loads((assets/base.SCHEMA).read_text());names=schema['joint_names']
@@ -138,6 +139,9 @@ def main():
             deficit += max(0.,back1-1.9)*.75 + max(0.,back2-2.38)*.5 + .8*late
             deficit += 3*max(0.,.22-adv)+4*max(0.,.15-rel)+max(0.,.60-v120)
             score=12.-deficit + .011*angle + .10*min(4.4,speed)
+            if a.polish:
+                score-=.8*max(0.,3.62-speed)/.22+max(0.,.99-share)/.10
+                score-=min(1.,max(0.,.00055+q_ex)*800.)
             if a.progress_deg:
                 score-=a.progress_deg*max(0.,75.-angle)/8.
         elif a.profile=='pose': score=pose_merit-.35*penalty
@@ -173,6 +177,6 @@ def main():
                 if row['merit']>best:
                     best=row['merit'];save(a.output/'best.json',row)
             elite=sorted(results,key=lambda x:-x['merit'])[:max(3,a.population//5)]
-            coeff=np.array([r['parameters'] for r in elite]);mu=.80*coeff.mean(0)+.20*mu;sd=np.maximum(.04,.75*coeff.std(0)+.25*sd)
+            coeff=np.array([r['parameters'] for r in elite]);mu=.80*coeff.mean(0)+.20*mu;sd=np.maximum(.010 if a.polish else .04,.75*coeff.std(0)+.25*sd)
             print(gen,round(best,3),{k:elite[0].get(k) for k in ('angle_deg','first_forward','exit_speed','nonfoot_N','instep_post')},flush=True)
 if __name__=='__main__':main()
