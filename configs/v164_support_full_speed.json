@@ -1,0 +1,16 @@
+{
+  "fast_guard": true,
+  "guard_k": 240.0,
+  "guard_d": 4.0,
+  "guard_preview": 0.035,
+  "ankle_margin": 0.125,
+  "joint_margin": 0.14,
+  "official_vel": true,
+  "kp": 3.0,
+  "kd": 0.4,
+  "heading": 1.5,
+  "single": 1.0,
+  "inverse_stride": 0.7,
+  "cap": 1.0,
+  "tau": 0.1
+}

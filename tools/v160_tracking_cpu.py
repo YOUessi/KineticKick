@@ -277,7 +277,7 @@ def metrics(trace, ref, cfg, schema, limits, first_ball_step, scored, contact_co
             'measurement_scope':'SAPIEN CPU PhysX, original source URDF with fixed links retained; action clip is held only as reference time saturates. No original Isaac USD collision/manifold equivalence, no certified instep fraction, no current actuator torque observation. Loaded when normal vertical magnitude >30 N. Terminal standing uses bilateral support >30 N, root z>.55 m, tilt<=25°, horizontal root speed<.3 m/s and nonfoot net contact <=20 N.'}
 
 
-def run(assets, output, config, schema, metadata, act, *, controller_factory=None, plant_factory=None):
+def run(assets, output, config, schema, metadata, act, *, controller_factory=None, plant_factory=None, joint_initializer=None):
     import sapien
     build = make_plant if plant_factory is None else plant_factory
     scene,system,robot,ball,drives,order,limits,gains,links,shape_ids=build(assets,config,metadata,schema)
@@ -285,10 +285,13 @@ def run(assets, output, config, schema, metadata, act, *, controller_factory=Non
         ref={key:source[key] for key in ('joint_pos','joint_vel','body_pos_w','body_quat_w','body_lin_vel_w','body_ang_vel_w')}
     link_list=[links[n] for n in schema['body_names']];anchor=schema['body_names'].index(metadata['anchor_body_name'])
     robot.set_root_pose(sapien.Pose(ref['body_pos_w'][0,0],ref['body_quat_w'][0,0]));robot.set_root_linear_velocity(ref['body_lin_vel_w'][0,0]);robot.set_root_angular_velocity(ref['body_ang_vel_w'][0,0]);
-    robot.set_qpos(ref['joint_pos'][0,np.argsort(order)]);robot.set_qvel(ref['joint_vel'][0,np.argsort(order)])
+    q0, dq0 = ref['joint_pos'][0], ref['joint_vel'][0]
+    if joint_initializer is not None:
+        q0, dq0 = joint_initializer(q0.copy(), dq0.copy(), limits)
+    robot.set_qpos(q0[np.argsort(order)]);robot.set_qvel(dq0[np.argsort(order)])
     control = None
     if controller_factory is not None:
-        # Initialization above always uses the unedited source and original velocities.
+        # The policy always receives the original source arrays.
         ref, control = controller_factory(ref, schema)
         com_links = list(robot.links)
         masses = np.asarray([link.mass for link in com_links])
@@ -296,6 +299,7 @@ def run(assets, output, config, schema, metadata, act, *, controller_factory=Non
     raw_targets = []
     goal=np.asarray(config['goal_xyz_m']);previous=np.zeros(29);dt=config['physics_dt_s'];policy_dt=config['control_dt_s'];decimation=round(policy_dt/dt)
     nsteps=round(config['duration_s']/dt);step_count=0;contact_first=None;scored=False;counts={};ball_prev=ball.entity.pose.p.copy();rows={};commands=[];observations=[]
+    first_right_ball_tick = None
     import gzip
     with gzip.open(output/'native_contacts.jsonl.gz','xt',encoding='utf8',compresslevel=2) as raw_contacts:
         for tick in range(nsteps//decimation):
@@ -314,6 +318,7 @@ def run(assets, output, config, schema, metadata, act, *, controller_factory=Non
                     ball_pos=ball.entity.pose.p.copy(), ball_velocity=ball.linear_velocity.copy(),
                     goal=goal.copy(), foot_load=load.copy(),
                     first_contact_s=contact_first*dt if contact_first is not None else None,
+                    first_right_ball_s=first_right_ball_tick*dt if first_right_ball_tick is not None else None,
                     com=np.average(com_points,axis=0,weights=masses),
                     com_velocity=np.average([link.linear_velocity for link in com_links],axis=0,weights=masses),
                     default_q=gains['default_joint_pos'].copy(), limits=limits.copy())
@@ -328,6 +333,8 @@ def run(assets, output, config, schema, metadata, act, *, controller_factory=Non
                 scene.step();step_count+=1;root=robot.root_pose
                 contacts,load,slip,nonfoot,ball_links=contacts_for_step(system,shape_ids,dt)
                 if ball_links and contact_first is None:contact_first=step_count
+                if first_right_ball_tick is None and FEET[1] in ball_links:
+                    first_right_ball_tick = step_count
                 for name in ball_links:counts[name]=counts.get(name,0)+1
                 raw_contacts.write(json.dumps([step_count,contacts],separators=(',',':'),allow_nan=False)+'\n')
                 ball_pos=ball.entity.pose.p

@@ -549,3 +549,8 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 ## v0.1.163 · CMU 真人动作物理迁移
 
 基于 0bc0b720 的独立版本分支。新增 GMT zixuan417/humanoid-general-motion-tracking@2a590de25a1eb08e47491977a738549c22f16e1f、Amazon FAR TWIST2@b06178f19a22f2138cbd31f60c6d494bc263f67d。两套研究权重、来源许可、仿真轨迹和视频留在 Tang 的忽略目录。本版本给予原 G1 力矩、速度和位置约束下的 CPU PhysX 单片验证。[冻结控制器、复现及负对照](reports/2026-11-14-v163-human-motion-balance.md)
+
+
+## v0.1.164 · 真人动作支撑、右脚接触与随挥
+
+从 `version/v0.1.163` 的 `9648b71021dfeef3f9d804126697edcae0f78f5a` 发布独立版本。继续使用相同的 GMT 研究权重、CMU 素材与原 G1 物理资产。跟踪、启动制动和两条射门各有冻结配置，原始轨迹、失败和视频留在 Tang。[全速跟踪与带球实验](reports/2026-11-14-v164-human-transfer.md)

@@ -189,6 +189,9 @@ def main():
     for key in ('before', 'after', 'reference', 'output'):
         cli.add_argument('--' + key, type=Path, required=True)
     cli.add_argument('--urdf', type=Path, default=Path('/home/you/projects/kinetickick/configs/paid_original/paid_main_resolved.urdf'))
+    cli.add_argument('--camera-scale', type=float, help='Pixels per world metre for both side-by-side panels')
+    cli.add_argument('--camera-center-xy', type=float, nargs=2, metavar=('X', 'Y'),
+                     help='World-coordinate center for off-origin source scenes')
     cli.add_argument('--after-label', default='改进后')
     cli.add_argument('--reference-clock', type=Path, help='NPZ with time_s and source_time_s mapping elapsed simulation seconds to original 50 Hz reference time')
     cli.add_argument('--frame-only', type=float, help='Render just the given physical time to a PNG for review')
@@ -215,6 +218,14 @@ def main():
     cv2.setNumThreads(1)
     shapes = load_geometry(a.urdf, runs[0]['names'])
     cam = camera()
+    if a.camera_center_xy is not None:
+        if not np.isfinite(a.camera_center_xy).all():
+            cli.error('Camera center must be finite')
+        cam.center[:2] = a.camera_center_xy
+    if a.camera_scale is not None:
+        if not np.isfinite(a.camera_scale) or a.camera_scale <= 0:
+            cli.error('Camera scale must be finite and positive')
+        cam.scale = a.camera_scale
     cam_ref = camera()
     cam_ref.scale = 136.
     bg = panel_background(cam, False)

@@ -46,6 +46,12 @@ def make_control(ref, schema, meta, policy, opts, recording=None):
     mode = opts.drive
     adapter = getattr(opts, "adapter", {})
     source_event = adapter.get("event_s", 2.94)
+    approach_window = np.asarray([1.55, 1.92, 2.86, 3.15])
+    if "approach_offsets_s" in adapter:
+        offsets = np.asarray(adapter["approach_offsets_s"], dtype=float)
+        if offsets.shape != (4,) or not np.isfinite(offsets).all() or not np.all(np.diff(offsets) > 0):
+            raise ValueError("Approach window requires four increasing finite phase offsets")
+        approach_window = source_event + offsets
     legs = [schema["joint_names"].index("right_" + j + "_joint") for j in LEG]
     mid = np.array(adapter.get("swing", np.zeros(12))).reshape(2, 6)
     ids = [schema["joint_names"].index(n + "_joint") for n in NAMES]
@@ -72,6 +78,10 @@ def make_control(ref, schema, meta, policy, opts, recording=None):
         w = (u * u * (3 - 2 * u))[:, None]
         features = np.concatenate((features, (1 - w) * final + w * standing))
     swing_plan = rot
+    follow = None
+    if "loaded_follow" in adapter:
+        from v164_strike_feedback import make_follow
+        follow = make_follow(schema, adapter["loaded_follow"])
     history = deque(np.zeros((20, 74)), maxlen=20)
     last = np.zeros(23)
 
@@ -108,7 +118,7 @@ def make_control(ref, schema, meta, policy, opts, recording=None):
             amp = np.array([adapter.get("vx", 0.0), adapter.get("vy", 0.0), 0.0])
             gain = np.interp(
                 (clock + FUTURE) * 0.02,
-                [1.55, 1.92, 2.86, 3.15],
+                approach_window,
                 [0.0, 1.0, 1.0, 0.0],
                 left=0.0,
                 right=0.0,
@@ -164,7 +174,7 @@ def make_control(ref, schema, meta, policy, opts, recording=None):
                 ]
             )
             target[joints] += weights @ np.asarray(plant).reshape(2, len(names))
-        return target
+        return follow(ctx, target) if follow is not None else target
 
     return control
 
@@ -247,6 +257,7 @@ def main():
         "--drive", choices=["matched", "original", "native"], default="matched"
     )
     p.add_argument("--adapter", type=Path)
+    p.add_argument("--landing-controller", type=Path, help="Contact-triggered swing and stance foot-placement configuration")
     p.add_argument("--feedback", type=float, default=0.0)
     p.add_argument(
         "--paid-baseline",
@@ -257,9 +268,14 @@ def main():
     p.add_argument("--ball", nargs=2, type=float)
     p.add_argument("--direction", nargs=2, type=float, default=[1, 0])
     p.add_argument("--goal-distance", type=float, default=2.8)
+    p.add_argument(
+        "--lateral-ball-offset", type=float, default=0.0, metavar="METRES",
+        help="Shift the registered ball perpendicular to the goal direction, retaining the same world goal.",
+    )
     p.add_argument("--duration", type=float, default=14.0)
     args = p.parse_args()
     args.adapter = load_adapter(args.adapter)
+    landing_config = load_adapter(args.landing_controller)
     torch.set_num_threads(1)
     if not args.paid_baseline and phys.digest(args.checkpoint) != CHECKPOINT:
         raise ValueError("Unknown GMT checkpoint")
@@ -282,8 +298,10 @@ def main():
         p.error("Duration must consist of complete control ticks up to 14 s")
     if args.adapter.get("fast_guard") and args.drive != "native":
         p.error("Fast guard is calibrated for native GMT drive gains")
-    if args.paid_baseline and (args.adapter or args.feedback or args.settle):
+    if args.paid_baseline and (args.adapter or args.feedback or args.settle or landing_config):
         p.error("PAiD baseline does not use GMT interventions")
+    if not np.isfinite(args.lateral_ball_offset) or (args.lateral_ball_offset and not args.ball):
+        p.error("A lateral ball offset must be finite and requires --ball")
     if args.ball and (
         not np.isfinite([*args.ball, *args.direction, args.goal_distance]).all()
         or np.linalg.norm(args.direction) == 0
@@ -300,6 +318,9 @@ def main():
         cfg["ball_initial_xyz_m"] = [*xy, cfg["ball_radius_m"]]
         cfg["goal_xyz_m"][:2] = (xy + args.goal_distance * direction).tolist()
         cfg["goal_forward_xy"] = direction.tolist()
+        if args.lateral_ball_offset:
+            lateral = np.array([-direction[1], direction[0]])
+            cfg["ball_initial_xyz_m"][:2] = (xy + args.lateral_ball_offset * lateral).tolist()
     if args.paid_baseline:
         args.output.mkdir(parents=True, exist_ok=False)
         phys.save_json(
@@ -325,7 +346,11 @@ def main():
     with phys.cpu_policy(assets, cfg) as (meta, _):
 
         def factory(ref, schema):
-            return ref, make_control(ref, schema, meta, policy, args, recording)
+            control = make_control(ref, schema, meta, policy, args, recording)
+            if landing_config:
+                from v164_free_landing import build
+                control = build(schema, ref, landing_config, control)
+            return ref, control
 
         args.output.mkdir(parents=True, exist_ok=False)
         phys.save_json(
@@ -341,6 +366,15 @@ def main():
                 "drive": args.drive,
                 "clip": cfg["clip"],
                 "adapter": args.adapter,
+                "loaded_follow_code_sha256": (
+                    phys.digest(Path(__file__).with_name("v164_strike_feedback.py"))
+                    if "loaded_follow" in args.adapter else None
+                ),
+                "landing_controller": landing_config,
+                "landing_controller_sha256": (
+                    phys.digest(Path(__file__).with_name("v164_free_landing.py"))
+                    if landing_config else None
+                ),
                 "duration_s": args.duration,
                 "feedback": args.feedback,
                 "settle": args.settle,
