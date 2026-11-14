@@ -35,6 +35,23 @@
 
 两种候选均用固定参数回放同一组六段。两套都全程无跌倒、没有关节位置或速度越界并在末段站稳，但 10_03 的右腕在 2.76–2.78 s 与右髋发生 32.39–38.33 N 的碰撞，严格结果均为 5/6。原设置、取消额外步幅、随速度衰减三套方案的六片平均骨盆世界 RMSE 分别为 27.0、30.2、34.3 cm。它们的失败动作与跟踪代价均保留。
 
+### 最终共用控制器通过 6/6
+
+在零额外步幅前馈的基础上，对同侧腕与髋的原始胶囊体计算实测间隙和闭合速度。预测即将发生接触时，修正肩部目标使腕向外让位。该机制消除了 10_03 的右腕撞髋，六段都站稳，但 10_01 右踝在 5.680 s 超限 0.00002267 rad。200 Hz 驱动指令显示，该踝在上下界附近快速反转，35 ms 外推已经越过另一侧保护区时，保护器给出相反的大幅制动指令，下一步反弹回原限位。加入一个方向判定：当关节当前贴近一侧且外推跨过两侧保护区时，停用这一次反向补偿，执行已有的受限 PD 驱动。物理硬限、惯量、碰撞体和力矩上限均沿用基线。
+
+同一冻结配置与启动规则跑完全部六段，不使用动作编号选择控制器。已知失败片参与开发，六片属于现有资料上的回归，尚需独立的新动作测试。每段均具备七项完整检查，无跌倒、无危险非足碰撞，无角度和速度越界，连续恢复双足站稳。按原参考时钟配准，六片骨盆世界轨迹 RMSE 平均 23.58 cm。
+
+| 最终纯跟踪 | 源长（s） | 骨盆世界 RMSE（cm） | 30 部位相对骨盆平均误差（cm） | 连续双足站稳（s） |
+|---|---:|---:|---:|---:|
+| 10_01 | 6.66 | 21.42 | 2.58 | 5.890 |
+| 10_02 | 4.90 | 39.99 | 3.06 | 7.810 |
+| 10_03 | 3.00 | 25.13 | 3.74 | 9.830 |
+| 10_05 | 3.62 | 16.97 | 2.88 | 8.455 |
+| 10_06 | 4.76 | 26.43 | 3.03 | 5.700 |
+| 11_01 | 4.96 | 11.54 | 2.64 | 7.710 |
+
+各回合的评分、参考和轨迹散列可在 `experiments/v164_landing/rebound/manifest.json` 核对。保留了 10_06 专项控制器，其 7.45 cm 骨盆轨迹误差优于通用版的 26.43 cm。六片上述结果为纯跟踪，真实带球任务另见下表。两组实验的参考均来自同一批 29 轴人体重定向，具体射门控制在两条开发片分别标定。
+
 ## 两条实测射门与固定球门扰动
 
 10_02 的基线横向轨迹误差为 37.51 cm。触球后的落脚反馈按实际足底载荷和骨盆速度修正髋膝目标，保留同一击球。骨盆三维 RMSE 从 37.78 cm 降至 34.20 cm，偏航 RMSE 从 13.56° 降至 7.51°，全身相对姿态误差从 2.96 cm 增至 3.82 cm，双足站稳从 8.175 s 缩短至 7.085 s。这个选项保留为实验分支，关闭时 v163 的 18 个物理数组和原生接触流完全复现。切换跟踪器、虚拟支撑力矩及提前制动等方案的结果留在 Tang 的开发目录。
@@ -68,8 +85,8 @@ loc=experiments/v164_repro
 mkdir -p "$loc"
 /home/you/conda_env/env_isaaclab/bin/python -s tools/v164_clear_reference.py \
   --input "experiments/v162_human/references/$clip.npz" --output "$loc/$clip.npz" > "$loc/$clip.json"
-"$phys" tools/v164_support_track.py --reference "$loc/$clip.npz" \
-  --config configs/v164_clear_support.json --initial-state-config configs/v164_initial_braking.json \
+"$phys" tools/v164_clear_wrist.py --reference "$loc/$clip.npz" \
+  --config configs/v164_clear_braking.json --initial-state-config configs/v164_initial_braking.json \
   --output "$loc/tracking_$clip"
 /usr/bin/python3 tools/v164_support_score.py --run "$loc/tracking_$clip" \
   --reference "experiments/v162_human/references/$clip.npz" --clearance "$loc/$clip.json" \
@@ -82,4 +99,4 @@ mkdir -p "$loc"
 /usr/bin/python3 tools/v161_surface_audit.py --run "$loc/shot_10_02_left"
 ```
 
-Tang 上的 14 s 实测视频为 `media/v164_human_10_06_comparison.mp4` 与 `media/v164_human_10_05_shot_full_field.mp4`。左侧为同场景旧控制，右侧为修复后的回合，下方小窗是重定向参考。无须下载人体原始文件即可在 Tang 打开已生成的视频。原始 200 Hz 轨迹、接触流、训练候选和参数摘要保存于 `experiments/v164_support`、`v164_clear`、`v164_initial`、`v164_landing` 和 `v164_strike`。
+Tang 上的 14 s 实测视频为 `media/v164_human_10_06_shared_tracker.mp4`（通用跟踪）、`media/v164_human_10_06_comparison.mp4`（专项跟踪）和 `media/v164_human_10_05_shot_full_field.mp4`（完整射门）。左侧为同场景旧控制，右侧为修复后的回合，下方小窗是重定向参考。无须下载人体原始文件即可在 Tang 打开已生成的视频。原始 200 Hz 轨迹、接触流、训练候选和参数摘要保存于 `experiments/v164_support`、`v164_clear`、`v164_initial`、`v164_landing` 和 `v164_strike`。

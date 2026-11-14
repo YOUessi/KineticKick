@@ -205,6 +205,7 @@ class GuardedStep:
         self.kp = cfg.get("guard_k", 210.0)
         self.kd = cfg.get("guard_d", 4.5)
         self.horizon = cfg.get("guard_preview", 0.030)
+        self.prevent_cross_limit_rebound = cfg.get("prevent_cross_limit_rebound", False)
 
     def step(self):
         # Restoring the issued target after stepping preserves the 50 Hz input
@@ -216,6 +217,12 @@ class GuardedStep:
         hi = self.limits[j, 1] - self.margin
         predicted = q + self.horizon * dq
         error = predicted - np.clip(predicted, lo, hi)
+        if self.prevent_cross_limit_rebound:
+            # The 35 ms extrapolation can cross the entire safe interval while the
+            # joint is still near the opposite limit. Avoid driving it back into
+            # that limit in response to a one-step reversal of the measured speed.
+            opposite_limit = ((q >= hi) & (error < 0)) | ((q <= lo) & (error > 0))
+            error[opposite_limit] = 0.0
         changed = np.flatnonzero(abs(error) > 0)
         saved = []
         for v in changed:

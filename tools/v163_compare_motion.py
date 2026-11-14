@@ -100,10 +100,16 @@ def load_run(folder):
     score_file = folder/'score.json'
     if score_file.exists():
         score = json.loads(score_file.read_text())
-        for name, checksum in score['input_sha256'].items():
+        if 'strict_standing_tail_s' in score:
+            checksums = {'rollout.npz': score['rollout_sha256'],
+                         'native_contacts.jsonl.gz': score['contact_sha256']}
+            tail = score['strict_standing_tail_s']
+        else:
+            checksums = score['input_sha256']
+            tail = score['terminal_standing_seconds']
+        for name, checksum in checksums.items():
             if digest(folder/name) != checksum:
                 raise ValueError('Standing score belongs to a different run')
-        tail = score['terminal_standing_seconds']
     data.update(events=sorted(events, key=lambda x:x[0]), tail=tail,
                 fall=fall, goal=crossed)
     return data

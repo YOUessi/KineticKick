@@ -34,6 +34,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     for key in ("before", "after", "reference", "clearance", "output"):
         p.add_argument("--" + key, type=Path, required=True)
+    p.add_argument("--after-label", default="改进后  ·  支撑反馈与全身间隙修正")
     a = p.parse_args()
     runs = [load_run(a.before), load_run(a.after)]
     if a.output.exists():
@@ -134,7 +135,7 @@ def main():
             d.line((640, 57, 640, 532), fill=RULE, width=2)
             write_text(d, (24, 62), "改进前  ·  GMT", 24, WHITE, True)
             write_text(
-                d, (665, 62), "改进后  ·  支撑反馈与全身间隙修正", 24, AQUA, True
+                d, (665, 62), a.after_label, 24, AQUA, True
             )
             for j, r in enumerate(runs):
                 x = 24 if j == 0 else 778
