@@ -545,3 +545,7 @@ ZERO对照中原策略和新禁用控制在2800个5ms步、所有**共有**物�
 ## v0.1.162 — 物理姿态、移动球、目标速度与人体参考对照
 
 从 version/v0.1.161 的 89f167c9c80e0fb3c11d96ca1362510fea266dca 建立。继续使用原 PAiD e72e470、G1 原解析URDF、冻结的 ONNX 和 5 ms CPU PhysX，滚动球只在初始化施加平动、角速度。真人参考来自原 CMU 两被试弱监督文件，通过原具名关节顺序和时间验证后送入跟踪器。配置、代码、文字报告随版本发布。原始人体、仿真、视频与权重在 Tang 的忽略目录。[验收与限制](reports/2026-11-14-v162-pose-moving-ball-and-shot-commands.md)
+
+## v0.1.163 · CMU 真人动作物理迁移
+
+基于 0bc0b720 的独立版本分支。新增 GMT zixuan417/humanoid-general-motion-tracking@2a590de25a1eb08e47491977a738549c22f16e1f、Amazon FAR TWIST2@b06178f19a22f2138cbd31f60c6d494bc263f67d。两套研究权重、来源许可、仿真轨迹和视频留在 Tang 的忽略目录。本版本给予原 G1 力矩、速度和位置约束下的 CPU PhysX 单片验证。[冻结控制器、复现及负对照](reports/2026-11-14-v163-human-motion-balance.md)

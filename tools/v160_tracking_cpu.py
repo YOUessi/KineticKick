@@ -277,9 +277,10 @@ def metrics(trace, ref, cfg, schema, limits, first_ball_step, scored, contact_co
             'measurement_scope':'SAPIEN CPU PhysX, original source URDF with fixed links retained; action clip is held only as reference time saturates. No original Isaac USD collision/manifold equivalence, no certified instep fraction, no current actuator torque observation. Loaded when normal vertical magnitude >30 N. Terminal standing uses bilateral support >30 N, root z>.55 m, tilt<=25°, horizontal root speed<.3 m/s and nonfoot net contact <=20 N.'}
 
 
-def run(assets, output, config, schema, metadata, act, *, controller_factory=None):
+def run(assets, output, config, schema, metadata, act, *, controller_factory=None, plant_factory=None):
     import sapien
-    scene,system,robot,ball,drives,order,limits,gains,links,shape_ids=make_plant(assets,config,metadata,schema)
+    build = make_plant if plant_factory is None else plant_factory
+    scene,system,robot,ball,drives,order,limits,gains,links,shape_ids=build(assets,config,metadata,schema)
     with np.load(assets/config['clip'],allow_pickle=False) as source:
         ref={key:source[key] for key in ('joint_pos','joint_vel','body_pos_w','body_quat_w','body_lin_vel_w','body_ang_vel_w')}
     link_list=[links[n] for n in schema['body_names']];anchor=schema['body_names'].index(metadata['anchor_body_name'])
